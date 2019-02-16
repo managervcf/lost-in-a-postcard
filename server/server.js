@@ -3,7 +3,6 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 
 // Import files
-const books = require('./graphql/sampleData');
 const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
 
@@ -22,5 +21,7 @@ app.get('/', (req, res) => res.send('Hello World'));
 
 // Setup app to listen on variable 'port'
 app.listen(port, () =>
-	console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+	console.log(`Server ready at http://localhost:${port}.
+		For GraphQL Playground, visit ${server.graphqlPath}.
+	`)
 );
