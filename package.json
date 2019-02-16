@@ -1,10 +1,13 @@
 {
-  "name": "lostinapostcard",
-  "version": "1.0.0",
-  "description": "Lost In A Postcard",
+  "name": "lost-in-a-postcard",
+  "version": "0.1.0",
+  "description": "Lost In A Postcard. Travel photo blog by Domi & Matt.",
   "main": "index.mjs",
   "scripts": {
-    "dev": "nodemon --experimental-modules index.mjs"
+    "start": "node --experimental-modules index.mjs",
+    "client": "npm run start --prefix client",
+    "server": "nodemon --experimental-modules index.mjs",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Mateusz Pyzowski",
   "license": "ISC",
@@ -12,5 +15,8 @@
     "apollo-server-express": "^2.4.2",
     "express": "^4.16.4",
     "graphql": "^14.1.1"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
   }
 }
