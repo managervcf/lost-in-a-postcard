@@ -4,9 +4,9 @@
   "description": "Lost In A Postcard. Travel photo blog by Domi & Matt.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "client": "npm run start --prefix client",
-    "server": "nodemon index.js",
+    "start": "node src/index.js",
+    "client": "npm run start --prefix src/client",
+    "server": "nodemon src/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Mateusz Pyzowski",
