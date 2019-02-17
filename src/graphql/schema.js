@@ -19,6 +19,7 @@ const typeDefs = gql`
 	type User {
 		id: ID!
 		username: String!
+		messages: [Message!]
 		description: String!
 	}
 
@@ -31,7 +32,9 @@ const typeDefs = gql`
 	type Country {
 		name: String!
 		nativeName: String!
+		region: String!
 		population: Int!
+		area: Int!
 	}
 `;
 
