@@ -1,17 +1,29 @@
 // Import gql helper to construct GraphQL schema
-const { gql } = require('apollo-server-express');
+import { gql } from 'apollo-server-express';
 
 // Type definitions define the "shape" of your data and specify
 // which ways the data can be fetched from the GraphQL server.
 const typeDefs = gql`
-	type Book {
-		title: String
-		author: String
+	type Query {
+		users: [User!]
+		user(id: ID!): User 
+		me: User
+
+		countries: [Country!]
+		country(name: String!): Country
 	}
 
-	type Query {
-		books: [Book]
+	type User {
+		id: ID!
+		username: String!
+		description: String!
+	}
+
+	type Country {
+		name: String!
+		nativeName: String!
+		population: Int!
 	}
 `;
 
-module.exports = typeDefs;
+export default typeDefs;

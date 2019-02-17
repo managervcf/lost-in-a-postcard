@@ -1,12 +1,40 @@
-// Import sampleData
-const books = require('./sampleData');
+// Import axios
+import axios from 'axios';
 
-// Resolvers define the technique for fetching the types in the
-// schema.  We'll retrieve books from the "books" array above.
-const resolvers = {
-	Query: {
-		books: () => books
+// Sample data to work with
+let users = {
+	1: {
+		id: '1',
+		username: 'Mateusz Pyzowski'
+	},
+	2: {
+		id: '2',
+		username: 'Dominika Pyzowska'
 	}
 };
 
-module.exports = resolvers;
+// Country API
+const url = 'https://restcountries.eu/rest/v2/all';
+
+// Resolvers define the technique for fetching the types in the schema.
+const resolvers = {
+	Query: {
+		users: () => Object.values(users),
+		user: (parent, { id }) => users[id],
+		me: (parent, args, { me }) => me,
+		countries: async () => (await axios.get(url)).data,
+		country: async (parent, args) =>
+			(await axios.get(url)).data.find(({ name }) => args.name === name)
+	},
+
+	User: {
+		description: ({ username, id }) => `${username} has an ID: ${id}`
+	},
+
+	Country: {
+		// name: ({ name }) => name,
+		// population: ({ population }) => population
+	}
+};
+
+export default resolvers;

@@ -1,20 +1,29 @@
 // Import helpers from dependencies
-const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import 'dotenv/config';
 
 // Import files
-const typeDefs = require('./graphql/schema');
-const resolvers = require('./graphql/resolvers');
+import typeDefs from './graphql/schema';
+import resolvers from './graphql/resolvers';
 
 // Variable declarations
+// // Declare port or 4000 if in development
 const port = process.env.PORT || 4000;
 
 // Create express server
 const app = express();
 
-// Create apollo server and connect it with express
-const server = new ApolloServer({ typeDefs, resolvers });
-server.applyMiddleware({ app });
+// Create apollo server and connect it with express.
+// Specify path for graphql operations
+const server = new ApolloServer({
+	typeDefs,
+	resolvers,
+	context: {
+		me: { id: '05-09-1989', username: 'Mateusz ' }
+	}
+});
+server.applyMiddleware({ app, path: '/graphql' });
 
 // Routes
 app.get('/', (req, res) => res.send('Hello World'));
