@@ -20,7 +20,7 @@ const server = new ApolloServer({
 	typeDefs,
 	resolvers,
 	context: {
-		me: { id: '05-09-1989', username: 'Mateusz ' }
+		me: { id: '05-09-1989', username: 'Mateusz' }
 	}
 });
 server.applyMiddleware({ app, path: '/graphql' });

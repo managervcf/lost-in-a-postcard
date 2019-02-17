@@ -6,8 +6,11 @@ import { gql } from 'apollo-server-express';
 const typeDefs = gql`
 	type Query {
 		users: [User!]
-		user(id: ID!): User 
+		user(id: ID!): User
 		me: User
+
+		messages: [Message!]!
+		message(id: ID!): Message!
 
 		countries: [Country!]
 		country(name: String!): Country
@@ -17,6 +20,12 @@ const typeDefs = gql`
 		id: ID!
 		username: String!
 		description: String!
+	}
+
+	type Message {
+		id: ID!
+		text: String!
+		user: User!
 	}
 
 	type Country {
