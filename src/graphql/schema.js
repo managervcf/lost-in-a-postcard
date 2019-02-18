@@ -16,11 +16,16 @@ const typeDefs = gql`
 		country(name: String!): Country
 	}
 
+	type Mutation {
+		createMessage(text: String!): Message!
+		updateMessage(id: ID!, text: String!): Boolean!
+		deleteMessage(id: ID!): Boolean!
+	}
+
 	type User {
 		id: ID!
 		username: String!
 		messages: [Message!]
-		description: String!
 	}
 
 	type Message {
