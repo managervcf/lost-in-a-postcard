@@ -5,8 +5,9 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
 // Import files
-import typeDefs from './graphql/schema';
-import resolvers from './graphql/resolvers';
+import schema from './schema';
+import resolvers from './resolvers';
+import models from './models';
 
 // Create express server
 const app = express();
@@ -18,10 +19,11 @@ app.use(cors());
 // Create apollo server and connect it with express.
 // Specify path for graphql operations
 const server = new ApolloServer({
-	typeDefs,
+	typeDefs: schema,
 	resolvers,
 	context: {
-		me: { id: '1', username: 'Mateusz' }
+		models,
+		me: models.users.find(({ id }) => id === '1')
 	}
 });
 server.applyMiddleware({ app, path: '/graphql' });
