@@ -1,35 +1,24 @@
-// Import axios for http requests
-import axios from 'axios';
+// Import helper to connect with database
+import { connect } from 'mongoose';
 
-// Sample data to work with
-let users = [
-	{
-		id: '1',
-		username: 'Mateusz Pyzowski',
-		messageIds: [1]
-	},
-	{
-		id: '2',
-		username: 'Dominika Pyzowska',
-		messageIds: [2]
-	}
-];
+// Import models
+import User from './user';
+import Message from './message';
 
-let messages = [
-	{
-		id: '1',
-		text: 'Hello World',
-		userId: '1'
-	},
-	{
-		id: '2',
-		text: 'By World',
-		userId: '2'
-	}
-];
+// Define functions that connects to database.
+// Pass 2 options to avoid deprecation warnings.
+const connectDb = () =>
+	connect(
+		process.env.DATABASE_URL,
+		{
+			useNewUrlParser: true,
+			useCreateIndex: true
+		}
+	);
 
-// Data from Country API
-const countryUrl = 'https://restcountries.eu/rest/v2/all';
-const getAllCountries = async () => (await axios.get(countryUrl)).data;
+// Stitch together all models
+const models = { User, Message };
 
-export default { users, messages, getAllCountries };
+// Export connectDb and unified models interface
+export { connectDb };
+export default models;

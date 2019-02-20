@@ -7,7 +7,7 @@ import { ApolloServer } from 'apollo-server-express';
 // Import files
 import schema from './schema';
 import resolvers from './resolvers';
-import models from './models';
+import models, { connectDb } from './models';
 
 // Create express server
 const app = express();
@@ -23,7 +23,7 @@ const server = new ApolloServer({
 	resolvers,
 	context: {
 		models,
-		me: models.users.find(({ id }) => id === '1')
+		me: { id: '1', username: 'Mateusz Pyzowski' }
 	}
 });
 server.applyMiddleware({ app, path: '/graphql' });
@@ -31,10 +31,19 @@ server.applyMiddleware({ app, path: '/graphql' });
 // Routes
 app.get('/', (req, res) => res.send('Hello World'));
 
-// Setup app to listen on variable 'port'
-app.listen(process.env.PORT, () =>
-	console.log(
-		`Server ready at http://localhost:${process.env.PORT}.`,
-		`For GraphQL Playground, visit ${server.graphqlPath}.`
-	)
-);
+// After connections with database is established,
+// express application can start. Defined a variable
+// that enables erasing database on restart.
+const eraseDatabaseOnSync = false;
+
+connectDb().then(async () => {
+	if (eraseDatabaseOnSync) {
+		await Promise.all([
+			models.User.deleteMany({}),
+			models.Message.deleteMany({})
+		]);
+	}
+	app.listen(process.env.PORT, () =>
+		console.log(`Server listening on port ${process.env.PORT}...`)
+	);
+});
