@@ -7,9 +7,15 @@ export default gql`
     me: User
   }
 
+  extend type Mutation {
+    createUser(username: String!): User!
+    deleteUser(id: ID!): User
+  }
+
   type User {
     id: ID!
     username: String!
-    messages: [Message!]
+    email: String
+    messages: [Message!]!
   }
 `;

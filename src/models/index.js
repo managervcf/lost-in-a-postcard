@@ -1,4 +1,4 @@
-// Import helper to connect with database
+// Import helper to connect with database.
 import { connect } from 'mongoose';
 
 // Import models
@@ -10,15 +10,12 @@ import Message from './message';
 const connectDb = () =>
 	connect(
 		process.env.DATABASE_URL,
-		{
-			useNewUrlParser: true,
-			useCreateIndex: true
-		}
+		{ useNewUrlParser: true, useCreateIndex: true }
 	);
 
-// Stitch together all models
+// Stitch together all models.
 const models = { User, Message };
 
-// Export connectDb and unified models interface
+// Export connectDb and unified models interface.
 export { connectDb };
 export default models;

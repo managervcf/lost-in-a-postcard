@@ -1,42 +1,47 @@
-// Import helpers from dependencies
+// Import helpers from dependencies.
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
-// Import files
+// Import schema, resolvers, models, APIs and helpers.
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { connectDb } from './models';
+import API from './api';
 
-// Create express server
+// Create express server.
 const app = express();
 
-// Use application-level middleware
-//// Enables Cross Origin Resource Sharing
+// Use application-level middleware.
+//// Enables Cross Origin Resource Sharing.
 app.use(cors());
 
 // Create apollo server and connect it with express.
-// Specify path for graphql operations
+// Specify path for graphql operations. Provide context
+// with models and API.
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
 	context: {
 		models,
-		me: { id: '1', username: 'Mateusz Pyzowski' }
+		API,
+		me: { id: '5c6e3751fc68a424241ba877' }
 	}
 });
+
 server.applyMiddleware({ app, path: '/graphql' });
 
 // Routes
 app.get('/', (req, res) => res.send('Hello World'));
 
-// After connections with database is established,
-// express application can start. Defined a variable
+// After connection with database is established,
+// express application will start. Defined a variable
 // that enables erasing database on restart.
 const eraseDatabaseOnSync = false;
 
 connectDb().then(async () => {
+	console.log('Conntected to mLab database.');
 	if (eraseDatabaseOnSync) {
 		await Promise.all([
 			models.User.deleteMany({}),
@@ -44,6 +49,6 @@ connectDb().then(async () => {
 		]);
 	}
 	app.listen(process.env.PORT, () =>
-		console.log(`Server listening on port ${process.env.PORT}...`)
+		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
 	);
 });
