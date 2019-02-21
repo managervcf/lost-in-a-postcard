@@ -26,7 +26,7 @@ const server = new ApolloServer({
 	context: {
 		models,
 		API,
-		me: { id: '5c6e3751fc68a424241ba877' }
+		loggedUser: { id: '5c6e4997da87de08983e05ca' }
 	}
 });
 
@@ -37,9 +37,8 @@ app.get('/', (req, res) => res.send('Hello World'));
 
 // After connection with database is established,
 // express application will start.
-connectDb().then(async () => {
-	console.log('Conntected to mLab database.');
+connectDb().then(() =>
 	app.listen(process.env.PORT, () =>
 		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
-	);
-});
+	)
+);

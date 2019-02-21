@@ -10,7 +10,7 @@ export default gql`
 		name: String!
 		nativeName: String!
 		region: String!
-		population: Int!
-		area: Int!
+		population: Int
+		area: Float
 	}
 `;

@@ -10,7 +10,8 @@ import Message from './message';
 const connectDb = () =>
 	connect(
 		process.env.DATABASE_URL,
-		{ useNewUrlParser: true, useCreateIndex: true }
+		{ useNewUrlParser: true, useCreateIndex: true },
+		() => console.log('Conntected to database.')
 	);
 
 // Stitch together all models.
