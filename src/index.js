@@ -36,18 +36,9 @@ server.applyMiddleware({ app, path: '/graphql' });
 app.get('/', (req, res) => res.send('Hello World'));
 
 // After connection with database is established,
-// express application will start. Defined a variable
-// that enables erasing database on restart.
-const eraseDatabaseOnSync = false;
-
+// express application will start.
 connectDb().then(async () => {
 	console.log('Conntected to mLab database.');
-	if (eraseDatabaseOnSync) {
-		await Promise.all([
-			models.User.deleteMany({}),
-			models.Message.deleteMany({})
-		]);
-	}
 	app.listen(process.env.PORT, () =>
 		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
 	);
