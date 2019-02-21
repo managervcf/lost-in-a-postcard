@@ -8,7 +8,7 @@ import { ApolloServer } from 'apollo-server-express';
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { connectDb } from './models';
-import API from './api';
+import services from './services';
 
 // Create express server.
 const app = express();
@@ -25,7 +25,7 @@ const server = new ApolloServer({
 	resolvers,
 	context: {
 		models,
-		API,
+		services,
 		loggedUser: { id: '5c6e4997da87de08983e05ca' }
 	}
 });
