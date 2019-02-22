@@ -2,27 +2,31 @@
 import { Schema, model } from 'mongoose';
 
 // Define schema.
-const photoSchema = new Schema({
-	url: {
-		type: String,
-		trim: true,
-		required: true
+const photoSchema = new Schema(
+	{
+		url: {
+			type: String,
+			trim: true,
+			required: true
+		},
+		country: {
+			type: String,
+			trim: true,
+			required: true
+		},
+		caption: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		author: {
+			type: Schema.Types.ObjectId,
+			ref: 'User'
+		}
 	},
-	country: {
-		type: String,
-		trim: true,
-		required: true
-	},
-	caption: {
-		type: String,
-		default: '',
-		trim: true
-	},
-	author: {
-		type: Schema.Types.ObjectId,
-		ref: 'User'
-	}
-});
+	// Enable auto timestamps.
+	{ timestamps: true }
+);
 
 // BUSINESS LOGIC.
 

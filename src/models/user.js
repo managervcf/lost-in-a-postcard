@@ -2,27 +2,38 @@
 import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+// Import helpers.
+import emailRegex from '../helpers/emailRegex';
+
 // Define schema
-const userSchema = new Schema({
-	username: {
-		type: String,
-		unique: true,
-		trim: true,
-		required: true
+const userSchema = new Schema(
+	{
+		username: {
+			type: String,
+			unique: true,
+			trim: true,
+			minlength: 2,
+			maxlength: 30,
+			required: true
+		},
+		email: {
+			type: String,
+			unique: true,
+			trim: true,
+			lowercase: true,
+			required: true,
+			match: emailRegex
+		},
+		photos: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Photo'
+			}
+		]
 	},
-	email: {
-		type: String,
-		unique: true,
-		trim: true,
-		required: true
-	},
-	photos: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Photo'
-		}
-	]
-});
+	// Enable auto timestamps.
+	{ timestamps: true }
+);
 
 // Inser schema plugins.
 userSchema.plugin(uniqueValidator);
