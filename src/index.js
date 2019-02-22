@@ -41,11 +41,9 @@ const eraseDatabaseOnSync = false;
 
 connectDb().then(async () => {
 	if (eraseDatabaseOnSync) {
-    await Promise.all([
-      models.User.deleteMany({}),
-      models.Photo.deleteMany({}),
-    ]);
-  }
+		await models.User.deleteMany({});
+		await models.Photo.deleteMany({});
+	}
 	app.listen(process.env.PORT, () =>
 		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
 	);

@@ -27,37 +27,47 @@ const photoSchema = new Schema({
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function(id, args) {
 	// Create new photo.
-	const Photo = model('Photo');
-	const newPhoto = new Photo({ ...args, author: id });
+	let Photo = model('Photo');
+	let newPhoto = new Photo({ ...args, author: id });
 	// Save photo to database.
-	const createdPhoto = await newPhoto.save();
+	let createdPhoto = await newPhoto.save();
 	if (!createdPhoto) throw new Error('Could not create new photo.');
 	// Find user and update it's photos.
-	const user = await model('User').findById(id);
+	let user = await model('User').findById(id);
 	if (!user) throw new Error('User is not logged in or does not exist');
 	user.photos = [...user.photos, createdPhoto.id];
-	const savedUser = await user.save();
+	let savedUser = await user.save();
 	if (!savedUser) throw new Error('Cannot add new photo to user.');
 	// Return newly created photo.
+	console.log(
+		`(ACTION) Added photo from ${createdPhoto.country} (${
+			createdPhoto.id
+		}) by ${savedUser.username} (${savedUser.id})`
+	);
 	return createdPhoto;
 };
 
 // Delete a photo and update user.
 photoSchema.statics.deletePhoto = async function(id) {
 	// Delete photo and populate author field to access his id.
-	const deletedPhoto = await this.findByIdAndDelete(id).populate('author');
+	let deletedPhoto = await this.findByIdAndDelete(id).populate('author');
 	if (!deletedPhoto)
 		throw new Error('Cannot delete photo. Photo does not exist.');
 	// Get user by id to modify photos array.
-	const user = await model('User').findById(deletedPhoto.author.id);
+	let user = await model('User').findById(deletedPhoto.author.id);
 	if (!user) throw new Error('User does not exist.');
 	// Update user with updated photos array.
-	const updatedUser = await model('User').findByIdAndUpdate(
+	let updatedUser = await model('User').findByIdAndUpdate(
 		deletedPhoto.author.id,
 		{ photos: user.photos.filter(photoId => photoId != id) }
 	);
 	if (!updatedUser) throw new Error('Cannot update user. User does not exist.');
 	// Return deleted photo.
+	console.log(
+		`(ACTION) Deleted photo from ${deletedPhoto.country} (${
+			deletedPhoto.id
+		}) by ${updatedUser.username} (${updatedUser.id})`
+	);
 	return deletedPhoto;
 };
 
