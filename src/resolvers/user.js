@@ -19,6 +19,8 @@ export default {
 
 	User: {
 		photos: async ({ id }, args, { models }) =>
-			await models.Photo.find({ author: id })
+			await models.Photo.find({ author: id }),
+		createdAt: ({ createdAt }) => createdAt.toString(),
+		updatedAt: ({ updatedAt }) => updatedAt.toString()
 	}
 };

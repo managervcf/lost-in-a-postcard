@@ -19,5 +19,7 @@ export default gql`
 		country: String!
 		caption: String
 		author: User!
+    createdAt: String!
+    updatedAt: String!
 	}
 `;

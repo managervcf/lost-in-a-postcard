@@ -19,5 +19,7 @@ export default gql`
     username: String!
     email: String
     photos: [Photo!]!
+    createdAt: String!
+    updatedAt: String!
   }
 `;
