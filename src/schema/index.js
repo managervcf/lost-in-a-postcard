@@ -2,7 +2,7 @@
 import { gql } from 'apollo-server-express';
 
 import userSchema from './user';
-import messageSchema from './message';
+import photoSchema from './photo';
 import countrySchema from './country';
 
 const linkSchema = gql`
@@ -22,6 +22,6 @@ const linkSchema = gql`
 export default [
 	linkSchema,
 	userSchema,
-	messageSchema,
+	photoSchema,
 	countrySchema
 ];

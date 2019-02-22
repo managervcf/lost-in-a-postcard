@@ -4,11 +4,13 @@ export default gql`
   extend type Query {
     users: [User!]
     user(id: ID!): User
-    me: User
+    loggedUser: User
+    userByUsername(username: String!): User
   }
 
   extend type Mutation {
-    createUser(username: String!): User!
+    createUser(username: String!, email: String): User!
+    updateUser(id: ID!, username: String, email: String): User!
     deleteUser(id: ID!): User
   }
 
@@ -16,6 +18,6 @@ export default gql`
     id: ID!
     username: String!
     email: String
-    messages: [Message!]!
+    photos: [Photo!]!
   }
 `;

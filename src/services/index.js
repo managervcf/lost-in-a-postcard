@@ -1,5 +1,5 @@
 // Import all APIs.
-import getAllCountries from './countryAPI';
+import country from './country';
 
 // Export default bundled APIs.
-export default { getAllCountries };
+export default { country };

@@ -23,11 +23,11 @@ app.use(cors());
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	context: {
+	context: async () => ({
 		models,
 		services,
-		loggedUser: { id: '5c6e4997da87de08983e05ca' }
-	}
+		loggedUser: await models.User.findByLogin('managervcf')
+	})
 });
 
 server.applyMiddleware({ app, path: '/graphql' });

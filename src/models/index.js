@@ -3,10 +3,10 @@ import { connect } from 'mongoose';
 
 // Import models
 import User from './user';
-import Message from './message';
+import Photo from './photo';
 
 // Define functions that connects to database.
-// Pass 2 options to avoid deprecation warnings.
+// Pass options to avoid deprecation warnings.
 const connectDb = () =>
 	connect(
 		process.env.DATABASE_URL,
@@ -15,7 +15,7 @@ const connectDb = () =>
 	);
 
 // Stitch together all models.
-const models = { User, Message };
+const models = { User, Photo };
 
 // Export connectDb and unified models interface.
 export { connectDb };
