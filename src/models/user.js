@@ -47,18 +47,27 @@ userSchema.statics.addUser = async function(newUser) {
 	let User = model('User');
 	let user = new User(newUser);
 	// Check if username exists.
-	let { username } = newUser;
-	let isUsernameAvailable = await this.findOne({ username });
-	if (isUsernameAvailable)
-		throw new Error('Username already exists. Use different username.');
+	let { username, email } = newUser;
+	let isUsernameTaken = await this.findOne({ username });
+	if (isUsernameTaken)
+		throw new Error(
+			`Username ${username} already exists. Use different username.`
+		);
+	let isEmailTaken = await this.findOne({ email });
+	if (isEmailTaken)
+		throw new Error(
+			`User with email ${email} already exists. Use different email.`
+		);
 	// Save new user to the database.
-	let { createdUser } = await user.save();
-	if (!createdUser) throw new Error('Cannot create new user');
+	let createdUser = await user.save();
+	if (!createdUser) throw new Error('Cannot create new user.');
 	// Return new user.
 	console.log(
-		`(ACTION) Added user ${createdUser.username} (${createdUser.id})`
+		`(ACTION) Added user ${createdUser.username} (${
+			createdUser.id
+		}) with email ${createdUser.email}.`
 	);
-	return user;
+	return createdUser;
 };
 
 // Delete a user and cascade delete associated with it photos.
@@ -71,9 +80,9 @@ userSchema.statics.deleteUser = async function(id) {
 	if (!deletedPhotos) throw new Error(`Cannot delete photos of user ${id}`);
 	// Return deleted user.
 	console.log(
-		`(ACTION) Deleted user ${deletedUser.username} (${
-			deletedUser.id
-		}) and corresponding photos (${deletedPhotos.deletedCount})`
+		`(ACTION) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${
+			deletedPhotos.deletedCount
+		} corresponding photos.`
 	);
 	return deletedUser;
 };
