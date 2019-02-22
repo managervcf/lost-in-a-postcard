@@ -24,6 +24,8 @@ const photoSchema = new Schema({
 	}
 });
 
+// BUSINESS LOGIC.
+
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function(id, args) {
 	// Create new photo.

@@ -1,5 +1,6 @@
-// Import helper functions from mongoose.
+// Import helper functions from mongoose and unique validator.
 import { Schema, model } from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
 // Define schema
 const userSchema = new Schema({
@@ -9,7 +10,12 @@ const userSchema = new Schema({
 		trim: true,
 		required: true
 	},
-	email: String,
+	email: {
+		type: String,
+		unique: true,
+		trim: true,
+		required: true
+	},
 	photos: [
 		{
 			type: Schema.Types.ObjectId,
@@ -17,6 +23,11 @@ const userSchema = new Schema({
 		}
 	]
 });
+
+// Inser schema plugins.
+userSchema.plugin(uniqueValidator);
+
+// BUSINESS LOGIC.
 
 // Enable finding user by both email and username.
 userSchema.statics.findByLogin = async function(login) {
