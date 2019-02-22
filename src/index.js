@@ -37,8 +37,16 @@ app.get('/', (req, res) => res.send('Hello World'));
 
 // After connection with database is established,
 // express application will start.
-connectDb().then(() =>
+const eraseDatabaseOnSync = false;
+
+connectDb().then(async () => {
+	if (eraseDatabaseOnSync) {
+    await Promise.all([
+      models.User.deleteMany({}),
+      models.Photo.deleteMany({}),
+    ]);
+  }
 	app.listen(process.env.PORT, () =>
 		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
-	)
-);
+	);
+});
