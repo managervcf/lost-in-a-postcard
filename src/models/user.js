@@ -12,9 +12,9 @@ const userSchema = new Schema(
 			type: String,
 			unique: true,
 			trim: true,
+			required: [true, 'You must provide username.'],
 			minlength: [2, 'Username must be at least 2 characters.'],
-			maxlength: [20, 'Username must be no more than 20 characters.'],
-			required: [true, 'You must provide username.']
+			maxlength: [20, 'Username must be no more than 20 characters.']
 		},
 		email: {
 			type: String,
@@ -23,6 +23,12 @@ const userSchema = new Schema(
 			lowercase: true,
 			required: true,
 			match: [emailRegex, 'Incorrect email format.']
+		},
+		password: {
+			type: String,
+			required: [true, 'You must provide password.'],
+			minlength: [7, 'Password must be at least 7 characters.'],
+			maxlength: [42, 'Password must be no more than 42 characters.']
 		},
 		photos: [
 			{
@@ -38,6 +44,9 @@ const userSchema = new Schema(
 // Inser schema plugins.
 userSchema.plugin(uniqueValidator);
 
+// Create model out of schema.
+const User = model('User', userSchema);
+
 // BUSINESS LOGIC.
 
 // Enable finding user by both email and username.
@@ -52,25 +61,12 @@ userSchema.statics.findByLogin = async function(login) {
 	return user;
 };
 
+// Temporary
+const createToken = async user => 'token!';
+
 // Create new user.
-userSchema.statics.addUser = async function(newUser) {
-	// Create a user model and new document.
-	let User = model('User');
-	let user = new User(newUser);
-	// Check if username exists.
-	let { username, email } = newUser;
-	let isUsernameTaken = await this.findOne({ username });
-	if (isUsernameTaken)
-		throw new Error(
-			`Username ${username} already exists. Use different username.`
-		);
-	let isEmailTaken = await this.findOne({ email });
-	if (isEmailTaken)
-		throw new Error(
-			`User with email ${email} already exists. Use different email.`
-		);
-	// Save new user to the database.
-	let createdUser = await user.save();
+userSchema.statics.signUp = async function(newUser) {
+	let createdUser = await User.create(newUser);
 	if (!createdUser) throw new Error('Cannot create new user.');
 	// Return new user.
 	console.log(
@@ -78,7 +74,7 @@ userSchema.statics.addUser = async function(newUser) {
 			createdUser.id
 		}) with email ${createdUser.email}.`
 	);
-	return createdUser;
+	return { token: createToken(createdUser) };
 };
 
 // Delete a user and cascade delete associated with it photos.
@@ -87,7 +83,7 @@ userSchema.statics.deleteUser = async function(id) {
 	let deletedUser = await this.findByIdAndDelete(id);
 	if (!deletedUser) throw new Error('Cannot delete user. User does not exist.');
 	// Find and delete user's photos.
-	let deletedPhotos = await model('Photo').deleteMany({ author: id });
+	let deletedPhotos = await model;('Photo').deleteMany({ author: id });
 	if (!deletedPhotos) throw new Error(`Cannot delete photos of user ${id}`);
 	// Return deleted user.
 	console.log(
@@ -98,7 +94,5 @@ userSchema.statics.deleteUser = async function(id) {
 	return deletedUser;
 };
 
-// Create model out of schema.
-const User = model('User', userSchema);
-
+// Export default model.
 export default User;

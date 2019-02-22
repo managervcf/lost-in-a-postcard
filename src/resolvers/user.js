@@ -9,8 +9,7 @@ export default {
 	},
 
 	Mutation: {
-		createUser: async (parent, args, { models }) =>
-			await models.User.addUser(args),
+		signUp: async (parent, args, { models }) => await models.User.signUp(args),
 		updateUser: async (parent, args, { models }) =>
 			await models.User.findByIdAndUpdate(args.id, args, { new: true }),
 		deleteUser: async (parent, { id }, { models }) =>

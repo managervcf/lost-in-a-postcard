@@ -27,15 +27,15 @@ const photoSchema = new Schema(
 	{ timestamps: true }
 );
 
+// Create model out of schema.
+const Photo = model('Photo', photoSchema);
+
 // BUSINESS LOGIC.
 
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function(id, args) {
-	// Create new photo.
-	let Photo = model('Photo');
-	let newPhoto = new Photo({ ...args, author: id });
 	// Save photo to database.
-	let createdPhoto = await newPhoto.save();
+	let createdPhoto = await Photo.create({ ...args, author: id });
 	if (!createdPhoto) throw new Error('Could not create new photo.');
 	// Find user and update it's photos.
 	let user = await model('User').findById(id);
@@ -76,7 +76,5 @@ photoSchema.statics.deletePhoto = async function(id) {
 	return deletedPhoto;
 };
 
-// Create model out of schema.
-const Photo = model('Photo', photoSchema);
-
+// Export model.
 export default Photo;
