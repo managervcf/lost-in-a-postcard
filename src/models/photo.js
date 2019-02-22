@@ -7,16 +7,15 @@ const photoSchema = new Schema(
 		url: {
 			type: String,
 			trim: true,
-			required: true
+			required: [true, 'Photo url is required.']
 		},
 		country: {
 			type: String,
 			trim: true,
-			required: true
+			required: [true, 'Where the photo was taken?']
 		},
 		caption: {
 			type: String,
-			default: '',
 			trim: true
 		},
 		author: {

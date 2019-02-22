@@ -12,9 +12,9 @@ const userSchema = new Schema(
 			type: String,
 			unique: true,
 			trim: true,
-			minlength: 2,
-			maxlength: 30,
-			required: true
+			minlength: [2, 'Username must be at least 2 characters.'],
+			maxlength: [20, 'Username must be no more than 20 characters.'],
+			required: [true, 'You must provide username.']
 		},
 		email: {
 			type: String,
@@ -22,7 +22,7 @@ const userSchema = new Schema(
 			trim: true,
 			lowercase: true,
 			required: true,
-			match: emailRegex
+			match: [emailRegex, 'Incorrect email format.']
 		},
 		photos: [
 			{
