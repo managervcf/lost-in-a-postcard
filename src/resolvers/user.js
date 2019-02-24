@@ -1,3 +1,6 @@
+// Import resolver guards from middleware.
+import { authenticate } from '../middleware';
+
 // Create and immediately export default resolvers.
 export default {
 	Query: {
@@ -5,7 +8,8 @@ export default {
 		user: async (parent, { id }, { models }) => await models.User.findById(id),
 		userByUsername: async (parent, { username }, { models }) =>
 			await models.User.findOne({ username }),
-		loggedUser: (parent, args, { loggedUser }) => loggedUser
+		// Wrap resolver with authenticate middleware to check if user is logged in.	
+		currentUser: authenticate((parent, args, { currentUser }) => currentUser)
 	},
 
 	Mutation: {

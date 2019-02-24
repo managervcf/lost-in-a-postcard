@@ -2,8 +2,8 @@
 import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-// Import helpers.
-import emailRegex from '../helpers/emailRegex';
+// Import email regex helper and error handler from middleware.
+import { emailRegex, throwError } from '../middleware';
 
 // Define schema
 const userSchema = new Schema(
@@ -22,7 +22,7 @@ const userSchema = new Schema(
 			trim: true,
 			lowercase: true,
 			required: true,
-			match: [emailRegex, 'Incorrect email format.']
+			match: [emailRegex, 'Incorrect email address.']
 		},
 		password: {
 			type: String,
@@ -44,9 +44,6 @@ const userSchema = new Schema(
 // Inser schema plugins.
 userSchema.plugin(uniqueValidator);
 
-// Create model out of schema.
-const User = model('User', userSchema);
-
 // BUSINESS LOGIC.
 
 // Enable finding user by both email and username.
@@ -61,13 +58,13 @@ userSchema.statics.findByLogin = async function(login) {
 	return user;
 };
 
-// Temporary
+// Temporary token function
 const createToken = async user => 'token!';
 
 // Create new user.
 userSchema.statics.signUp = async function(newUser) {
 	let createdUser = await User.create(newUser);
-	if (!createdUser) throw new Error('Cannot create new user.');
+	throwError(!createdUser, 'Cannot create new user.');
 	// Return new user.
 	console.log(
 		`(ACTION) Added user ${createdUser.username} (${
@@ -81,10 +78,10 @@ userSchema.statics.signUp = async function(newUser) {
 userSchema.statics.deleteUser = async function(id) {
 	// Find and delete user.
 	let deletedUser = await this.findByIdAndDelete(id);
-	if (!deletedUser) throw new Error('Cannot delete user. User does not exist.');
+	throwError(!deletedUser, 'Cannot delete user. User does not exist.');
 	// Find and delete user's photos.
-	let deletedPhotos = await model;('Photo').deleteMany({ author: id });
-	if (!deletedPhotos) throw new Error(`Cannot delete photos of user ${id}`);
+	let deletedPhotos = await model('Photo').deleteMany({ author: id });
+	throwError(!deletedPhotos, `Cannot delete photos of user ${id}`);
 	// Return deleted user.
 	console.log(
 		`(ACTION) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${
@@ -93,6 +90,9 @@ userSchema.statics.deleteUser = async function(id) {
 	);
 	return deletedUser;
 };
+
+// Create model out of schema.
+const User = model('User', userSchema);
 
 // Export default model.
 export default User;

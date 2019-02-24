@@ -19,24 +19,37 @@ app.use(cors());
 
 // Create apollo server and connect it with express.
 // Specify path for graphql operations. Provide context
-// with models and API.
+// with models, API and current user.
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	context: async () => ({
-		models,
-		services,
-		loggedUser: await models.User.findByLogin('managervcf')
-	})
+	// Context is built once per request. Use context for authentication.
+	// Also pass data that should be available for all resolvers.
+	context: async ({ req }) => {
+		// Perform authentication.
+		console.log(req);
+		// Return context.
+		return {
+			models,
+			services,
+			currentUser: await models.User.findByLogin('managervcf')
+		};
+	}
 });
 
+// Apply express middleware to Apollo Server.
 server.applyMiddleware({ app, path: '/graphql' });
 
-// Routes
-app.get('/', (req, res) => res.send('Hello World'));
+// Routes.
+app.get('/', (req, res) => {
+	console.log(req);
+	res.send('Hello World');
+});
 
 // After connection with database is established,
-// express application will start.
+// express application will start. 
+// Change eraseDatabaseOnSync to true to erase
+// database when app starts. 
 const eraseDatabaseOnSync = false;
 
 connectDb().then(async () => {

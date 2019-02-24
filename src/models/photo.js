@@ -1,6 +1,9 @@
 // Import helper functions from mongoose.
 import { Schema, model } from 'mongoose';
 
+// Import error handler from middleware.
+import { throwError } from '../middleware';
+
 // Define schema.
 const photoSchema = new Schema(
 	{
@@ -27,22 +30,19 @@ const photoSchema = new Schema(
 	{ timestamps: true }
 );
 
-// Create model out of schema.
-const Photo = model('Photo', photoSchema);
-
 // BUSINESS LOGIC.
 
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function(id, args) {
 	// Save photo to database.
 	let createdPhoto = await Photo.create({ ...args, author: id });
-	if (!createdPhoto) throw new Error('Could not create new photo.');
+	throwError(!createdPhoto, 'Could not create new photo.');
 	// Find user and update it's photos.
 	let user = await model('User').findById(id);
-	if (!user) throw new Error('User is not logged in or does not exist');
+	throwError(!user, 'User is not logged in or does not exist');
 	user.photos = [...user.photos, createdPhoto.id];
 	let savedUser = await user.save();
-	if (!savedUser) throw new Error('Cannot add new photo to user.');
+	throwError(!savedUser, 'Cannot add new photo to user.');
 	// Return newly created photo.
 	console.log(
 		`(ACTION) Added photo from ${createdPhoto.country} (${
@@ -56,17 +56,16 @@ photoSchema.statics.addPhoto = async function(id, args) {
 photoSchema.statics.deletePhoto = async function(id) {
 	// Delete photo and populate author field to access his id.
 	let deletedPhoto = await this.findByIdAndDelete(id).populate('author');
-	if (!deletedPhoto)
-		throw new Error('Cannot delete photo. Photo does not exist.');
+	throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
 	// Get user by id to modify photos array.
 	let user = await model('User').findById(deletedPhoto.author.id);
-	if (!user) throw new Error('User does not exist.');
+	throwError(!user, 'User does not exist.');
 	// Update user with updated photos array.
 	let updatedUser = await model('User').findByIdAndUpdate(
 		deletedPhoto.author.id,
 		{ photos: user.photos.filter(photoId => photoId != id) }
 	);
-	if (!updatedUser) throw new Error('Cannot update user. User does not exist.');
+	throwError(!updatedUser, 'Cannot update user. User does not exist.');
 	// Return deleted photo.
 	console.log(
 		`(ACTION) Deleted photo from ${deletedPhoto.country} (${
@@ -76,5 +75,8 @@ photoSchema.statics.deletePhoto = async function(id) {
 	return deletedPhoto;
 };
 
-// Export model.
+// Create model out of schema.
+const Photo = model('Photo', photoSchema);
+
+// Export deafult model.
 export default Photo;
