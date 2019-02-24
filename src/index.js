@@ -8,7 +8,7 @@ import { ApolloServer } from 'apollo-server-express';
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { connectDb } from './models';
-import services from './services';
+import api from './api';
 
 // Create express server.
 const app = express();
@@ -27,11 +27,11 @@ const server = new ApolloServer({
 	// Also pass data that should be available for all resolvers.
 	context: async ({ req }) => {
 		// Perform authentication.
-		console.log(req);
+		// console.log(req);
 		// Return context.
 		return {
 			models,
-			services,
+			api,
 			currentUser: await models.User.findByLogin('managervcf')
 		};
 	}
@@ -42,7 +42,7 @@ server.applyMiddleware({ app, path: '/graphql' });
 
 // Routes.
 app.get('/', (req, res) => {
-	console.log(req);
+	// console.log(req);
 	res.send('Hello World');
 });
 
