@@ -2,7 +2,7 @@
 import { Schema, model } from 'mongoose';
 
 // Import error handler from middleware.
-import { throwError } from '../middleware';
+import { throwError } from '../helpers';
 
 // Define schema.
 const photoSchema = new Schema(
@@ -45,7 +45,7 @@ photoSchema.statics.addPhoto = async function(id, args) {
 	throwError(!savedUser, 'Cannot add new photo to user.');
 	// Return newly created photo.
 	console.log(
-		`(ACTION) Added photo from ${createdPhoto.country} (${
+		`(GraphQL) Added photo from ${createdPhoto.country} (${
 			createdPhoto.id
 		}) by ${savedUser.username} (${savedUser.id})`
 	);
@@ -68,7 +68,7 @@ photoSchema.statics.deletePhoto = async function(id) {
 	throwError(!updatedUser, 'Cannot update user. User does not exist.');
 	// Return deleted photo.
 	console.log(
-		`(ACTION) Deleted photo from ${deletedPhoto.country} (${
+		`(GraphQL) Deleted photo from ${deletedPhoto.country} (${
 			deletedPhoto.id
 		}) by ${updatedUser.username} (${updatedUser.id})`
 	);

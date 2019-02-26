@@ -3,15 +3,30 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+// Import authentication libraries.
+import jwt from 'jsonwebtoken';
+import expressJwt from 'express-jwt';
 
 // Import schema, resolvers, models, APIs and helpers.
-import schema from './schema';
+import typeDefs from './schema';
 import resolvers from './resolvers';
 import models, { connectDb } from './models';
 import api from './api';
 
+// Import middleware helpers.
+import { getMe } from './helpers';
+
 // Create express server.
 const app = express();
+
+// Configure authentication middleware.
+const auth = expressJwt({
+	secret: process.env.JWT_SECRET,
+	credentialsRequired: false
+});
+
+// User auth middleware.
+app.use(auth);
 
 // Use application-level middleware.
 //// Enables Cross Origin Resource Sharing.
@@ -19,20 +34,21 @@ app.use(cors());
 
 // Create apollo server and connect it with express.
 // Specify path for graphql operations. Provide context
-// with models, API and current user.
+// with models, API and current user (me).
 const server = new ApolloServer({
-	typeDefs: schema,
+	typeDefs,
 	resolvers,
 	// Context is built once per request. Use context for authentication.
 	// Also pass data that should be available for all resolvers.
 	context: async ({ req }) => {
 		// Perform authentication.
-		// console.log(req);
+		// const me = await getMe(req);
+		// console.log(me);
 		// Return context.
 		return {
 			models,
 			api,
-			currentUser: await models.User.findByLogin('managervcf')
+			me: await models.User.findByLogin('domi')
 		};
 	}
 });
@@ -40,16 +56,10 @@ const server = new ApolloServer({
 // Apply express middleware to Apollo Server.
 server.applyMiddleware({ app, path: '/graphql' });
 
-// Routes.
-app.get('/', (req, res) => {
-	// console.log(req);
-	res.send('Hello World');
-});
-
 // After connection with database is established,
-// express application will start. 
+// express application will start.
 // Change eraseDatabaseOnSync to true to erase
-// database when app starts. 
+// database when app starts.
 const eraseDatabaseOnSync = false;
 
 connectDb().then(async () => {

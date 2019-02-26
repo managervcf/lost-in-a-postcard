@@ -6,15 +6,15 @@ export default gql`
   extend type Query {
     users: [User!]
     user(id: ID!): User
-    currentUser: User
+    me: User
     userByUsername(username: String!): User
   }
 
   extend type Mutation {
-    signup(username: String!, email: String!, password: String!): User!
-    login(login: String!, password: String!): User!
-    updateUser(id: ID!, username: String, email: String): User!
-    deleteUser(id: ID!): User
+    signUp(username: String!, email: String!, password: String!): Token!
+    logIn(login: String!, password: String!): Token!
+    updateUser(username: String, email: String): User
+    deleteUser: User!
   }
 
   type Token {

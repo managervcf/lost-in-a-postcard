@@ -3,10 +3,13 @@ import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import bcrypt from 'bcryptjs';
 
-// Import email regex helper and error handler from middleware.
-import { emailRegex, throwError } from '../middleware';
+// Import jsonwebtoken for authentication.
+import jwt from 'jsonwebtoken';
 
-// Define schema
+// Import email regex helper and error handler from middleware.
+import { emailRegex, throwError } from '../helpers';
+
+// Define schema.
 const userSchema = new Schema(
 	{
 		username: {
@@ -58,22 +61,28 @@ userSchema.statics.findByLogin = async function(login) {
 	return user;
 };
 
+// Function that creates a token valid for 15 minutes.
+const createToken = async ({ id, email, username }) =>
+	await jwt.sign({ id, email, username }, process.env.JWT_SECRET, {
+		expiresIn: '15m'
+	});
+
 // Create new user.
-userSchema.statics.signup = async function(newUser) {
+userSchema.statics.signUp = async function(newUser) {
 	let createdUser = new User(newUser);
 	let savedUser = await createdUser.save();
 	throwError(!savedUser, 'Cannot create new user.');
 	// Return new user.
 	console.log(
-		`(ACTION) Added user ${createdUser.username} (${
+		`(GraphQL) Added user ${createdUser.username} (${
 			createdUser.id
 		}) with email ${createdUser.email}.`
 	);
-	return createdUser;
+	return { token: createToken(savedUser) };
 };
 
 // Login user.
-userSchema.statics.login = async function(login, password) {
+userSchema.statics.logIn = async function(login, password) {
 	// Try to find by username.
 	let user = await this.findOne({ username: login });
 	// If not found, try finding by email.
@@ -81,44 +90,43 @@ userSchema.statics.login = async function(login, password) {
 		user = await this.findOne({ email: login });
 	}
 	throwError(!user, `User ${login} does not exist.`);
-	throwError(
-		!bcrypt.compareSync(password, user.password),
-		`The password is invalid.`
-	);
+	let valid = bcrypt.compareSync(password, user.password);
+	throwError(!valid, `The password is invalid.`);
 	console.log(
-		`(ACTION) Logged in user ${
+		`(GraphQL) Logged in user ${
 			user.username
 		}. The username and password combination is correct.`
 	);
-	return user;
+	return { token: createToken(user) };
 };
 
 // Delete a user and cascade delete associated with it photos.
 userSchema.statics.deleteUser = async function(id) {
 	// Find and delete user.
-	let deletedUser = await this.findByIdAndDelete(id);
+	let deletedUser = await this.findByIdAndRemove(id);
 	throwError(!deletedUser, 'Cannot delete user. User does not exist.');
 	// Find and delete user's photos.
 	let deletedPhotos = await model('Photo').deleteMany({ author: id });
 	throwError(!deletedPhotos, `Cannot delete photos of user ${id}`);
 	// Return deleted user.
 	console.log(
-		`(ACTION) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${
-			deletedPhotos.deletedCount
+		`(GraphQL) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${
+			deletedPhotos.n
 		} corresponding photos.`
 	);
 	return deletedUser;
 };
 
 // IMPORTANT PASSWORD SECURITY STEP.
-// Define a pre event for the save.When the save function is called,
+// Define a pre event for the save. When the save function is called,
 // we will first check to see if the user is being created or changed.
-// If the user is not being created or changed, we will skip over the hashing part.
-// We don’t want to hash our already hashed data.
+// If the user is not being created or changed, we will
+// skip over the hashing part. We don’t want to hash our already hashed data.
 userSchema.pre('save', function(next) {
 	if (!this.isModified('password')) {
 		return next();
 	}
+	// Synchronously generates a hash for the given string.
 	this.password = bcrypt.hashSync(this.password, 10);
 	next();
 });

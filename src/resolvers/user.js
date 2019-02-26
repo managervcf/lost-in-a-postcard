@@ -1,5 +1,5 @@
-// Import resolver guards from middleware.
-import { authenticate } from '../middleware';
+// Import resolver guards.
+import { authenticated } from '../helpers';
 
 // Create and immediately export default resolvers.
 export default {
@@ -9,17 +9,21 @@ export default {
 		userByUsername: async (parent, { username }, { models }) =>
 			await models.User.findOne({ username }),
 		// Wrap resolver with authenticate middleware to check if user is logged in.
-		currentUser: authenticate((parent, args, { currentUser }) => currentUser)
+		me: authenticated((parent, args, { me }) => me)
 	},
 
 	Mutation: {
-		signup: async (parent, args, { models }) => await models.User.signup(args),
-		login: async (parent, { login, password }, { models }) =>
-			await models.User.login(login, password),
-		updateUser: async (parent, args, { models }) =>
-			await models.User.findByIdAndUpdate(args.id, args, { new: true }),
-		deleteUser: async (parent, { id }, { models }) =>
-			await models.User.deleteUser(id)
+		signUp: async (parent, args, { models }) => await models.User.signUp(args),
+		logIn: async (parent, { login, password }, { models }) =>
+			await models.User.logIn(login, password),
+		updateUser: authenticated(
+			async (parent, args, { models, me }) =>
+				await models.User.findByIdAndUpdate(me.id, args, { new: true })
+		),
+		deleteUser: authenticated(
+			async (parent, args, { models, me }) =>
+				await models.User.deleteUser(me.id)
+		)
 	},
 
 	User: {
