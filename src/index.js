@@ -3,9 +3,9 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+
 // Import authentication libraries.
 import jwt from 'jsonwebtoken';
-import expressJwt from 'express-jwt';
 
 // Import schema, resolvers, models, APIs and helpers.
 import typeDefs from './schema';
@@ -19,17 +19,8 @@ import { getMe } from './helpers';
 // Create express server.
 const app = express();
 
-// Configure authentication middleware.
-const auth = expressJwt({
-	secret: process.env.JWT_SECRET,
-	credentialsRequired: false
-});
-
-// User auth middleware.
-app.use(auth);
-
 // Use application-level middleware.
-//// Enables Cross Origin Resource Sharing.
+// Enables Cross Origin Resource Sharing.
 app.use(cors());
 
 // Create apollo server and connect it with express.
@@ -42,13 +33,15 @@ const server = new ApolloServer({
 	// Also pass data that should be available for all resolvers.
 	context: async ({ req }) => {
 		// Perform authentication.
-		// const me = await getMe(req);
-		// console.log(me);
+		const me = await getMe(req);
+		console.log(req.headers);
+		console.log('==============');
+		console.log(me);
 		// Return context.
 		return {
 			models,
 			api,
-			me: await models.User.findByLogin('domi')
+			me
 		};
 	}
 });
@@ -58,16 +51,8 @@ server.applyMiddleware({ app, path: '/graphql' });
 
 // After connection with database is established,
 // express application will start.
-// Change eraseDatabaseOnSync to true to erase
-// database when app starts.
-const eraseDatabaseOnSync = false;
-
-connectDb().then(async () => {
-	if (eraseDatabaseOnSync) {
-		await models.User.deleteMany({});
-		await models.Photo.deleteMany({});
-	}
+connectDb().then(async () =>
 	app.listen(process.env.PORT, () =>
 		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
-	);
-});
+	)
+);
