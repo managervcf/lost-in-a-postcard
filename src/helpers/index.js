@@ -1,9 +1,9 @@
 // Import all middlewares.
-import authenticated from './authenticated';
-import photoOwner from './photoOwner';
+import isAuthenticated from './isAuthenticated';
+import isAuthorized from './isAuthorized';
 import emailRegex from './emailRegex';
 import throwError from './errorHandler';
 import getMe from './getMe';
 
 // Export middlewares.
-export { authenticated, photoOwner, emailRegex, throwError, getMe };
+export { isAuthenticated, isAuthorized, emailRegex, throwError, getMe };
