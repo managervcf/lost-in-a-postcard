@@ -33,6 +33,10 @@ const userSchema = new Schema(
 			required: [true, 'You must provide password.'],
 			minlength: [7, 'Password must be at least 7 characters.']
 		},
+		role: {
+			type: String,
+			default: 'user'
+		},
 		photos: [
 			{
 				type: Schema.Types.ObjectId,
@@ -62,9 +66,9 @@ userSchema.statics.findByLogin = async function(login) {
 };
 
 // Function that creates a token valid for 15 minutes.
-const createToken = async ({ id, email, username }) =>
-	await jwt.sign({ id, email, username }, process.env.JWT_SECRET, {
-		expiresIn: '15m'
+const createToken = async ({ id, email, username, role }) =>
+	await jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
+		expiresIn: '30m'
 	});
 
 // Create new user.
@@ -78,7 +82,7 @@ userSchema.statics.signUp = async function(newUser) {
 			createdUser.id
 		}) with email ${createdUser.email}.`
 	);
-	return { token: createToken(savedUser) };
+	return { token: await createToken(savedUser) };
 };
 
 // Login user.
@@ -97,7 +101,7 @@ userSchema.statics.logIn = async function(login, password) {
 			user.username
 		}. The username and password combination is correct.`
 	);
-	return { token: createToken(user) };
+	return { token: await createToken(user) };
 };
 
 // Delete a user and cascade delete associated with it photos.

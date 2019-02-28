@@ -1,5 +1,5 @@
 // Import resolver guards.
-import { authenticated, photoOwner } from '../helpers';
+import { isAuthenticated, isAuthorized } from '../helpers';
 
 // Create and immediately export default resolvers.
 export default {
@@ -12,15 +12,15 @@ export default {
 	},
 
 	Mutation: {
-		createPhoto: authenticated(
+		createPhoto: isAuthenticated(
 			async (parent, args, { models, me }) =>
 				await models.Photo.addPhoto(me.id, args)
 		),
-		updatePhoto: photoOwner(
+		updatePhoto: isAuthorized(
 			async (parent, args, { models }) =>
 				await models.Photo.findByIdAndUpdate(args.id, args, { new: true })
 		),
-		deletePhoto: photoOwner(
+		deletePhoto: isAuthorized(
 			async (parent, { id }, { models }) => await models.Photo.deletePhoto(id)
 		)
 	},

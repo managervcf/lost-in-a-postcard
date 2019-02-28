@@ -6,6 +6,7 @@ const countryUrl = 'https://restcountries.eu/rest/v2/all';
 
 // Define helper functions to perform API calls.
 const getAllCountries = async () => (await axios.get(countryUrl)).data;
+
 const getCountryByName = async name => {
 	const allCountries = await getAllCountries();
 	return allCountries.find(country => country.name === name);
