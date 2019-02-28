@@ -5,7 +5,7 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 
 // Import error handler from middleware.
-import { throwError } from '../helpers';
+import { throwError, trimAndCapitalize } from '../helpers';
 
 // Define schema.
 const photoSchema = new Schema(
@@ -52,11 +52,14 @@ photoSchema.statics.findPhotos = async function({
 		limit,
 		page
 	};
+	// Trim and capitalize requested country.
+	country = trimAndCapitalize(country);
+	console.log(country);
 	// Create query variable.
 	let query = country ? { country } : {};
 	// Make a query using mongoose-paginate library.
 	let res = await this.paginate(query, paginationOptions);
-	throwError(!res, 'Cannot get requested photos.')
+	throwError(!res, 'Cannot get requested photos.');
 	// Return requested photos.
 	console.log(
 		`(GraphQL) Retrieved ${res.docs.length} photos from page ${page}/${
@@ -66,7 +69,11 @@ photoSchema.statics.findPhotos = async function({
 	// Return page of photos.
 	return {
 		docs: res.docs,
-		pageInfo: { ...res }
+		pageInfo: {
+			...res,
+			// Checks if there is a next page.
+			hasNextPage: page >= res.pages ? false : true
+		}
 	};
 };
 

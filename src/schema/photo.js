@@ -24,6 +24,7 @@ export default gql`
 		limit: Int!
 		page: Int!
 		pages: Int!
+		hasNextPage: Boolean!
 	}
 
 	type Photo {
