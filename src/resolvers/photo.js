@@ -4,11 +4,9 @@ import { isAuthenticated, isAuthorized } from '../helpers';
 // Create and immediately export default resolvers.
 export default {
 	Query: {
-		photos: async (parent, args, { models }) => await models.Photo.find({}),
-		photo: async (parent, { id }, { models }) =>
-			await models.Photo.findById(id),
-		photoByCountry: async (parent, { country }, { models }) =>
-			await models.Photo.find({ country })
+		photos: async (parent, args, { models }) =>
+			await models.Photo.findPhotos(args),
+		photo: async (parent, { id }, { models }) => await models.Photo.findById(id)
 	},
 
 	Mutation: {

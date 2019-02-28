@@ -1,6 +1,9 @@
 // Import helper functions from mongoose.
 import { Schema, model } from 'mongoose';
 
+// Import pagination helper library.
+import mongoosePaginate from 'mongoose-paginate';
+
 // Import error handler from middleware.
 import { throwError } from '../helpers';
 
@@ -30,7 +33,42 @@ const photoSchema = new Schema(
 	{ timestamps: true }
 );
 
+// Insert plugins.
+photoSchema.plugin(mongoosePaginate);
+
 // BUSINESS LOGIC.
+
+// Find and paginate requested photos. Default max photos is 100.
+photoSchema.statics.findPhotos = async function({
+	country,
+	limit = 10,
+	page = 1
+}) {
+	// Create pagination options variable.
+	let paginationOptions = {
+		// Return in specified order.
+		sort: { createdAt: 'descending' },
+		// Passed user specified pagination criteria.
+		limit,
+		page
+	};
+	// Create query variable.
+	let query = country ? { country } : {};
+	// Make a query using mongoose-paginate library.
+	let res = await this.paginate(query, paginationOptions);
+	throwError(!res, 'Cannot get requested photos.')
+	// Return requested photos.
+	console.log(
+		`(GraphQL) Retrieved ${res.docs.length} photos from page ${page}/${
+			res.pages
+		}. Requested ${limit} out of ${res.total} photos meeting query criteria.`
+	);
+	// Return page of photos.
+	return {
+		docs: res.docs,
+		pageInfo: { ...res }
+	};
+};
 
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function(id, args) {

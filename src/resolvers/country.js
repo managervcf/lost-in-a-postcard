@@ -2,8 +2,8 @@
 export default {
 	Query: {
 		countries: async (parent, args, { api }) =>
-			await api.country.getAllCountries(),
-		country: async (parent, { name }, { api }) =>
-			await api.country.getCountryByName(name)
+			await api.country.getCountries(args),
+		country: async (parent, args, { api }) =>
+			await api.country.getCountryByName(args)
 	}
 };

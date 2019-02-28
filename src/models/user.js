@@ -86,7 +86,7 @@ userSchema.statics.signUp = async function(newUser) {
 };
 
 // Login user.
-userSchema.statics.logIn = async function(login, password) {
+userSchema.statics.logIn = async function({ login, password }) {
 	// Try to find by username.
 	let user = await this.findOne({ username: login });
 	// If not found, try finding by email.

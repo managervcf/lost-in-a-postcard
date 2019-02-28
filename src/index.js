@@ -34,9 +34,6 @@ const server = new ApolloServer({
 	context: async ({ req }) => {
 		// Perform authentication.
 		const me = await getMe(req);
-		console.log(req.headers);
-		console.log('==============');
-		console.log(me);
 		// Return context.
 		return {
 			models,

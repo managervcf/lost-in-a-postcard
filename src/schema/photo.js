@@ -4,9 +4,8 @@ import { gql } from 'apollo-server-express';
 // Define and export default schema.
 export default gql`
 	extend type Query {
-		photos: [Photo!]!
+		photos(country: String, limit: Int, page: Int): PhotoConnection!
 		photo(id: ID!): Photo!
-		photoByCountry(country: String!): [Photo!]
 	}
 
 	extend type Mutation {
@@ -15,13 +14,25 @@ export default gql`
 		deletePhoto(id: ID!): Photo!
 	}
 
+	type PhotoConnection {
+		docs: [Photo!]!
+		pageInfo: PageInfo!
+	}
+
+	type PageInfo {
+		total: Int!
+		limit: Int!
+		page: Int!
+		pages: Int!
+	}
+
 	type Photo {
 		id: ID!
 		url: String!
 		country: String!
 		caption: String
 		author: User!
-    createdAt: String!
-    updatedAt: String!
+		createdAt: String!
+		updatedAt: String!
 	}
 `;

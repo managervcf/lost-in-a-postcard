@@ -4,7 +4,7 @@ import { gql } from 'apollo-server-express';
 // Define and export default schema.
 export default gql`
 	extend type Query {
-		countries: [Country!]
+		countries(search: String): [Country!]
 		country(name: String!): Country
 	}
 
@@ -14,5 +14,6 @@ export default gql`
 		region: String!
 		population: Int
 		area: Float
+		flag: String
 	}
 `;
