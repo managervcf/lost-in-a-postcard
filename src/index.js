@@ -46,10 +46,8 @@ server.applyMiddleware({ app, path: '/graphql' });
 
 // After connection with database is established,
 // express application will start.
-const port = process.env.PORT;
-
 connectDb().then(() =>
-	app.listen(port, () =>
-		console.log(`Server ready on http://localhost:${port}.`)
+	app.listen(process.env.PORT, () =>
+		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
 	)
 );
