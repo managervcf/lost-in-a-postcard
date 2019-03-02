@@ -3,5 +3,7 @@ export default text =>
 	text
 		.trim()
 		.split('')
-		.map((char, i) => (i === 0 ? char.toUpperCase() : char.toLowerCase()))
+		.map((character, index) =>
+			index === 0 ? character.toUpperCase() : character.toLowerCase()
+		)
 		.join('');

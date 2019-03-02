@@ -4,9 +4,6 @@ import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
-// Import authentication libraries.
-import jwt from 'jsonwebtoken';
-
 // Import schema, resolvers, models, APIs and helpers.
 import typeDefs from './schema';
 import resolvers from './resolvers';
@@ -23,17 +20,17 @@ const app = express();
 // Enables Cross Origin Resource Sharing.
 app.use(cors());
 
-// Create apollo server and connect it with express.
-// Specify path for graphql operations. Provide context
+// Create apollo server. Provide context
 // with models, API and current user (me).
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
-	// Context is built once per request. Use context for authentication.
-	// Also pass data that should be available for all resolvers.
+	// Context is built once per request.
+	// Use context for authentication.
+	// Pass data that should be available for all resolvers.
 	context: async ({ req }) => {
 		// Perform authentication.
-		const me = await getMe(req);
+		let me = await getMe(req);
 		// Return context.
 		return {
 			models,
@@ -43,13 +40,16 @@ const server = new ApolloServer({
 	}
 });
 
-// Apply express middleware to Apollo Server.
+// Apply express as Apollo Server middleware.
+// Specify path for graphql operations.
 server.applyMiddleware({ app, path: '/graphql' });
 
 // After connection with database is established,
 // express application will start.
-connectDb().then(async () =>
-	app.listen(process.env.PORT, () =>
-		console.log(`Server ready on http://localhost:${process.env.PORT}.`)
+const port = process.env.PORT;
+
+connectDb().then(() =>
+	app.listen(port, () =>
+		console.log(`Server ready on http://localhost:${port}.`)
 	)
 );
