@@ -6,6 +6,7 @@ import trimAndCapitalize from './trimAndCapitalize';
 import emailRegex from './emailRegex';
 import throwError from './errorHandler';
 import getMe from './getMe';
+import processUpload from './processUpload';
 
 // Export middlewares.
 export {
@@ -15,5 +16,6 @@ export {
 	trimAndCapitalize,
 	emailRegex,
 	throwError,
-	getMe
+	getMe,
+	processUpload
 };

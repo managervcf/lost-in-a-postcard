@@ -9,8 +9,8 @@ export default gql`
 	}
 
 	extend type Mutation {
-		createPhoto(url: String!, country: String, caption: String): Photo!
-		updatePhoto(id: ID!, url: String, country: String, caption: String): Photo!
+		createPhoto(file: Upload!, country: String!, caption: String): Photo!
+		updatePhoto(id: ID!, country: String, caption: String): Photo!
 		deletePhoto(id: ID!): Photo!
 	}
 
@@ -29,11 +29,16 @@ export default gql`
 
 	type Photo {
 		id: ID!
-		url: String!
+		upload: UploadedFile!
 		country: String!
 		caption: String
 		author: User!
 		createdAt: String!
 		updatedAt: String!
+	}
+
+	type UploadedFile {
+		public_id: String!
+		url: String!
 	}
 `;

@@ -14,8 +14,7 @@ export default {
 
 	Mutation: {
 		signUp: async (parent, args, { models }) => await models.User.signUp(args),
-		logIn: async (parent, args, { models }) =>
-			await models.User.logIn(args),
+		logIn: async (parent, args, { models }) => await models.User.logIn(args),
 		updateUser: isAuthenticated(
 			async (parent, args, { models, me }) =>
 				await models.User.findByIdAndUpdate(me.id, args, { new: true })

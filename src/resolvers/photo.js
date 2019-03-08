@@ -10,10 +10,8 @@ export default {
 	},
 
 	Mutation: {
-		createPhoto: isAuthenticated(
-			async (parent, args, { models, me }) =>
-				await models.Photo.addPhoto(me.id, args)
-		),
+		createPhoto: async (parent, args, { models, me }) =>
+			await models.Photo.addPhoto('5c74c5a7e116f01d608a7aa8', args),
 		updatePhoto: isAuthorized(
 			async (parent, args, { models }) =>
 				await models.Photo.findByIdAndUpdate(args.id, args, { new: true })
