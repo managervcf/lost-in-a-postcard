@@ -5,7 +5,12 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 
 // Import error handler from middleware.
-import { processUpload, throwError, trimAndCapitalize } from '../helpers';
+import {
+	uploadAsset,
+	deleteAsset,
+	throwError,
+	trimAndCapitalize
+} from '../helpers';
 
 // Define schema.
 const photoSchema = new Schema(
@@ -22,6 +27,14 @@ const photoSchema = new Schema(
 		caption: {
 			type: String,
 			trim: true
+		},
+		featured: {
+			type: Boolean,
+			default: false
+		},
+		clicks: {
+			type: Number,
+			default: 0
 		},
 		author: {
 			type: Schema.Types.ObjectId,
@@ -40,9 +53,13 @@ photoSchema.plugin(mongoosePaginate);
 // Find and paginate requested photos. Default max photos is 100.
 photoSchema.statics.findPhotos = async function({
 	country = '',
-	limit = 10,
+	featured,
+	limit = 1000,
 	page = 1
 }) {
+	// Validate page and limit variables.
+	throwError(page < 1 || limit < 1, 'Page or limit cannot be less than 1.');
+
 	// Create pagination options variable.
 	let paginationOptions = {
 		// Return in specified order.
@@ -52,11 +69,18 @@ photoSchema.statics.findPhotos = async function({
 		page
 	};
 
-	// Trim and capitalize requested country.
-	country = trimAndCapitalize(country);
-
 	// Create a mongoose query.
-	let query = country ? { country } : {}
+	let query = {};
+
+	if (country) {
+		// Trim and capitalize requested country.
+		country = trimAndCapitalize(country);
+		query.country = country;
+	}
+
+	if (featured) {
+		query.featured = featured;
+	}
 
 	// Make a query using mongoose-paginate library.
 	let res = await this.paginate(query, paginationOptions);
@@ -83,10 +107,10 @@ photoSchema.statics.findPhotos = async function({
 };
 
 // Creates a photo and associates it with user.
-photoSchema.statics.addPhoto = async function(id, args) {
+photoSchema.statics.addPhoto = async function({ id, username }, args) {
 	// Process file upload using helper function.
 	// Returns object with url and public_id.
-	let upload = await processUpload(args);
+	let upload = await uploadAsset(args, username);
 
 	// Create new photo object.
 	let newPhoto = { ...args, upload, author: id };
@@ -105,7 +129,7 @@ photoSchema.statics.addPhoto = async function(id, args) {
 	// Return newly created photo.
 	console.log(
 		`(GraphQL) Added photo from ${createdPhoto.country} (${
-			createdPhoto.url
+			createdPhoto.upload.url
 		}) by ${savedUser.username} (${savedUser.id})`
 	);
 	return createdPhoto;
@@ -116,6 +140,10 @@ photoSchema.statics.deletePhoto = async function(id) {
 	// Delete photo and populate author field to access his id.
 	let deletedPhoto = await this.findByIdAndDelete(id).populate('author');
 	throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
+
+	// Delete photo from cloudinary.
+	// Use public_id to find and delete an asset.
+	await deleteAsset(deletedPhoto.upload.public_id);
 
 	// Get user by id to modify photos array.
 	let user = await model('User').findById(deletedPhoto.author.id);
@@ -135,6 +163,15 @@ photoSchema.statics.deletePhoto = async function(id) {
 		}) by ${updatedUser.username} (${updatedUser.id})`
 	);
 	return deletedPhoto;
+};
+
+// Delete a photo and update user.
+photoSchema.statics.clickPhoto = async function(id) {
+	let foundPhoto = await this.findById(id);
+	let clicks = foundPhoto.clicks + 1;
+	let clickedPhoto = await this.findByIdAndUpdate(id, { clicks });
+	console.log(`(GraphQL) Clicked photo (${clickedPhoto.id}).`);
+	return likedPhoto;
 };
 
 // Create model out of schema.

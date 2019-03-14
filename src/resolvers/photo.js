@@ -10,15 +10,20 @@ export default {
 	},
 
 	Mutation: {
-		createPhoto: async (parent, args, { models, me }) =>
-			await models.Photo.addPhoto('5c74c5a7e116f01d608a7aa8', args),
+		addPhoto: isAuthenticated(
+			async (parent, args, { models, me }) =>
+				await models.Photo.addPhoto(me, args)
+		),
 		updatePhoto: isAuthorized(
 			async (parent, args, { models }) =>
 				await models.Photo.findByIdAndUpdate(args.id, args, { new: true })
 		),
 		deletePhoto: isAuthorized(
 			async (parent, { id }, { models }) => await models.Photo.deletePhoto(id)
-		)
+		),
+		clickPhoto: async (parent, { id }, { models }) => {
+			await models.Photo.clickPhoto(id);
+		}
 	},
 
 	Photo: {

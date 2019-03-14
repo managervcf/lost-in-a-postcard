@@ -6,7 +6,7 @@ import trimAndCapitalize from './trimAndCapitalize';
 import emailRegex from './emailRegex';
 import throwError from './errorHandler';
 import getMe from './getMe';
-import processUpload from './processUpload';
+import { uploadAsset, deleteAsset } from './cloudinaryHelpers';
 
 // Export middlewares.
 export {
@@ -17,5 +17,6 @@ export {
 	emailRegex,
 	throwError,
 	getMe,
-	processUpload
+	uploadAsset,
+	deleteAsset
 };

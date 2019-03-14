@@ -9,7 +9,9 @@ export default {
 		userByLogin: async (parent, { login }, { models }) =>
 			await models.User.findByLogin({ login }),
 		// Wrap resolver with authenticate middleware to check if user is logged in.
-		me: isAuthenticated((parent, args, { me }) => me)
+		me: isAuthenticated(
+			async (parent, args, { models, me }) => await models.User.findById(me.id)
+		)
 	},
 
 	Mutation: {

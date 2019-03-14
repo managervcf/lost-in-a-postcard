@@ -14,19 +14,19 @@ const httpLink = createUploadLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-	// get the authentication token from local storage if it exists
+	// Get the authentication token from local storage if it exists.
 	const token = localStorage.getItem('token');
-	// return the headers to the context so httpLink can read them
+	// Return the headers to the context so httpLink can read them.
 	return {
 		headers: {
 			...headers,
-			token: token ? token : ''
+			token: token || null
 		}
 	};
 });
 
 // Create new Apollo Client the old way.
-// Unfortunately  does not work with apollo-boost
+// Unfortunately upload package does not work with apollo-boost.
 const client = new ApolloClient({
 	// Use caching.
 	cache: new InMemoryCache(),

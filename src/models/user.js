@@ -68,7 +68,7 @@ userSchema.statics.findByLogin = async function(login) {
 // Function that creates a token valid for 15 minutes.
 const createToken = async ({ id, email, username, role }) =>
 	await jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
-		expiresIn: '30m'
+		expiresIn: '3h'
 	});
 
 // Create new user.
@@ -93,7 +93,7 @@ userSchema.statics.logIn = async function({ login, password }) {
 	if (!user) {
 		user = await this.findOne({ email: login });
 	}
-	throwError(!user, `User ${login} does not exist.`);
+	throwError(!user, `User '${login}' does not exist.`);
 	let valid = bcrypt.compareSync(password, user.password);
 	throwError(!valid, `The password is invalid.`);
 	console.log(

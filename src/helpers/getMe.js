@@ -9,7 +9,7 @@ export default async req => {
 		try {
 			return await jwt.verify(token, process.env.JWT_SECRET);
 		} catch (e) {
-			throw new Error('Your session has expired. Sign in again.');
+			return null;
 		}
 	}
 };

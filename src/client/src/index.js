@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import client from './apollo';
 
@@ -9,7 +10,9 @@ import * as serviceWorker from './serviceWorker';
 
 render(
 	<ApolloProvider client={client}>
-		<App />
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</ApolloProvider>,
 	document.querySelector('#root')
 );

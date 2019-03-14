@@ -1,7 +1,19 @@
 // Import cloudinary for file uploads.
 import cloudinary from 'cloudinary';
 
-export default async ({ file, country }) => {
+// Configure cloudinary API.
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_NAME,
+	api_key: process.env.CLOUDINARY_KEY,
+	api_secret: process.env.CLOUDINARY_SECRET
+});
+
+export const deleteAsset = async public_id => {
+	let result = await cloudinary.uploader.destroy(public_id);
+	console.log(`(Cloudinary) Deleted asset ${public_id}.`);
+};
+
+export const uploadAsset = async ({ file, country }, author) => {
 	// Get metadata from uploading file.
 	let { createReadStream, filename, mimetype, encoding } = await file;
 
@@ -10,13 +22,6 @@ export default async ({ file, country }) => {
 
 	// Create variable stream.
 	const stream = createReadStream();
-
-	// Configure cloudinary API.
-	cloudinary.config({
-		cloud_name: process.env.CLOUDINARY_NAME,
-		api_key: process.env.CLOUDINARY_KEY,
-		api_secret: process.env.CLOUDINARY_SECRET
-	});
 
 	// Create variable photo.
 	let photo = {};
@@ -30,7 +35,7 @@ export default async ({ file, country }) => {
 						// Put file in lostinapostcard folder.
 						folder: 'lostinapostcard/',
 						// Apply tags.
-						tags: [country]
+						tags: [country, author]
 					},
 					(error, result) => {
 						if (result) {
