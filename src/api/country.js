@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Import searchung helper function.
-import { doesContain } from '../helpers';
+import { doesContain } from '../utils';
 
 // Define API url.
 const countryUrl = 'https://restcountries.eu/rest/v2/all';

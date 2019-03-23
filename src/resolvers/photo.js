@@ -1,5 +1,5 @@
 // Import resolver guards.
-import { isAuthenticated, isAuthorized } from '../helpers';
+import { isAuthenticated, isAuthorized } from '../utils';
 
 // Create and immediately export default resolvers.
 export default {
@@ -27,6 +27,8 @@ export default {
 	},
 
 	Photo: {
+		country: async ({ country }, args, { models }) =>
+			await models.Country.findById(country),
 		author: async ({ author }, args, { models }) =>
 			await models.User.findById(author),
 		createdAt: ({ createdAt }) => createdAt.toString(),

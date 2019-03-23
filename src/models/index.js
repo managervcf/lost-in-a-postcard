@@ -4,6 +4,7 @@ import { connect } from 'mongoose';
 // Import all models.
 import User from './user';
 import Photo from './photo';
+import Country from './country';
 
 // Define a function that connects to database.
 // Pass options to avoid deprecation warnings.
@@ -15,7 +16,7 @@ const connectDb = () =>
 	);
 
 // Define an object containing all models.
-const models = { User, Photo };
+const models = { User, Photo, Country };
 
 // Export connectDb and unified models interface.
 export { connectDb };

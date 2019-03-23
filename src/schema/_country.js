@@ -4,20 +4,16 @@ import { gql } from 'apollo-server-express';
 // Define and export default schema.
 export default gql`
 	extend type Query {
-		countries: [Country!]
+		countries(search: String): [Country!]
 		country(name: String!): Country
 	}
 
-	extend type Mutation {
-		editCountry(name: String, description: String): Country!
-	}
-
 	type Country {
-		id: ID!
 		name: String!
-		description: String
-		photos: [Photo!]
-		createdAt: String!
-		updatedAt: String!
+		nativeName: String!
+		region: String!
+		population: Int
+		area: Float
+		flag: String
 	}
 `;

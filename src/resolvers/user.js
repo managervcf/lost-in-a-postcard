@@ -1,5 +1,5 @@
 // Import resolver guards.
-import { isAuthenticated } from '../helpers';
+import { isAuthenticated } from '../utils';
 
 // Create and immediately export default resolvers.
 export default {
@@ -9,9 +9,8 @@ export default {
 		userByLogin: async (parent, { login }, { models }) =>
 			await models.User.findByLogin({ login }),
 		// Wrap resolver with authenticate middleware to check if user is logged in.
-		me: isAuthenticated(
-			async (parent, args, { models, me }) => await models.User.findById(me.id)
-		)
+		me: async (parent, args, { models, me }) =>
+			me ? await models.User.findById(me.id) : null
 	},
 
 	Mutation: {

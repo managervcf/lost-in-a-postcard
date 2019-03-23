@@ -25,9 +25,9 @@ export default gql`
 			country: String
 			caption: String
 			featured: Boolean
-		): Photo!
-		deletePhoto(id: ID!): Photo!
-		clickPhoto(id: ID!): Photo!
+		): Photo
+		deletePhoto(id: ID!): Photo
+		clickPhoto(id: ID!): Photo
 	}
 
 	type PhotoConnection {
@@ -46,10 +46,10 @@ export default gql`
 	type Photo {
 		id: ID!
 		upload: UploadedFile!
-		country: String!
+		country: Country!
 		caption: String
 		featured: Boolean
-		likes: Int!
+		clicks: Int!
 		author: User!
 		createdAt: String!
 		updatedAt: String!

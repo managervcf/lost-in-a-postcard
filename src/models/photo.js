@@ -10,7 +10,7 @@ import {
 	deleteAsset,
 	throwError,
 	trimAndCapitalize
-} from '../helpers';
+} from '../utils';
 
 // Define schema.
 const photoSchema = new Schema(
@@ -20,9 +20,8 @@ const photoSchema = new Schema(
 			url: String
 		},
 		country: {
-			type: String,
-			trim: true,
-			required: [true, 'Where the photo was taken?']
+			type: Schema.Types.ObjectId,
+			ref: 'Country'
 		},
 		caption: {
 			type: String,
@@ -35,6 +34,10 @@ const photoSchema = new Schema(
 		clicks: {
 			type: Number,
 			default: 0
+		},
+		country: {
+			type: Schema.Types.ObjectId,
+			ref: 'Country'
 		},
 		author: {
 			type: Schema.Types.ObjectId,
@@ -75,7 +78,13 @@ photoSchema.statics.findPhotos = async function({
 	if (country) {
 		// Trim and capitalize requested country.
 		country = trimAndCapitalize(country);
-		query.country = country;
+		query.name = country;
+
+		// Find searched country
+		let foundCountry = await model('Country').findOne(query);
+
+		// If found a country, build a query with its id.
+		query = foundCountry ? { country: foundCountry.id } : { country: null };
 	}
 
 	if (featured) {
@@ -112,8 +121,28 @@ photoSchema.statics.addPhoto = async function({ id, username }, args) {
 	// Returns object with url and public_id.
 	let upload = await uploadAsset(args, username);
 
+	// Check if country exists.
+	let existingCountry = await model('Country').findOne({ name: args.country });
+
+	// Define country id.
+	let countryId = '';
+
+	if (existingCountry) {
+		// Get ID from existing country and assign it to new photo.
+		countryId = existingCountry.id;
+	} else {
+		// If country does not exist, create a new one.
+		let newCountry = { name: args.country };
+		let createdCountry = await model('Country').create(newCountry);
+		// Get ID from created country and assign it to new photo.
+		countryId = createdCountry.id;
+		throwError(!createdCountry, 'Could not create new country.');
+	}
+
+	console.log('existingCountry', existingCountry);
+
 	// Create new photo object.
-	let newPhoto = { ...args, upload, author: id };
+	let newPhoto = { ...args, upload, author: id, country: countryId };
 
 	// Save photo to database.
 	let createdPhoto = await Photo.create(newPhoto);
@@ -124,11 +153,18 @@ photoSchema.statics.addPhoto = async function({ id, username }, args) {
 	throwError(!user, 'User is not logged in or does not exist');
 	user.photos = [...user.photos, createdPhoto.id];
 	let savedUser = await user.save();
-	throwError(!savedUser, 'Cannot add new photo to user.');
+	throwError(!savedUser, 'Cannot assign new photo to user.');
+
+	// Find country and update it's photos.
+	let country = await model('Country').findById(countryId);
+	throwError(!country, 'Country does not exist');
+	country.photos = [...country.photos, createdPhoto.id];
+	let savedCountry = await country.save();
+	throwError(!savedCountry, 'Cannot assign new photo to country.');
 
 	// Return newly created photo.
 	console.log(
-		`(GraphQL) Added photo from ${createdPhoto.country} (${
+		`(GraphQL) Added photo from ${savedCountry.name} (${
 			createdPhoto.upload.url
 		}) by ${savedUser.username} (${savedUser.id})`
 	);
@@ -138,7 +174,9 @@ photoSchema.statics.addPhoto = async function({ id, username }, args) {
 // Delete a photo and update user.
 photoSchema.statics.deletePhoto = async function(id) {
 	// Delete photo and populate author field to access his id.
-	let deletedPhoto = await this.findByIdAndDelete(id).populate('author');
+	let deletedPhoto = await this.findByIdAndDelete(id)
+		.populate('author')
+		.populate('country');
 	throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
 
 	// Delete photo from cloudinary.
@@ -156,9 +194,16 @@ photoSchema.statics.deletePhoto = async function(id) {
 	);
 	throwError(!updatedUser, 'Cannot update user. User does not exist.');
 
+	// Update country with updated photos array.
+	let updatedCountry = await model('Country').findByIdAndUpdate(
+		deletedPhoto.country.id,
+		{ photos: country.photos.filter(photoId => photoId != id) }
+	);
+	throwError(!updatedCountry, 'Cannot update country. Country does not exist.');
+
 	// Return deleted photo.
 	console.log(
-		`(GraphQL) Deleted photo from ${deletedPhoto.country} (${
+		`(GraphQL) Deleted photo from ${updatedCountry.name} (${
 			deletedPhoto.id
 		}) by ${updatedUser.username} (${updatedUser.id})`
 	);
@@ -171,7 +216,7 @@ photoSchema.statics.clickPhoto = async function(id) {
 	let clicks = foundPhoto.clicks + 1;
 	let clickedPhoto = await this.findByIdAndUpdate(id, { clicks });
 	console.log(`(GraphQL) Clicked photo (${clickedPhoto.id}).`);
-	return likedPhoto;
+	return clickedPhoto;
 };
 
 // Create model out of schema.

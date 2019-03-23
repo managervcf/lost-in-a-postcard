@@ -22,9 +22,4 @@ const linkSchema = gql`
 `;
 
 // Export all schemas as an array.
-export default [
-	linkSchema,
-	userSchema,
-	photoSchema,
-	countrySchema
-];
+export default [linkSchema, userSchema, photoSchema, countrySchema];

@@ -11,7 +11,7 @@ import models, { connectDb } from './models';
 import api from './api';
 
 // Import middleware helpers.
-import { getMe } from './helpers';
+import { getMe } from './utils';
 
 // Create express server.
 const app = express();

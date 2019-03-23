@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Import email regex helper and error handler from middleware.
-import { emailRegex, throwError } from '../helpers';
+import { emailRegex, throwError } from '../utils';
 
 // Define schema.
 const userSchema = new Schema(
@@ -37,12 +37,7 @@ const userSchema = new Schema(
 			type: String,
 			default: 'user'
 		},
-		photos: [
-			{
-				type: Schema.Types.ObjectId,
-				ref: 'Photo'
-			}
-		]
+		photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }]
 	},
 	// Enable auto timestamps.
 	{ timestamps: true }
