@@ -5,7 +5,10 @@ export default gql`
 		photos(country: $country, featured: $featured, limit: $limit, page: $page) {
 			docs {
 				id
-				country
+				country {
+					name
+					description
+				}
 				caption
 				featured
 				upload {
@@ -13,14 +16,7 @@ export default gql`
 				}
 				author {
 					username
-					email
 				}
-			}
-			pageInfo {
-				page
-				pages
-				limit
-				hasNextPage
 			}
 		}
 	}

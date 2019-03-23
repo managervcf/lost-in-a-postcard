@@ -1,14 +1,11 @@
 import gql from 'graphql-tag';
 
 export default gql`
-	query countries {
-		countries {
+	query country($name: String!) {
+		country(name: $name) {
 			id
 			name
 			description
-			photos {
-				id
-			}
 		}
 	}
 `;

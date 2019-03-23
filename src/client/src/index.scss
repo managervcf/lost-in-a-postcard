@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand|Caveat|Futura|Ubuntu');
+
+$color-main-background: #f7f7f7;
+$color-main-background-dark: #eeeeee;
+$color-main-primary: #929aab;
+$color-main-text: #393e46;
+
+/* Normalize project for every browser 
+using universal selector - global reset */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $color-main-text;
+  background-color: $color-main-background;
+  text-align: center;
+}
+
+// Prevent blueish border around items in focus.
+:focus {
+  outline: none !important;
+}
+
+.page-title {
+  font-family: Caveat;
+  font-size: 3rem;
+  margin: 20px 0 10px 0;
+}
+
+.page-description {
+  margin: 0 0 25px 0;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.navbar {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &-item {
+    margin: 0 10px;
+  }
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  &-description {
+    margin: 20px 0;
+    max-width: 500px;
+  }
+
+  &-item {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    margin: 2vh 0;
+    transition: 0.8s all, 1s transform ease-out;
+
+    &:hover {
+      .gallery-image {
+        opacity: 0.2;
+        filter: grayscale(100%);
+      }
+
+      .gallery-caption {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &-image {
+    opacity: 1;
+    display: flex;
+    align-self: center;
+    max-height: 80vh;
+    max-width: 95vw;
+    transition: inherit;
+  }
+
+  &-caption {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    transition: inherit;
+    opacity: 0;
+    transform: translateY(-10px);
+
+    &-title {
+      font-weight: bold;
+      line-height: 3em;
+    }
+
+    &-description {
+      line-height: 2em;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.photo-edit-form,
+.dashboard,
+.upload-form,
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-info {
+  flex-direction: row;
+}
+
+.loader-inline {
+  display: inline-block;
+}
+
+.loader-block,
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  height: 50vh;
+  width: 100%;
+}
+
+.logout-button {
+  display: inline;
+}
+
+a {
+  text-decoration: none;
+  color: $color-main-text;
+}
+
+button {
+  font-family: inherit;
+  font-size: 0.8rem;
+  margin: 10px;
+  padding: 3px 12px;
+  border-radius: 10px;
+}
+
+input {
+  padding: 3px 12px;
+  margin: 10px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fade-in {
+  transition: opacity 1s ease, transform 1s ease;
+  transform: translateY(5px);
+  opacity: 0;
+
+  &.visible {
+    transition: opacity 1s ease, transform 1s ease;
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}

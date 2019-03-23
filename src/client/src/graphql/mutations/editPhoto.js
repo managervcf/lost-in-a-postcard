@@ -1,14 +1,14 @@
 import gql from 'graphql-tag';
 
 export default gql`
-	mutation addPhoto(
-		$file: Upload!
-		$country: String!
+	mutation updatePhoto(
+		$id: ID!
+		$country: String
 		$caption: String
 		$featured: Boolean
 	) {
-		addPhoto(
-			file: $file
+		updatePhoto(
+			id: $id
 			country: $country
 			caption: $caption
 			featured: $featured
@@ -16,10 +16,6 @@ export default gql`
 			id
 			country {
 				name
-				description
-			}
-			upload {
-				url
 			}
 		}
 	}

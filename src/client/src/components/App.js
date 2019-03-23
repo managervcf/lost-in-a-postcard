@@ -1,42 +1,29 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Query } from 'react-apollo';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
-import Header from './Header';
+import Logo from './Logo';
+import Navbar from './Navbar';
 import Login from './Login';
-import Gallery from './Gallery';
-import UploadForm from './UploadForm';
-import LoggedUser from './LoggedUser';
-import NotFound from './NotFound';
-import ME from '../graphql/queries/me';
+import PhotoGallery from './PhotoGallery';
+import Dashboard from './Dashboard';
+import NoMatch from './NoMatch';
 
 const App = () => (
-	<Query query={ME}>
-		{({ data, loading, error, refetch }) => {
-			return (
-				<div className="App">
-					<Route path="/" component={Header} />
-					{data && data.me && (
-						<Route
-							path="/"
-							render={props => (
-								<LoggedUser {...props} me={data.me} refetch={refetch} />
-							)}
-						/>
-					)}
-					<Switch>
-						<Route exact path="/" component={Gallery} />
-						<Route exact path="/login" render={props => <Login {...props} />} />
-						{data && data.me && (
-							<Route exact path="/new" component={UploadForm} />
-						)}
-						<Route path="/:country" component={Gallery} />
-						<Route component={NotFound} />
-					</Switch>
-				</div>
-			);
-		}}
-	</Query>
+	<div>
+		<header>
+			<Logo />
+			<Navbar />
+			<Dashboard />
+		</header>
+		<main>
+			<Switch>
+				<Redirect exact from="/" to="/photos/featured" />
+				<Route exact path="/login" component={Login} />
+				<Route path="/photos" component={PhotoGallery} />
+				<Route component={NoMatch} />
+			</Switch>
+		</main>
+	</div>
 );
 
-export default App;
+export default withRouter(App);

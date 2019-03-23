@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import LoaderInline from './LoaderInline';
 
-const LoginForm = ({ history, mutate, data }) => {
-	const [login, setLogin] = useState('');
-	const [password, setPassword] = useState('');
-
-	if (data) {
-		localStorage.setItem('token', data.logIn.token);
-		console.log('localStorage set to:', localStorage);
-		history.push('/');
-	}
-
-	const handleSubmit = async (e, callback) => {
-		e.preventDefault();
-		await callback({ variables: { login, password } });
-		setLogin('');
-		setPassword('');
-	};
+const LoginForm = ({ history, mutate, loading }) => {
+	let [login, setLogin] = useState('');
+	let [password, setPassword] = useState('');
 
 	return (
-		<form onSubmit={e => handleSubmit(e, mutate)}>
+		<form
+			className="login-form"
+			onSubmit={e => {
+				e.preventDefault();
+				mutate({ variables: { login, password } });
+				setLogin('');
+				setPassword('');
+			}}
+		>
 			<input
 				required
 				type="text"
@@ -33,9 +30,14 @@ const LoginForm = ({ history, mutate, data }) => {
 				value={password}
 				onChange={e => setPassword(e.target.value)}
 			/>
-			<button type="submit">Login</button>
+			<div className="login-buttons">
+				<button type="submit" disabled={loading}>
+					{!loading ? 'Login' : <LoaderInline size={10} loading={loading} />}
+				</button>
+				<button onClick={() => history.push('/photos')}>Back</button>
+			</div>
 		</form>
 	);
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);
