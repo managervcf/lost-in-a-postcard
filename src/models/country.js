@@ -1,9 +1,6 @@
 // Import mongoose helpers.
 import { Schema, model } from 'mongoose';
 
-// Import searchung helper function.
-import { doesContain } from '../utils';
-
 // Define schema.
 const countrySchema = new Schema(
 	{

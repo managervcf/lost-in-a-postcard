@@ -4,11 +4,10 @@ import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
-// Import schema, resolvers, models, APIs and helpers.
+// Import schema, resolvers, models and helpers.
 import typeDefs from './schema';
 import resolvers from './resolvers';
 import models, { connectDb } from './models';
-import api from './api';
 
 // Import middleware helpers.
 import { getMe } from './utils';
@@ -34,7 +33,6 @@ const server = new ApolloServer({
 		// Return context.
 		return {
 			models,
-			api,
 			me
 		};
 	}
