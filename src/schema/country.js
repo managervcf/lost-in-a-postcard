@@ -9,7 +9,7 @@ export default gql`
 	}
 
 	extend type Mutation {
-		editCountry(name: String, description: String): Country!
+		updateCountry(id: ID!, name: String!, description: String): Country
 	}
 
 	type Country {

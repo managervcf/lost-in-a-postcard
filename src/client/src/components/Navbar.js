@@ -8,7 +8,6 @@ const Navbar = () => (
 		{({ data, loading, error }) => {
 			if (error) return null;
 			if (loading) return null;
-			console.log('COUNTRIES query', data);
 			let navLinks = data.countries
 				.sort()
 				.map(({ id, name }) => (

@@ -10,7 +10,12 @@ export default {
 			await models.Country.findOne({ name })
 	},
 
-	Mutation: {},
+	Mutation: {
+		updateCountry: isAuthorized(
+			async (parent, args, { models }) =>
+				await models.Country.findByIdAndUpdate(args.id, args, { new: true })
+		)
+	},
 
 	Country: {
 		photos: async ({ id }, args, { models }) =>

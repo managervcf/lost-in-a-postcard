@@ -8,7 +8,6 @@ import CountryFormEdit from './CountryFormEdit';
 import { ME } from '../graphql/queries';
 
 const Dashboard = () => {
-	let [isVisible, setIsVisible] = useState(false);
 	let [showPhotoFormNew, setShowPhotoFormNew] = useState(false);
 	let [showCountryEditForm, setShowCountryEditForm] = useState(false);
 
@@ -18,7 +17,7 @@ const Dashboard = () => {
 				if (loading) return null;
 				if (error) return null;
 				if (!data.me) return null;
-				console.log(data.me);
+				console.log('Currently logged in user:', data.me);
 				return (
 					<div className="dashboard">
 						<div className="user-info">

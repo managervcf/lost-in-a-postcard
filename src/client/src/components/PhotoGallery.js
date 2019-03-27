@@ -24,8 +24,6 @@ const PhotoGallery = ({ location, match }) => {
 			{({ data, loading, error }) => {
 				if (error) return <ErrorMessage text="Cannot load gallery :(" />;
 				if (loading) return <LoaderBlock size={5} loading={loading} />;
-				console.log('PHOTOS query', data);
-				console.log('query.country', query.country);
 
 				let galleryItems =
 					data.photos.docs.length > 0 ? (
