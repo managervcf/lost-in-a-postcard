@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withApollo } from 'react-apollo';
+import classnames from 'classnames';
 
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
@@ -7,16 +7,18 @@ import PhotoFormEdit from './PhotoFormEdit';
 import PhotoCaptionContent from './PhotoCaptionContent';
 
 const Caption = props => {
+	let { visible } = props;
 	let [editMode, setEditMode] = useState(false);
+	let captionClasses = classnames({
+		'gallery-caption': true,
+		'fade-in': true,
+		visible
+	});
 
 	return (
-		<div className="gallery-caption">
+		<div className={captionClasses}>
 			{editMode ? (
-				<PhotoFormEdit
-					editMode={editMode}
-					setEditMode={setEditMode}
-					{...props}
-				/>
+				<PhotoFormEdit {...props} />
 			) : (
 				<PhotoCaptionContent {...props} />
 			)}
@@ -26,4 +28,4 @@ const Caption = props => {
 	);
 };
 
-export default withApollo(Caption);
+export default Caption;

@@ -16,6 +16,7 @@ const CountryFormEdit = () => {
 	let handleSubmit = async (e, mutate) => {
 		e.preventDefault();
 		await mutate({ variables: editedCountry });
+		setEditedCountry({ id: '', name: '', description: '' });
 	};
 
 	let handleSelect = (e, countryArray) => {
@@ -50,8 +51,13 @@ const CountryFormEdit = () => {
 					>
 						{(updateCountry, { loading, error }) => (
 							<form onSubmit={e => handleSubmit(e, updateCountry)}>
-								<select defaultValue={0} onChange={e => handleSelect(e, data.countries)}>
-									<option value={0} disabled>countryOptions</option>
+								<select
+									defaultValue={0}
+									onChange={e => handleSelect(e, data.countries)}
+								>
+									<option value={0} disabled>
+										--Country--
+									</option>
 									{countryOptions}
 								</select>
 								{editedCountry.name && (

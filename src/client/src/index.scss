@@ -30,6 +30,7 @@ body {
   color: $color-main-text;
   background-color: $color-main-background;
   text-align: center;
+  user-select: none;
 }
 
 // Prevent blueish border around items in focus.
@@ -83,18 +84,7 @@ body {
     border-radius: 6px;
     margin: 2vh 0;
     transition: 0.8s all, 1s transform ease-out;
-
-    &:hover {
-      .gallery-image {
-        opacity: 0.2;
-        filter: grayscale(100%);
-      }
-
-      .gallery-caption {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    background-color: $color-main-background;
   }
 
   &-image {
@@ -104,6 +94,7 @@ body {
     max-height: 80vh;
     max-width: 95vw;
     transition: inherit;
+    cursor: pointer;
   }
 
   &-caption {
@@ -117,7 +108,7 @@ body {
     width: 100%;
     text-align: center;
     transition: inherit;
-    opacity: 0;
+    opacity: 1;
     transform: translateY(-10px);
 
     &-title {
@@ -203,12 +194,17 @@ input {
 
 .fade-in {
   transition: opacity 1s ease, transform 1s ease;
-  transform: translateY(5px);
+  transform: translateY(-5px);
   opacity: 0;
 
   &.visible {
-    transition: opacity 1s ease, transform 1s ease;
     transform: translateY(0px);
     opacity: 1;
   }
+}
+
+.dim {
+  transition: opacity 1s ease, filter 1s ease;
+  opacity: 0.2;
+  filter: blur(2px);
 }

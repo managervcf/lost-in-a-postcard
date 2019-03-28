@@ -17,14 +17,13 @@ const Dashboard = () => {
 				if (loading) return null;
 				if (error) return null;
 				if (!data.me) return null;
-				console.log('Currently logged in user:', data.me);
+				console.log('Currently logged in user:', data.me.username);
 				return (
 					<div className="dashboard">
 						<div className="user-info">
 							<p>
 								<span>Logged in as </span>
 								<strong>{data.me.username} </strong>
-								<span>({data.me.email})</span>
 							</p>
 							<Route component={LogoutButton} />
 						</div>
