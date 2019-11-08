@@ -11,7 +11,7 @@ import Country from './country';
 const connectDb = () =>
 	connect(
 		process.env.DATABASE_URL,
-		{ useNewUrlParser: true, useCreateIndex: true },
+		{ useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
 		() => console.log('Conntected to database.')
 	);
 
