@@ -17,6 +17,7 @@ using universal selector - global reset */
 
 html {
   font-size: 100%;
+  margin-left: calc(100vw - 100%);
 }
 
 body {
