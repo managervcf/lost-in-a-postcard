@@ -46,7 +46,7 @@ export default gql`
 	type Photo {
 		id: ID!
 		upload: UploadedFile!
-		country: Country!
+		country: Country
 		caption: String
 		featured: Boolean
 		clicks: Int!

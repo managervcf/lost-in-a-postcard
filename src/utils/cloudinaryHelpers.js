@@ -1,9 +1,12 @@
-// Import cloudinary for file uploads.
+// Import cloudinary package necessary for file uploads.
 import cloudinary from 'cloudinary';
 // Import a function from File System nodejs module that allows a file to be sent.
-import { createReadStream } from 'fs';
 // The problem with js.createReamStream(<path/filename>) is that in the browser
-// I don't have access to filepath. Filepath will be fixed to desktop.
+// there is np access to file path. File path will be temporarily fixed to desktop.
+import { createReadStream } from 'fs';
+
+// Import error handler helper.
+import { throwError } from './';
 
 // Configure cloudinary API.
 cloudinary.config({
@@ -12,31 +15,27 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET
 });
 
+// Deletes an asset from cloudinary cloud.
 export const deleteAsset = async public_id => {
   let result = await cloudinary.uploader.destroy(public_id);
   console.log(`(Cloudinary) Deleted asset ${public_id}.`);
 };
 
+// Uploades an asset to cloudinary cloud.
 export const uploadAsset = async ({ file, country }, author) => {
   // Get metadata from uploading file.
   // Not extracting createReadStream function as it throws fs-capacitor error exceeding stack
   // limit when called. Use createReadStream from 'fs' (File System) built-in node module instead.
   let { filename, mimetype, encoding } = await file;
+
   // File validation.
-  if (!mimetype.includes('image/')) throw new Error('File must be an image!');
+  throwError(!mimetype.includes('image/'), 'File must be an image!');
 
   // Create filepath essential for createReamStream function.
   // As there is no access to file path in input tag all files will be uploaded from desktop.
   // Temporary solution!
   const filepath = `C:\\Users\\managervcf\\Desktop\\${filename}`;
 
-  // Print file details.
-  console.log('<<<< UPLOADED PHOTO >>>>');
-  console.log('Filepath =====', filepath);
-  console.log('Filename =====', filename);
-  console.log('Country =====', country);
-	console.log('Author =====', author);
-	
   // Create readableStream with provided filepath.
   const readableStream = createReadStream(filepath);
 
@@ -70,7 +69,7 @@ export const uploadAsset = async ({ file, country }, author) => {
       });
     } catch (error) {
       throw new Error(
-        `(Cloudinary) Failed to upload photo! Error:${error.message}`
+        `(Cloudinary) Failed to upload photo! Error: ${error.message}`
       );
     }
   };

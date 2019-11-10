@@ -58,7 +58,7 @@ const PhotoFormNew = ({ history, client }) => {
 							onChange={e => setFile(e.target.files[0])}
 						/>
 						<button disabled={loading} type="submit">
-							{loading ? <LoaderInline loading={loading} size={15} /> : 'Send'}
+							{loading ? 'Uploading...' : 'Send'}
 						</button>
 					</form>
 				)}

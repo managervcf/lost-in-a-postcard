@@ -4,7 +4,7 @@ import { Schema, model } from 'mongoose';
 // Import pagination helper library.
 import mongoosePaginate from 'mongoose-paginate';
 
-// Import error handler from middleware.
+// Import cloudinary helpers and error handler from middleware.
 import { uploadAsset, deleteAsset, throwError } from '../utils';
 
 // Define schema.
@@ -46,13 +46,13 @@ const photoSchema = new Schema(
 // Insert plugins.
 photoSchema.plugin(mongoosePaginate);
 
-// BUSINESS LOGIC.
+//// BUSINESS LOGIC.
 
 // Find and paginate requested photos. Default max photos is 100.
 photoSchema.statics.findPhotos = async function({
   country = '',
   featured,
-  limit = 1000,
+  limit = 100,
   page = 1
 }) {
   // Validate page and limit variables.
@@ -67,17 +67,17 @@ photoSchema.statics.findPhotos = async function({
     page
   };
 
-  // Create a mongoose query.
+  // Create an empty mongoose query.
   let query = {};
 
+  // If there is a country that need to be searched for, build new query.
   if (country) {
     // Form trimmed and case-insensitive country name ready for query.
-    query.name = new RegExp(country.trim(), 'i');
+    query.name = new RegExp(country.trim(), 'i'); // 'i' - case-insensitive flag
 
-    // Find searched country
+    // Find searched country.
     let foundCountry = await model('Country').findOne(query);
 
-    console.log(query);
     // If found a country, build a query with its id.
     query = foundCountry ? { country: foundCountry.id } : { country: null };
   }
@@ -134,8 +134,6 @@ photoSchema.statics.addPhoto = async function({ id, username }, args) {
     throwError(!createdCountry, 'Could not create new country.');
   }
 
-  console.log('existingCountry', existingCountry);
-
   // Create new photo object.
   let newPhoto = { ...args, upload, author: id, country: countryId };
 
@@ -168,8 +166,8 @@ photoSchema.statics.addPhoto = async function({ id, username }, args) {
 photoSchema.statics.deletePhoto = async function(id) {
   // Delete photo and populate author field to access his id.
   let deletedPhoto = await this.findByIdAndDelete(id)
-    .populate('author')
-    .populate('country');
+    .populate('country')
+    .populate('author');
   throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
 
   // Delete photo from cloudinary.
@@ -183,16 +181,35 @@ photoSchema.statics.deletePhoto = async function(id) {
   // Update user with updated photos array.
   let updatedUser = await model('User').findByIdAndUpdate(
     deletedPhoto.author.id,
-    { photos: user.photos.filter(photoId => photoId != id) }
+    { photos: user.photos.filter(photoId => photoId != id) },
+    { new: true }
   );
   throwError(!updatedUser, 'Cannot update user. User does not exist.');
+
+  // Get country by id to modify photos array.
+  let country = await model('Country').findById(deletedPhoto.country.id);
+  throwError(!country, 'Country does not exist.');
 
   // Update country with updated photos array.
   let updatedCountry = await model('Country').findByIdAndUpdate(
     deletedPhoto.country.id,
-    { photos: country.photos.filter(photoId => photoId != id) }
+    { photos: country.photos.filter(photoId => photoId != id) },
+    { new: true }
   );
+
   throwError(!updatedCountry, 'Cannot update country. Country does not exist.');
+
+  // Delete country if the removed photo was the last from this country.
+  if (updatedCountry.photos.length === 0) {
+    let deletedCountry = await model('Country').findByIdAndDelete(
+      updatedCountry.id
+    );
+    throwError(
+      !deletedCountry,
+      'Cannot delete country. Country does not exist.'
+    );
+    console.log(`(MongoDB) Deleted ${deletedCountry.name} country.`);
+  }
 
   // Return deleted photo.
   console.log(
