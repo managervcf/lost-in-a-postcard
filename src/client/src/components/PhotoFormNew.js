@@ -30,6 +30,7 @@ const PhotoFormNew = ({ history, client }) => {
 						className="upload-form"
 						onSubmit={e => handleSubmit(e, uploadMutation)}
 					>
+						{error && <div>{error.message}</div>}
 						<input
 							type="text"
 							required
