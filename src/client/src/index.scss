@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand|Caveat|Futura|Ubuntu');
 
-$color-main-background: #f7f7f7;
+$color-main-background: white;
 $color-main-background-dark: #eeeeee;
 $color-main-primary: #929aab;
 $color-main-text: #393e46;
@@ -17,6 +17,7 @@ using universal selector - global reset */
 
 html {
   font-size: 100%;
+  // Prevent scrollbar from resizing viewport.
   margin-left: calc(100vw - 100%);
 }
 
@@ -40,7 +41,7 @@ body {
 }
 
 .page-title {
-  font-family: Caveat;
+  font-family: 'Caveat', 'Quicksand';
   font-size: 3rem;
   margin: 20px 0 10px 0;
 }
@@ -161,6 +162,13 @@ body {
 
 .logout-button {
   display: inline;
+}
+
+.frame {
+  box-shadow: 0 10px 10px $color-main-background-dark;
+  border-radius: 15px;
+  padding: 5px;
+  margin: 5px;
 }
 
 a {
