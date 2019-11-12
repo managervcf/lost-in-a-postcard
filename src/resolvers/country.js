@@ -1,5 +1,5 @@
 // Import resolver guards.
-import { isAuthenticated, isAuthorized } from '../utils';
+import { isAuthorized } from '../utils';
 
 // Create and immediately export default resolvers.
 export default {
