@@ -12,7 +12,10 @@ const photoSchema = new Schema(
   {
     upload: {
       public_id: String,
-      url: String
+      url: String,
+      width: String,
+      height: String,
+      size: Number
     },
     country: {
       type: Schema.Types.ObjectId,

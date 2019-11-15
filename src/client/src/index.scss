@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Quicksand|Caveat|Futura|Ubuntu");
+@import url('https://fonts.googleapis.com/css?family=Quicksand|Caveat|Futura|Ubuntu');
 
 $color-main-background: white;
 $color-main-background-dark: #eeeeee;
@@ -12,20 +12,22 @@ using universal selector - global reset */
 *::before {
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
+  box-sizing: border-box;
+}
+*::-webkit-scrollbar {
+  display: none;
 }
 
 html {
   font-size: 100%;
   // Prevent scrollbar from resizing viewport.
-  margin-left: calc(100vw - 100%);
 }
 
 body {
   box-sizing: border-box;
-  font-family: "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -41,26 +43,48 @@ body {
 }
 
 .page-title {
-  font-family: "Caveat", "Quicksand";
+  font-family: 'Caveat', 'Quicksand';
   font-size: 3rem;
-  margin: 20px 0 10px 0;
+  padding: 1rem 0;
 }
 
 .page-description {
-  margin: 0 0 25px 0;
   font-size: 1rem;
   font-weight: normal;
 }
 
 .navbar {
-  margin: 10px 0;
+  padding: 0.5rem 0;
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  align-items: center;
+
+  &-list {
+    padding-bottom: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: scroll hidden;
+    white-space: nowrap;
+
+    &:hover::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, rgba(255,255,255,1) 10%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 90%);
+    }
+    
+    // Edit scrollbar.
+    &::-webkit-scrollbar {
+      cursor: grab;
+      display: inline-block;
+      height: 0.7rem;
+      /* Track and thumb */
+      &-track,
+      &-thumb {
+        background: white;
+      }
+    }
+  }
 
   &-item {
-    margin: 0 10px;
+    flex-grow: 2;
+    padding: 0 1rem;
   }
 }
 
@@ -73,7 +97,7 @@ body {
   width: 100%;
 
   &-description {
-    margin: 20px 0;
+    margin: 10px 0 20px 0;
     max-width: 500px;
   }
 
@@ -83,8 +107,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    margin-top: 10px;
+    border-radius: 0px;
+    margin-top: 4px;
     transition: 0.8s all, 1s transform ease-out;
     background-color: $color-main-background;
   }
@@ -112,6 +136,7 @@ body {
     transition: inherit;
     opacity: 1;
     transform: translateY(-10px);
+    text-shadow: 0 0 30px white;
 
     &-title {
       font-weight: bold;
@@ -165,8 +190,8 @@ body {
 }
 
 .frame {
-  box-shadow: 0 10px 10px $color-main-background-dark;
-  border-radius: 15px;
+  box-shadow: 0 10px 6px rgba($color-main-background-dark, 0.5);
+  border-radius: 8px;
   padding: 5px;
   margin: 5px;
 }
@@ -177,11 +202,19 @@ a {
 }
 
 button {
+  transition: 0.3s;
   font-family: inherit;
   font-size: 0.8rem;
   margin: 10px;
-  padding: 3px 12px;
-  border-radius: 10px;
+  padding: 4px 10px;
+  border: none;
+  box-shadow: 0 2px rgba($color-main-text, 0.8);
+  border-radius: 8px;
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
 }
 
 input {
@@ -192,6 +225,20 @@ input {
   text-align: center;
   border: none;
   border-radius: 10px;
+
+  // Edit file input.
+  &::-webkit-file-upload-button {
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    margin: inherit;
+    padding: inherit;
+    border-radius: inherit;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 .login-form {
@@ -214,11 +261,12 @@ input {
 
 .dim {
   transition: opacity 1s ease, filter 1s ease;
-  opacity: 0.2;
-  filter: blur(2px);
+  opacity: 0.3;
+  filter: blur(1px);
 }
 
 .row {
+  width: 100vw;
   display: flex;
   flex-wrap: wrap;
   // padding: 0 2px;
@@ -228,7 +276,7 @@ input {
 .column {
   flex: 25%;
   max-width: 25%;
-  padding: 0 5px;
+  padding: 0 2px;
 }
 
 .column img {

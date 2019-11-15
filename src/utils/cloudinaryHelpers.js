@@ -55,8 +55,12 @@ export const uploadAsset = async ({ file, country }, author) => {
           },
           (error, result) => {
             if (result) {
+              // Assign details of the uploaded photo to photo object which will be saved in database.
               photo.url = result.secure_url;
               photo.public_id = result.public_id;
+              photo.width = result.width;
+              photo.height = result.height;
+              photo.size = result.bytes;
               console.log(`(Cloudinary) Uploaded new photo at ${photo.url}.`);
               resolve(photo);
             } else {

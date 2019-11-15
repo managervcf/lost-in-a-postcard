@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import Gallery from 'react-photo-gallery';
 
 import PhotoItem from './PhotoItem';
 import PhotoGalleryDescription from './PhotoGalleryDescription';
@@ -34,13 +35,21 @@ const PhotoGallery = ({ location, match }) => {
         if (data.photos.docs.length === 0)
           return <ErrorMessage text="No photos found :(" />;
 
+        // Shuffle array so the gallery is different each time.
         let shuffledPhotos = shuffle(data.photos.docs);
+        console.log(shuffledPhotos);
+
+        // // Create a photo object for react-photo-gallery lib with src, height, width.
+        // let photos = shuffledPhotos.map(
+        //   ({ upload: { url, height, width } }) => ({ src: url, height, width })
+        // );
         let galleryItems = shuffledPhotos.map(photo => (
           <PhotoItem key={photo.id} {...photo} />
         ));
 
         return (
           <section className="gallery">
+            {/* <Gallery photos={photos} /> */}
             <PhotoGalleryDescription
               countryName={query.country}
               featured={query.featured}

@@ -58,5 +58,8 @@ export default gql`
 	type UploadedFile {
 		public_id: String!
 		url: String!
+		width: Int
+		height: Int
+		size: Int
 	}
 `;
