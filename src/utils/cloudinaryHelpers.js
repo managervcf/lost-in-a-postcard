@@ -18,6 +18,7 @@ cloudinary.config({
 // Deletes an asset from cloudinary cloud.
 export const deleteAsset = async public_id => {
   let result = await cloudinary.uploader.destroy(public_id);
+  throwError(!result, `(Cloudinary) Could not delete asset ${public_id}.`);
   console.log(`(Cloudinary) Deleted asset ${public_id}.`);
 };
 
