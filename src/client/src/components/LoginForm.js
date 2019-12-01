@@ -22,6 +22,7 @@ const LoginForm = ({ history, mutate, loading }) => {
         placeholder='Login'
         value={login}
         onChange={e => setLogin(e.target.value)}
+        autofocus
       />
       <input
         required
