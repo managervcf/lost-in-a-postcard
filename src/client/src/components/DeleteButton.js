@@ -1,28 +1,31 @@
 import React from 'react';
-import { Mutation, withApollo } from 'react-apollo';
+import { useMutation, useApolloClient } from 'react-apollo';
 
 import { DELETE_PHOTO } from '../graphql/mutations';
 import { PHOTOS } from '../graphql/queries';
 
-const DeleteButton = ({ id, country, client }) => (
-  <Mutation
-    mutation={DELETE_PHOTO}
-    variables={{ id }}
-    onCompleted={async () => await client.resetStore()}
-    refetchQueries={async () => await [{ query: PHOTOS }]}
-  >
-    {(mutate, { error, loading }) => {
-      let { me } = client.cache.data.data.ROOT_QUERY;
-      if (error) return <p>{error.message}</p>;
-      if (me) {
-        return (
-          <button disabled={loading} onClick={mutate}>
-            {loading ? 'Deleting...' : 'Delete'}
-          </button>
-        );
-      } else return null;
-    }}
-  </Mutation>
-);
+const DeleteButton = ({ id }) => {
+  // Access apollo store.
+  const client = useApolloClient();
 
-export default withApollo(DeleteButton);
+  const [deletePhoto, { loading, error }] = useMutation(DELETE_PHOTO, {
+    variables: { id },
+    onCompleted: async () => await client.resetStore(),
+    refetchQueries: async () => await [{ query: PHOTOS }]
+  });
+
+  // Check if user is logged in by checking the store.
+  let { me } = client.cache.data.data.ROOT_QUERY;
+
+  // Handle error and case where there is no user logged in.
+  if (error) return <p>{error.message}</p>;
+  if (!me) return null;
+
+  return (
+    <button disabled={loading} onClick={deletePhoto}>
+      {loading ? 'Deleting...' : 'Delete'}
+    </button>
+  );
+};
+
+export default DeleteButton;

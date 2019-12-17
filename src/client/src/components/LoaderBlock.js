@@ -1,6 +1,6 @@
 import React from 'react';
-import { PropagateLoader } from 'react-spinners';
 import withLoader from '../wrappers/withLoader';
+import { PropagateLoader } from 'react-spinners';
 
 const LoaderBlock = ({ loading, size }) => (
   <div className="loader-block">

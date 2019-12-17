@@ -1,6 +1,7 @@
 import React from 'react';
 
 const GalleryLayout = ({ galleryItems }) => {
+  // Build gallery layout.
   const columns = galleryItems
     // Create an array of values in 4 columns.
     .reduce(

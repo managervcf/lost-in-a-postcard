@@ -1,11 +1,10 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
 import PhotoItem from './PhotoItem';
 import PhotoGalleryDescription from './PhotoGalleryDescription';
 import GalleryLayout from './GalleryLayout';
-
 import LoaderBlock from './LoaderBlock';
 import ErrorMessage from './ErrorMessage';
 
@@ -26,34 +25,34 @@ const PhotoGallery = ({ location, match }) => {
     }
   }
 
+  // Query graphql backend.
+  const response = useQuery(PHOTOS);
+  console.log('GraphQL response:\n', response);
+  const { data, loading, error } = response;
+
+  // Handle error, loading and lack of photos.
+  if (error) return <ErrorMessage text="Cannot load gallery :(" />;
+  if (loading) return <LoaderBlock size={5} loading={loading} />;
+  if (data.photos.docs.length === 0)
+    return <ErrorMessage text="No photos found :(" />;
+
+  // Shuffle array so the gallery is different each time.
+  let shuffledPhotos = shuffle(data.photos.docs);
+  console.log('Shuffled photos: \n', shuffledPhotos);
+
+  // Build gallery items.
+  let galleryItems = shuffledPhotos.map(photo => (
+    <PhotoItem key={photo.id} {...photo} />
+  ));
+
   return (
-    <Query query={PHOTOS} variables={query}>
-      {({ data, loading, error }) => {
-        if (error) return <ErrorMessage text="Cannot load gallery :(" />;
-        if (loading) return <LoaderBlock size={5} loading={loading} />;
-        if (data.photos.docs.length === 0)
-          return <ErrorMessage text="No photos found :(" />;
-
-        // Shuffle array so the gallery is different each time.
-        let shuffledPhotos = shuffle(data.photos.docs);
-        console.log('Shuffled photos: \n', shuffledPhotos);
-
-        let galleryItems = shuffledPhotos.map(photo => (
-          <PhotoItem key={photo.id} {...photo} />
-        ));
-
-        return (
-          <section className="gallery">
-            {/* <Gallery photos={photos} /> */}
-            <PhotoGalleryDescription
-              countryName={query.country}
-              featured={query.featured}
-            />
-            <GalleryLayout galleryItems={galleryItems} />
-          </section>
-        );
-      }}
-    </Query>
+    <section className="gallery">
+      <PhotoGalleryDescription
+        countryName={query.country}
+        featured={query.featured}
+      />
+      <GalleryLayout galleryItems={galleryItems} />
+    </section>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ClipLoader } from 'react-spinners';
 import withLoader from '../wrappers/withLoader';
+import { ClipLoader } from 'react-spinners';
 
 const LoaderInline = ({ loading, size }) => (
   <span className="loader-inline">

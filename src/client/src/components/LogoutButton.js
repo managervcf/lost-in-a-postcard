@@ -1,20 +1,24 @@
 import React from 'react';
-import { withApollo } from 'react-apollo';
+import { useApolloClient } from 'react-apollo';
 
-const LogoutButton = ({ history, client }) => (
-  <button
-    className="logout-button"
-    onClick={async () => {
-      // Remove auth token from browser localStorage.
-      localStorage.clear();
-      // Reset apollo store to rerender react components.
-      await client.resetStore();
-      console.log('logged out!');
-      // history.push('/login');
-    }}
-  >
-    Logout
-  </button>
-);
+const LogoutButton = () => {
+  // Use apollo store.
+  const client = useApolloClient();
 
-export default withApollo(LogoutButton);
+  return (
+    <button
+      className="logout-button"
+      onClick={async () => {
+        // Remove auth token from browser localStorage.
+        localStorage.clear();
+        // Reset apollo store to rerender react components.
+        await client.resetStore();
+        console.log('Logged out!');
+      }}
+    >
+      Logout
+    </button>
+  );
+};
+
+export default LogoutButton;

@@ -2,11 +2,11 @@ import React from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 import Logo from './Logo';
-import Navbar from './Navbar';
 import Login from './Login';
-import PhotoGallery from './PhotoGallery';
-import Dashboard from './Dashboard';
+import Navbar from './Navbar';
 import NoMatch from './NoMatch';
+import Dashboard from './Dashboard';
+import PhotoGallery from './PhotoGallery';
 
 const App = () => (
   <div>
