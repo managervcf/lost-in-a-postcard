@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 
 import CountryFormEdit from './CountryFormEdit';
-import LogoutButton from './LogoutButton';
+import ButtonLogout from './ButtonLogout';
 import PhotoFormNew from './PhotoFormNew';
 import Frame from './Frame';
 
@@ -32,7 +32,7 @@ const Dashboard = () => {
           <span>Logged in as </span>
           <strong>{data.me.username} </strong>
         </p>
-        <Route component={LogoutButton} />
+        <Route component={ButtonLogout} />
       </div>
       <Frame>
         <button onClick={() => setShowPhotoFormNew(!showPhotoFormNew)}>

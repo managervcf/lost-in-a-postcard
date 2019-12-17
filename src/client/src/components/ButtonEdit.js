@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApolloClient } from 'react-apollo';
 
-const EditButton = ({ editMode, setEditMode }) => {
+const ButtonDelete = ({ editMode, setEditMode }) => {
   // Access apollo store.
   const client = useApolloClient();
   
@@ -18,4 +18,4 @@ const EditButton = ({ editMode, setEditMode }) => {
   );
 };
 
-export default EditButton;
+export default ButtonDelete;

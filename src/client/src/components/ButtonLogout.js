@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApolloClient } from 'react-apollo';
 
-const LogoutButton = () => {
+const ButtonLogout = () => {
   // Use apollo store.
   const client = useApolloClient();
 
@@ -21,4 +21,4 @@ const LogoutButton = () => {
   );
 };
 
-export default LogoutButton;
+export default ButtonLogout;

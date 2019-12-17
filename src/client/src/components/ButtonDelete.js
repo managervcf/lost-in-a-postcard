@@ -1,14 +1,11 @@
 import React from 'react';
-import { useMutation, useApolloClient } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 
 import { DELETE_PHOTO } from '../graphql/mutations';
 import { PHOTOS } from '../graphql/queries';
 
 const DeleteButton = ({ id }) => {
-  // Access apollo store.
-  const client = useApolloClient();
-
-  const [deletePhoto, { loading, error }] = useMutation(DELETE_PHOTO, {
+  const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
     variables: { id },
     onCompleted: async () => await client.resetStore(),
     refetchQueries: async () => await [{ query: PHOTOS }]

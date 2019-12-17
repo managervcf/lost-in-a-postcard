@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { useMutation, useApolloClient } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 
 import LoginForm from './LoginForm';
 
@@ -8,10 +8,7 @@ import { LOGIN } from '../graphql/mutations';
 import { ME } from '../graphql/queries';
 
 const Login = ({ history }) => {
-  // Access apollo store.
-  const client = useApolloClient();
-
-  const [login, { loading, error }] = useMutation(LOGIN, {
+  const [login, { loading, error, client }] = useMutation(LOGIN, {
     onCompleted: async ({ logIn }) => {
       // Insert token into browser localStorage.
       localStorage.setItem('token', logIn.token);
@@ -20,7 +17,9 @@ const Login = ({ history }) => {
       console.log('Logged in!');
       history.push('/photos');
     },
-    refetchQueries: () => [{ query: ME }]
+    refetchQueries: () => [{ query: ME }],
+    // Refetch queries, then mutate.
+    awaitRefetchQueries: true
   });
 
   // Error handler

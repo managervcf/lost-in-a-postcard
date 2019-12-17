@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import EditButton from './EditButton';
-import DeleteButton from './DeleteButton';
+import ButtonEdit from './ButtonEdit';
+import ButtonDelete from './ButtonDelete';
 import PhotoFormEdit from './PhotoFormEdit';
 import PhotoCaptionContent from './PhotoCaptionContent';
 
@@ -22,8 +22,8 @@ const Caption = props => {
       ) : (
         <PhotoCaptionContent {...props} />
       )}
-      <EditButton editMode={editMode} setEditMode={setEditMode} />
-      <DeleteButton {...props} />
+      <ButtonEdit editMode={editMode} setEditMode={setEditMode} />
+      <ButtonDelete {...props} />
     </div>
   );
 };

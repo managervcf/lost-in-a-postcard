@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import ErrorMessage from './ErrorMessage';
 
-const NotFound = () => (
+const NoMatch = () => (
   <div>
     <ErrorMessage text="Oops! Page you are looking for does not exist." />
     <button>
@@ -12,4 +12,4 @@ const NotFound = () => (
   </div>
 );
 
-export default NotFound;
+export default NoMatch;
