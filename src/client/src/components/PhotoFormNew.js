@@ -26,37 +26,37 @@ const PhotoFormNew = ({ history, client }) => {
       >
         {(uploadMutation, { error, loading }) => (
           <form
-            className='upload-form'
+            className="upload-form"
             onSubmit={e => handleSubmit(e, uploadMutation)}
           >
             {error && <div>{error.message}</div>}
             <input
-              type='text'
+              type="text"
               required
-              placeholder='Country'
+              placeholder="Country"
               value={country}
               onChange={e => setCountry(e.target.value)}
             />
             <input
-              type='text'
-              placeholder='Caption'
+              type="text"
+              placeholder="Caption"
               value={caption}
               onChange={e => setCaption(e.target.value)}
             />
             <label>Featured?</label>
             <input
-              type='checkbox'
+              type="checkbox"
               checked={featured}
               onChange={e => setFeatured(e.target.checked)}
             />
             <input
-              type='file'
+              type="file"
               required
               disabled={loading}
               value={file ? file.filename : 'Pick a photo'}
               onChange={e => setFile(e.target.files[0])}
             />
-            <button disabled={loading} type='submit'>
+            <button disabled={loading} type="submit">
               {loading ? 'Uploading...' : 'Send'}
             </button>
           </form>

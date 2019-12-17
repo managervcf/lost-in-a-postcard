@@ -8,17 +8,17 @@ import countrySchema from './country';
 
 // Define linkSchema that bonds all schemas together.
 const linkSchema = gql`
-	type Query {
-		_: Boolean
-	}
+  type Query {
+    _: Boolean
+  }
 
-	type Mutation {
-		_: Boolean
-	}
+  type Mutation {
+    _: Boolean
+  }
 
-	type Subscription {
-		_: Boolean
-	}
+  type Subscription {
+    _: Boolean
+  }
 `;
 
 // Export all schemas as an array.

@@ -11,7 +11,11 @@ const GalleryLayout = ({ galleryItems }) => {
       [[], [], [], []]
     )
     // Create column components with a class.
-    .map(column => <div key={Math.floor(Math.random() * 10000)} className="column">{column}</div>)
+    .map(column => (
+      <div key={Math.floor(Math.random() * 10000)} className="column">
+        {column}
+      </div>
+    ))
     // Filter out empty columns.
     .filter(column => column.length !== 0);
 

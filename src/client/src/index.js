@@ -9,12 +9,12 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
 render(
-	<ApolloProvider client={client}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</ApolloProvider>,
-	document.querySelector('#root')
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ApolloProvider>,
+  document.querySelector('#root')
 );
 
 // If you want your app to work offline and load faster, you can change

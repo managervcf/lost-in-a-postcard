@@ -62,21 +62,23 @@ const CountryFormEdit = () => {
                 </select>
                 {editedCountry.name && (
                   <input
-                    type='text'
+                    type="text"
                     value={editedCountry.name}
-                    name='name'
+                    name="name"
                     onChange={handleInputChange}
                   />
                 )}
                 {editedCountry.name && (
                   <textarea
                     value={editedCountry.description}
-                    name='description'
+                    name="description"
                     onChange={handleInputChange}
                   />
                 )}
-                {error && <ErrorMessage text='Could not edit selected country, please try again.' />}
-                <button type='submit' disabled={error}>
+                {error && (
+                  <ErrorMessage text="Could not edit selected country, please try again." />
+                )}
+                <button type="submit" disabled={error}>
                   {!loading ? 'Update' : 'Updating...'}
                 </button>
               </form>

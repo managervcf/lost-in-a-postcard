@@ -14,15 +14,15 @@ const Dashboard = () => {
   let [showCountryEditForm, setShowCountryEditForm] = useState(false);
 
   return (
-    <Query query={ME} fetchPolicy='network-only'>
+    <Query query={ME} fetchPolicy="network-only">
       {({ loading, error, data }) => {
         if (loading) return null;
         if (error) return null;
         if (!data.me) return null;
         console.log('Currently logged in user:', data.me.username);
         return (
-          <div className='dashboard'>
-            <div className='user-info'>
+          <div className="dashboard">
+            <div className="user-info">
               <p>
                 <span>Logged in as </span>
                 <strong>{data.me.username} </strong>

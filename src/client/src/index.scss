@@ -66,9 +66,14 @@ body {
     white-space: nowrap;
 
     &:hover::-webkit-scrollbar-thumb {
-      background: linear-gradient(90deg, rgba(255,255,255,1) 10%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 90%);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 1) 10%,
+        rgba(242, 242, 242, 1) 50%,
+        rgba(255, 255, 255, 1) 90%
+      );
     }
-    
+
     // Edit scrollbar.
     &::-webkit-scrollbar {
       cursor: grab;

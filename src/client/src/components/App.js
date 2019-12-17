@@ -9,21 +9,21 @@ import Dashboard from './Dashboard';
 import NoMatch from './NoMatch';
 
 const App = () => (
-	<div>
-		<header>
-			<Logo />
-			<Navbar />
-			<Dashboard />
-		</header>
-		<main>
-			<Switch>
-				<Redirect exact from="/" to="/photos/featured" />
-				<Route exact path="/login" component={Login} />
-				<Route path="/photos" component={PhotoGallery} />
-				<Route component={NoMatch} />
-			</Switch>
-		</main>
-	</div>
+  <div>
+    <header>
+      <Logo />
+      <Navbar />
+      <Dashboard />
+    </header>
+    <main>
+      <Switch>
+        <Redirect exact from="/" to="/photos/featured" />
+        <Route exact path="/login" component={Login} />
+        <Route path="/photos" component={PhotoGallery} />
+        <Route component={NoMatch} />
+      </Switch>
+    </main>
+  </div>
 );
 
 export default withRouter(App);
