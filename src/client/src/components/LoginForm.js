@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-const LoginForm = ({ history, mutate, loading }) => {
+const LoginForm = ({ mutate, loading }) => {
+  // Access history.
+  const history = useHistory();
+
   let [login, setLogin] = useState('');
   let [password, setPassword] = useState('');
 
@@ -40,4 +43,4 @@ const LoginForm = ({ history, mutate, loading }) => {
   );
 };
 
-export default withRouter(LoginForm);
+export default LoginForm;
