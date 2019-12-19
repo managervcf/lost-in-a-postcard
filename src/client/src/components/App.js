@@ -9,7 +9,7 @@ import Dashboard from './Dashboard';
 import PhotoGallery from './PhotoGallery';
 
 const App = () => (
-  <div>
+  <>
     <header>
       <Logo />
       <Navbar />
@@ -23,7 +23,7 @@ const App = () => (
         <Route component={NoMatch} />
       </Switch>
     </main>
-  </div>
+  </>
 );
 
 export default App;
