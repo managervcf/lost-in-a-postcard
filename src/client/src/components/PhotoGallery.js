@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
-import { withRouter } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 
 import PhotoItem from './PhotoItem';
 import PhotoGalleryDescription from './PhotoGalleryDescription';
@@ -11,7 +11,11 @@ import ErrorMessage from './ErrorMessage';
 import { PHOTOS } from '../graphql/queries';
 import { shuffle } from '../utils';
 
-const PhotoGallery = ({ location, match }) => {
+const PhotoGallery = () => {
+    // Use location and match object.
+    const location = useLocation();
+    const match = useRouteMatch();
+
   // Build a query depending on url.
   let query = {};
   // If url match is not exact, pull out parameters.
@@ -56,4 +60,4 @@ const PhotoGallery = ({ location, match }) => {
   );
 };
 
-export default withRouter(PhotoGallery);
+export default PhotoGallery;

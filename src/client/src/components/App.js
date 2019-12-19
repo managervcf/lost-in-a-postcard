@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Logo from './Logo';
 import Login from './Login';
@@ -26,4 +26,4 @@ const App = () => (
   </div>
 );
 
-export default withRouter(App);
+export default App;
