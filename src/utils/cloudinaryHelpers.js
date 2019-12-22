@@ -1,9 +1,5 @@
 // Import cloudinary package necessary for file uploads.
 import cloudinary from 'cloudinary';
-// Import a function from File System nodejs module that allows a file to be sent.
-// The problem with js.createReamStream(<path/filename>) is that in the browser
-// there is np access to file path. File path will be temporarily fixed to desktop.
-import { createReadStream } from 'fs';
 
 // Import error handler helper.
 import { throwError } from './';
@@ -27,18 +23,13 @@ export const uploadAsset = async ({ file, country }, author) => {
   // Get metadata from uploading file.
   // Not extracting createReadStream function as it throws fs-capacitor error exceeding stack
   // limit when called. Use createReadStream from 'fs' (File System) built-in node module instead.
-  let { filename, mimetype, encoding } = await file;
+  let { createReadStream, filename, mimetype, encoding } = await file;
 
   // File validation.
   throwError(!mimetype.includes('image/'), 'File must be an image!');
 
-  // Create filepath essential for createReamStream function.
-  // As there is no access to file path in input tag all files will be uploaded from desktop.
-  // Temporary solution!
-  const filepath = `C:\\Users\\managervcf\\Desktop\\${filename}`;
-
   // Create readableStream with provided filepath.
-  const readableStream = createReadStream(filepath);
+  const readableStream = createReadStream();
 
   // Create variable photo.
   let photo = {};

@@ -7,7 +7,8 @@
     "start": "node --exec babel-node src/index.js",
     "client": "npm run start --prefix src/client",
     "server": "nodemon --exec babel-node src/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "preinstall": "npx npm-force-resolutions"
   },
   "author": "Mateusz Pyzowski",
   "license": "ISC",
@@ -31,5 +32,8 @@
     "@babel/preset-env": "^7.7.6",
     "concurrently": "^5.0.1",
     "nodemon": "^2.0.2"
+  },
+  "resolutions": {
+    "fs-capacitor": "5.0.1"
   }
 }
