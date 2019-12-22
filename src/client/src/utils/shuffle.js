@@ -1,3 +1,4 @@
+// Shuffles an array in random order.
 export default providedArray => {
   let array = providedArray.slice();
   let currentIndex = array.length;
