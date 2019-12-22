@@ -9,7 +9,7 @@ import LoaderBlock from './LoaderBlock';
 import ErrorMessage from './ErrorMessage';
 
 import { PHOTOS } from '../graphql/queries';
-import { shuffle } from '../utils';
+import { shuffle, buildQueryVariables } from '../utils';
 
 const PhotoGallery = () => {
   // Use location and match object.
@@ -17,21 +17,11 @@ const PhotoGallery = () => {
   const match = useRouteMatch();
 
   // Build a query depending on url.
-  let query = {};
-  // If url match is not exact, pull out parameters.
-  if (!match.isExact) {
-    // If url contains featured, add featured = true as a variable.
-    if (location.pathname === '/photos/featured') {
-      query.featured = true;
-    } else {
-      // If url is not exact and it is not featured, add as country.
-      query.country = location.pathname.replace(`${match.path}/`, '');
-    }
-  }
+  let variables = buildQueryVariables(location, match);
 
   // Query graphql backend.
-  const response = useQuery(PHOTOS, { variables: query });
-  
+  const response = useQuery(PHOTOS, { variables });
+
   const { data, loading, error } = response;
 
   // Handle error, loading and lack of photos.
@@ -52,8 +42,8 @@ const PhotoGallery = () => {
   return (
     <section className="gallery">
       <PhotoGalleryDescription
-        countryName={query.country}
-        featured={query.featured}
+        countryName={variables.country}
+        featured={variables.featured}
       />
       <GalleryLayout galleryItems={galleryItems} />
     </section>
