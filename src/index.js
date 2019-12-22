@@ -1,35 +1,26 @@
 // Import helpers from dependencies.
 import 'dotenv/config';
-import cors from 'cors';
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server';
 
-// Import schema, resolvers, models and helpers.
+// Import schema, resolvers, models, helpers and config.
 import typeDefs from './schema';
 import resolvers from './resolvers';
 import models, { connectDb } from './models';
+import { maxFileSize, maxFiles } from './config';
 
 // Import middleware helpers.
 import { getMe } from './utils';
 
-// Create express server.
-const app = express();
-
-// Use application-level middleware.
-// Enables Cross Origin Resource Sharing.
-app.use(cors());
-
 // Create apollo server. Provide context
 // with models, API and current user (me).
 const server = new ApolloServer({
-  uploads: {
-    // Limits here should be stricter than config for surrounding
-    // infrastructure such as Nginx so errors can be handled elegantly by
-    // graphql-upload:
-    // https://github.com/jaydenseric/graphql-upload#type-processrequestoptions
-    maxFileSize: 30000000, // 30 MB
-    maxFiles: 50
+  // Enable CORS.
+  cors: {
+    origin: '*', // <- allow request from all domains.
+    credentials: true // <- enable CORS response for requests with credentials.
   },
+  // Upload limits.
+  uploads: { maxFileSize, maxFiles },
   typeDefs,
   resolvers,
   // Context is built once per request.
@@ -46,14 +37,10 @@ const server = new ApolloServer({
   }
 });
 
-// Apply express as Apollo Server middleware.
-// Specify path for graphql operations.
-server.applyMiddleware({ app, path: '/graphql' });
-
 // After connection with database is established,
 // express application will start.
 connectDb().then(() =>
-  app.listen(process.env.PORT || 7000, () =>
+  server.listen(process.env.PORT, () =>
     console.log(`Server ready on http://localhost:${process.env.PORT}.`)
   )
 );

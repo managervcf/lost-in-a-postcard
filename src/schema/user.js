@@ -1,5 +1,5 @@
 // Import gql helper to construct GraphQL schema.
-import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server';
 
 // Define and export default schema.
 export default gql`
