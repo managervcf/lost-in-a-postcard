@@ -22,6 +22,14 @@ app.use(cors());
 // Create apollo server. Provide context
 // with models, API and current user (me).
 const server = new ApolloServer({
+  uploads: {
+    // Limits here should be stricter than config for surrounding
+    // infrastructure such as Nginx so errors can be handled elegantly by
+    // graphql-upload:
+    // https://github.com/jaydenseric/graphql-upload#type-processrequestoptions
+    maxFileSize: 30000000, // 30 MB
+    maxFiles: 50
+  },
   typeDefs,
   resolvers,
   // Context is built once per request.
