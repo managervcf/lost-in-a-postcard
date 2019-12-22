@@ -12,9 +12,9 @@ import { PHOTOS } from '../graphql/queries';
 import { shuffle } from '../utils';
 
 const PhotoGallery = () => {
-    // Use location and match object.
-    const location = useLocation();
-    const match = useRouteMatch();
+  // Use location and match object.
+  const location = useLocation();
+  const match = useRouteMatch();
 
   // Build a query depending on url.
   let query = {};
@@ -30,8 +30,8 @@ const PhotoGallery = () => {
   }
 
   // Query graphql backend.
-  const response = useQuery(PHOTOS);
-  console.log('GraphQL response:\n', response);
+  const response = useQuery(PHOTOS, { variables: query });
+  
   const { data, loading, error } = response;
 
   // Handle error, loading and lack of photos.
