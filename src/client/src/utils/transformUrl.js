@@ -6,13 +6,12 @@ export default url => {
   if (/(.gif)$/gi.test(url)) return url;
   // Otherwise, transform an image.
   else {
-    // Build transformation string used in url.
-    let transformations = `f_auto,q_${options.image.quality},w_${options.image.width}`;
-
     // Build new url with all transformation details.
-    let transformedUrl = url.replace('/upload', `/upload/${transformations}`);
-
-    // Return transformed URL
+    let transformedUrl = url.replace(
+      '/upload',
+      `/upload/f_auto,q_${options.image.quality},w_${options.image.width}`
+    );
+    // Return transformed URL.
     return transformedUrl;
   }
 };
