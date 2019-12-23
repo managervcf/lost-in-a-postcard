@@ -7,7 +7,7 @@ const NavbarItem = ({ countryName }) => (
   <NavLink
     className="navbar-item"
     activeStyle={{ fontWeight: 'bold' }}
-    to={`/photos/${countryName}`}
+    to={`/photos/${countryName.toLowerCase()}`}
   >
     {countryName}
   </NavLink>
