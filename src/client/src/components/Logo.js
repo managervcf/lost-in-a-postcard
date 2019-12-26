@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import withLoader from '../wrappers/withLoader';
 
 const Logo = () => (
-  <Link to="/photos">
-    <h1 className="page-title">Lost in a Postcard</h1>
-  </Link>
+  <h1 className="page-title">
+    <Link to="/photos">Lost in a Postcard</Link>
+  </h1>
 );
 
 export default withLoader(Logo);
