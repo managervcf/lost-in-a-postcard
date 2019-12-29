@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 
 import { ADD_PHOTO } from '../graphql/mutations';
-import { PHOTOS } from '../graphql/queries';
 
 const PhotoFormNew = () => {
   // Define country state variable.
@@ -16,8 +15,7 @@ const PhotoFormNew = () => {
 
   // Use mutation hook.
   const [uploadMutation, { error, loading }] = useMutation(ADD_PHOTO, {
-    onCompleted: async () => await client.resetStore(),
-    refetchQueries: () => [{ query: PHOTOS }]
+    onCompleted: () => client.resetStore()
   });
 
   // Define submit handler.
