@@ -254,8 +254,8 @@ input {
 }
 
 .fade-in {
-  transition: opacity 1s ease, transform 1s ease;
-  transform: translateY(-5px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(5px);
   opacity: 0;
 
   &.visible {
