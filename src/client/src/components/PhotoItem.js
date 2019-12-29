@@ -5,17 +5,17 @@ import PhotoImage from './PhotoImage';
 import PhotoCaption from './PhotoCaption';
 
 const PhotoItem = props => {
-  let [toggle, setToggle] = useState(false);
+  let [isVisible, setIsVisible] = useState(false);
 
   return (
     <article
       className="gallery-item"
-      onClick={() => setToggle(!toggle)}
-      onWheel={() => setTimeout(() => setToggle(false), 1000)}
-      onTouchMove={() => setTimeout(() => setToggle(false), 1000)}
+      onClick={() => setIsVisible(!isVisible)}
+      onWheel={() => setTimeout(() => setIsVisible(false), 1000)}
+      onTouchMove={() => setTimeout(() => setIsVisible(false), 1000)}
     >
-      <PhotoImage {...props} visible={toggle} />
-      <PhotoCaption {...props} visible={toggle} />
+      <PhotoImage {...props} visible={isVisible} />
+      <PhotoCaption {...props} visible={isVisible} />
     </article>
   );
 };
