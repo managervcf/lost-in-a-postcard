@@ -7,12 +7,14 @@ import PhotoFormEdit from './PhotoFormEdit';
 import PhotoCaptionContent from './PhotoCaptionContent';
 
 const Caption = props => {
-  let { visible } = props;
+  // Checks if the caption is in edit mode.
   let [editMode, setEditMode] = useState(false);
+
+  // Build caption classes based on visibility.
   let captionClasses = classnames({
     'gallery-caption': true,
     'fade-in': true,
-    visible
+    'visible': props.visible
   });
 
   return (
