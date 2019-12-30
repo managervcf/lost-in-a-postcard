@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 
 import LoaderInline from './LoaderInline';
-import withLoader from '../wrappers/withLoader';
+
 import { EDIT_PHOTO } from '../graphql/mutations';
-import { PHOTOS } from '../graphql/queries';
 
 const PhotoFormEdit = props => {
   let { id, country, caption, featured, author } = props;
@@ -16,8 +15,7 @@ const PhotoFormEdit = props => {
 
   // Use mutation hook.
   const [updateMutation, { error, loading }] = useMutation(EDIT_PHOTO, {
-    onCompleted: async () => await client.resetStore(),
-    refetchQueries: () => [{ query: PHOTOS }]
+    onCompleted: async () => await client.resetStore()
   });
 
   // Define submit handler.
@@ -62,4 +60,4 @@ const PhotoFormEdit = props => {
   );
 };
 
-export default withLoader(PhotoFormEdit);
+export default PhotoFormEdit;
