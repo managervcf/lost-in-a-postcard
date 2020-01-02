@@ -26,7 +26,7 @@ const PhotoFormNew = () => {
 
   return (
     <form
-      className="upload-form"
+      className="form"
       onSubmit={e => handleSubmit(e, uploadMutation)}
     >
       {error && <div>{error.message}</div>}
@@ -43,12 +43,14 @@ const PhotoFormNew = () => {
         value={caption}
         onChange={e => setCaption(e.target.value)}
       />
-      <label>Featured?</label>
-      <input
-        type="checkbox"
-        checked={featured}
-        onChange={e => setFeatured(e.target.checked)}
-      />
+      <div className="featured-input">
+        <label>{featured ? 'Featured!': 'Feature?'}</label>
+        <input
+          type="checkbox"
+          checked={featured}
+          onChange={e => setFeatured(e.target.checked)}
+        />
+      </div>
       <input
         type="file"
         required

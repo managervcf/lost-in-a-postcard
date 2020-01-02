@@ -4,7 +4,6 @@ import { useLocation, useRouteMatch } from 'react-router-dom';
 
 import PhotoItem from './PhotoItem';
 import PhotoGalleryDescription from './PhotoGalleryDescription';
-import GalleryLayout from './GalleryLayout';
 import LoaderBlock from './LoaderBlock';
 import ErrorMessage from './ErrorMessage';
 
@@ -13,16 +12,15 @@ import { shuffle, buildQueryVariables } from '../utils';
 
 const PhotoGallery = () => {
   // Use location and match object.
-  const location = useLocation();
-  const match = useRouteMatch();
+  let location = useLocation();
+  let match = useRouteMatch();
 
   // Build a query depending on url.
   let variables = buildQueryVariables(location, match);
+  let { country, featured } = variables;
 
   // Query graphql backend.
-  const response = useQuery(PHOTOS, { variables });
-
-  const { data, loading, error } = response;
+  const { data, loading, error } = useQuery(PHOTOS, { variables });
 
   // Handle error, loading and lack of photos.
   if (error) return <ErrorMessage text="Cannot load gallery :(" />;
@@ -30,22 +28,15 @@ const PhotoGallery = () => {
   if (data.photos.docs.length === 0)
     return <ErrorMessage text="No photos found :(" />;
 
-  // Shuffle array so the gallery is different each time.
-  let shuffledPhotos = shuffle(data.photos.docs);
-  console.log('Shuffled photos: \n', shuffledPhotos);
-
-  // Build gallery items.
-  let galleryItems = shuffledPhotos.map(photo => (
+  // Build gallery items on shuffled array.
+  let galleryItems = shuffle(data.photos.docs).map(photo => (
     <PhotoItem key={photo.id} {...photo} />
   ));
 
   return (
     <section className="gallery">
-      <PhotoGalleryDescription
-        countryName={variables.country}
-        featured={variables.featured}
-      />
-      <GalleryLayout galleryItems={galleryItems} />
+      <PhotoGalleryDescription countryName={country} featured={featured} />
+      {galleryItems}
     </section>
   );
 };

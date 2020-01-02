@@ -64,28 +64,28 @@ const CountryFormEdit = () => {
   ));
 
   return (
-    <form onSubmit={e => handleSubmit(e)}>
-      <select defaultValue={0} onChange={e => handleSelect(e, data.countries)}>
+    <form className="form" onSubmit={e => handleSubmit(e)}>
+      <select
+        defaultValue={0}
+        required
+        onChange={e => handleSelect(e, data.countries)}
+      >
         <option value={0} disabled>
-          --Country--
+          Pick a country
         </option>
         {countryOptions}
       </select>
-      {editedCountry.name && (
-        <input
-          type="text"
-          value={editedCountry.name}
-          name="name"
-          onChange={handleInputChange}
-        />
-      )}
-      {editedCountry.name && (
-        <textarea
-          value={editedCountry.description}
-          name="description"
-          onChange={handleInputChange}
-        />
-      )}
+      <input
+        type="text"
+        value={editedCountry.name}
+        name="name"
+        onChange={handleInputChange}
+      />
+      <textarea
+        value={editedCountry.description}
+        name="description"
+        onChange={handleInputChange}
+      />
       {mError && (
         <ErrorMessage text="Could not edit selected country, please try again." />
       )}

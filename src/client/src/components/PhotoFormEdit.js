@@ -35,7 +35,7 @@ const PhotoFormEdit = props => {
 
   return (
     <form
-      className="photo-edit-form"
+      className="form"
       onSubmit={e => handleSubmit(e, updateMutation)}
     >
       <p>
@@ -43,7 +43,7 @@ const PhotoFormEdit = props => {
       </p>
       <input
         type="text"
-        placeholder={caption}
+        placeholder={caption || 'Caption'}
         value={editedCaption}
         onChange={e => setEditedCaption(e.target.value)}
       />
