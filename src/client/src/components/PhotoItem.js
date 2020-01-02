@@ -10,9 +10,10 @@ const PhotoItem = props => {
   return (
     <article
       className="gallery-item"
-      onClick={() => setIsVisible(!isVisible)}
-      onWheel={() => setTimeout(() => setIsVisible(false), 1000)}
+      onMouseOver={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
       onTouchMove={() => setTimeout(() => setIsVisible(false), 1000)}
+      onScroll={() => setTimeout(() => setIsVisible(false), 1000)}
     >
       <PhotoImage {...props} visible={isVisible} />
       <PhotoCaption {...props} visible={isVisible} />
