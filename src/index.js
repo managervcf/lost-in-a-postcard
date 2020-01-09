@@ -1,6 +1,7 @@
 // Import helpers from dependencies.
 import 'dotenv/config';
-import { ApolloServer } from 'apollo-server';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 
 // Import schema, resolvers, models, helpers and config.
 import typeDefs from './schema';
@@ -10,6 +11,15 @@ import { maxFileSize, maxFiles } from './config';
 
 // Import middleware helpers.
 import { getMe } from './utils';
+
+// Create express server.
+const app = express();
+
+// Express will serve up production assets.
+app.use(express.static('client/build'));
+app.get('*', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+);
 
 // Create apollo server. Provide context
 // with models, API and current user (me).
@@ -37,10 +47,13 @@ const server = new ApolloServer({
   }
 });
 
+// Apply middleware.
+server.applyMiddleware({ app, path: '/graphql' });
+
 // After connection with database is established,
 // express application will start.
 connectDb().then(() =>
-  server.listen(process.env.PORT, () =>
+  app.listen(process.env.PORT, () =>
     console.log(`Server ready on http://localhost:${process.env.PORT}.`)
   )
 );
