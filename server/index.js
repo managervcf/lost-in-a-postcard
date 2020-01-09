@@ -1,6 +1,5 @@
 // Import helpers from dependencies.
 import 'dotenv/config';
-import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
@@ -18,7 +17,8 @@ const app = express();
 
 // Express will serve up production assets.
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(__dirname + '../client/build'));
+  app.use(express.static(__dirname + '/../client/build'));
+  console.log(__dirname + '/../client/build');
 }
 
 // Create apollo server. Provide context
