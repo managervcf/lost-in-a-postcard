@@ -1,5 +1,6 @@
 // Import helpers from dependencies.
 import 'dotenv/config';
+import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
@@ -15,10 +16,14 @@ import { getMe } from './utils';
 // Create express server.
 const app = express();
 
-// Express will serve up production assets.
+// Express will serve up production assets
+// Express will serve up the index.html file
+// if it doesn't recognize the route.
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(__dirname + '/../client/build'));
-  console.log(__dirname + '/../client/build');
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, '/../client/build', 'index.html'))
+  );
 }
 
 // Create apollo server. Provide context
