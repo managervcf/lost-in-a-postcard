@@ -10,8 +10,10 @@ import { createUploadLink } from 'apollo-upload-client';
 
 const cache = new InMemoryCache();
 
+const baseUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_GRAPHQL_URI : 'http://localhost:4000';
+
 const httpLink = createUploadLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: `${baseUrl}/graphql`,
   credentials: 'same-origin'
 });
 
