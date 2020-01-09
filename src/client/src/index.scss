@@ -55,7 +55,7 @@ body {
 .navbar {
   display: flex;
   justify-content: center;
-  
+
   &-list {
     padding-bottom: 0.5rem;
     display: flex;
@@ -133,11 +133,11 @@ body {
     transition: inherit;
 
     &-title {
-      font-weight: bold;
-      line-height: 3rem;
+      line-height: 2rem;
     }
 
     &-description {
+      font-weight: bold;
       line-height: 2rem;
     }
 

@@ -1,12 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const PhotoCaptionContent = ({ country: { name }, caption }) => (
+const PhotoCaptionContent = ({ country, caption }) => (
   <div className="gallery-caption-content">
-    <span className="gallery-caption-title">
-      <Link to={`/photos/${name.toLowerCase()}`}>{name}</Link>
-    </span>
     <span className="gallery-caption-description">{caption}</span>
+    <span className="gallery-caption-title">{country.name}</span>
   </div>
 );
 
