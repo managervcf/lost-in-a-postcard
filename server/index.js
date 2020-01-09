@@ -18,7 +18,7 @@ const app = express();
 
 // Express will serve up production assets.
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../client/build'));
+  app.use(express.static(__dirname + '../client/build'));
 }
 
 // Create apollo server. Provide context
