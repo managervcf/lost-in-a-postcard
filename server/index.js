@@ -1,5 +1,7 @@
 // Import helpers from dependencies.
 import 'dotenv/config';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
