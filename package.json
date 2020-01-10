@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "build": "babel server -d dist",
     "client": "npm run start --prefix client",
-    "server": "nodemon --exec babel-node server/index.js",
+    "server": "npm run build %% nodemon dist/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "preinstall": "npx npm-force-resolutions",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run build"
@@ -31,7 +31,6 @@
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
-    "@babel/node": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
     "concurrently": "^5.0.1",
     "nodemon": "^2.0.2"
