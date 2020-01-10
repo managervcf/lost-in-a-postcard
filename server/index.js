@@ -1,7 +1,7 @@
 // Import helpers from dependencies.
 import 'dotenv/config';
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -21,10 +21,11 @@ const app = express();
 // Express will serve up production assets
 // Express will serve up the index.html file
 // if it doesn't recognize the route.
+const buildPath = path.resolve(__dirname + '/../client/build');
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(__dirname + '/../client/build'));
+  app.use(express.static(buildPath));
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, '/../client/build', 'index.html'))
+    res.sendFile(path.resolve(buildPath, 'index.html'))
   );
 }
 
