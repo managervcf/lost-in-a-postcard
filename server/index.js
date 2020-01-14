@@ -19,13 +19,13 @@ import { getMe } from './utils';
 const app = express();
 
 // Express will serve up production assets.
-const buildPath = path.resolve(__dirname + '/../client/build');
+const clientPath = path.resolve(__dirname + '/../client/build');
 if (process.env.NODE_ENV === 'production') {
   // Set static folder.
-  app.use('/', express.static(buildPath));
+  app.use('/', express.static(clientPath));
   // Other requests go here.
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(buildPath, 'index.html'))
+    res.sendFile(path.resolve(clientPath, 'index.html'))
   );
 }
 
