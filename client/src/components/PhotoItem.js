@@ -8,7 +8,7 @@ const PhotoItem = props => {
   let [isVisible, setIsVisible] = useState(false);
 
   return (
-    <article
+    <figure
       className="gallery-item"
       onMouseOver={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
@@ -17,7 +17,7 @@ const PhotoItem = props => {
     >
       <PhotoImage {...props} visible={isVisible} />
       <PhotoCaption {...props} visible={isVisible} />
-    </article>
+    </figure>
   );
 };
 

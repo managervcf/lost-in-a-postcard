@@ -1,10 +1,10 @@
 import React from 'react';
 
 const PhotoCaptionContent = ({ country, caption }) => (
-  <div className="gallery-caption-content">
-    <span className="gallery-caption-description">{caption}</span>
-    <span className="gallery-caption-title">{country.name}</span>
-  </div>
+  <section className="gallery-caption-content">
+    <p className="gallery-caption-description">{caption}</p>
+    <p className="gallery-caption-title">{country.name}</p>
+  </section>
 );
 
 export default PhotoCaptionContent;

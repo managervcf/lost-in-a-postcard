@@ -34,10 +34,10 @@ const PhotoGallery = () => {
   ));
 
   return (
-    <section className="gallery">
+    <article className="gallery">
       <PhotoGalleryDescription countryName={country} featured={featured} />
       {galleryItems}
-    </section>
+    </article>
   );
 };
 

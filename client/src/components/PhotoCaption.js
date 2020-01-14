@@ -14,11 +14,11 @@ const Caption = props => {
   let captionClasses = classnames({
     'gallery-caption': true,
     'fade-in': true,
-    'visible': props.visible
+    visible: props.visible
   });
 
   return (
-    <div className={captionClasses}>
+    <figcaption className={captionClasses}>
       {editMode ? (
         <PhotoFormEdit {...props} />
       ) : (
@@ -26,7 +26,7 @@ const Caption = props => {
       )}
       <ButtonEdit editMode={editMode} setEditMode={setEditMode} />
       <ButtonDelete {...props} />
-    </div>
+    </figcaption>
   );
 };
 

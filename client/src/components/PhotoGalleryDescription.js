@@ -17,9 +17,9 @@ const PhotoGalleryDescription = ({ countryName, featured }) => {
   if (!description && !featured) return null;
 
   return (
-    <div className="gallery-description">
+    <section className="gallery-description">
       {featured ? 'Portfolio Dominiki & Mateusza.' : description}
-    </div>
+    </section>
   );
 };
 
