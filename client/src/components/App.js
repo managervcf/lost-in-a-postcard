@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Logo from './Logo';
 import Login from './Login';
 import Navbar from './Navbar';
+import Footer from './Footer';
 import NoMatch from './NoMatch';
 import Dashboard from './Dashboard';
 import PhotoGallery from './PhotoGallery';
@@ -23,6 +24,7 @@ const App = () => (
         <Route component={NoMatch} />
       </Switch>
     </main>
+    <Footer />
   </>
 );
 
