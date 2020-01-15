@@ -3,9 +3,16 @@
 
 // Declare variables.
 $color-main-primary: #929aab;
-$color-main-text: #393e46;
-$color-main-background: white;
-$color-main-background-dark: #eeeeee;
+$color-main-text: rgba(0, 0, 0, 0.8);
+$color-main-background: rgba(255, 255, 255, 1);
+$color-main-background-dark: #efefef;
+
+$shadow-color-light: rgba(255, 255, 255, 0.5);
+$shadow-color-dark: rgba(0, 0, 0, 0.4);
+$shadow: 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
+  -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
+$inset-shadow: inset 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
+  inset -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
 
 // Normalize project for every browser using universal selector - global reset
 *,
@@ -26,6 +33,7 @@ html {
 }
 
 body {
+  background-color: $color-main-background;
   font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
@@ -65,9 +73,9 @@ body {
     &:hover::-webkit-scrollbar-thumb {
       background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 1) 10%,
-        rgba(242, 242, 242, 1) 50%,
-        rgba(255, 255, 255, 1) 90%
+        $color-main-background 10%,
+        $color-main-background-dark 50%,
+        $color-main-background 90%
       );
       transition: all 1s;
     }
@@ -79,7 +87,7 @@ body {
       /* Track and thumb */
       &-track,
       &-thumb {
-        background: white;
+        background: $color-main-background;
       }
     }
   }
@@ -95,8 +103,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
-  // flex-wrap: wrap;
 
   &-description {
     margin: 1rem 0 1rem 0;
@@ -111,6 +117,7 @@ body {
     align-items: center;
     justify-content: center;
     background-color: $color-main-background;
+    border-radius: 0.3rem;
     transition: 1s opacity;
   }
 
@@ -122,13 +129,13 @@ body {
   }
 
   &-caption {
-    // width: 100%;
+    max-width: 90%;
     position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     opacity: 1;
-    text-shadow: 0 0 2rem white;
+    text-shadow: 0 0 2rem $color-main-background;
     transform: translateY(-10px);
     transition: inherit;
 
@@ -299,8 +306,8 @@ textarea {
 
 .fade-in {
   opacity: 0;
-  transform: translateY(5px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(4px);
+  transition: opacity 0.5s ease, transform 0.3s ease;
 
   &.visible {
     opacity: 1;
@@ -309,7 +316,6 @@ textarea {
 }
 
 .dim {
-  opacity: 0.3;
-  filter: blur(1px);
-  transition: opacity 0.5s ease, filter 0.5s ease;
+  opacity: 0.2;
+  transition: opacity 0.5s ease;
 }
