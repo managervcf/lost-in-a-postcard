@@ -1,12 +1,12 @@
 import React from 'react';
 import { useApolloClient } from 'react-apollo';
 
-const ButtonDelete = ({ editMode, setEditMode }) => {
+function ButtonDelete({ editMode, setEditMode }) {
   // Access apollo store.
   const client = useApolloClient();
 
   // Pull logged user out of apollo store.
-  let { me } = client.cache.data.data.ROOT_QUERY;
+  const { me } = client.cache.data.data.ROOT_QUERY;
 
   // If there is no user logged in, display nothing.
   if (!me) return null;
@@ -16,6 +16,6 @@ const ButtonDelete = ({ editMode, setEditMode }) => {
       {editMode ? 'Exit editing' : 'Edit'}
     </button>
   );
-};
+}
 
 export default ButtonDelete;

@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
-
 import LoaderInline from './LoaderInline';
-
 import { EDIT_PHOTO } from '../graphql/mutations';
 
-const PhotoFormEdit = props => {
-  let { id, country, caption, featured, author } = props;
-  let [editedCaption, setEditedCaption] = useState(caption);
-  let [editedFeatured, setEditedFeatured] = useState(featured);
+function PhotoFormEdit(props) {
+  const { id, country, caption, featured, author } = props;
+  const [editedCaption, setEditedCaption] = useState(caption);
+  const [editedFeatured, setEditedFeatured] = useState(featured);
 
   // Access apollo store.
   const client = useApolloClient();
 
   // Use mutation hook.
   const [updateMutation, { error, loading }] = useMutation(EDIT_PHOTO, {
-    onCompleted: async () => await client.resetStore()
+    onCompleted: async () => await client.resetStore(),
   });
 
   // Define submit handler.
-  let handleSubmit = async (e, mutate) => {
+  const handleSubmit = async (e, mutate) => {
     e.preventDefault();
     await mutate({
       variables: {
         id,
         caption: editedCaption,
-        featured: editedFeatured
-      }
+        featured: editedFeatured,
+      },
     });
   };
 
@@ -34,10 +32,7 @@ const PhotoFormEdit = props => {
   if (loading) return <LoaderInline size={5} loading={loading} />;
 
   return (
-    <form
-      className="form"
-      onSubmit={e => handleSubmit(e, updateMutation)}
-    >
+    <form className="form" onSubmit={e => handleSubmit(e, updateMutation)}>
       <p>
         Photo from {country.name} by {author.username}
       </p>
@@ -58,6 +53,6 @@ const PhotoFormEdit = props => {
       </button>
     </form>
   );
-};
+}
 
 export default PhotoFormEdit;

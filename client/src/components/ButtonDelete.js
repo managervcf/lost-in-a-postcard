@@ -1,9 +1,9 @@
-import React from "react";
-import { useMutation } from "react-apollo";
-import { DELETE_PHOTO } from "../graphql/mutations";
-import { PHOTOS } from "../graphql/queries";
+import React from 'react';
+import { useMutation } from 'react-apollo';
+import { DELETE_PHOTO } from '../graphql/mutations';
+import { PHOTOS } from '../graphql/queries';
 
-const DeleteButton = ({ id }) => {
+function DeleteButton({ id }) {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
     variables: { id },
     onCompleted: async () => await client.resetStore(),
@@ -11,7 +11,7 @@ const DeleteButton = ({ id }) => {
   });
 
   // Check if user is logged in by checking the store.
-  let { me } = client.cache.data.data.ROOT_QUERY;
+  const { me } = client.cache.data.data.ROOT_QUERY;
 
   // Handle error and case where there is no user logged in.
   if (error) return <p>{error.message}</p>;
@@ -19,9 +19,9 @@ const DeleteButton = ({ id }) => {
 
   return (
     <button disabled={loading} onClick={deletePhoto}>
-      {loading ? "Deleting..." : "Delete"}
+      {loading ? 'Deleting...' : 'Delete'}
     </button>
   );
-};
+}
 
 export default DeleteButton;

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-
 import withLoader from '../wrappers/withLoader';
 import PhotoImage from './PhotoImage';
 import PhotoCaption from './PhotoCaption';
 
-const PhotoItem = props => {
-  let [isVisible, setIsVisible] = useState(false);
+function PhotoItem(props) {
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <figure
@@ -19,6 +18,6 @@ const PhotoItem = props => {
       <PhotoCaption {...props} visible={isVisible} />
     </figure>
   );
-};
+}
 
 export default withLoader(PhotoItem);

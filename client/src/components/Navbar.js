@@ -1,9 +1,9 @@
-import React from "react";
-import { useQuery } from "react-apollo";
-import NavbarItem from "./NavbarItem";
-import { COUNTRIES } from "../graphql/queries";
+import React from 'react';
+import { useQuery } from 'react-apollo';
+import NavbarItem from './NavbarItem';
+import { COUNTRIES } from '../graphql/queries';
 
-const Navbar = () => {
+function Navbar() {
   const { data, loading, error } = useQuery(COUNTRIES);
 
   // Handle error and loading states.
@@ -11,7 +11,7 @@ const Navbar = () => {
   if (loading) return null;
 
   // Build navbar items.
-  let navItems = data.countries
+  const navItems = data.countries
     // Sort alphabetically.
     .sort((a, b) => (a.name < b.name ? -1 : 1))
     .map(({ id, name }) => <NavbarItem key={id} countryName={name} />);
@@ -21,6 +21,6 @@ const Navbar = () => {
       <ul className="navbar-list">{navItems}</ul>
     </nav>
   );
-};
+}
 
 export default Navbar;

@@ -1,34 +1,30 @@
 import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
-
 import { ADD_PHOTO } from '../graphql/mutations';
 
-const PhotoFormNew = () => {
+function PhotoFormNew() {
   // Define country state variable.
-  let [country, setCountry] = useState('');
-  let [caption, setCaption] = useState('');
-  let [featured, setFeatured] = useState(false);
-  let [file, setFile] = useState({});
+  const [country, setCountry] = useState('');
+  const [caption, setCaption] = useState('');
+  const [featured, setFeatured] = useState(false);
+  const [file, setFile] = useState({});
 
   // Access apollo store.
   const client = useApolloClient();
 
   // Use mutation hook.
   const [uploadMutation, { error, loading }] = useMutation(ADD_PHOTO, {
-    onCompleted: () => client.resetStore()
+    onCompleted: () => client.resetStore(),
   });
 
   // Define submit handler.
-  let handleSubmit = async (e, mutate) => {
+  const handleSubmit = async (e, mutate) => {
     e.preventDefault();
     await mutate({ variables: { file, country, caption, featured } });
   };
 
   return (
-    <form
-      className="form"
-      onSubmit={e => handleSubmit(e, uploadMutation)}
-    >
+    <form className="form" onSubmit={e => handleSubmit(e, uploadMutation)}>
       {error && <div>{error.message}</div>}
       <input
         type="text"
@@ -44,7 +40,7 @@ const PhotoFormNew = () => {
         onChange={e => setCaption(e.target.value)}
       />
       <div className="featured-input">
-        <label>{featured ? 'Featured!': 'Feature?'}</label>
+        <label>{featured ? 'Featured!' : 'Feature?'}</label>
         <input
           type="checkbox"
           checked={featured}
@@ -63,6 +59,6 @@ const PhotoFormNew = () => {
       </button>
     </form>
   );
-};
+}
 
 export default PhotoFormNew;

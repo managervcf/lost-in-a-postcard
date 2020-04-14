@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const LoginForm = ({ mutate, loading }) => {
+function LoginForm({ mutate, loading }) {
   // Access history.
   const history = useHistory();
 
-  let [login, setLogin] = useState('');
-  let [password, setPassword] = useState('');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <form
@@ -41,6 +41,6 @@ const LoginForm = ({ mutate, loading }) => {
       </div>
     </form>
   );
-};
+}
 
 export default LoginForm;
