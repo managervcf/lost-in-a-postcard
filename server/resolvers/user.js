@@ -10,7 +10,7 @@ export default {
       await models.User.findByLogin({ login }),
     // Wrap resolver with authenticate middleware to check if user is logged in.
     me: async (parent, args, { models, me }) =>
-      me ? await models.User.findById(me.id) : null
+      me ? await models.User.findById(me.id) : null,
   },
 
   Mutation: {
@@ -23,13 +23,13 @@ export default {
     deleteUser: isAuthenticated(
       async (parent, args, { models, me }) =>
         await models.User.deleteUser(me.id)
-    )
+    ),
   },
 
   User: {
     photos: async ({ id }, args, { models }) =>
       await models.Photo.find({ author: id }),
     createdAt: ({ createdAt }) => createdAt.toString(),
-    updatedAt: ({ updatedAt }) => updatedAt.toString()
-  }
+    updatedAt: ({ updatedAt }) => updatedAt.toString(),
+  },
 };

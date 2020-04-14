@@ -24,7 +24,7 @@ const Login = () => {
     },
     refetchQueries: () => [{ query: ME }],
     // Refetch queries, then mutate.
-    awaitRefetchQueries: true
+    awaitRefetchQueries: true,
   });
 
   // Error handler

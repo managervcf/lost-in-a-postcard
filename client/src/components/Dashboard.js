@@ -14,7 +14,7 @@ const Dashboard = () => {
   let [showCountryEditForm, setShowCountryEditForm] = useState(false);
   // Query for user with additional option.
   const { loading, error, data } = useQuery(ME, {
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   });
 
   // Handle loading, error and no user state.

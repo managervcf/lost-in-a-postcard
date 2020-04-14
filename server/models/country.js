@@ -8,10 +8,10 @@ const countrySchema = new Schema(
       type: String,
       trim: true,
       unique: [true, 'Country already exists.'],
-      required: [true, 'Country name is required.']
+      required: [true, 'Country name is required.'],
     },
     description: { type: String, default: 'No country description yet.' },
-    photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }]
+    photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }],
   },
   // Enable auto timestamps.
   { timestamps: true }

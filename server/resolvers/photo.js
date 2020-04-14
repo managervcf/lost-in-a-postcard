@@ -6,7 +6,8 @@ export default {
   Query: {
     photos: async (parent, args, { models }) =>
       await models.Photo.findPhotos(args),
-    photo: async (parent, { id }, { models }) => await models.Photo.findById(id)
+    photo: async (parent, { id }, { models }) =>
+      await models.Photo.findById(id),
   },
 
   Mutation: {
@@ -21,9 +22,8 @@ export default {
     deletePhoto: isAuthorized(
       async (parent, { id }, { models }) => await models.Photo.deletePhoto(id)
     ),
-    clickPhoto: async (parent, { id }, { models }) => {
-      await models.Photo.clickPhoto(id);
-    }
+    clickPhoto: async (parent, { id }, { models }) =>
+      await models.Photo.clickPhoto(id),
   },
 
   Photo: {
@@ -32,6 +32,6 @@ export default {
     author: async ({ author }, args, { models }) =>
       await models.User.findById(author),
     createdAt: ({ createdAt }) => createdAt.toString(),
-    updatedAt: ({ updatedAt }) => updatedAt.toString()
-  }
+    updatedAt: ({ updatedAt }) => updatedAt.toString(),
+  },
 };

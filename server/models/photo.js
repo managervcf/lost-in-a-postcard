@@ -15,32 +15,32 @@ const photoSchema = new Schema(
       url: String,
       width: String,
       height: String,
-      size: Number
+      size: Number,
     },
     country: {
       type: Schema.Types.ObjectId,
-      ref: 'Country'
+      ref: 'Country',
     },
     caption: {
       type: String,
-      trim: true
+      trim: true,
     },
     featured: {
       type: Boolean,
-      default: false
+      default: false,
     },
     clicks: {
       type: Number,
-      default: 0
+      default: 0,
     },
     country: {
       type: Schema.Types.ObjectId,
-      ref: 'Country'
+      ref: 'Country',
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: 'User',
+    },
   },
   // Enable auto timestamps.
   { timestamps: true }
@@ -52,11 +52,11 @@ photoSchema.plugin(mongoosePaginate);
 //// BUSINESS LOGIC.
 
 // Find and paginate requested photos. Default max photos is 100.
-photoSchema.statics.findPhotos = async function({
+photoSchema.statics.findPhotos = async function ({
   country = '',
   featured,
   limit = 100,
-  page = 1
+  page = 1,
 }) {
   // Validate page and limit variables.
   throwError(page < 1 || limit < 1, 'Page or limit cannot be less than 1.');
@@ -67,7 +67,7 @@ photoSchema.statics.findPhotos = async function({
     sort: { createdAt: 'descending' },
     // Passed user specified pagination criteria.
     limit,
-    page
+    page,
   };
 
   // Create an empty mongoose query.
@@ -108,13 +108,13 @@ photoSchema.statics.findPhotos = async function({
     pageInfo: {
       ...res,
       // Checks if there is a next page.
-      hasNextPage: page >= res.pages ? false : true
-    }
+      hasNextPage: page >= res.pages ? false : true,
+    },
   };
 };
 
 // Creates a photo and associates it with user.
-photoSchema.statics.addPhoto = async function({ id, username }, args) {
+photoSchema.statics.addPhoto = async function ({ id, username }, args) {
   // Process file upload using helper function.
   // Returns object with url and public_id.
   let upload = await uploadAsset(args, username);
@@ -166,7 +166,7 @@ photoSchema.statics.addPhoto = async function({ id, username }, args) {
 };
 
 // Delete a photo and update user.
-photoSchema.statics.deletePhoto = async function(id) {
+photoSchema.statics.deletePhoto = async function (id) {
   // Delete photo and populate author field to access his id.
   let deletedPhoto = await this.findByIdAndDelete(id)
     .populate('country')
@@ -222,7 +222,7 @@ photoSchema.statics.deletePhoto = async function(id) {
 };
 
 // Delete a photo and update user.
-photoSchema.statics.clickPhoto = async function(id) {
+photoSchema.statics.clickPhoto = async function (id) {
   let foundPhoto = await this.findById(id);
   let clicks = foundPhoto.clicks + 1;
   let clickedPhoto = await this.findByIdAndUpdate(id, { clicks });

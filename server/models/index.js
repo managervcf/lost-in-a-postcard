@@ -15,7 +15,7 @@ const connectDb = () =>
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     },
     () => console.log('Conntected to database.')
   );

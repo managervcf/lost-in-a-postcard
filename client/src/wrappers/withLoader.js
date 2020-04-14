@@ -21,7 +21,7 @@ const withLoader = WrappedComponent => {
       // Construct wrapper animation classes.
       let animateClasses = classnames({
         'fade-in': true,
-        visible: this.state.didMount
+        visible: this.state.didMount,
       });
 
       return (

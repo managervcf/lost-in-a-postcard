@@ -8,7 +8,7 @@ const DeleteButton = ({ id }) => {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
     variables: { id },
     onCompleted: async () => await client.resetStore(),
-    refetchQueries: async () => await [{ query: PHOTOS }]
+    refetchQueries: async () => await [{ query: PHOTOS }],
   });
 
   // Check if user is logged in by checking the store.

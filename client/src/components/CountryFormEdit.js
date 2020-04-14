@@ -10,7 +10,7 @@ const CountryFormEdit = () => {
   let [editedCountry, setEditedCountry] = useState({
     id: '',
     name: '',
-    description: ''
+    description: '',
   });
 
   // Use apollo-client query and mutation hooks.
@@ -30,7 +30,7 @@ const CountryFormEdit = () => {
       variables: editedCountry,
       onCompleted: async () => await client.resetStore(),
       // Redetches query after mutation to update the DOM.
-      refetchQueries: () => [{ query: COUNTRIES }]
+      refetchQueries: () => [{ query: COUNTRIES }],
     });
     // Reset state to empty strings.
     setEditedCountry({ id: '', name: '', description: '' });
@@ -49,7 +49,7 @@ const CountryFormEdit = () => {
   let handleInputChange = e =>
     setEditedCountry({
       ...editedCountry,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
   // Handles query error and loading state.

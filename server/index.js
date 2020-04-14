@@ -35,7 +35,7 @@ const server = new ApolloServer({
   // Enable CORS.
   cors: {
     origin: '*', // <- allow request from all domains.
-    credentials: true // <- enable CORS response for requests with credentials.
+    credentials: true, // <- enable CORS response for requests with credentials.
   },
   // Upload limits.
   uploads: { maxFileSize, maxFiles },
@@ -50,9 +50,9 @@ const server = new ApolloServer({
     // Return context.
     return {
       models,
-      me
+      me,
     };
-  }
+  },
 });
 
 // Apply middleware.

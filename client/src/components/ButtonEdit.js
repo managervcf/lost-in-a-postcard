@@ -4,7 +4,7 @@ import { useApolloClient } from 'react-apollo';
 const ButtonDelete = ({ editMode, setEditMode }) => {
   // Access apollo store.
   const client = useApolloClient();
-  
+
   // Pull logged user out of apollo store.
   let { me } = client.cache.data.data.ROOT_QUERY;
 

@@ -8,7 +8,7 @@ import { throwError } from './';
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
 
 // Deletes an asset from cloudinary cloud.
@@ -43,7 +43,7 @@ export const uploadAsset = async ({ file, country }, author) => {
             // Put file in lostinapostcard folder.
             folder: 'lostinapostcard/',
             // Apply tags.
-            tags: [country, author]
+            tags: [country, author],
           },
           (error, result) => {
             if (result) {

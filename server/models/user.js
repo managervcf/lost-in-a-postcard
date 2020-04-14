@@ -18,7 +18,7 @@ const userSchema = new Schema(
       trim: true,
       required: [true, 'You must provide username.'],
       minlength: [2, 'Username must be at least 2 characters.'],
-      maxlength: [20, 'Username must be no more than 20 characters.']
+      maxlength: [20, 'Username must be no more than 20 characters.'],
     },
     email: {
       type: String,
@@ -26,18 +26,18 @@ const userSchema = new Schema(
       trim: true,
       lowercase: true,
       required: true,
-      match: [emailRegex, 'Incorrect email address.']
+      match: [emailRegex, 'Incorrect email address.'],
     },
     password: {
       type: String,
       required: [true, 'You must provide password.'],
-      minlength: [7, 'Password must be at least 7 characters.']
+      minlength: [7, 'Password must be at least 7 characters.'],
     },
     role: {
       type: String,
-      default: 'user'
+      default: 'user',
     },
-    photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }]
+    photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }],
   },
   // Enable auto timestamps.
   { timestamps: true }
@@ -49,7 +49,7 @@ userSchema.plugin(uniqueValidator);
 // BUSINESS LOGIC.
 
 // Enable finding user by both email and username.
-userSchema.statics.findByLogin = async function(login) {
+userSchema.statics.findByLogin = async function (login) {
   // Try to find by username.
   let user = await this.findOne({ username: login });
   // If not found, try finding by email.
@@ -63,11 +63,11 @@ userSchema.statics.findByLogin = async function(login) {
 // Function that creates a token valid for 15 minutes.
 const createToken = async ({ id, email, username, role }) =>
   await jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
-    expiresIn: '3h'
+    expiresIn: '3h',
   });
 
 // Create new user.
-userSchema.statics.signUp = async function(newUser) {
+userSchema.statics.signUp = async function (newUser) {
   let createdUser = new User(newUser);
   let savedUser = await createdUser.save();
   throwError(!savedUser, 'Cannot create new user.');
@@ -79,7 +79,7 @@ userSchema.statics.signUp = async function(newUser) {
 };
 
 // Login user.
-userSchema.statics.logIn = async function({ login, password }) {
+userSchema.statics.logIn = async function ({ login, password }) {
   // Try to find by username.
   let user = await this.findOne({ username: login });
   // If not found, try finding by email.
@@ -96,7 +96,7 @@ userSchema.statics.logIn = async function({ login, password }) {
 };
 
 // Delete a user and cascade delete associated with it photos.
-userSchema.statics.deleteUser = async function(id) {
+userSchema.statics.deleteUser = async function (id) {
   // Find and delete user.
   let deletedUser = await this.findByIdAndRemove(id);
   throwError(!deletedUser, 'Cannot delete user. User does not exist.');
@@ -115,7 +115,7 @@ userSchema.statics.deleteUser = async function(id) {
 // we will first check to see if the user is being created or changed.
 // If the user is not being created or changed, we will
 // skip over the hashing part. We don’t want to hash our already hashed data.
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password')) {
     return next();
   }

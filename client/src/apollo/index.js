@@ -10,11 +10,14 @@ import { createUploadLink } from 'apollo-upload-client';
 
 const cache = new InMemoryCache();
 
-const baseUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_GRAPHQL_URI : 'http://localhost:4000';
+const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_GRAPHQL_URI
+    : 'http://localhost:4000';
 
 const httpLink = createUploadLink({
   uri: `${baseUrl}/graphql`,
-  credentials: 'same-origin'
+  credentials: 'same-origin',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -24,8 +27,8 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      token: token || null
-    }
+      token: token || null,
+    },
   };
 });
 
@@ -40,7 +43,7 @@ const link = ApolloLink.from([
     if (networkError) console.log(`[Network error]: ${networkError}`);
   }),
   // Plugin apollo-upload-client into link.
-  authLink.concat(httpLink)
+  authLink.concat(httpLink),
 ]);
 
 // Create new Apollo Client the old way.
