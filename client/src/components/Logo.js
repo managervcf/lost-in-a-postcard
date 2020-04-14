@@ -1,7 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import withLoader from '../wrappers/withLoader';
+import React from "react";
+import { Link } from "react-router-dom";
+import withLoader from "../wrappers/withLoader";
 
 const Logo = () => (
   <h1 className="page-title">

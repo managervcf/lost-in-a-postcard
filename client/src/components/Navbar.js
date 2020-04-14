@@ -1,9 +1,7 @@
-import React from 'react';
-import { useQuery } from 'react-apollo';
-
-import NavbarItem from './NavbarItem';
-
-import { COUNTRIES } from '../graphql/queries';
+import React from "react";
+import { useQuery } from "react-apollo";
+import NavbarItem from "./NavbarItem";
+import { COUNTRIES } from "../graphql/queries";
 
 const Navbar = () => {
   const { data, loading, error } = useQuery(COUNTRIES);

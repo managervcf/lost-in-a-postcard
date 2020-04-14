@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation } from 'react-apollo';
-
-import ErrorMessage from './ErrorMessage';
-
-import { COUNTRIES } from '../graphql/queries';
-import { UPDATE_COUNTRY } from '../graphql/mutations';
+import React, { useState } from "react";
+import { useQuery, useMutation } from "react-apollo";
+import ErrorMessage from "./ErrorMessage";
+import { COUNTRIES } from "../graphql/queries";
+import { UPDATE_COUNTRY } from "../graphql/mutations";
 
 const CountryFormEdit = () => {
   let [editedCountry, setEditedCountry] = useState({
-    id: '',
-    name: '',
-    description: '',
+    id: "",
+    name: "",
+    description: "",
   });
 
   // Use apollo-client query and mutation hooks.
@@ -22,7 +20,7 @@ const CountryFormEdit = () => {
   );
 
   // Handles submit event.
-  let handleSubmit = async e => {
+  let handleSubmit = async (e) => {
     // Prevent default browser behavior.
     e.preventDefault();
     // Mutate using provided function
@@ -33,7 +31,7 @@ const CountryFormEdit = () => {
       refetchQueries: () => [{ query: COUNTRIES }],
     });
     // Reset state to empty strings.
-    setEditedCountry({ id: '', name: '', description: '' });
+    setEditedCountry({ id: "", name: "", description: "" });
   };
 
   // Handles select event.
@@ -46,7 +44,7 @@ const CountryFormEdit = () => {
   };
 
   // Handles on change events.
-  let handleInputChange = e =>
+  let handleInputChange = (e) =>
     setEditedCountry({
       ...editedCountry,
       [e.target.name]: e.target.value,
@@ -64,11 +62,11 @@ const CountryFormEdit = () => {
   ));
 
   return (
-    <form className="form" onSubmit={e => handleSubmit(e)}>
+    <form className="form" onSubmit={(e) => handleSubmit(e)}>
       <select
         defaultValue={0}
         required
-        onChange={e => handleSelect(e, data.countries)}
+        onChange={(e) => handleSelect(e, data.countries)}
       >
         <option value={0} disabled>
           Pick a country
@@ -90,7 +88,7 @@ const CountryFormEdit = () => {
         <ErrorMessage text="Could not edit selected country, please try again." />
       )}
       <button type="submit" disabled={mError}>
-        {!mLoading ? 'Update' : 'Updating...'}
+        {!mLoading ? "Update" : "Updating..."}
       </button>
     </form>
   );

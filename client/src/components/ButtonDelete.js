@@ -1,8 +1,7 @@
-import React from 'react';
-import { useMutation } from 'react-apollo';
-
-import { DELETE_PHOTO } from '../graphql/mutations';
-import { PHOTOS } from '../graphql/queries';
+import React from "react";
+import { useMutation } from "react-apollo";
+import { DELETE_PHOTO } from "../graphql/mutations";
+import { PHOTOS } from "../graphql/queries";
 
 const DeleteButton = ({ id }) => {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
@@ -20,7 +19,7 @@ const DeleteButton = ({ id }) => {
 
   return (
     <button disabled={loading} onClick={deletePhoto}>
-      {loading ? 'Deleting...' : 'Delete'}
+      {loading ? "Deleting..." : "Delete"}
     </button>
   );
 };

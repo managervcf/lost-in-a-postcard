@@ -1,7 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import ErrorMessage from './ErrorMessage';
+import React from "react";
+import { Link } from "react-router-dom";
+import ErrorMessage from "./ErrorMessage";
 
 const NoMatch = () => (
   <>

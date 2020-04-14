@@ -1,12 +1,11 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-
-import withLoader from '../wrappers/withLoader';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import withLoader from "../wrappers/withLoader";
 
 const NavbarItem = ({ countryName }) => (
   <NavLink
     className="navbar-item"
-    activeStyle={{ fontWeight: 'bold' }}
+    activeStyle={{ fontWeight: "bold" }}
     to={`/photos/${countryName.toLowerCase()}`}
   >
     {countryName}

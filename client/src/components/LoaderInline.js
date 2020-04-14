@@ -1,11 +1,10 @@
-import React from 'react';
-import { ClipLoader } from 'react-spinners';
-
-import withLoader from '../wrappers/withLoader';
+import React from "react";
+import { ClipLoader } from "react-spinners";
+import withLoader from "../wrappers/withLoader";
 
 const LoaderInline = ({ loading, size }) => (
   <span className="loader-inline">
-    <ClipLoader size={size} color={'#929aab'} loading={loading} />
+    <ClipLoader size={size} color={"#929aab"} loading={loading} />
   </span>
 );
 
