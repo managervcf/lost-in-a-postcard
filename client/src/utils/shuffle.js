@@ -1,5 +1,5 @@
 // Shuffles an array in random order.
-export default providedArray => {
+export function shuffle(providedArray) {
   let array = providedArray.slice();
   let currentIndex = array.length;
   let temporaryValue;
@@ -18,4 +18,4 @@ export default providedArray => {
   }
 
   return array;
-};
+}

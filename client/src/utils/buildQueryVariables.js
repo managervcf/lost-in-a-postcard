@@ -1,5 +1,5 @@
 // Helper function that builds query variables for photo query.
-export default (location, match) => {
+export function buildQueryVariables(location, match) {
   let query = {};
   // If url match is not exact, pull out parameters.
   if (!match.isExact) {
@@ -12,4 +12,4 @@ export default (location, match) => {
     }
   }
   return query;
-};
+}

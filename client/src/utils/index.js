@@ -1,4 +1,4 @@
-// Name and export all helper functions from a single file.
-export { default as shuffle } from './shuffle';
-export { default as transformUrl } from './transformUrl';
-export { default as buildQueryVariables } from './buildQueryVariables';
+// Export all helper functions from a single file.
+export { shuffle } from './shuffle';
+export { transformUrl } from './transformUrl';
+export { buildQueryVariables } from './buildQueryVariables';

@@ -1,7 +1,7 @@
 import options from '../options';
 
 // Exports a function that alters cloudinary image based on provided option.
-export default url => {
+export function transformUrl(url) {
   // If url ends with .gif, don't transform.
   if (/(.gif)$/gi.test(url)) return url;
   // Otherwise, transform an image.
@@ -14,4 +14,4 @@ export default url => {
     // Return transformed URL.
     return transformedUrl;
   }
-};
+}
