@@ -13,11 +13,11 @@ export function useKeyPress(targetKey) {
   }
 
   // If released key is our target key then set to false
-  const upHandler = ({ key }) => {
+  function upHandler({ key }) {
     if (key === targetKey) {
       setKeyPressed(false);
     }
-  };
+  }
 
   // Add event listeners
   useEffect(() => {

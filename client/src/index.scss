@@ -110,7 +110,7 @@ body {
   }
 
   &-item {
-    margin: 1rem 0 4rem 0;
+    margin: 1rem 0 3rem 0;
     position: relative;
     display: flex;
     overflow: hidden;
@@ -122,7 +122,7 @@ body {
   }
 
   &-image {
-    max-height: 90vh;
+    max-height: 85vh;
     max-width: 95vw;
     opacity: 1;
     transition: inherit;
@@ -310,12 +310,13 @@ footer > p {
 
 .fade-in {
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.5s ease, transform 0.3s ease;
+  transform: scale(0.99) translateY(5px);
+  transition: opacity 0.7s ease-out, transform 1.5s ease-out;
 
   &.visible {
     opacity: 1;
-    transform: translateY(0px);
+    transform: scale(1) translateY(0px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
   }
 }
 

@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { transformUrl } from '../utils';
-import { useOnScreen, useKeyPress } from '../hooks';
 
 function PhotoImage({ upload, country, visible }) {
   const imageClasses = classnames({
