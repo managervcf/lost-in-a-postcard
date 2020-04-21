@@ -1,20 +1,54 @@
 // Import fonts.
-@import url('https://fonts.googleapis.com/css?family=Oxygen|Nunito|Courier+Prime|Quicksand|Caveat|Droid+Sans');
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
 
-// Declare variables.
-$color-main-primary: #929aab;
-$color-main-text: rgba(0, 0, 0, 0.8);
-$color-main-background: rgba(255, 255, 255, 1);
-$color-main-background-dark: #efefef;
+// Variables.
+// Colors.
+$color-white: #fff;
+$color-very-light-grey: #f0f0f0;
+$color-light-grey: #efefef;
+$color-black: #000;
 
-$shadow-color-light: rgba(255, 255, 255, 0.5);
-$shadow-color-dark: rgba(0, 0, 0, 0.4);
+$color-main-primary: #d9721e;
+$color-main-text: rgba($color-black, 0.9);
+$color-main-background: $color-very-light-grey;
+$shadow-color-light: rgba($color-white, 0.5);
+$shadow-color-dark: rgba($color-white, 0.4);
+
+// Fonts.
+$font-family-main: 'Quicksand', sans-serif;
+$font-size-main: 1.6rem;
+$line-height-main: 3.2rem;
+$font-size-button: 1.5rem;
+$font-size-h1: 4.2rem;
+
+// Shadows.
 $shadow: 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
   -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
 $inset-shadow: inset 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
   inset -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
+$shadow-neomorphic: 0.4rem 0.4rem 0.7rem -0.3rem rgba($color-black, 0.4),
+  -0.4rem -0.4rem 0.7rem -0.3rem rgba($color-white, 1);
 
-// Normalize project for every browser using universal selector - global reset
+// Gradients.
+$linear-gradient-scrollbar: linear-gradient(
+  90deg,
+  $color-main-background 10%,
+  rgba($color-main-primary, 0.5) 50%,
+  $color-main-background 90%
+);
+
+// Transitions.
+$transition-time-fast: 0.2s;
+$transition-time-medium: 0.5s;
+$transition-time-medium-slow: 0.7s;
+$transition-time-slow: 1s;
+$transition-time-very-slow: 1.5s;
+
+// Others.
+$border-radius-standard: 0.3rem;
+$border-radius-large: 1rem;
+
+// Normalize project for every browser using universal selector - global reset.
 *,
 *::after,
 *::before {
@@ -23,40 +57,44 @@ $inset-shadow: inset 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
   box-sizing: border-box;
 }
 
+// Hide vertical scrollbar.
 *::-webkit-scrollbar {
   display: none;
 }
 
 html {
   // For an easy font size change.
-  font-size: 100%;
+  // Default browser font size is 16px.
+  // 62.5% * 16px = 10px
+  font-size: 62.5%;
 }
 
 body {
   background-color: $color-main-background;
-  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  font-family: $font-family-main;
+  font-size: $font-size-main;
+  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  // Align all text content.
   text-align: center;
+  // Prevents user from selecting text.
   user-select: none;
 }
 
 // Prevent blueish border around items in focus.
-:focus {
+*:focus {
   outline: none !important;
 }
 
 .page-title {
-  padding: 1rem 0;
-  font-size: 2.5rem;
+  padding: 2rem 0;
+  font-size: $font-size-h1;
   font-weight: normal;
 }
 
 .page-description {
-  font-size: 1rem;
+  font-size: $font-size-main;
   font-weight: normal;
 }
 
@@ -71,19 +109,15 @@ body {
     white-space: nowrap;
 
     &:hover::-webkit-scrollbar-thumb {
-      background: linear-gradient(
-        90deg,
-        $color-main-background 10%,
-        $color-main-background-dark 50%,
-        $color-main-background 90%
-      );
-      transition: all 1s;
+      background-image: $linear-gradient-scrollbar;
+      transition: all $transition-time-slow;
     }
 
     // Edit scrollbar.
     &::-webkit-scrollbar {
       display: block;
       height: 0.75rem;
+
       /* Track and thumb */
       &-track,
       &-thumb {
@@ -94,7 +128,7 @@ body {
 
   &-item {
     padding: 0 1rem;
-    transition: all 0.2s;
+    transition: all $transition-time-fast;
   }
 }
 
@@ -105,8 +139,8 @@ body {
   align-items: center;
 
   &-description {
-    margin: 1rem 0 1rem 0;
-    max-width: 500px;
+    margin: 1rem 0;
+    max-width: 50rem;
   }
 
   &-item {
@@ -117,8 +151,8 @@ body {
     align-items: center;
     justify-content: center;
     background-color: $color-main-background;
-    border-radius: 0.3rem;
-    transition: 1s opacity;
+    border-radius: $border-radius-standard;
+    transition: opacity $transition-time-slow;
   }
 
   &-image {
@@ -134,18 +168,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    opacity: 1;
     text-shadow: 0 0 2rem $color-main-background;
-    transform: translateY(-10px);
+    transform: translateY(-1rem);
     transition: inherit;
 
     &-title {
-      line-height: 2rem;
+      line-height: $line-height-main;
     }
 
     &-description {
       font-weight: bold;
-      line-height: 2rem;
+      line-height: $line-height-main;
     }
 
     &-content {
@@ -186,25 +219,26 @@ body {
 }
 
 .logout-button {
-  display: inline;
+  display: inline-block;
 }
 
 .frame {
-  padding: 0.5rem 0;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 1rem;
-  transition: box-shadow 1s;
+  border-radius: $border-radius-large;
+  transition: box-shadow $transition-time-fast;
+
   &:hover {
-    box-shadow: 0 0.25rem 0.5rem rgba($color-main-background-dark, 0.8);
+    box-shadow: $shadow-neomorphic;
   }
 }
 
 .featured-input {
   display: flex;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: $font-size-main;
 }
 
 a {
@@ -213,34 +247,36 @@ a {
 }
 
 button {
-  margin: 10px;
-  padding: 0.25rem 0.75rem;
+  margin: 1rem;
+  padding: 0.5rem 1.2rem;
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: $font-size-button;
   background-color: $color-main-background;
-  box-shadow: 0 2px 3px rgba($color-main-text, 0.6);
+  box-shadow: $shadow-neomorphic;
   border: none;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
+  border-radius: $border-radius-large;
+  transition: all $transition-time-fast;
 
   &:active {
     box-shadow: none;
-    transform: translateY(2px);
+    transform: translateY(0.2rem);
   }
 }
 
 input {
-  margin: 0.5rem;
-  padding: 0.25rem 0.75rem;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: $font-size-main;
   text-align: center;
+  background-color: inherit;
   border: none;
-  box-shadow: 0 0.25rem 0.5rem rgba($color-main-background-dark, 0.5);
   border-radius: 0.5rem;
+  box-shadow: $shadow-neomorphic;
 
   &::focus {
-    box-shadow: 0 0.25rem 0.5rem rgba($color-main-background-dark, 1);
+    color: $color-main-primary;
+    box-shadow: 0 0.25rem 0.5rem rgba($color-black, 1);
   }
 
   // Edit file input.
@@ -254,11 +290,11 @@ input {
     box-shadow: 0 2px 3px rgba($color-main-text, 0.6);
     border-radius: 0.5rem;
     transition: inherit;
-    transition: all 0.2s;
+    transition: all $transition-time-fast;
 
     &:active {
       box-shadow: none;
-      transform: translateY(2px);
+      transform: translateY(0.2rem);
     }
 
     &:focus {
@@ -268,17 +304,21 @@ input {
 }
 
 select {
-  margin: 0.5rem 1rem;
+  margin: 1rem 0;
   display: flex;
+  align-items: center;
   color: inherit;
   font-family: inherit;
-  align-items: center;
+  font-size: inherit;
   border: inherit;
+  transition: $transition-time-slow;
 
   & option {
     text-align: center;
-    padding: 0.5rem;
-    border: none;
+
+    &:checked {
+      color: $color-main-primary;
+    }
   }
 }
 
@@ -286,15 +326,19 @@ textarea {
   margin: 0.5rem;
   padding: 0.25rem 0.75rem;
   font-family: inherit;
+  font-size: inherit;
   width: 100%;
-  min-height: 50px;
-  min-width: 100px;
-  max-height: 100px;
-  max-width: 200px;
+  max-height: 20rem;
+  max-width: 30rem;
   text-align: center;
-  border: none;
-  box-shadow: 0 0.25rem 0.5rem rgba($color-main-background-dark, 0.5);
-  border-radius: 0.5rem;
+  border: 1px solid $color-light-grey;
+  border-radius: $border-radius-standard;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-main-background,
+    $color-light-grey
+  );
+  box-shadow: $shadow-neomorphic;
 }
 
 footer > p {
@@ -310,13 +354,15 @@ footer > p {
 
 .fade-in {
   opacity: 0;
-  transform: scale(0.99) translateY(5px);
-  transition: opacity 0.7s ease-out, transform 1.5s ease-out;
+  transform: scale(0.99) translateY(0.5rem);
+  transition: opacity $transition-time-medium-slow ease-out,
+    transform $transition-time-very-slow ease-out;
 
   &.visible {
     opacity: 1;
-    transform: scale(1) translateY(0px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transform: scale(1) translateY(0);
+    transition: opacity $transition-time-medium ease-out,
+      transform $transition-time-medium ease-out;
   }
 }
 
