@@ -355,14 +355,17 @@ footer > p {
 .fade-in {
   opacity: 0;
   transform: scale(0.99) translateY(0.5rem);
-  transition: opacity $transition-time-medium-slow ease-out,
-    transform $transition-time-very-slow ease-out;
+  transition: all $transition-time-medium-slow ease-out;
+
+  &.hidden {
+    visibility: hidden;
+  }
 
   &.visible {
+    visibility: visible;
     opacity: 1;
     transform: scale(1) translateY(0);
-    transition: opacity $transition-time-medium ease-out,
-      transform $transition-time-medium ease-out;
+    transition: all $transition-time-medium ease-out;
   }
 }
 

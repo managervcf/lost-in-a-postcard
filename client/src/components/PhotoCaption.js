@@ -13,6 +13,7 @@ function Caption(props) {
   const captionClasses = classnames({
     'gallery-caption': true,
     'fade-in': true,
+    hidden: true,
     visible: props.visible,
   });
 
