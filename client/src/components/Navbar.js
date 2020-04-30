@@ -17,7 +17,7 @@ function Navbar() {
     .map(({ id, name }) => <NavbarItem key={id} countryName={name} />);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar u-mb-small">
       <ul className="navbar-list">{navItems}</ul>
     </nav>
   );

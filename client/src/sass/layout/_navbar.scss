@@ -1,0 +1,33 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+
+  &-list {
+    padding-bottom: 0.5rem;
+    display: flex;
+    overflow: scroll hidden;
+    white-space: nowrap;
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-image: $linear-gradient-scrollbar;
+      transition: all $transition-time-slow;
+    }
+
+    // Edit scrollbar.
+    &::-webkit-scrollbar {
+      display: block;
+      height: 0.75rem;
+
+      /* Track and thumb */
+      &-track,
+      &-thumb {
+        background: $color-main-background;
+      }
+    }
+  }
+
+  &-item {
+    padding: 0 1rem;
+    transition: all $transition-time-fast;
+  }
+}

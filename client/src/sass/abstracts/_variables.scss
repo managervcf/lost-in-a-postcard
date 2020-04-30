@@ -1,0 +1,50 @@
+// Import fonts.
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+// Variables.
+// Colors.
+$color-white: #fff;
+$color-very-light-grey: #f0f0f0;
+$color-light-grey: #efefef;
+$color-black: #000;
+
+$color-main-primary: #d9721e;
+$color-main-text: rgba($color-black, 0.9);
+$color-main-background: $color-very-light-grey;
+$shadow-color-light: rgba($color-white, 0.5);
+$shadow-color-dark: rgba($color-white, 0.4);
+
+// Fonts.
+$font-family-main: 'Quicksand', sans-serif;
+$font-size-main: 1.6rem;
+$line-height-main: 3.2rem;
+$line-height-huge: 10rem;
+$font-size-button: 1.5rem;
+$font-size-h1: 4.2rem;
+
+// Shadows.
+$shadow: 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
+  -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
+$inset-shadow: inset 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
+  inset -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
+$shadow-neomorphic: 0.4rem 0.4rem 0.7rem -0.3rem rgba($color-black, 0.4),
+  -0.4rem -0.4rem 0.7rem -0.3rem rgba($color-white, 1);
+
+// Gradients.
+$linear-gradient-scrollbar: linear-gradient(
+  90deg,
+  $color-main-background 10%,
+  rgba($color-main-primary, 0.5) 50%,
+  $color-main-background 90%
+);
+
+// Transitions.
+$transition-time-fast: 0.2s;
+$transition-time-medium: 0.5s;
+$transition-time-medium-slow: 0.7s;
+$transition-time-slow: 1s;
+$transition-time-very-slow: 1.5s;
+
+// Others.
+$border-radius-standard: 0.3rem;
+$border-radius-large: 1rem;

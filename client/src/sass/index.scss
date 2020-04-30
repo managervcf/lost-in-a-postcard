@@ -1,0 +1,12 @@
+// Combine all partial scss files into one main file.
+@import './abstracts/variables';
+
+@import './base/animations';
+@import './base/base';
+@import './base/typography';
+@import './base/utilities';
+
+@import './components/dashboard';
+@import './components/gallery';
+
+@import './layout/navbar';

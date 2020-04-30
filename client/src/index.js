@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import client from './apollo';
-import './index.scss';
+import './sass/index.scss';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
