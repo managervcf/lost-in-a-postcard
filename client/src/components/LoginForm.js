@@ -10,7 +10,7 @@ function LoginForm({ mutate, loading }) {
 
   return (
     <form
-      className="login-form"
+      className="form"
       onSubmit={e => {
         e.preventDefault();
         mutate({ variables: { login, password } });
@@ -34,10 +34,12 @@ function LoginForm({ mutate, loading }) {
         onChange={e => setPassword(e.target.value)}
       />
       <div className="login-buttons">
-        <button type="submit" disabled={loading}>
+        <button className="button" type="submit" disabled={loading}>
           {!loading ? 'Login' : 'Logging in...'}
         </button>
-        <button onClick={() => history.push('/photos')}>Back</button>
+        <button className="button" onClick={() => history.push('/photos')}>
+          Back
+        </button>
       </div>
     </form>
   );

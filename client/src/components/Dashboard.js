@@ -33,13 +33,19 @@ function Dashboard() {
         <Route component={ButtonLogout} />
       </div>
       <Frame>
-        <button onClick={() => setShowPhotoFormNew(!showPhotoFormNew)}>
+        <button
+          className="button"
+          onClick={() => setShowPhotoFormNew(!showPhotoFormNew)}
+        >
           {!showPhotoFormNew ? 'Add Photo' : 'Close'}
         </button>
         {showPhotoFormNew && <Route component={PhotoFormNew} />}
       </Frame>
       <Frame>
-        <button onClick={() => setShowCountryEditForm(!showCountryEditForm)}>
+        <button
+          className="button"
+          onClick={() => setShowCountryEditForm(!showCountryEditForm)}
+        >
           {!showCountryEditForm ? 'Edit Countries' : 'Close'}
         </button>
         {showCountryEditForm && <Route component={CountryFormEdit} />}

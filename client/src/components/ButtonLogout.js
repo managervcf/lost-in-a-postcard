@@ -7,7 +7,7 @@ function ButtonLogout() {
 
   return (
     <button
-      className="logout-button"
+      className="button logout-button"
       onClick={async () => {
         // Remove auth token from browser localStorage.
         localStorage.clear();

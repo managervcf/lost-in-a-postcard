@@ -87,7 +87,7 @@ function CountryFormEdit() {
       {mError && (
         <ErrorMessage text="Could not edit selected country, please try again." />
       )}
-      <button type="submit" disabled={mError}>
+      <button className="button" type="submit" disabled={mError}>
         {!mLoading ? 'Update' : 'Updating...'}
       </button>
     </form>

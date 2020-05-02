@@ -48,7 +48,7 @@ function PhotoFormEdit(props) {
         checked={editedFeatured}
         onChange={e => setEditedFeatured(e.target.checked)}
       />
-      <button type="sumbit" disabled={loading}>
+      <button className="button" type="sumbit" disabled={loading}>
         {loading ? 'Loading...' : 'Update'}
       </button>
     </form>

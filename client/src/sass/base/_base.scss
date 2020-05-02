@@ -50,15 +50,7 @@ body {
 .error-message {
   height: 50vh;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-}
-
-.logout-button {
-  display: inline-block;
+  @include centerFlexColumn;
 }
 
 .frame {
@@ -80,12 +72,16 @@ body {
   font-size: $font-size-main;
 }
 
+.form {
+  @include centerFlexColumn;
+}
+
 a {
   text-decoration: none;
   color: $color-main-text;
 }
 
-button {
+.button {
   margin: 1rem;
   padding: 0.5rem 1.2rem;
   font-family: inherit;
@@ -100,6 +96,10 @@ button {
     box-shadow: none;
     transform: translateY(0.2rem);
   }
+}
+
+.logout-button {
+  display: inline-block;
 }
 
 input {
@@ -178,11 +178,4 @@ textarea {
     $color-light-grey
   );
   box-shadow: $shadow-neomorphic;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }

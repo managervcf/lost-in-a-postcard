@@ -6,7 +6,7 @@ function NoMatch() {
   return (
     <>
       <ErrorMessage text="Oops! Page you are looking for does not exist." />
-      <button>
+      <button className="button">
         <Link to="/">Return to the main page.</Link>
       </button>
     </>
