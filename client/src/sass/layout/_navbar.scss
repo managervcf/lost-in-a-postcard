@@ -1,10 +1,13 @@
 .navbar {
   display: flex;
+  flex-direction: row;
   justify-content: center;
 
   &-list {
+    // Important padding between items and scrollbar
     padding-bottom: 0.5rem;
     display: flex;
+    flex-direction: row;
     overflow: scroll hidden;
     white-space: nowrap;
 
@@ -13,12 +16,12 @@
       transition: all $transition-time-slow;
     }
 
-    // Edit scrollbar.
+    // Scrollbar
     &::-webkit-scrollbar {
       display: block;
       height: 0.75rem;
 
-      /* Track and thumb */
+      // Track and thumb
       &-track,
       &-thumb {
         background: $color-main-background;
@@ -27,7 +30,11 @@
   }
 
   &-item {
-    padding: 0 1rem;
+    margin: 0 1rem;
     transition: all $transition-time-fast;
+
+    &:hover {
+      color: $color-main-primary;
+    }
   }
 }
