@@ -15,27 +15,27 @@
   "author": "Mateusz Pyzowski",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.9.15",
-    "axios": "^0.19.0",
+    "apollo-server-express": "^2.13.0",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^1.18.1",
-    "core-js": "^3.6.2",
+    "cloudinary": "^1.21.0",
+    "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "graphql": "^14.5.8",
-    "graphql-upload": "^9.0.0",
+    "graphql": "^15.0.0",
+    "graphql-upload": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.8.1",
+    "mongoose": "^5.9.12",
     "mongoose-paginate": "^5.0.3",
     "mongoose-unique-validator": "^2.0.3",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/preset-env": "^7.7.6",
-    "concurrently": "^5.0.1",
-    "nodemon": "^2.0.2"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.3"
   },
   "resolutions": {
     "fs-capacitor": "5.0.1"
