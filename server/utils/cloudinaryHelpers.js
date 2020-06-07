@@ -23,7 +23,7 @@ export const uploadAsset = async ({ file, country }, author) => {
   // Get metadata from uploading file.
   // Not extracting createReadStream function as it throws fs-capacitor error exceeding stack
   // limit when called. Use createReadStream from 'fs' (File System) built-in node module instead.
-  let { createReadStream, filename, mimetype, encoding } = await file;
+  const { createReadStream, filename, mimetype, encoding } = await file;
 
   // File validation.
   throwError(!mimetype.includes('image/'), 'File must be an image!');
@@ -32,7 +32,7 @@ export const uploadAsset = async ({ file, country }, author) => {
   const readableStream = createReadStream();
 
   // Create variable photo.
-  let photo = {};
+  const photo = {};
 
   // Define function handling upload to cloudinary.
   const cloudinaryUpload = async stream => {

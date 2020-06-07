@@ -46,7 +46,7 @@ const server = new ApolloServer({
   // Pass data that should be available for all resolvers.
   context: async ({ req }) => {
     // Perform authentication.
-    let me = await getMe(req);
+    const me = await getMe(req);
     // Return context.
     return {
       models,

@@ -51,7 +51,7 @@ userSchema.plugin(uniqueValidator);
 // Enable finding user by both email and username.
 userSchema.statics.findByLogin = async function (login) {
   // Try to find by username.
-  let user = await this.findOne({ username: login });
+  const user = await this.findOne({ username: login });
   // If not found, try finding by email.
   if (!user) {
     user = await this.findOne({ email: login });
@@ -68,8 +68,8 @@ const createToken = async ({ id, email, username, role }) =>
 
 // Create new user.
 userSchema.statics.signUp = async function (newUser) {
-  let createdUser = new User(newUser);
-  let savedUser = await createdUser.save();
+  const createdUser = new User(newUser);
+  const savedUser = await createdUser.save();
   throwError(!savedUser, 'Cannot create new user.');
   // Return new user.
   console.log(
@@ -81,13 +81,13 @@ userSchema.statics.signUp = async function (newUser) {
 // Login user.
 userSchema.statics.logIn = async function ({ login, password }) {
   // Try to find by username.
-  let user = await this.findOne({ username: login });
+  const user = await this.findOne({ username: login });
   // If not found, try finding by email.
   if (!user) {
     user = await this.findOne({ email: login });
   }
   throwError(!user, `User '${login}' does not exist.`);
-  let valid = bcrypt.compareSync(password, user.password);
+  const valid = bcrypt.compareSync(password, user.password);
   throwError(!valid, `The password is invalid.`);
   console.log(
     `(GraphQL) Logged in user ${user.username}. The username and password combination is correct.`
@@ -98,10 +98,10 @@ userSchema.statics.logIn = async function ({ login, password }) {
 // Delete a user and cascade delete associated with it photos.
 userSchema.statics.deleteUser = async function (id) {
   // Find and delete user.
-  let deletedUser = await this.findByIdAndRemove(id);
+  const deletedUser = await this.findByIdAndRemove(id);
   throwError(!deletedUser, 'Cannot delete user. User does not exist.');
   // Find and delete user's photos.
-  let deletedPhotos = await model('Photo').deleteMany({ author: id });
+  const deletedPhotos = await model('Photo').deleteMany({ author: id });
   throwError(!deletedPhotos, `Cannot delete photos of user ${id}`);
   // Return deleted user.
   console.log(

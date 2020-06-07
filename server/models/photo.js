@@ -62,7 +62,7 @@ photoSchema.statics.findPhotos = async function ({
   throwError(page < 1 || limit < 1, 'Page or limit cannot be less than 1.');
 
   // Create pagination options variable.
-  let paginationOptions = {
+  const paginationOptions = {
     // Return in specified order.
     sort: { createdAt: 'descending' },
     // Passed user specified pagination criteria.
@@ -90,7 +90,7 @@ photoSchema.statics.findPhotos = async function ({
   }
 
   // Make a query using mongoose-paginate library.
-  let res = await this.paginate(query, paginationOptions);
+  const res = await this.paginate(query, paginationOptions);
   throwError(!res, 'Cannot get requested photos.');
 
   // Return requested photos.
@@ -117,10 +117,12 @@ photoSchema.statics.findPhotos = async function ({
 photoSchema.statics.addPhoto = async function ({ id, username }, args) {
   // Process file upload using helper function.
   // Returns object with url and public_id.
-  let upload = await uploadAsset(args, username);
+  const upload = await uploadAsset(args, username);
 
   // Check if country exists.
-  let existingCountry = await model('Country').findOne({ name: args.country });
+  const existingCountry = await model('Country').findOne({
+    name: args.country,
+  });
 
   // Define country id.
   let countryId = '';
@@ -130,32 +132,32 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
     countryId = existingCountry.id;
   } else {
     // If country does not exist, create a new one.
-    let newCountry = { name: args.country };
-    let createdCountry = await model('Country').create(newCountry);
+    const newCountry = { name: args.country };
+    const createdCountry = await model('Country').create(newCountry);
     // Get ID from created country and assign it to new photo.
     countryId = createdCountry.id;
     throwError(!createdCountry, 'Could not create new country.');
   }
 
   // Create new photo object.
-  let newPhoto = { ...args, upload, author: id, country: countryId };
+  const newPhoto = { ...args, upload, author: id, country: countryId };
 
   // Save photo to database.
-  let createdPhoto = await Photo.create(newPhoto);
+  const createdPhoto = await Photo.create(newPhoto);
   throwError(!createdPhoto, 'Could not create new photo.');
 
   // Find user and update it's photos.
-  let user = await model('User').findById(id);
+  const user = await model('User').findById(id);
   throwError(!user, 'User is not logged in or does not exist');
   user.photos = [...user.photos, createdPhoto.id];
-  let savedUser = await user.save();
+  const savedUser = await user.save();
   throwError(!savedUser, 'Cannot assign new photo to user.');
 
   // Find country and update it's photos.
-  let country = await model('Country').findById(countryId);
+  const country = await model('Country').findById(countryId);
   throwError(!country, 'Country does not exist');
   country.photos = [...country.photos, createdPhoto.id];
-  let savedCountry = await country.save();
+  const savedCountry = await country.save();
   throwError(!savedCountry, 'Cannot assign new photo to country.');
 
   // Return newly created photo.
@@ -168,7 +170,7 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
 // Delete a photo and update user.
 photoSchema.statics.deletePhoto = async function (id) {
   // Delete photo and populate author field to access his id.
-  let deletedPhoto = await this.findByIdAndDelete(id)
+  const deletedPhoto = await this.findByIdAndDelete(id)
     .populate('country')
     .populate('author');
   throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
@@ -178,11 +180,11 @@ photoSchema.statics.deletePhoto = async function (id) {
   await deleteAsset(deletedPhoto.upload.public_id);
 
   // Get user by id to modify photos array.
-  let user = await model('User').findById(deletedPhoto.author.id);
+  const user = await model('User').findById(deletedPhoto.author.id);
   throwError(!user, 'User does not exist.');
 
   // Update user with updated photos array.
-  let updatedUser = await model('User').findByIdAndUpdate(
+  const updatedUser = await model('User').findByIdAndUpdate(
     deletedPhoto.author.id,
     { photos: user.photos.filter(photoId => photoId != id) },
     { new: true }
@@ -190,11 +192,11 @@ photoSchema.statics.deletePhoto = async function (id) {
   throwError(!updatedUser, 'Cannot update user. User does not exist.');
 
   // Get country by id to modify photos array.
-  let country = await model('Country').findById(deletedPhoto.country.id);
+  const country = await model('Country').findById(deletedPhoto.country.id);
   throwError(!country, 'Country does not exist.');
 
   // Update country with updated photos array.
-  let updatedCountry = await model('Country').findByIdAndUpdate(
+  const updatedCountry = await model('Country').findByIdAndUpdate(
     deletedPhoto.country.id,
     { photos: country.photos.filter(photoId => photoId != id) },
     { new: true }
@@ -204,7 +206,7 @@ photoSchema.statics.deletePhoto = async function (id) {
 
   // Delete country if the removed photo was the last from this country.
   if (updatedCountry.photos.length === 0) {
-    let deletedCountry = await model('Country').findByIdAndDelete(
+    const deletedCountry = await model('Country').findByIdAndDelete(
       updatedCountry.id
     );
     throwError(
@@ -223,9 +225,9 @@ photoSchema.statics.deletePhoto = async function (id) {
 
 // Delete a photo and update user.
 photoSchema.statics.clickPhoto = async function (id) {
-  let foundPhoto = await this.findById(id);
-  let clicks = foundPhoto.clicks + 1;
-  let clickedPhoto = await this.findByIdAndUpdate(id, { clicks });
+  const foundPhoto = await this.findById(id);
+  const clicks = foundPhoto.clicks + 1;
+  const clickedPhoto = await this.findByIdAndUpdate(id, { clicks });
   console.log(`(GraphQL) Clicked photo (${clickedPhoto.id}).`);
   return clickedPhoto;
 };
