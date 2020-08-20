@@ -15,7 +15,7 @@
   "author": "Mateusz Pyzowski",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.13.0",
+    "apollo-server-express": "^2.14.2",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.21.0",
