@@ -17,4 +17,4 @@ Open [http://localhost:7000](http://localhost:7000) to view it in the browser.
 
 ## Production
 
-The app has not been deployed yet.
+To view the app in production, visit [lostinapostcard.herokuapp.com](https://lostinapostcard.herokuapp.com/).
