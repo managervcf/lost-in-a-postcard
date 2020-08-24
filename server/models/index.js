@@ -17,7 +17,7 @@ const connectDb = () =>
       useUnifiedTopology: true,
       useFindAndModify: false,
     },
-    () => console.log('Conntected to database.')
+    () => console.log('(MongoDB) Conntected to database.')
   );
 
 // Define an object containing all models.
