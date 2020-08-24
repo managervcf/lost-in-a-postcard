@@ -1,6 +1,9 @@
 // Import cloudinary package necessary for file uploads.
 import cloudinary from 'cloudinary';
 
+// Import config.
+import { cloudinaryFolderName } from '../config';
+
 // Import error handler helper.
 import { throwError } from './';
 
@@ -18,7 +21,7 @@ export const deleteAsset = async public_id => {
   console.log(`(Cloudinary) Deleted asset ${public_id}.`);
 };
 
-// Uploades an asset to cloudinary cloud.
+// Uploads an asset to cloudinary cloud.
 export const uploadAsset = async ({ file, country }, author) => {
   // Get metadata from uploading file.
   // Not extracting createReadStream function as it throws fs-capacitor error exceeding stack
@@ -41,7 +44,7 @@ export const uploadAsset = async ({ file, country }, author) => {
         const streamLoad = cloudinary.v2.uploader.upload_stream(
           {
             // Put file in lostinapostcard folder.
-            folder: 'lostinapostcard/',
+            folder: cloudinaryFolderName,
             // Apply tags.
             tags: [country, author],
           },
