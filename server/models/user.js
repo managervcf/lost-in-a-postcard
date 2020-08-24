@@ -43,7 +43,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-// Inser schema plugins.
+// Insert schema plugins.
 userSchema.plugin(uniqueValidator);
 
 // BUSINESS LOGIC.
