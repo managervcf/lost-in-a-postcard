@@ -1,6 +1,6 @@
 ## Lost in a Postcard
 
-A photography portfolio site built with React on the front-end. It uses GraphQL and Apollo Client to communicate with the back-end. The server was built with Apollo Server, Mongoose and MongoDB. It features JWT authentication and takes advantage of an image hosting service called Cloudinary via its API.
+A photography portfolio site built with React on the front-end. It uses GraphQL and Apollo Client to communicate with the back-end. The server exposes a single GraphQL endpoint and is built with Apollo Server, Mongoose and MongoDB. It features JWT authentication and takes advantage of an image hosting service called Cloudinary via its API.
 
 ## Development
 
