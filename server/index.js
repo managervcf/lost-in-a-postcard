@@ -44,9 +44,9 @@ const server = new ApolloServer({
   // Context is built once per request.
   // Use context for authentication.
   // Pass data that should be available for all resolvers.
-  context: async ({ req }) => {
+  context: ({ req }) => {
     // Perform authentication.
-    const me = await getMe(req);
+    const me = getMe(req);
     // Return context.
     return {
       models,

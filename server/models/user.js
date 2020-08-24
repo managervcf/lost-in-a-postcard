@@ -61,8 +61,8 @@ userSchema.statics.findByLogin = async function (login) {
 };
 
 // Function that creates a token valid for 15 minutes.
-const createToken = async ({ id, email, username, role }) =>
-  await jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
+const createToken = ({ id, email, username, role }) =>
+  jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
     expiresIn: '3h',
   });
 
@@ -75,7 +75,7 @@ userSchema.statics.signUp = async function (newUser) {
   console.log(
     `(GraphQL) Added user ${createdUser.username} (${createdUser.id}) with email ${createdUser.email}.`
   );
-  return { token: await createToken(savedUser) };
+  return { token: createToken(savedUser) };
 };
 
 // Login user.
