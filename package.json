@@ -1,7 +1,7 @@
 {
   "name": "lost-in-a-postcard",
   "version": "0.1.0",
-  "description": "Lost In A Postcard. Travel photo blog by Domi & Matt.",
+  "description": "Lost in a Postcard. Travel photography portfolio by Domi & Matt.",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
