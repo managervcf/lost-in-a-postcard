@@ -9,6 +9,9 @@ import jwt from 'jsonwebtoken';
 // Import email regex helper and error handler from middleware.
 import { emailRegex, throwError } from '../utils';
 
+// Import Photo model.
+import Photo from './photo';
+
 // Define schema.
 const userSchema = new Schema(
   {
@@ -51,10 +54,10 @@ userSchema.plugin(uniqueValidator);
 // Enable finding user by both email and username.
 userSchema.statics.findByLogin = async function (login) {
   // Try to find by username.
-  const user = await this.findOne({ username: login });
+  const user = await User.findOne({ username: login });
   // If not found, try finding by email.
   if (!user) {
-    user = await this.findOne({ email: login });
+    user = await User.findOne({ email: login });
   }
   // Return found user.
   return user;
@@ -81,10 +84,10 @@ userSchema.statics.signUp = async function (newUser) {
 // Login user.
 userSchema.statics.logIn = async function ({ login, password }) {
   // Try to find by username.
-  const user = await this.findOne({ username: login });
+  const user = await User.findOne({ username: login });
   // If not found, try finding by email.
   if (!user) {
-    user = await this.findOne({ email: login });
+    user = await User.findOne({ email: login });
   }
   throwError(!user, `User '${login}' does not exist.`);
   const valid = bcrypt.compareSync(password, user.password);
@@ -92,16 +95,16 @@ userSchema.statics.logIn = async function ({ login, password }) {
   console.log(
     `(GraphQL) Logged in user ${user.username}. The username and password combination is correct.`
   );
-  return { token: await createToken(user) };
+  return { token: createToken(user) };
 };
 
 // Delete a user and cascade delete associated with it photos.
 userSchema.statics.deleteUser = async function (id) {
   // Find and delete user.
-  const deletedUser = await this.findByIdAndRemove(id);
+  const deletedUser = await User.findByIdAndRemove(id);
   throwError(!deletedUser, 'Cannot delete user. User does not exist.');
   // Find and delete user's photos.
-  const deletedPhotos = await model('Photo').deleteMany({ author: id });
+  const deletedPhotos = await Photo.deleteMany({ author: id });
   throwError(!deletedPhotos, `Cannot delete photos of user ${id}`);
   // Return deleted user.
   console.log(
