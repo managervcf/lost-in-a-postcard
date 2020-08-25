@@ -7,6 +7,9 @@ import mongoosePaginate from 'mongoose-paginate';
 // Import cloudinary helpers and error handler from middleware.
 import { uploadAsset, deleteAsset, throwError } from '../utils';
 
+// Import config options.
+import { requestedPhotosLimit } from '../config';
+
 // Import models.
 import User from './user';
 import Country from './country';
@@ -59,9 +62,10 @@ photoSchema.plugin(mongoosePaginate);
 photoSchema.statics.findPhotos = async function ({
   country = '',
   featured,
-  limit = 100,
+  limit = requestedPhotosLimit,
   page = 1,
 }) {
+  console.log(requestedPhotosLimit);
   // Validate page and limit variables.
   throwError(page < 1 || limit < 1, 'Page or limit cannot be less than 1.');
 
