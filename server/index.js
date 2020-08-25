@@ -13,7 +13,7 @@ import models, { connectDb } from './models';
 import { maxFileSize, maxFiles } from './config';
 
 // Import middleware helpers.
-import { getMe } from './utils';
+import { getMe, errorHandlingMiddleware } from './utils';
 
 // Create express server.
 const app = express();
@@ -54,6 +54,9 @@ const server = new ApolloServer({
     };
   },
 });
+
+// Apply middleware to the express app.
+app.use(errorHandlingMiddleware);
 
 // Apply middleware.
 server.applyMiddleware({ app, path: '/graphql' });
