@@ -7,7 +7,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Import email regex helper and error handler from middleware.
-import { emailRegex, throwError } from '../utils';
+import { throwError } from '../utils';
+import { emailRegex } from '../config/index';
 
 // Import Photo model.
 import Photo from './photo';

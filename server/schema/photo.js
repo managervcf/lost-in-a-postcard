@@ -36,10 +36,13 @@ export default gql`
   }
 
   type PageInfo {
-    total: Int!
+    totalDocs: Int!
     limit: Int!
     page: Int!
-    pages: Int!
+    prevPage: Int
+    nextPage: Int
+    totalPages: Int!
+    hasPrevPage: Boolean!
     hasNextPage: Boolean!
   }
 
