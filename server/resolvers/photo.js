@@ -7,7 +7,7 @@ export default {
     photos: async (parent, args, { models }) =>
       await models.Photo.findPhotos(args),
     photo: async (parent, { id }, { models }) =>
-      await models.Photo.findById(id),
+      await models.Photo.findById(id).cache(),
   },
 
   Mutation: {
@@ -31,7 +31,7 @@ export default {
       await models.Country.findById(country),
     author: async ({ author }, args, { models }) =>
       await models.User.findById(author),
-    createdAt: ({ createdAt }) => createdAt.toString(),
-    updatedAt: ({ updatedAt }) => updatedAt.toString(),
+    createdAt: ({ createdAt }, args, context) => createdAt.toString(),
+    updatedAt: ({ updatedAt }, args, context) => updatedAt.toString(),
   },
 };

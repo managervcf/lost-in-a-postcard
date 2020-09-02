@@ -2,7 +2,7 @@
 import { Schema, model } from 'mongoose';
 
 // Import pagination helper library.
-import mongoosePaginate from 'mongoose-paginate';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // Import cloudinary helpers and error handler from middleware.
 import { uploadAsset, deleteAsset, throwError } from '../utils';
@@ -105,7 +105,7 @@ photoSchema.statics.findPhotos = async function ({
     `(GraphQL) ${
       country ? `Searched for ${country}. ` : 'No search phrase. '
     }Retrieved ${res.docs.length} photos from page ${page}/${
-      res.pages
+      res.totalPages
     }. Requested ${limit} out of ${res.total} photos meeting query criteria.`
   );
 
@@ -114,8 +114,6 @@ photoSchema.statics.findPhotos = async function ({
     docs: res.docs,
     pageInfo: {
       ...res,
-      // Checks if there is a next page.
-      hasNextPage: page >= res.pages ? false : true,
     },
   };
 };
