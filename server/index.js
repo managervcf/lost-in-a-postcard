@@ -6,6 +6,9 @@ import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
+// Apply caching logic.
+import './utils/cache';
+
 // Import schema, resolvers, models, helpers and config.
 import typeDefs from './schema';
 import resolvers from './resolvers';
@@ -65,6 +68,8 @@ server.applyMiddleware({ app, path: '/graphql' });
 // express application will start.
 connectDb().then(() =>
   app.listen(process.env.PORT, () =>
-    console.log(`Server ready on http://localhost:${process.env.PORT}.`)
+    console.log(
+      `(Server) Server listening on http://localhost:${process.env.PORT}.`
+    )
   )
 );

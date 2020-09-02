@@ -65,7 +65,6 @@ photoSchema.statics.findPhotos = async function ({
   limit = requestedPhotosLimit,
   page = 1,
 }) {
-  console.log(requestedPhotosLimit);
   // Validate page and limit variables.
   throwError(page < 1 || limit < 1, 'Page or limit cannot be less than 1.');
 
