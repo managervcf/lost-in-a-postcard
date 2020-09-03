@@ -8,7 +8,14 @@ Install dependencies using `npm i && npm i --prefix src/client`. This command wi
 
 To run the app, create `.env` file in the root directory and provide:
 
-`DATABASE_URL`, `JWT_SECRET`, `CLOUDINARY_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`.
+```
+REDIS_URL
+DATABASE_URL
+JWT_SECRET
+CLOUDINARY_NAME
+CLOUDINARY_KEY
+CLOUDINARY_SECRET
+```
 
 If you do not have a Cloudinary account, create one [here](https://cloudinary.com/).
 
