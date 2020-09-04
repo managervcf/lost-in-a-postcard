@@ -1,20 +1,23 @@
 import React, { useState, useRef } from 'react';
+import { useQuery } from 'react-apollo';
 import classnames from 'classnames';
 import withLoader from '../wrappers/withLoader';
 import PhotoImage from './PhotoImage';
 import PhotoCaption from './PhotoCaption';
 import {
-  // useKeyPress,
   useOnScreen,
   useOnScroll,
   useOnClickOutside,
   useOnClickInside,
 } from '../hooks';
+import { ME } from '../graphql/queries';
 
 function PhotoItem(props) {
+  const { loading, error, data } = useQuery(ME);
+
   // Returns a boolean indicating if ref is visible on screen.
   const ref = useRef();
-  const onScreen = useOnScreen(ref, '-30%');
+  const onScreen = useOnScreen(ref, '-25%');
   const [visible, setVisible] = useState(false);
 
   /**
@@ -25,6 +28,7 @@ function PhotoItem(props) {
    */
   const hideCaption = () => setVisible(false);
   const showCaption = () => setVisible(true);
+
   useOnScroll(() => setTimeout(hideCaption, 300));
   useOnClickOutside(ref, hideCaption);
   useOnClickInside(ref, showCaption);
@@ -37,8 +41,8 @@ function PhotoItem(props) {
 
   return (
     <figure ref={ref} className={photoItemClasses}>
-      <PhotoImage {...props} visible={visible} />
-      <PhotoCaption {...props} visible={visible} />
+      <PhotoImage {...props} visible={data?.me && visible} />
+      {data?.me && <PhotoCaption {...props} visible={visible} />}
     </figure>
   );
 }
