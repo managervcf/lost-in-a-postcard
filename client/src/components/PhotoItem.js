@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import withLoader from '../wrappers/withLoader';
 import PhotoImage from './PhotoImage';
 import PhotoCaption from './PhotoCaption';
+import Heart from './Heart';
 import {
   useOnScreen,
   useOnScroll,
@@ -42,6 +43,7 @@ function PhotoItem(props) {
   return (
     <figure ref={ref} className={photoItemClasses}>
       <PhotoImage {...props} visible={data?.me && visible} />
+      <Heart />
       {data?.me && <PhotoCaption {...props} visible={visible} />}
     </figure>
   );
