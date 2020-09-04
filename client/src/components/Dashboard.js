@@ -20,15 +20,19 @@ function Dashboard() {
   else if (error) return null;
   else if (!data.me) return null;
 
+  // Destructure username.
+  const { username } = data.me;
+
   // Log user.
-  console.log('Currently logged in user:', data.me.username);
+  console.log('Currently logged in user:', username);
 
   return (
     <div className="dashboard">
       <div className="user-info">
         <p>
-          <span>Logged in as </span>
-          <strong>{data.me.username} </strong>
+          <span>
+            Logged in as <strong>{username}</strong>
+          </span>
         </p>
         <Route component={ButtonLogout} />
       </div>
