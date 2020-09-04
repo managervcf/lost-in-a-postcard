@@ -12,8 +12,8 @@ export default {
 
   Mutation: {
     updateCountry: isAuthorized(
-      async (parent, args, { models }) =>
-        await models.Country.findByIdAndUpdate(args.id, args, { new: true })
+      async (parent, { id, ...args }, { models }) =>
+        await models.Country.findByIdAndUpdate(id, { ...args }, { new: true })
     ),
   },
 
