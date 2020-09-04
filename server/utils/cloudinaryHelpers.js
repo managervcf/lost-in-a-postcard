@@ -1,9 +1,6 @@
 // Import cloudinary package necessary for file uploads.
 import cloudinary from 'cloudinary';
 
-// Import config.
-import { cloudinaryFolderName } from '../config';
-
 // Import error handler helper.
 import { throwError } from './';
 
@@ -43,8 +40,8 @@ export const uploadAsset = async ({ file, country }, author) => {
       await new Promise((resolve, reject) => {
         const streamLoad = cloudinary.v2.uploader.upload_stream(
           {
-            // Put file in lostinapostcard folder.
-            folder: cloudinaryFolderName,
+            // Put file in the cloudinary folder.
+            folder: process.env.CLOUDINARY_FOLDER_NAME,
             // Apply tags.
             tags: [country, author],
           },
