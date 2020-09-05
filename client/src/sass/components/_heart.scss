@@ -1,0 +1,10 @@
+.heart {
+  cursor: pointer;
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+
+  width: 2.5rem;
+  height: 2.5rem;
+  fill: rgba($color-main-primary, 0.6);
+}

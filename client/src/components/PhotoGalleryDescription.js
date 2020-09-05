@@ -8,7 +8,7 @@ function PhotoGalleryDescription({ countryName, featured }) {
 
   // Pull out country description.
   const { description } =
-    data.countries.find(({ name }) => name === countryName) || '';
+    data?.countries.find(({ name }) => name === countryName) || '';
 
   // Handle loading, error and description display.
   if (loading) return null;
