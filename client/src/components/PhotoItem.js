@@ -43,7 +43,7 @@ function PhotoItem(props) {
   return (
     <figure ref={ref} className={photoItemClasses}>
       <PhotoImage {...props} visible={data?.me && visible} />
-      <Heart />
+      <Heart id={props.id} />
       {data?.me && <PhotoCaption {...props} visible={visible} />}
     </figure>
   );
