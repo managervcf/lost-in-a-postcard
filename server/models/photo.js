@@ -228,10 +228,12 @@ photoSchema.statics.deletePhoto = async function (id) {
 
 // Delete a photo and update user.
 photoSchema.statics.clickPhoto = async function (id) {
-  const foundPhoto = await Photo.findById(id);
-  const clicks = foundPhoto.clicks + 1;
-  const clickedPhoto = await Photo.findByIdAndUpdate(id, { clicks });
-  console.log(`(GraphQL) Clicked photo (${clickedPhoto.id}).`);
+  const clickedPhoto = await Photo.findByIdAndUpdate(id, {
+    $inc: { clicks: 1 },
+  });
+  console.log(
+    `(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}).`
+  );
   return clickedPhoto;
 };
 
