@@ -1,7 +1,7 @@
 .fade-in {
   opacity: 0 !important;
   transform: scale(0.99) translateY(0.5rem) !important;
-  transition: all $transition-time-medium-slow ease-out !important;
+  transition: all $transition-time-medium ease-out !important;
 
   &.hidden {
     visibility: hidden !important;
@@ -11,7 +11,7 @@
     visibility: visible !important;
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
-    transition: all $transition-time-medium ease-out !important;
+    transition: all $transition-time-medium-fast ease-out !important;
   }
 }
 
