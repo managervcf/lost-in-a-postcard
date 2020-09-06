@@ -1,10 +1,18 @@
 .heart {
-  cursor: pointer;
   position: absolute;
   bottom: 2%;
   right: 2%;
 
-  width: 2.5rem;
-  height: 2.5rem;
-  fill: rgba($color-main-primary, 0.6);
+  &-counter {
+    font-size: $font-size-main-small;
+    color: rgba($color-main-primary, 0.6);
+  }
+
+  &-icon {
+    cursor: pointer;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: rgba($color-main-primary, 0.6);
+  }
 }

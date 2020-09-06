@@ -6,7 +6,7 @@ import PhotoGalleryDescription from './PhotoGalleryDescription';
 import LoaderBlock from './LoaderBlock';
 import ErrorMessage from './ErrorMessage';
 import { PHOTOS } from '../graphql/queries';
-import { shuffle, buildQueryVariables } from '../utils';
+import { buildQueryVariables } from '../utils';
 
 function PhotoGallery() {
   // Use location and match object.
@@ -14,11 +14,12 @@ function PhotoGallery() {
   const match = useRouteMatch();
 
   // Build a query depending on url.
-  const variables = buildQueryVariables(location, match);
-  const { country, featured } = variables;
+  const { country, featured } = buildQueryVariables(location, match);
 
   // Query graphql backend.
-  const { data, loading, error } = useQuery(PHOTOS, { variables });
+  const { data, loading, error } = useQuery(PHOTOS, {
+    variables: { country, featured },
+  });
 
   // Handle error, loading and lack of photos.
   if (error) return <ErrorMessage text="Cannot load gallery :(" />;
@@ -27,7 +28,7 @@ function PhotoGallery() {
     return <ErrorMessage text="No photos found :(" />;
 
   // Build gallery items on shuffled array.
-  const galleryItems = shuffle(data.photos.docs).map(photo => (
+  const galleryItems = data.photos.docs.map(photo => (
     <PhotoItem key={photo.id} {...photo} />
   ));
 

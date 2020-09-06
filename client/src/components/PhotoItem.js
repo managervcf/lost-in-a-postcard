@@ -14,7 +14,7 @@ import {
 import { ME } from '../graphql/queries';
 
 function PhotoItem(props) {
-  const { loading, error, data } = useQuery(ME);
+  const { data } = useQuery(ME);
 
   // Returns a boolean indicating if ref is visible on screen.
   const ref = useRef();
@@ -30,7 +30,7 @@ function PhotoItem(props) {
   const hideCaption = () => setVisible(false);
   const showCaption = () => setVisible(true);
 
-  useOnScroll(() => setTimeout(hideCaption, 300));
+  useOnScroll(() => setTimeout(hideCaption, 500));
   useOnClickOutside(ref, hideCaption);
   useOnClickInside(ref, showCaption);
 
@@ -43,7 +43,7 @@ function PhotoItem(props) {
   return (
     <figure ref={ref} className={photoItemClasses}>
       <PhotoImage {...props} visible={data?.me && visible} />
-      <Heart id={props.id} />
+      <Heart id={props.id} clicks={props.clicks} />
       {data?.me && <PhotoCaption {...props} visible={visible} />}
     </figure>
   );
