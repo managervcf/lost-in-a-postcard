@@ -1,0 +1,9 @@
+.loader-inline {
+  display: inline-block;
+}
+
+.loader-block {
+  height: 50vh;
+  width: 100%;
+  @include centerFlexColumn;
+}

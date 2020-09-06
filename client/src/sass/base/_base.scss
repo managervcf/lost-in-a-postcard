@@ -42,17 +42,6 @@ body {
   flex-direction: row;
 }
 
-.loader-inline {
-  display: inline-block;
-}
-
-.loader-block,
-.error-message {
-  height: 50vh;
-  width: 100%;
-  @include centerFlexColumn;
-}
-
 .frame {
   padding: 1rem;
   display: flex;

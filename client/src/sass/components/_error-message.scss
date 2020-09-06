@@ -1,0 +1,5 @@
+.error-message {
+  height: 50vh;
+  width: 100%;
+  @include centerFlexColumn;
+}
