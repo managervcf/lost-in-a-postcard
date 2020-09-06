@@ -19,7 +19,7 @@ function LoaderBlock({ loading, size }) {
       <PropagateLoader
         css={{ transform: 'rotateZ(90deg)' }}
         size={size}
-        color={'#929aab'}
+        color={'#d9721e'}
         loading={loading}
       />
     </div>
