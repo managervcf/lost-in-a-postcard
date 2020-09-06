@@ -11,6 +11,7 @@ export default gql`
         }
         caption
         featured
+        clicks
         upload {
           url
         }
