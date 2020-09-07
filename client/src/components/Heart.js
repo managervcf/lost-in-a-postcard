@@ -11,10 +11,11 @@ const Heart = ({ id, clicks }) => {
   });
 
   const showFilled = () => setClicked(true);
-  const showEmpty = () => setTimeout(() => setClicked(false), 1000);
+  const showEmpty = () => setTimeout(() => setClicked(false), 1500);
 
   const heartCounterClasses = classnames({
     'heart-counter': true,
+    'heart-counter-hidden': !clicked,
     'heart-counter-visible': clicked,
   });
 
