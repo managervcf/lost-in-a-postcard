@@ -6,14 +6,17 @@
   &-counter {
     font-size: $font-size-main-small;
     color: rgba($color-main-primary, 0.6);
-    opacity: 0;
-    transform: translateY(6rem);
-    transition: transform 0.4s, opacity 0.2s;
+
+    &-hidden {
+      opacity: 0;
+      transform: translateY(6rem);
+      transition: transform 0.4s, opacity 0.2s;
+    }
 
     &-visible {
       opacity: 1;
       transform: translateY(0);
-      transition: all 0.3s;
+      transition: all 0.3s 0.1s;
     }
   }
 
