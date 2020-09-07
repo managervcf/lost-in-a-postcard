@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer>
       <Navbar />
-      <p>Dominika & Mateusz</p>
+      <p>Domi & Mateusz</p>
     </footer>
   );
 }

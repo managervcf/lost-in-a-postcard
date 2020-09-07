@@ -6,11 +6,19 @@
   &-counter {
     font-size: $font-size-main-small;
     color: rgba($color-main-primary, 0.6);
+    opacity: 0;
+    transform: translateY(6rem);
+    transition: transform 0.4s, opacity 0.2s;
+
+    &-visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.3s;
+    }
   }
 
   &-icon {
     cursor: pointer;
-
     width: 2.5rem;
     height: 2.5rem;
     fill: rgba($color-main-primary, 0.6);
