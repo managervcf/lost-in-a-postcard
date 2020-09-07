@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classnames from 'classnames';
 import { useMutation } from 'react-apollo';
 import { CLICK_PHOTO } from '../graphql/mutations';
 import { PHOTOS } from '../graphql/queries';
@@ -10,11 +11,16 @@ const Heart = ({ id, clicks }) => {
   });
 
   const showFilled = () => setClicked(true);
-  const showEmpty = () => setClicked(false);
+  const showEmpty = () => setTimeout(() => setClicked(false), 1000);
+
+  const heartCounterClasses = classnames({
+    'heart-counter': true,
+    'heart-counter-visible': clicked,
+  });
 
   return (
     <div className="heart">
-      <p className="heart-counter">{clicks}</p>
+      <p className={heartCounterClasses}>{clicks}</p>
       <svg
         className="heart-icon"
         onPointerLeave={showEmpty}
