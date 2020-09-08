@@ -8,7 +8,6 @@ export const userResolvers = {
     user: async (parent, { id }, { models }) => await models.User.findById(id),
     userByLogin: async (parent, { login }, { models }) =>
       await models.User.findByLogin({ login }),
-    // Wrap resolver with authenticate middleware to check if user is logged in.
     me: async (parent, args, { models, me }) =>
       me ? await models.User.findById(me.id) : null,
   },

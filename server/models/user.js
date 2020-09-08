@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 
 // Import email regex helper and error handler from middleware.
 import { throwError } from '../utils';
-import { emailRegex } from '../config/index';
+import { emailRegex, jwtExpiryTime } from '../config/index';
 
 // Import Photo model.
 import Photo from './photo';
@@ -56,10 +56,12 @@ userSchema.plugin(uniqueValidator);
 userSchema.statics.findByLogin = async function (login) {
   // Try to find by username.
   const user = await User.findOne({ username: login });
+
   // If not found, try finding by email.
   if (!user) {
     user = await User.findOne({ email: login });
   }
+
   // Return found user.
   return user;
 };
@@ -67,14 +69,22 @@ userSchema.statics.findByLogin = async function (login) {
 // Function that creates a token valid for 15 minutes.
 const createToken = ({ id, email, username, role }) =>
   jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
-    expiresIn: '3h',
+    expiresIn: jwtExpiryTime,
   });
 
 // Create new user.
-userSchema.statics.signUp = async function (newUser) {
+userSchema.statics.signUp = async function ({ secret, ...newUser }) {
+  // Check if user has provided the secret admin pasword correctly.
+  throwError(
+    secret !== process.env.ADMIN_PASSWORD,
+    'Cannot sign up, you are not an admin.'
+  );
+
+  // Create new user and save it to the database.
   const createdUser = new User(newUser);
   const savedUser = await createdUser.save();
   throwError(!savedUser, 'Cannot create new user.');
+
   // Return new user.
   console.log(
     `(GraphQL) Added user ${createdUser.username} (${createdUser.id}) with email ${createdUser.email}.`
@@ -86,13 +96,18 @@ userSchema.statics.signUp = async function (newUser) {
 userSchema.statics.logIn = async function ({ login, password }) {
   // Try to find by username.
   const user = await User.findOne({ username: login });
+
   // If not found, try finding by email.
   if (!user) {
     user = await User.findOne({ email: login });
   }
   throwError(!user, `User '${login}' does not exist.`);
+
+  // Compare passwords.
   const valid = bcrypt.compareSync(password, user.password);
   throwError(!valid, `The password is invalid.`);
+
+  // Return the toker
   console.log(
     `(GraphQL) Logged in user ${user.username}. The username and password combination is correct.`
   );
@@ -104,9 +119,11 @@ userSchema.statics.deleteUser = async function (id) {
   // Find and delete user.
   const deletedUser = await User.findByIdAndRemove(id);
   throwError(!deletedUser, 'Cannot delete user. User does not exist.');
+
   // Find and delete user's photos.
   const deletedPhotos = await Photo.deleteMany({ author: id });
   throwError(!deletedPhotos, `Cannot delete photos of user ${id}`);
+
   // Return deleted user.
   console.log(
     `(GraphQL) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${deletedPhotos.n} corresponding photos.`
@@ -123,6 +140,7 @@ userSchema.pre('save', function (next) {
   if (!this.isModified('password')) {
     return next();
   }
+
   // Synchronously generates a hash for the given string.
   this.password = bcrypt.hashSync(this.password, 10);
   next();

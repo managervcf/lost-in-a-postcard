@@ -11,7 +11,7 @@ function Heart({ id, clicks }) {
   });
 
   const showFilled = () => setClicked(true);
-  const showEmpty = () => setTimeout(() => setClicked(false), 1500);
+  const showEmpty = () => setTimeout(() => setClicked(false), 1300);
 
   const heartCounterClasses = classnames({
     'heart-counter': true,
@@ -26,10 +26,7 @@ function Heart({ id, clicks }) {
         className="heart-icon"
         onPointerLeave={showEmpty}
         onPointerDown={showFilled}
-        onPointerUp={() => {
-          clickPhoto({ variables: { id } });
-          showEmpty();
-        }}
+        onPointerUp={() => clickPhoto({ variables: { id } })}
       >
         <use
           xlinkHref={`./assets/icons/icons.svg#icon-heart${

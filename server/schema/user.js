@@ -15,6 +15,7 @@ export const userSchema = gql`
       username: String!
       email: String!
       password: String!
+      secret: String!
       role: String
     ): Token!
     logIn(login: String!, password: String!): Token!
