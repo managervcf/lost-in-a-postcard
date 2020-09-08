@@ -4,7 +4,7 @@ import { useMutation } from 'react-apollo';
 import { CLICK_PHOTO } from '../graphql/mutations';
 import { PHOTOS } from '../graphql/queries';
 
-const Heart = ({ id, clicks }) => {
+function Heart({ id, clicks }) {
   const [clicked, setClicked] = useState(false);
   const [clickPhoto] = useMutation(CLICK_PHOTO, {
     refetchQueries: [{ query: PHOTOS }],
@@ -39,6 +39,6 @@ const Heart = ({ id, clicks }) => {
       </svg>
     </div>
   );
-};
+}
 
 export default Heart;

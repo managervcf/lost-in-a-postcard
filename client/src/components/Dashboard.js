@@ -10,6 +10,7 @@ import { ME } from '../graphql/queries';
 function Dashboard() {
   const [showPhotoFormNew, setShowPhotoFormNew] = useState(false);
   const [showCountryEditForm, setShowCountryEditForm] = useState(false);
+
   // Query for user with additional option.
   const { loading, error, data } = useQuery(ME, {
     fetchPolicy: 'network-only',

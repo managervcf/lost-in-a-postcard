@@ -1,4 +1,4 @@
-export { default as ME } from './me';
-export { default as PHOTOS } from './photos';
-export { default as COUNTRIES } from './countries';
-export { default as COUNTRY } from './country';
+export * from './me';
+export * from './photos';
+export * from './countries';
+export * from './country';

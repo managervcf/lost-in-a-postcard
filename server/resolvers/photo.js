@@ -2,7 +2,7 @@
 import { isAuthenticated, isAuthorized } from '../utils';
 
 // Create and immediately export default resolvers.
-export default {
+export const photoResolvers = {
   Query: {
     photos: async (parent, args, { models }) =>
       await models.Photo.findPhotos(args),

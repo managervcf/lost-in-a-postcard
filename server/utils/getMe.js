@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 // Define and export default function that takes a req as an argument,
 // pulls out a token and tries to verify a user.
-export default req => {
+export const getMe = req => {
   const { token } = req.headers;
   if (token) {
     try {

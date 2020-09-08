@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useQuery } from 'react-apollo';
 import classnames from 'classnames';
-import withLoader from '../wrappers/withLoader';
 import PhotoImage from './PhotoImage';
 import PhotoCaption from './PhotoCaption';
 import Heart from './Heart';
@@ -36,17 +35,17 @@ function PhotoItem(props) {
 
   const photoItemClasses = classnames({
     'gallery-item': true,
-    'fade-in': true,
-    visible: onScreen,
+    'fade-out': !onScreen,
+    'fade-in': onScreen,
   });
 
   return (
     <figure ref={ref} className={photoItemClasses}>
-      <PhotoImage {...props} visible={data?.me && visible} />
+      <PhotoImage {...props} dim={data?.me && visible} />
       <Heart id={props.id} clicks={props.clicks} />
       {data?.me && <PhotoCaption {...props} visible={visible} />}
     </figure>
   );
 }
 
-export default withLoader(PhotoItem);
+export default PhotoItem;

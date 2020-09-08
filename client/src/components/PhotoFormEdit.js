@@ -17,9 +17,9 @@ function PhotoFormEdit(props) {
   });
 
   // Define submit handler.
-  const handleSubmit = async (e, mutate) => {
+  const onSubmit = e => {
     e.preventDefault();
-    await mutate({
+    updateMutation({
       variables: {
         id,
         caption: editedCaption,
@@ -32,7 +32,7 @@ function PhotoFormEdit(props) {
   if (loading) return <LoaderInline size={5} loading={loading} />;
 
   return (
-    <form className="form" onSubmit={e => handleSubmit(e, updateMutation)}>
+    <form className="form" onSubmit={onSubmit}>
       <p>
         Photo from {country.name} by {author.username}
       </p>

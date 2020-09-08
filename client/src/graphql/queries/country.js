@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export const COUNTRY = gql`
   query country($name: String!) {
     country(name: $name) {
       id

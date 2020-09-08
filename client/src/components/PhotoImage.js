@@ -2,16 +2,20 @@ import React from 'react';
 import classnames from 'classnames';
 import { transformUrl } from '../utils';
 
-function PhotoImage({ upload, country, visible }) {
+function PhotoImage({ upload, country, dim }) {
   const imageClasses = classnames({
     'gallery-image': true,
-    dim: visible,
+    dim,
   });
 
-  // Transform URL based on provided app options.
-  const newUrl = transformUrl(upload.url);
-
-  return <img className={imageClasses} src={newUrl} alt={country.name} />;
+  return (
+    <img
+      className={imageClasses}
+      // Transform URL based on provided app options.
+      src={transformUrl(upload.url)}
+      alt={country.name}
+    />
+  );
 }
 
 export default PhotoImage;

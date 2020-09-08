@@ -6,7 +6,7 @@ function NavbarItem({ countryName }) {
   return (
     <NavLink
       className="navbar-item"
-      activeStyle={{ color: '#d9721e' }}
+      activeStyle={{ color: '#d9721e', transition: 'all 0.3s' }}
       to={`/photos/${countryName.toLowerCase()}`}
     >
       {countryName}

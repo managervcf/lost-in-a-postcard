@@ -2,7 +2,7 @@
 import { isAuthenticated } from '../utils';
 
 // Create and immediately export default resolvers.
-export default {
+export const userResolvers = {
   Query: {
     users: async (parent, args, { models }) => await models.User.find({}),
     user: async (parent, { id }, { models }) => await models.User.findById(id),

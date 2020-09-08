@@ -20,11 +20,11 @@ function CountryFormEdit() {
   );
 
   // Handles submit event.
-  const handleSubmit = async e => {
+  const onSubmit = e => {
     // Prevent default browser behavior.
     e.preventDefault();
     // Mutate using provided function
-    await updateCountry({
+    updateCountry({
       variables: editedCountry,
       onCompleted: async () => await client.resetStore(),
       // Redetches query after mutation to update the DOM.
@@ -35,8 +35,8 @@ function CountryFormEdit() {
   };
 
   // Handles select event.
-  const handleSelect = (e, countryArray) => {
-    const { id, name, description } = countryArray.find(
+  const handleSelect = e => {
+    const { id, name, description } = data?.countries.find(
       ({ name }) => name === e.target.value
     );
     // Set state.
@@ -62,12 +62,8 @@ function CountryFormEdit() {
   ));
 
   return (
-    <form className="form" onSubmit={e => handleSubmit(e)}>
-      <select
-        defaultValue={0}
-        required
-        onChange={e => handleSelect(e, data.countries)}
-      >
+    <form className="form" onSubmit={onSubmit}>
+      <select defaultValue={0} required onChange={handleSelect}>
         <option value={0} disabled>
           Pick a country
         </option>
@@ -87,7 +83,7 @@ function CountryFormEdit() {
       {mError && (
         <ErrorMessage text="Could not edit selected country, please try again." />
       )}
-      <button className="button" type="submit" disabled={mError}>
+      <button className="button" type="submit" disabled={mLoading}>
         {!mLoading ? 'Update' : 'Updating...'}
       </button>
     </form>

@@ -10,9 +10,9 @@ import { ApolloServer } from 'apollo-server-express';
 import './utils/cache';
 
 // Import schema, resolvers, models, helpers and config.
-import typeDefs from './schema';
-import resolvers from './resolvers';
-import models, { connectDb } from './models';
+import { typeDefs } from './schema';
+import { resolvers } from './resolvers';
+import { connectDb, models } from './models';
 import { maxFileSize, maxFiles } from './config';
 
 // Import middleware helpers.

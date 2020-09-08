@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export const UPDATE_COUNTRY = gql`
   mutation updateCountry($id: ID!, $name: String!, $description: String) {
     updateCountry(id: $id, name: $name, description: $description) {
       id

@@ -2,7 +2,7 @@
 import { isAuthorized } from '../utils';
 
 // Create and immediately export default resolvers.
-export default {
+export const countryResolvers = {
   Query: {
     countries: async (parent, args, { models }) =>
       await models.Country.find({}).cache(),

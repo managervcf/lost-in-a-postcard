@@ -5,16 +5,15 @@ import ButtonDelete from './ButtonDelete';
 import PhotoFormEdit from './PhotoFormEdit';
 import PhotoCaptionContent from './PhotoCaptionContent';
 
-function Caption(props) {
+function PhotoCaption(props) {
   // Checks if the caption is in edit mode.
   const [editMode, setEditMode] = useState(false);
 
   // Build caption classes based on visibility.
   const captionClasses = classnames({
     'gallery-caption': true,
-    'fade-in': true,
-    hidden: true,
-    visible: props.visible,
+    'fade-out': !props.visible,
+    'fade-in': props.visible,
   });
 
   return (
@@ -30,4 +29,4 @@ function Caption(props) {
   );
 }
 
-export default Caption;
+export default PhotoCaption;

@@ -8,16 +8,15 @@ function LoginForm({ mutate, loading }) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
+  const onSubmit = e => {
+    e.preventDefault();
+    mutate({ variables: { login, password } });
+    setLogin('');
+    setPassword('');
+  };
+
   return (
-    <form
-      className="form"
-      onSubmit={e => {
-        e.preventDefault();
-        mutate({ variables: { login, password } });
-        setLogin('');
-        setPassword('');
-      }}
-    >
+    <form className="form" onSubmit={onSubmit}>
       <input
         required
         type="text"
