@@ -1,8 +1,8 @@
 // Import gql helper to construct GraphQL schema.
 import { gql } from 'apollo-server-express';
 
-// Define and export default schema.
-export default gql`
+// Define and export schema.
+export const photoSchema = gql`
   extend type Query {
     photos(
       country: String

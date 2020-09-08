@@ -2,9 +2,9 @@
 import { gql } from 'apollo-server-express';
 
 // Import every part of schema.
-import userSchema from './user';
-import photoSchema from './photo';
-import countrySchema from './country';
+import { userSchema } from './user';
+import { photoSchema } from './photo';
+import { countrySchema } from './country';
 
 // Define linkSchema that bonds all schemas together.
 const linkSchema = gql`
@@ -22,4 +22,4 @@ const linkSchema = gql`
 `;
 
 // Export all schemas as an array.
-export default [linkSchema, userSchema, photoSchema, countrySchema];
+export const typeDefs = [linkSchema, userSchema, photoSchema, countrySchema];

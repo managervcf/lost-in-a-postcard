@@ -1,6 +1,6 @@
 // Authorization helper. Checks if the user is a photo owner.
 // Used to wrap resolvers to block sensitive queries.
-export default next => async (parent, args, context, info) => {
+export const isAuthorized = next => async (parent, args, context, info) => {
   // Destructure me and models out of context.
   const { me, models } = context;
   // If user is not logged in, throw an error.
