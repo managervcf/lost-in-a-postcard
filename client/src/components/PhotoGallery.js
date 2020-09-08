@@ -33,7 +33,7 @@ function PhotoGallery() {
   ));
 
   return (
-    <article className="gallery">
+    <article className="gallery u-mb-medium">
       <PhotoGalleryDescription countryName={country} featured={featured} />
       {galleryItems}
     </article>
