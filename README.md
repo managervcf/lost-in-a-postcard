@@ -13,9 +13,10 @@ REDIS_URL
 DATABASE_URL
 JWT_SECRET
 CLOUDINARY_NAME
-CLOUDINARY_FOLDER_NAME
 CLOUDINARY_KEY
 CLOUDINARY_SECRET
+CLOUDINARY_FOLDER_NAME=<random_string>
+ADMIN_PASSWORD=<random_string>
 ```
 
 If you do not have a Cloudinary account, create one [here](https://cloudinary.com/).
