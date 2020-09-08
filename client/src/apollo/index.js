@@ -48,7 +48,5 @@ const link = ApolloLink.from([
 
 // Create new Apollo Client the old way.
 // Unfortunately upload package does not work with apollo-boost.
-const client = new ApolloClient({ cache, link });
-
 // Export Apollo Client.
-export default client;
+export const client = new ApolloClient({ cache, link });

@@ -1,4 +1,4 @@
-const options = {
+export const options = {
   image: {
     // Quality accepts a number 1-100, 'auto', 'auto:low', 'auto:eco', 'auto:good' or 'auto:best'.
     quality: 'auto',
@@ -6,5 +6,3 @@ const options = {
     width: 1000,
   },
 };
-
-export default options;

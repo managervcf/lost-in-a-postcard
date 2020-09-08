@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export const DELETE_PHOTO = gql`
   mutation deletePhoto($id: ID!) {
     deletePhoto(id: $id) {
       id

@@ -1,4 +1,4 @@
-import options from '../options';
+import { options } from '../options';
 
 // Exports a function that alters cloudinary image based on provided option.
 export function transformUrl(url) {

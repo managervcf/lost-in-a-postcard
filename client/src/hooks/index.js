@@ -1,6 +1,6 @@
 // Export all custom hooks from a single file.
-export { useKeyPress } from './useKeyPress';
-export { useOnScreen } from './useOnScreen';
-export { useOnScroll } from './useOnScroll';
-export { useOnClickInside } from './useOnClickInside';
-export { useOnClickOutside } from './useOnClickOutside';
+export * from './useKeyPress';
+export * from './useOnScreen';
+export * from './useOnScroll';
+export * from './useOnClickInside';
+export * from './useOnClickOutside';

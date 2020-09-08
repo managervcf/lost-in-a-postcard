@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export const CLICK_PHOTO = gql`
   mutation clickPhoto($id: ID!) {
     clickPhoto(id: $id) {
       id

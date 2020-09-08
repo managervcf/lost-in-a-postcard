@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export const EDIT_PHOTO = gql`
   mutation updatePhoto(
     $id: ID!
     $country: String

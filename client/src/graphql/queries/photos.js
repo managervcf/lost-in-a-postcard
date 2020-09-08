@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export const PHOTOS = gql`
   query photos($country: String, $featured: Boolean, $limit: Int, $page: Int) {
     photos(country: $country, featured: $featured, limit: $limit, page: $page) {
       docs {
