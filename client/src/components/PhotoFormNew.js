@@ -18,13 +18,13 @@ function PhotoFormNew() {
   });
 
   // Define submit handler.
-  const handleSubmit = async (e, mutate) => {
+  const onSubmit = e => {
     e.preventDefault();
-    await mutate({ variables: { file, country, caption, featured } });
+    uploadMutation({ variables: { file, country, caption, featured } });
   };
 
   return (
-    <form className="form" onSubmit={e => handleSubmit(e, uploadMutation)}>
+    <form className="form" onSubmit={onSubmit}>
       {error && <div>{error.message}</div>}
       <input
         type="text"
