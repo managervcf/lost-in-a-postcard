@@ -11,7 +11,7 @@ function Navbar() {
   if (loading) return null;
 
   // Build navbar items.
-  const navItems = data.countries
+  const navItems = data?.countries
     // Sort alphabetically.
     .sort((a, b) => (a.name < b.name ? -1 : 1))
     .map(({ id, name }) => <NavbarItem key={id} countryName={name} />);
