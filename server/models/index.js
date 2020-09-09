@@ -8,8 +8,8 @@ import Country from './country';
 
 // Define a function that connects to database.
 // Pass options to avoid deprecation warnings.
-export const connectDb = () =>
-  connect(
+export const connectDb = async () =>
+  await connect(
     process.env.DATABASE_URL,
     {
       useNewUrlParser: true,
