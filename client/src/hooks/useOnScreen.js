@@ -17,7 +17,7 @@ export function useOnScreen(ref, rootMargin = '0px') {
         rootMargin,
       }
     );
-    if (ref.current) {
+    if (element) {
       observer.observe(element);
     }
     return () => {
