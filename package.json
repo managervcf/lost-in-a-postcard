@@ -11,7 +11,8 @@
     "server": "npm run build && nodemon dist/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run cache\"",
     "preinstall": "npx npm-force-resolutions",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run build",
+    "test": "jest"
   },
   "author": "Mateusz Pyzowski",
   "license": "ISC",
@@ -37,6 +38,7 @@
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "concurrently": "^5.2.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.3"
   },
   "resolutions": {
