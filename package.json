@@ -12,7 +12,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run cache\"",
     "preinstall": "npx npm-force-resolutions",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run build",
-    "test": "jest --watchAll --forceExit "
+    "test": "jest --forceExit "
   },
   "author": "Mateusz Pyzowski",
   "license": "ISC",
