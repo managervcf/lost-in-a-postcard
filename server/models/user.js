@@ -95,7 +95,7 @@ userSchema.statics.signUp = async function ({ secret, ...newUser }) {
 // Login user.
 userSchema.statics.logIn = async function ({ login, password }) {
   // Try to find by username.
-  const user = await User.findOne({ username: login });
+  let user = await User.findOne({ username: login });
 
   // If not found, try finding by email.
   if (!user) {
