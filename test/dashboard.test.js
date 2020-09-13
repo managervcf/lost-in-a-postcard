@@ -18,65 +18,89 @@ afterEach(async () => {
 /**
  * Test suites.
  */
-it('renders the username', async () => {
-  /**
-   * 1. Log in a test user.
-   * 2. Define a selector and wait for it to be loaded.
-   * 2. Pull out selectors content.
-   * 3. Make assertions.
-   */
-  await page.login();
+describe('when logged in', () => {
+  beforeEach(async () => {
+    /**
+     * Log in a test user.
+     */
+    await page.login();
+  });
 
-  const spanSelector = 'div.user-info > p > span';
+  it('renders the username', async () => {
+    /**
+     * 1. Define a selector and wait for it to be loaded.
+     * 2. Pull out selectors content.
+     * 3. Make assertions.
+     */
 
-  const dashboardText = await page.getContentsOf(spanSelector);
+    const spanSelector = 'div.user-info > p > span';
 
-  expect(dashboardText).toMatch(testUser.username);
-});
+    const dashboardText = await page.getContentsOf(spanSelector);
 
-it('renders the logout, add photo and edit countries buttons', async () => {
-  /**
-   * 1. Log in a test user.
-   * 2. Define selectors.
-   * 2. Pull out selectors content.
-   * 3. Make assertions.
-   */
-  await page.login();
+    expect(dashboardText).toMatch(testUser.username);
+  });
 
-  const logoutButtonSelector = '.logout-button';
-  const addPhotoButtonSelector =
-    '#root > header > div.dashboard > div:nth-child(2) > button';
-  const editCountriesButtonSelector =
-    '#root > header > div.dashboard > div:nth-child(3) > button';
+  it('renders the logout, add photo and edit countries buttons', async () => {
+    /**
+     * 1. Define selectors.
+     * 2. Pull out selectors content.
+     * 3. Make assertions.
+     */
+    const logoutButtonSelector = '.logout-button';
+    const addPhotoButtonSelector =
+      '#root > header > div.dashboard > div:nth-child(2) > button';
+    const editCountriesButtonSelector =
+      '#root > header > div.dashboard > div:nth-child(3) > button';
 
-  const logoutButtonText = await page.getContentsOf(logoutButtonSelector);
-  const addPhotoButtonText = await page.getContentsOf(addPhotoButtonSelector);
-  const editCountriesButtonText = await page.getContentsOf(
-    editCountriesButtonSelector
+    const logoutButtonText = await page.getContentsOf(logoutButtonSelector);
+    const addPhotoButtonText = await page.getContentsOf(addPhotoButtonSelector);
+    const editCountriesButtonText = await page.getContentsOf(
+      editCountriesButtonSelector
+    );
+
+    expect(logoutButtonText).toMatch(/logout/i);
+    expect(addPhotoButtonText).toMatch(/add photo/i);
+    expect(editCountriesButtonText).toMatch(/edit countries/i);
+  });
+
+  it.todo(
+    'logs user out'
+    // , async () => {
+    //   /**
+    //    * 1. Define a selector and wait for it to be loaded.
+    //    * 2. Click on the logout button.
+    //    * 3. Make assertions.
+    //    */
+
+    //   const logoutButtonSelector =
+    //     // '#root > header > div.dashboard > div:nth-child(2) > button';
+    //     'button.button.logout-button';
+
+    //   await page.click(logoutButtonSelector, { delay: 300 });
+
+    //   expect(await page.getContentsOf(logoutButtonSelector)).toBeUndefined();
+    // }
   );
-
-  expect(logoutButtonText).toMatch(/logout/i);
-  expect(addPhotoButtonText).toMatch(/add photo/i);
-  expect(editCountriesButtonText).toMatch(/edit countries/i);
 });
 
-it.todo(
-  'logs user out'
-  // , async () => {
-  //   /**
-  //    * 1. Log in a test user.
-  //    * 2. Define a selector and wait for it to be loaded.
-  //    * 2. Click on the logout button.
-  //    * 3. Make assertions.
-  //    */
-  //   await page.login();
+describe('when not logged in', () => {
+  it('does not show the dashboard', async () => {
+    /**
+     * 1. Define the selector and error variables.
+     * 2. Try to get contents of the selector,
+     *    if an error is thrown, save it as the error variable.
+     * 3. Make assertions. Stringify error object and match it
+     *    against the dashboard selector.
+     */
+    let error = null;
+    const dashboardSelector = '#root > header > div.dashboard';
 
-  //   const logoutButtonSelector =
-  //     // '#root > header > div.dashboard > div:nth-child(2) > button';
-  //     'button.button.logout-button';
+    try {
+      await page.getContentsOf(dashboardSelector);
+    } catch (err) {
+      error = err;
+    }
 
-  //   await page.click(logoutButtonSelector, { delay: 300 });
-
-  //   expect(await page.getContentsOf(logoutButtonSelector)).toBeUndefined();
-  // }
-);
+    expect(error.toString()).toMatch(dashboardSelector);
+  });
+});
