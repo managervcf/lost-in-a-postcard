@@ -4,7 +4,7 @@ import { models } from '../server/models';
 import { testUser } from './mocks';
 
 // Increase test timeout.
-jest.setTimeout(30 * 1000);
+jest.setTimeout(40 * 1000);
 
 beforeAll(async () => {
   /**
