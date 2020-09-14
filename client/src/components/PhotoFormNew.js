@@ -28,7 +28,6 @@ function PhotoFormNew() {
       {error && <div>{error.message}</div>}
       <input
         type="text"
-        required
         placeholder="Country"
         value={country}
         onChange={e => setCountry(e.target.value)}
@@ -49,7 +48,6 @@ function PhotoFormNew() {
       </div>
       <input
         type="file"
-        required
         disabled={loading}
         value={file ? file.filename : 'Pick a photo'}
         onChange={e => setFile(e.target.files[0])}
