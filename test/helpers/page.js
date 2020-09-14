@@ -21,6 +21,7 @@ export class CustomPage {
      */
     const browser = await puppeteer.launch({
       // headless: false,
+      args: ['--start-maximized'],
     });
 
     const page = await browser.newPage();
@@ -77,10 +78,7 @@ export class CustomPage {
     const user = await userFactory();
     const token = tokenFactory(user);
     await this.page.setExtraHTTPHeaders({ token });
-    await this.goTo('/photos');
-    const logoutButtonSelector =
-      '#root > header > div.dashboard > div.user-info > button';
-    await this.page.waitFor(logoutButtonSelector);
+    await this.goTo('/photos', { waitUntil: 'domcontentloaded' });
   }
 
   /**
