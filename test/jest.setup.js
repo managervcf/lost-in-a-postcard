@@ -1,7 +1,8 @@
 import 'regenerator-runtime/runtime';
 import { connect, disconnect } from 'mongoose';
 import { models } from '../server/models';
-import { testUser } from './mocks';
+import { testUser, testPhoto } from './mocks';
+import { deleteAsset } from '../server/utils';
 
 // Increase test timeout.
 jest.setTimeout(40 * 1000);
@@ -20,9 +21,20 @@ beforeAll(async () => {
 
 afterAll(async () => {
   /**
-   * 1. Remove test user from the database.
+   * 1. Remove test user, country and photo from the database.
+   * 2. Delete the test asset from cloudinary.
    * 2. Disconnect from the database.
    */
-  await models.User.deleteMany({ email: testUser.email });
+  await models.User.findOneAndDelete({ email: testUser.email });
+  await models.Country.deleteMany({ name: testPhoto.country });
+  const photo = await models.Photo.findOneAndDelete({
+    caption: testPhoto.caption,
+  });
+
+  if (photo) {
+    console.log(`Deleting asset ${photo.upload.public_id}...`);
+    await deleteAsset(photo.upload.public_id);
+  }
+
   await disconnect();
 });
