@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import { connect, disconnect } from 'mongoose';
+import { connect } from 'mongoose';
 import { models } from '../server/models';
 import { testUser, testPhoto } from './mocks';
 import { deleteAsset } from '../server/utils';
@@ -23,18 +23,14 @@ afterAll(async () => {
   /**
    * 1. Remove test user, country and photo from the database.
    * 2. Delete the test asset from cloudinary.
-   * 2. Disconnect from the database.
    */
   await models.User.findOneAndDelete({ email: testUser.email });
-  await models.Country.deleteMany({ name: testPhoto.country });
+  await models.Country.findOneAndDelete({ name: testPhoto.country });
   const photo = await models.Photo.findOneAndDelete({
     caption: testPhoto.caption,
   });
 
   if (photo) {
-    console.log(`Deleting asset ${photo.upload.public_id}...`);
     await deleteAsset(photo.upload.public_id);
   }
-
-  await disconnect();
 });

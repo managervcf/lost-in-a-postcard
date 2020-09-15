@@ -48,17 +48,42 @@ export class CustomPage {
    */
   async goTo(path = '') {
     await this.page.goto(this.baseUrl + path, {
-      waitUntil: 'load',
+      waitUntil: 'domcontentloaded',
     });
+  }
+
+  /**
+   *
+   * @param {function} callback
+   * @param {number} nTimes
+   * @returns {Promise}
+   */
+  async tryNTimes(callback, nTimes = 2) {
+    let tries = 0;
+    let result = null;
+    do {
+      tries++;
+      try {
+        result = await callback();
+      } catch (err) {
+        console.log(`Attempt #${tries}:`, err);
+        await this.page.reload();
+      }
+    } while (tries <= nTimes && !result);
+
+    return result;
   }
 
   /**
    * Removes the test user from the database
    * and closes the browser.
+   * @param {boolean} deleteUser
    * @returns {Promise<void>}
    */
-  async close() {
-    await models.User.deleteMany({ email: testUser.email });
+  async close(deleteUser = true) {
+    if (deleteUser) {
+      await models.User.deleteMany({ email: testUser.email });
+    }
     await this.browser.close();
   }
 
@@ -78,7 +103,7 @@ export class CustomPage {
     const user = await userFactory();
     const token = tokenFactory(user);
     await this.page.setExtraHTTPHeaders({ token });
-    await this.goTo('/photos', { waitUntil: 'domcontentloaded' });
+    await this.goTo('/photos', { waitUntil: 'networkidle0' });
   }
 
   /**

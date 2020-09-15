@@ -73,10 +73,10 @@ describe('when logged in', () => {
      *    against the selector.
      */
 
-    let error = null;
+    let error;
     const logoutButtonSelector = 'button.button.logout-button';
 
-    await page.click(logoutButtonSelector, { delay: 300 });
+    await page.click(logoutButtonSelector);
 
     try {
       await page.getContentsOf(logoutButtonSelector);
@@ -96,6 +96,8 @@ describe('when logged in', () => {
        * 3. Creates an element handle for the file input.
        * 3. Enters valid data and uploads the file.
        * 4. Submits the new photo.
+       * 5. Waits for the asset to be uploaded and
+       *    the records to be saved in the database.
        */
       const addPhotoSelector =
         '#root > header > div.dashboard > div:nth-child(2) > button';
@@ -114,8 +116,8 @@ describe('when logged in', () => {
 
       const inputUploadHandle = await page.$(fileInputSelector);
 
-      await page.type(countryInputSelector, testPhoto.country, { delay: 100 });
-      await page.type(captionInputSelector, testPhoto.caption, { delay: 100 });
+      await page.type(countryInputSelector, testPhoto.country);
+      await page.type(captionInputSelector, testPhoto.caption);
       if (testPhoto.featured) {
         await page.click(featuredCheckboxSelector);
       }
@@ -123,10 +125,11 @@ describe('when logged in', () => {
       inputUploadHandle.uploadFile(testPhoto.file);
 
       await page.click(sendButtonSelector);
+
       await page.waitFor(2000);
     });
 
-    it('creates a new photo', async () => {
+    it('renders the new photo', async () => {
       /**
        * 1. Define selectors.
        * 2. Pull out the photo from the database.
@@ -134,6 +137,10 @@ describe('when logged in', () => {
        *    a src attribute including the public_id.
        */
     });
+  });
+
+  describe('and when submits an invalid new photo', () => {
+    it.todo('shows an error message above the form');
   });
 });
 
