@@ -7,7 +7,7 @@ export const photoResolvers = {
     photos: async (parent, args, { models }) =>
       await models.Photo.findPhotos(args),
     photo: async (parent, { id }, { models }) =>
-      await models.Photo.findById(id).cache(),
+      await models.Photo.findById(id),
   },
 
   Mutation: {

@@ -5,9 +5,9 @@ import { isAuthorized } from '../utils';
 export const countryResolvers = {
   Query: {
     countries: async (parent, args, { models }) =>
-      await models.Country.find({}).cache(),
+      await models.Country.find({}),
     country: async (parent, { name }, { models }) =>
-      await models.Country.findOne({ name }).cache(),
+      await models.Country.findOne({ name }),
   },
 
   Mutation: {
