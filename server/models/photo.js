@@ -8,7 +8,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { uploadAsset, deleteAsset, throwError } from '../utils';
 
 // Import config options.
-import { requestedPhotosLimit } from '../config';
+import { requestedPhotosLimit, imageRegex } from '../config';
 
 // Import models.
 import User from './user';
@@ -23,10 +23,6 @@ const photoSchema = new Schema(
       width: String,
       height: String,
       size: Number,
-    },
-    country: {
-      type: Schema.Types.ObjectId,
-      ref: 'Country',
     },
     caption: {
       type: String,
@@ -120,6 +116,15 @@ photoSchema.statics.findPhotos = async function ({
 
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function ({ id, username }, args) {
+  // Pull off args.
+  const { file, country } = args;
+  const { filename } = await file;
+
+  // Input validation check.
+  throwError(!country, 'Must provide a country name');
+  throwError(!filename, 'Must upload a file');
+  throwError(!filename.match(imageRegex), 'Uploaded file must be an image');
+
   // Process file upload using helper function.
   // Returns object with url and public_id.
   const upload = await uploadAsset(args, username);
@@ -159,10 +164,10 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
   throwError(!savedUser, 'Cannot assign new photo to user.');
 
   // Find country and update it's photos.
-  const country = await Country.findById(countryId);
-  throwError(!country, 'Country does not exist');
-  country.photos = [...country.photos, createdPhoto.id];
-  const savedCountry = await country.save();
+  const foundCountry = await Country.findById(countryId);
+  throwError(!foundCountry, 'Country does not exist');
+  foundCountry.photos = [...foundCountry.photos, createdPhoto.id];
+  const savedCountry = await foundCountry.save();
   throwError(!savedCountry, 'Cannot assign new photo to country.');
 
   // Return newly created photo.
