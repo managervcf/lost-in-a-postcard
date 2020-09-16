@@ -60,16 +60,18 @@ export class CustomPage {
    */
   async tryNTimes(callback, nTimes = 2) {
     let tries = 0;
-    let result = null;
+    let result = '';
+    let error = '';
+
     do {
       tries++;
       try {
         result = await callback();
       } catch (err) {
-        console.log(`Attempt #${tries}:`, err);
         await this.page.reload();
+        error = err;
       }
-    } while (tries <= nTimes && !result);
+    } while (tries < nTimes && !result);
 
     return result;
   }
@@ -104,6 +106,14 @@ export class CustomPage {
     const token = tokenFactory(user);
     await this.page.setExtraHTTPHeaders({ token });
     await this.goTo('/photos', { waitUntil: 'networkidle0' });
+  }
+
+  /**
+   * Logs out the user by setting the header to an empty string.
+   * @returns {Promise<void>}
+   */
+  async logout() {
+    await this.page.setExtraHTTPHeaders({ token: '' });
   }
 
   /**
