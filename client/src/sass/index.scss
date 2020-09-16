@@ -7,10 +7,12 @@
 @import './base/typography';
 @import './base/utilities';
 
+@import './components/buttons';
 @import './components/dashboard';
-@import './components/error-message';
+@import './components/error';
 @import './components/gallery';
 @import './components/heart';
+@import './components/inputs';
 @import './components/loader';
 
 @import './layout/navbar';

@@ -39,19 +39,29 @@ function PhotoFormNew() {
         value={caption}
         onChange={e => setCaption(e.target.value)}
       />
-      <div className="featured-input">
-        <label>{featured ? 'Featured!' : 'Feature?'}</label>
+      <div className="featured">
         <input
+          id="featured"
+          className="featured-input"
           type="checkbox"
           checked={featured}
           onChange={e => setFeatured(e.target.checked)}
         />
+        <label className="featured-label" for="featured">
+          Featured?
+          {featured ? (
+            <span className="featured-label-checkbox">Yes</span>
+          ) : (
+            <span className="featured-label-checkbox">No</span>
+          )}
+        </label>
       </div>
       <input
+        className="file-upload"
         type="file"
         disabled={loading}
         value={file ? file.filename : 'Pick a photo'}
-        onChange={e => setFile(e.target.files[0])}
+        onChange={e => setFile(e.target.files[0] || {})}
       />
       <button className="button" disabled={loading} type="submit">
         {loading ? 'Uploading...' : 'Send'}
