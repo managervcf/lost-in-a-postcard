@@ -1,0 +1,25 @@
+.button {
+  margin: 1rem;
+  padding: 0.5rem 1.2rem;
+  font-family: inherit;
+  font-size: $font-size-button;
+  background-color: $color-main-background;
+  box-shadow: $shadow-neomorphic;
+  border: none;
+  border-radius: $border-radius-large;
+  transition: all $transition-time-fast;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: $shadow-neomorphic-focus;
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(0.2rem);
+  }
+}
+
+.logout-button {
+  display: inline-block;
+}
