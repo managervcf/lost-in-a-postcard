@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 import { ADD_PHOTO } from '../graphql/mutations';
+import Errors from './Errors';
 
 function PhotoFormNew() {
   // Define country state variable.
@@ -25,7 +26,7 @@ function PhotoFormNew() {
 
   return (
     <form className="form" onSubmit={onSubmit}>
-      {error && <div>{error.message}</div>}
+      <Errors error={error} />
       <input
         type="text"
         placeholder="Country"

@@ -35,7 +35,9 @@ describe('when logged in', () => {
 
     const spanSelector = 'div.user-info > p > span';
 
-    const dashboardText = await page.getContentsOf(spanSelector);
+    const dashboardText = await page.tryNTimes(
+      async () => await page.getContentsOf(spanSelector)
+    );
 
     expect(dashboardText).toMatch(testUser.username);
   });
@@ -63,21 +65,25 @@ describe('when logged in', () => {
     expect(editCountriesButtonText).toMatch(/edit countries/i);
   });
 
-  it.skip('logs user out', async () => {
+  it('logs user out', async () => {
     /**
      * 1. Define the selector and error variables.
+     * 2. Reset a token on headers. This step is a substitute
+     *    of the React client reading the token from localStorage.
      * 2. Click on the logout button to log out the user.
      * 3. Try to get contents of the selector,
      *    if an error is thrown, save it as the error variable.
      * 4. Make assertions. Stringify error object and match it
      *    against the selector.
      */
-
-    let error;
     const logoutButtonSelector = 'button.button.logout-button';
+
+    await page.logout();
+    await page.waitFor(200);
 
     await page.click(logoutButtonSelector);
 
+    let error = '';
     try {
       await page.getContentsOf(logoutButtonSelector);
     } catch (err) {
@@ -129,22 +135,85 @@ describe('when logged in', () => {
       await page.waitFor(2000);
     });
 
-    it('renders the new photo', async () => {
+    /**
+     * 1. Define selectors.
+     * 2. Pull out the photo from the database.
+     * 3. Check if there is an image in the gallery with
+     *    a src attribute including the public_id.
+     */
+    it.todo('renders the new photo');
+  });
+
+  describe('and when submits an empty new photo form', () => {
+    beforeEach(async () => {
       /**
        * 1. Define selectors.
-       * 2. Pull out the photo from the database.
-       * 3. Check if there is an image in the gallery with
-       *    a src attribute including the public_id.
+       * 2. Click on the add photo button.
+       * 3. Click on the send button.
        */
+      const addPhotoSelector =
+        '#root > header > div.dashboard > div:nth-child(2) > button';
+      const sendButtonSelector = 'form > button';
+
+      await page.click(addPhotoSelector);
+      await page.click(sendButtonSelector);
+    });
+
+    it('shows an error message above the form', async () => {
+      /**
+       * 1. Define the selector.
+       * 2. Pull of contents of the error message.
+       * 3. Make assertions.
+       */
+      const errorMessageSelector =
+        '#root > header > div.dashboard > div:nth-child(2) > form > div.error';
+
+      await page.waitFor(errorMessageSelector);
+      const errorMessageText = await page.getContentsOf(errorMessageSelector);
+
+      expect(errorMessageText).toMatch(/must provide a country name/i);
     });
   });
 
-  describe('and when submits an invalid new photo', () => {
-    it.todo('shows an error message above the form');
+  describe('and when submits a new photo without a file', () => {
+    beforeEach(async () => {
+      /**
+       * 1. Define selectors.
+       * 2. Click on the add photo button.
+       * 3. Enter a country name.
+       * 3. Click on the send button.
+       */
+      const addPhotoSelector =
+        '#root > header > div.dashboard > div:nth-child(2) > button';
+      const countryInputSelector =
+        '#root > header > div.dashboard > div:nth-child(2) > form > input[type=text]:nth-child(1)';
+      const sendButtonSelector = 'form > button';
+
+      await page.click(addPhotoSelector);
+      await page.type(countryInputSelector, testPhoto.country);
+      await page.click(sendButtonSelector);
+    });
+
+    it('shows an error message above the form', async () => {
+      /**
+       * 1. Define the selector.
+       * 2. Pull of contents of the error message.
+       * 3. Make assertions.
+       */
+      const errorMessageSelector =
+        '#root > header > div.dashboard > div:nth-child(2) > form > div.error';
+
+      await page.waitFor(errorMessageSelector);
+      const errorMessageText = await page.getContentsOf(errorMessageSelector);
+
+      expect(errorMessageText).toMatch(/must upload a file/i);
+    });
   });
 });
 
 describe('when not logged in', () => {
+  beforeEach(async () => await page.logout());
+
   it('does not show the dashboard', async () => {
     /**
      * 1. Define the selector and error variables.
@@ -163,5 +232,9 @@ describe('when not logged in', () => {
     }
 
     expect(error.toString()).toMatch(dashboardSelector);
+  });
+
+  describe('and when submits a new photo through the chromium console', () => {
+    it.todo('returns a 401 - unauthorized');
   });
 });

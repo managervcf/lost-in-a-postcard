@@ -10,7 +10,7 @@ function ButtonLogout() {
       className="button logout-button"
       onClick={async () => {
         // Remove auth token from browser localStorage.
-        localStorage.clear();
+        localStorage.removeItem('token');
         // Reset apollo store to rerender react components.
         await client.resetStore();
         console.log('Logged out!');
