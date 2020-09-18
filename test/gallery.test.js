@@ -49,6 +49,69 @@ describe('when navigates to the /photos/featured', () => {
     const galleryDescText = await page.getContentsOf(galleryDescSelector);
     expect(galleryDescText).toMatch(/portfolio/i);
   });
+
+  const photoCaptionSelector = '.gallery-caption';
+  const heartSelector = '.heart';
+
+  describe('and when logged in', () => {
+    beforeEach(async () => {
+      /**
+       * Login with valid credentials (using the page.login method).
+       */
+      await page.login();
+    });
+
+    it('renders the photo caption', async () => {
+      /**
+       * 1. Pull off contents of the selector.
+       * 2. Make assertions.
+       */
+      const photoCaptionContent = await page.getContentsOf(
+        photoCaptionSelector
+      );
+
+      expect(photoCaptionContent).not.toBeNull();
+    });
+
+    it('does not render the heart', async () => {
+      /**
+       * 1. Pull off contents of the selector.
+       * 2. Make assertions.
+       */
+      let error = '';
+      try {
+        await page.getContentsOf(heartSelector);
+      } catch (e) {
+        error = e;
+      }
+      expect(error.toString()).toMatch(heartSelector);
+    });
+  });
+
+  describe('and when not logged in', () => {
+    it('does not render the photo caption', async () => {
+      /**
+       * 1. Pull off contents of the selector.
+       * 2. Make assertions.
+       */
+      let error = '';
+      try {
+        await page.getContentsOf(photoCaptionSelector);
+      } catch (e) {
+        error = e;
+      }
+      expect(error.toString()).toMatch(photoCaptionSelector);
+    });
+
+    it('renders the heart', async () => {
+      /**
+       * 1. Pull off contents of the selector.
+       * 2. Make assertions.
+       */
+      const heartContent = await page.getContentsOf(heartSelector);
+      expect(heartContent).not.toBeNull();
+    });
+  });
 });
 
 describe('when navigates to the /photos/:country', () => {

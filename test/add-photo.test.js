@@ -77,7 +77,18 @@ describe('when logged in', () => {
       }
     });
 
-    it.todo(`renders a new navigation link item`);
+    it(`renders a new navigation link item`, async () => {
+      /**
+       * 1. Define a selector.
+       * 2. Pull off contents of the selector.
+       * 3. Create a new regex based on the test country name.
+       * 4. Make assertions.
+       */
+      const navbarListSelector = 'header > nav > ul';
+      const navbarListContent = await page.getContentsOf(navbarListSelector);
+      const regex = new RegExp(testPhoto.country, 'gi');
+      expect(navbarListContent).toMatch(regex);
+    });
 
     it('renders the new photo', async () => {
       /**
