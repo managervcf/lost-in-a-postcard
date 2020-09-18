@@ -94,6 +94,11 @@ userSchema.statics.signUp = async function ({ secret, ...newUser }) {
 
 // Login user.
 userSchema.statics.logIn = async function ({ login, password }) {
+  // Checks if credentials were provided.
+  throwError(!login, 'You must provide a username.');
+  throwError(!password, 'You must provide a password.');
+  throwError(password.length < 7, 'Password must be at least 7 characters.');
+
   // Try to find by username.
   let user = await User.findOne({ username: login });
 
