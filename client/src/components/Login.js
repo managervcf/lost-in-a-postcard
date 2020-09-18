@@ -25,9 +25,7 @@ function Login() {
     awaitRefetchQueries: true,
   });
 
-  // Error handler
-  if (error) return <p>{error.message} :(</p>;
-  return <LoginForm mutate={logIn} loading={loading} />;
+  return <LoginForm mutate={logIn} loading={loading} error={error} />;
 }
 
 export default Login;

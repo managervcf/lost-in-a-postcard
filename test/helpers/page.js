@@ -1,7 +1,4 @@
 import puppeteer from 'puppeteer';
-import { tokenFactory } from '../factories/token-factory';
-import { userFactory } from '../factories/user-factory';
-import { models } from '../../server/models';
 import { testUser } from '../mocks';
 /**
  * Custom Page class using Proxy API to use puppeteer's Page class
@@ -21,7 +18,6 @@ export class CustomPage {
      */
     const browser = await puppeteer.launch({
       // headless: false,
-      args: ['--start-maximized'],
     });
 
     const page = await browser.newPage();
@@ -48,72 +44,51 @@ export class CustomPage {
    */
   async goTo(path = '') {
     await this.page.goto(this.baseUrl + path, {
-      waitUntil: 'domcontentloaded',
+      waitUntil: 'load',
     });
   }
 
   /**
-   *
-   * @param {function} callback
-   * @param {number} nTimes
-   * @returns {Promise}
-   */
-  async tryNTimes(callback, nTimes = 2) {
-    let tries = 0;
-    let result = '';
-    let error = '';
-
-    do {
-      tries++;
-      try {
-        result = await callback();
-      } catch (err) {
-        await this.page.reload();
-        error = err;
-      }
-    } while (tries < nTimes && !result);
-
-    return result;
-  }
-
-  /**
-   * Removes the test user from the database
-   * and closes the browser.
-   * @param {boolean} deleteUser
+   * Closes the browser.
    * @returns {Promise<void>}
    */
-  async close(deleteUser = true) {
-    if (deleteUser) {
-      await models.User.deleteMany({ email: testUser.email });
-    }
+  async close() {
     await this.browser.close();
   }
 
   /**
-   * Logs in a test user.
-   * @returns {Promise<void>}
+   * Logs in the user.
+   * 1. Navigate to '/login'.
+   * 2. Define selectors.
+   * 3. Type in the mock data.
+   * 4. Click the login button.
+   * 5. Wait for the logout button to appear
+   *    to ensure correct login.
    */
-  async login() {
-    /**
-     * Logs in a test user.
-     * 1. Use the userFactory to create a new user.
-     * 2. Use tokenFactory and create a new token.
-     * 3. Set the token on the page Headers.
-     * 4. Refresh the page.
-     * 5. Wait for the logout button to appear.
-     */
-    const user = await userFactory();
-    const token = tokenFactory(user);
-    await this.page.setExtraHTTPHeaders({ token });
-    await this.goTo('/photos', { waitUntil: 'networkidle0' });
+  async login(username = testUser.username, password = testUser.password) {
+    await this.goTo('/login');
+    const loginInputSelector =
+      '#root > main > form > input[type=text]:nth-child(1)';
+    const passwordInputSelector =
+      '#root > main > form > input[type=password]:nth-child(2)';
+    const loginButtonSelector =
+      '#root > main > form > div > button:nth-child(1)';
+    await this.page.type(loginInputSelector, username);
+    await this.page.type(passwordInputSelector, password);
+    await this.page.click(loginButtonSelector);
+    // await this.page.waitFor('.logout-button');
+    await this.page.waitFor(300);
   }
 
   /**
-   * Logs out the user by setting the header to an empty string.
+   * Logs out the test user.
+   * 1. Click on the logout button.
+   * 2. Wait for the page UI to update.
    * @returns {Promise<void>}
    */
   async logout() {
-    await this.page.setExtraHTTPHeaders({ token: '' });
+    await this.page.click('.logout-button');
+    await this.page.waitFor(200);
   }
 
   /**

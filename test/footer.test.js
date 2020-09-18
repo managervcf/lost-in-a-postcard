@@ -20,13 +20,13 @@ afterEach(async () => {
 /**
  * Test suites.
  */
-it('renders the logo', async () => {
+it('renders the footer text', async () => {
   /**
    * 1. Navigate to /.
    * 2. Pull off contents of the selector.
    * 3. Make assertions.
    */
   await page.goTo();
-  const logoText = await page.getContentsOf('header > div > h1 > a');
-  expect(logoText).toMatch(/lost in a postcard/i);
+  const footerText = await page.getContentsOf('#root > footer > p');
+  expect(footerText).toMatch(/domi &amp; mateusz/i);
 });

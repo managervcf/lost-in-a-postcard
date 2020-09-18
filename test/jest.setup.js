@@ -1,7 +1,8 @@
 import 'regenerator-runtime/runtime';
+import axios from 'axios';
 import { connect } from 'mongoose';
 import { models } from '../server/models';
-import { testUser, testPhoto } from './mocks';
+import { testUser, testPhoto, SIGNUP } from './mocks';
 import { deleteAsset } from '../server/utils';
 
 // Increase test timeout.
@@ -10,6 +11,7 @@ jest.setTimeout(40 * 1000);
 beforeAll(async () => {
   /**
    * 1. Connect to the database.
+   * 2. Signup a test user.
    */
   await connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
@@ -17,11 +19,19 @@ beforeAll(async () => {
     useUnifiedTopology: true,
     useFindAndModify: false,
   });
+
+  await axios.post('http://localhost:4000/graphql', {
+    query: SIGNUP,
+    variables: testUser,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 });
 
 afterAll(async () => {
   /**
-   * 1. Remove test user, country and photo from the database.
+   * 1. Remove the test user, country and photo from the database.
    * 2. Delete the test asset from cloudinary.
    */
   await models.User.findOneAndDelete({ email: testUser.email });

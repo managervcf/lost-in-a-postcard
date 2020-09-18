@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import Errors from './Errors';
 
-function LoginForm({ mutate, loading }) {
+function LoginForm({ mutate, loading, error }) {
   // Access history.
   const history = useHistory();
 
@@ -17,8 +18,8 @@ function LoginForm({ mutate, loading }) {
 
   return (
     <form className="form" onSubmit={onSubmit}>
+      <Errors error={error} />
       <input
-        required
         type="text"
         placeholder="Login"
         value={login}
@@ -26,7 +27,6 @@ function LoginForm({ mutate, loading }) {
         autoFocus
       />
       <input
-        required
         placeholder="Password"
         type="password"
         value={password}
