@@ -13,7 +13,11 @@ export const countryResolvers = {
   Mutation: {
     updateCountry: isAuthorized(
       async (parent, { id, ...args }, { models }) =>
-        await models.Country.findByIdAndUpdate(id, { ...args }, { new: true })
+        await models.Country.findByIdAndUpdate(
+          id,
+          { ...args },
+          { new: true, runValidators: true }
+        )
     ),
   },
 

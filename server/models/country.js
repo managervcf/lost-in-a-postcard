@@ -8,10 +8,20 @@ const countrySchema = new Schema(
       type: String,
       trim: true,
       unique: [true, 'Country already exists.'],
-      required: [true, 'Country name is required.'],
+      required: [true, 'Country is required.'],
+      minlength: [2, 'Country must be at least 2 characters.'],
+      maxlength: [20, 'Country must be no more than 20 characters.'],
     },
-    description: { type: String, default: 'No country description yet.' },
-    photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }],
+    description: {
+      type: String,
+      default: 'There is no country description yet.',
+    },
+    photos: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Photo',
+      },
+    ],
   },
   // Enable auto timestamps.
   { timestamps: true }
