@@ -55,26 +55,21 @@ describe('when logged in', () => {
       const sendButtonSelector =
         '.dashboard > div:nth-child(2) > form > button';
 
-      try {
-        await page.waitFor(addPhotoSelector);
-        await page.click(addPhotoSelector);
-        const inputUploadHandle = await page.$(fileInputSelector);
+      await page.waitFor(addPhotoSelector);
+      await page.click(addPhotoSelector);
+      const inputUploadHandle = await page.$(fileInputSelector);
 
-        await page.type(countryInputSelector, testPhoto.country);
-        await page.type(captionInputSelector, testPhoto.caption);
-        if (testPhoto.featured) {
-          await page.click(featuredCheckboxSelector);
-        }
-        await page.click(fileInputSelector);
-        inputUploadHandle.uploadFile(testPhoto.file);
-
-        await page.click(sendButtonSelector);
-
-        await page.waitFor(3000);
-        done();
-      } catch (e) {
-        done(e);
+      await page.type(countryInputSelector, testPhoto.country);
+      await page.type(captionInputSelector, testPhoto.caption);
+      if (testPhoto.featured) {
+        await page.click(featuredCheckboxSelector);
       }
+      await page.click(fileInputSelector);
+      inputUploadHandle.uploadFile(testPhoto.file);
+
+      await page.click(sendButtonSelector);
+
+      await page.waitFor(3000);
     });
 
     it(`renders a new navigation link item`, async () => {
