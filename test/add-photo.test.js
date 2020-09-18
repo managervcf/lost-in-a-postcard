@@ -137,7 +137,7 @@ describe('when logged in', () => {
       }
     });
 
-    it('shows an error message above the form', async () => {
+    it('shows an error message regarding the country', async () => {
       /**
        * 1. Define the selector.
        * 2. Pull of contents of the error message.
@@ -175,7 +175,7 @@ describe('when logged in', () => {
       }
     });
 
-    it('shows an error message above the form', async () => {
+    it('shows an error message regarding the file', async () => {
       /**
        * 1. Define the selector.
        * 2. Pull of contents of the error message.

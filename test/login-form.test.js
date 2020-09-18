@@ -81,7 +81,7 @@ describe('when navigates to /login', () => {
       await page.login(testUser.username, '');
     });
 
-    it('returns an error message above the form regarding the empty password', async () => {
+    it('returns an error message regarding the empty password field', async () => {
       /**
        * 1. Define selectors.
        * 2. Pull of error contents.
@@ -103,7 +103,7 @@ describe('when navigates to /login', () => {
       await page.login('', '');
     });
 
-    it('returns an error message above the form regarding the empty username', async () => {
+    it('returns an error message regarding the empty login field', async () => {
       /**
        * 1. Define selectors.
        * 2. Pull of error contents.
