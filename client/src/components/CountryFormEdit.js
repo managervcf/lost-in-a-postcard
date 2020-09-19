@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
+import Errors from './Errors';
 import ErrorMessage from './ErrorMessage';
 import { COUNTRIES } from '../graphql/queries';
 import { UPDATE_COUNTRY } from '../graphql/mutations';
@@ -63,6 +64,7 @@ function CountryFormEdit() {
 
   return (
     <form className="form" onSubmit={onSubmit}>
+      <Errors error={mError} />
       <select defaultValue={0} required onChange={handleSelect}>
         <option value={0} disabled>
           Pick a country
@@ -80,10 +82,11 @@ function CountryFormEdit() {
         name="description"
         onChange={handleInputChange}
       />
-      {mError && (
-        <ErrorMessage text="Could not edit selected country, please try again." />
-      )}
-      <button className="button" type="submit" disabled={mLoading}>
+      <button
+        className="button"
+        type="submit"
+        disabled={mLoading || !editedCountry.id}
+      >
         {!mLoading ? 'Update' : 'Updating...'}
       </button>
     </form>
