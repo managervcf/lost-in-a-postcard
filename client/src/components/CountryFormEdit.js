@@ -66,7 +66,7 @@ function CountryFormEdit() {
     <form className="form" onSubmit={onSubmit}>
       <Errors error={mError} />
       <select defaultValue={0} required onChange={handleSelect}>
-        <option value={0} disabled selected draggable>
+        <option value={0} disabled>
           Pick a country
         </option>
         {countryOptions}
