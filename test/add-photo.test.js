@@ -33,43 +33,9 @@ describe('when logged in', () => {
   describe('and when submits a new photo', () => {
     beforeEach(async () => {
       /**
-       * 1. Define selectors for the add photo button,
-       *    all the inputs, and the send button.
-       * 2. Clicks on the button to open the new form.
-       * 3. Creates an element handle for the file input.
-       * 4. Enters valid data and uploads the file.
-       * 5. Submits the new photo.
-       * 6. Waits for the asset to be uploaded and
-       *    the records to be saved in the database.
-       * 7. Navigate to the /photos/${testPhoto.country} page
+       * Submits a new photo form with valid data.
        */
-      const addPhotoSelector = '.dashboard > div:nth-child(2) > button';
-      const countryInputSelector =
-        '.dashboard > div:nth-child(2) > form > input[type=text]:nth-child(1)';
-      const captionInputSelector =
-        '.dashboard > div:nth-child(2) > form > input[type=text]:nth-child(2)';
-      const featuredCheckboxSelector =
-        '.dashboard > div:nth-child(2) > form > div > label > span';
-      const fileInputSelector =
-        '.dashboard > div:nth-child(2) > form > input[type=file]:nth-child(4)';
-      const sendButtonSelector =
-        '.dashboard > div:nth-child(2) > form > button';
-
-      await page.waitFor(addPhotoSelector);
-      await page.click(addPhotoSelector);
-      const inputUploadHandle = await page.$(fileInputSelector);
-
-      await page.type(countryInputSelector, testPhoto.country);
-      await page.type(captionInputSelector, testPhoto.caption);
-      if (testPhoto.featured) {
-        await page.click(featuredCheckboxSelector);
-      }
-      await page.click(fileInputSelector);
-      inputUploadHandle.uploadFile(testPhoto.file);
-
-      await page.click(sendButtonSelector);
-
-      await page.waitFor(3000);
+      await page.addPhoto();
     });
 
     it(`renders a new navigation link item`, async () => {
@@ -97,17 +63,13 @@ describe('when logged in', () => {
       expect.assertions(1);
       try {
         const gallerySelector = '.gallery';
-
         const savedPhoto = await models.Photo.findOne({
           caption: testPhoto.caption,
         });
-
         if (!savedPhoto) {
           throw new Error('Photo not found in the database');
         }
-
         const galleryContent = await page.getContentsOf(gallerySelector);
-
         const re = new RegExp(savedPhoto?.upload.public_id, 'g');
         expect(galleryContent).toMatch(re);
       } catch (e) {
@@ -124,23 +86,14 @@ describe('when logged in', () => {
   });
 
   describe('and when submits an empty new photo form', () => {
-    beforeEach(async done => {
+    beforeEach(async () => {
       /**
-       * 1. Define selectors.
-       * 2. Click on the add photo button.
-       * 3. Click on the send button.
+       * Submits a new photo form with valid data.
        */
-      try {
-        const addPhotoSelector =
-          '#root > header > div.dashboard > div:nth-child(2) > button';
-        const sendButtonSelector = 'form > button';
-
-        await page.click(addPhotoSelector);
-        await page.click(sendButtonSelector);
-        done();
-      } catch (e) {
-        done(e);
-      }
+      await page.addPhoto({
+        file: '',
+        country: '',
+      });
     });
 
     it('shows an error message regarding the country', async () => {
@@ -150,35 +103,21 @@ describe('when logged in', () => {
        * 3. Make assertions.
        */
       const errorMessageSelector = 'div.error';
-
       await page.waitFor(errorMessageSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
-
       expect(errorMessageText).toMatch(/must provide a country name/i);
     });
   });
 
   describe('and when submits a new photo without a file', () => {
-    beforeEach(async done => {
+    beforeEach(async () => {
       /**
-       * 1. Define selectors.
-       * 2. Click on the add photo button.
-       * 3. Enter a country name.
-       * 3. Click on the send button.
+       * Submits a new photo form with valid data.
        */
-      const addPhotoSelector =
-        '#root > header > div.dashboard > div:nth-child(2) > button';
-      const countryInputSelector = 'form > input[type=text]:nth-child(1)';
-      const sendButtonSelector = 'form > button';
-
-      try {
-        await page.click(addPhotoSelector);
-        await page.type(countryInputSelector, testPhoto.country);
-        await page.click(sendButtonSelector);
-        done();
-      } catch (e) {
-        done(e);
-      }
+      await page.addPhoto({
+        ...testPhoto,
+        file: '',
+      });
     });
 
     it('shows an error message regarding the file', async () => {
@@ -188,10 +127,8 @@ describe('when logged in', () => {
        * 3. Make assertions.
        */
       const errorMessageSelector = 'div.error';
-
       await page.waitFor(errorMessageSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
-
       expect(errorMessageText).toMatch(/must upload a file/i);
     });
   });
