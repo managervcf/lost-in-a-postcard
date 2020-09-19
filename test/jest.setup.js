@@ -31,16 +31,19 @@ beforeAll(async () => {
 
 afterAll(async () => {
   /**
-   * 1. Remove the test user, country and photo from the database.
-   * 2. Delete the test asset from cloudinary.
+   * 1. Delete the test user, country from the database.
+   * 2. Delete all test photos from the database and cloudinary.
    */
   await models.User.findOneAndDelete({ email: testUser.email });
   await models.Country.findOneAndDelete({ name: testPhoto.country });
-  const photo = await models.Photo.findOneAndDelete({
+  let photo = await models.Photo.findOneAndDelete({
     caption: testPhoto.caption,
   });
 
-  if (photo) {
+  while (photo) {
     await deleteAsset(photo.upload.public_id);
+    photo = await models.Photo.findOneAndDelete({
+      caption: testPhoto.caption,
+    });
   }
 });
