@@ -78,7 +78,10 @@ describe('when navigates to /login', () => {
        * 2. Fail to login with invalid credentials (using the page.login method).
        */
 
-      await page.login(testUser.username, '');
+      await page.login({
+        ...testUser,
+        password: '',
+      });
     });
 
     it('returns an error message regarding the empty password field', async () => {
@@ -100,7 +103,10 @@ describe('when navigates to /login', () => {
        * 2. Fail to login with invalid credentials (using the page.login method).
        *
        */
-      await page.login('', '');
+      await page.login({
+        username: '',
+        password: '',
+      });
     });
 
     it('returns an error message regarding the empty login field', async () => {
