@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
 import Errors from './Errors';
-import ErrorMessage from './ErrorMessage';
 import { COUNTRIES } from '../graphql/queries';
 import { UPDATE_COUNTRY } from '../graphql/mutations';
 
