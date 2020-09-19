@@ -31,7 +31,7 @@ describe('when logged in', () => {
   });
 
   describe('and when submits a new photo', () => {
-    beforeEach(async done => {
+    beforeEach(async () => {
       /**
        * 1. Define selectors for the add photo button,
        *    all the inputs, and the send button.
@@ -198,7 +198,45 @@ describe('when logged in', () => {
 });
 
 describe('when not logged in', () => {
-  describe('and when submits a new photo through the chromium console', () => {
-    it.todo('returns a 401 unauthorized');
+  describe('and when tries to delete a photo through the chromium console', () => {
+    it('cannot delete a photo', async () => {
+      /**
+       * 1. Define a stringified function.
+       *    a. Make a post request using the fetch API
+       *    b. Return the error message string.
+       * 2. Execute the function inside the chromium console.
+       * 3. Make assertions.
+       */
+      const callbackStringified = `(async () => {
+        const res = await fetch('http://localhost:4000/graphql', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: \`
+              mutation deletePhoto($id: ID!) {
+                deletePhoto(id: $id) {
+                  id
+                  country {
+                    name
+                  }
+                }
+              }
+            \`,
+            variables: {
+              id: 'randomIdString'
+            },
+          }),
+        });
+
+        const json = await res.json();
+        
+        return json.errors[0].message;
+      })()`;
+
+      const result = await page.evaluate(callbackStringified);
+      expect(result).toMatch(/unauthenticated/i);
+    });
   });
 });
