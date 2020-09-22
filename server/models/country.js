@@ -10,7 +10,7 @@ const countrySchema = new Schema(
       trim: true,
       unique: [true, 'Country already exists.'],
       required: [true, 'Country is required.'],
-      minlength: [2, 'Country name must contain at least 2 characters.'],
+      minlength: [3, 'Country name must contain at least 3 characters.'],
       maxlength: [20, 'Country name must contain no more than 20 characters.'],
     },
     description: {
@@ -42,7 +42,7 @@ countrySchema.statics.updateCountry = async function ({
   throwError(!name, 'Must provide a country name');
   throwError(
     name.length < 3,
-    'Country name must contain at least 2 characters.'
+    'Country name must contain at least 3 characters.'
   );
   const updatedCountry = await Country.findByIdAndUpdate(
     id,
