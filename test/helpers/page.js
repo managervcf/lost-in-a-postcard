@@ -49,7 +49,7 @@ export class CustomPage {
    * @returns {Promise<void>}
    */
   async goTo(path = '') {
-    await this.page.goto(this.baseUrl + path, {
+    await this.goto(this.baseUrl + path, {
       waitUntil: 'load',
     });
   }
@@ -81,10 +81,10 @@ export class CustomPage {
       '#root > main > form > input[type=password]:nth-child(2)';
     const loginButtonSelector =
       '#root > main > form > div > button:nth-child(1)';
-    await this.page.type(loginInputSelector, username);
-    await this.page.type(passwordInputSelector, password);
-    await this.page.click(loginButtonSelector);
-    await this.page.waitFor(300);
+    await this.type(loginInputSelector, username);
+    await this.type(passwordInputSelector, password);
+    await this.click(loginButtonSelector);
+    await this.waitFor(300);
   }
 
   /**
@@ -94,8 +94,8 @@ export class CustomPage {
    * @returns {Promise<void>}
    */
   async logout() {
-    await this.page.click('.logout-button');
-    await this.page.waitFor(200);
+    await this.click('.logout-button');
+    await this.waitFor(200);
   }
 
   /**
