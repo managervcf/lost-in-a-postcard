@@ -47,7 +47,7 @@ function PhotoFormNew() {
           checked={featured}
           onChange={e => setFeatured(e.target.checked)}
         />
-        <label className="featured-label" for="featured">
+        <label className="featured-label" htmlFor="featured">
           Featured?
           {featured ? (
             <span className="featured-label-checkbox">Yes</span>

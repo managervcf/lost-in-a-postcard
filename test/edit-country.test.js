@@ -1,6 +1,5 @@
 import { CustomPage } from './helpers/page';
-import { testPhoto } from './mocks';
-import { models } from '../server/models';
+import { testCountryEdited, testCountry } from './mocks';
 
 /**
  * Define page variable in the global scope
@@ -22,18 +21,23 @@ afterEach(async () => {
 /**
  * Test suites.
  */
-describe('when logged in', () => {
+describe('when logged in and adds a new test photo', () => {
   /**
    * Define all necessary selectors.
    */
   const editCountriesButtonSelector =
     '#root > header > div.dashboard > div:nth-child(3) > button';
+  const navbarListSelector = 'header > nav > ul';
+  const errorMessageSelector =
+    '.dashboard > div:nth-child(3) > form > div.error';
 
   beforeEach(async () => {
     /**
-     * Log in a test user.
+     * 1. Log in a test user.
+     * 2. Add a test photo.
      */
     await page.login();
+    await page.addPhoto();
   });
 
   it('renders the edit countries button', async () => {
@@ -48,23 +52,81 @@ describe('when logged in', () => {
     expect(editCountriesButtonContent).toMatch(/edit countries/i);
   });
 
+  describe('and when tries to edit the test country with an empty country field', () => {
+    beforeEach(async () => {
+      await page.editCountry({
+        name: '',
+        description: testCountryEdited.description,
+      });
+    });
+
+    it('renders an error message and does not update the test country nav link', async () => {
+      /**
+       * 1. Define the selector.
+       * 2. Pull off navbar and error message contents.
+       * 3. Make assertions.
+       */
+
+      await page.waitFor(errorMessageSelector);
+
+      const errorMessageText = await page.getContentsOf(errorMessageSelector);
+      const navbarListContent = await page.getContentsOf(navbarListSelector);
+
+      expect(navbarListContent).not.toMatch(
+        new RegExp(testCountryEdited.name, 'gi')
+      );
+      expect(navbarListContent).toMatch(new RegExp(testCountry.name, 'gi'));
+      expect(errorMessageText).toMatch(/must provide a country name/i);
+    });
+  });
+
+  describe('and when tries to edit the test country with an 2 character long country name', () => {
+    beforeEach(async () => {
+      await page.editCountry({
+        name: 'aa',
+        description: testCountryEdited.description,
+      });
+    });
+
+    it('renders an error message and does not update the test country nav link', async () => {
+      /**
+       * 1. Define the selector.
+       * 2. Pull off navbar and error message contents.
+       * 3. Make assertions.
+       */
+      await page.waitFor(errorMessageSelector);
+
+      const navbarListContent = await page.getContentsOf(navbarListSelector);
+      const errorMessageText = await page.getContentsOf(errorMessageSelector);
+
+      expect(errorMessageText).toMatch(
+        /country name must contain at least 3 characters/i
+      );
+      expect(navbarListContent).not.toMatch(
+        new RegExp(testCountryEdited.name, 'gi')
+      );
+      expect(navbarListContent).toMatch(new RegExp(testCountry.name, 'gi'));
+    });
+  });
+
   describe('and when tries to edit the test country with valid data', () => {
     beforeEach(async () => {
       /**
-       * Add editing country logic.
+       * Edits the test country with valid data.
        */
+      await page.editCountry();
     });
 
-    it.todo('successfully edits the test country');
-  });
-
-  describe('and when tries to edit the test country with an empty country field', () => {
-    beforeEach(async () => {
+    it('renders the edited country name as a nav link', async () => {
       /**
-       * Add editing country logic.
+       * 1. Pull off navbar contents.
+       * 2. Make assertions.it
        */
-    });
+      const navbarListContent = await page.getContentsOf(navbarListSelector);
 
-    it.todo('renders an error message regarding the country field');
+      expect(navbarListContent).toMatch(
+        new RegExp(testCountryEdited.name, 'gi')
+      );
+    });
   });
 });

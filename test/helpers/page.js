@@ -1,5 +1,11 @@
 import puppeteer from 'puppeteer';
-import { testUser, testPhoto } from '../mocks';
+import {
+  testUser,
+  testPhoto,
+  testPhotoEdited,
+  testCountryEdited,
+  testCountry,
+} from '../mocks';
 /**
  * Custom Page class using Proxy API to use puppeteer's Page class
  * as well as custom function defined to make tests more readable.
@@ -137,10 +143,61 @@ export class CustomPage {
     }
 
     await this.page.click(sendButtonSelector);
+    await this.page.waitFor(50);
 
     if (file && country) {
-      await this.page.waitFor(3000);
+      await this.page.waitFor(4000);
     }
+  }
+
+  /**
+   * Edits a photo.
+   * 1. Clicks the PhotoItem component to reveal the the caption.
+   * 2. Clicks the edit photo button to open the form.
+   * 3. Enter an updated data.
+   * 4. Click the
+   */
+  async editPhoto({ name, caption, featured } = testPhotoEdited) {}
+
+  /**
+   * Edits a country.
+   * 1. Click the edit country button to open the form
+   *    and wait for the form to be rendered.
+   * 2. Pick a country.
+   * 2. Enter an updated data.
+   * 3. Click the update button.
+   */
+  async editCountry(
+    { name, description } = testCountryEdited,
+    initialCountry = testCountry
+  ) {
+    const editCountriesButtonSelector =
+      '.dashboard > div:nth-child(3) > button';
+    const selectMenuSelector = '.dashboard > div:nth-child(3) > form > select';
+    const nameInputSelector =
+      '.dashboard > div:nth-child(3) > form > input[type=text]';
+    const descriptionInputSelector =
+      '.dashboard > div:nth-child(3) > form > textarea';
+    const updateButtonSelector =
+      '.dashboard > div:nth-child(3) > form > button[type=submit]';
+
+    await this.page.click(editCountriesButtonSelector);
+    await this.page.waitFor(300);
+
+    await this.page.select(selectMenuSelector, initialCountry.name);
+
+    await this.page.click(nameInputSelector, { clickCount: 3 });
+    if (name) {
+      await this.page.type(nameInputSelector, name);
+    } else {
+      await this.page.keyboard.press('Backspace');
+    }
+
+    await this.page.click(descriptionInputSelector, { clickCount: 3 });
+    await this.page.type(descriptionInputSelector, description);
+
+    await this.page.click(updateButtonSelector);
+    await this.page.waitFor(300);
   }
 
   /**
