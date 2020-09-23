@@ -60,28 +60,23 @@ describe('when logged in and adds a new test photo', () => {
       });
     });
 
-    it('renders an error message', async () => {
+    it('renders an error message and does not update the test country nav link', async () => {
       /**
        * 1. Define the selector.
-       * 2. Pull of contents of the error message.
+       * 2. Pull off navbar and error message contents.
        * 3. Make assertions.
        */
-      await page.waitFor(errorMessageSelector);
-      const errorMessageText = await page.getContentsOf(errorMessageSelector);
-      expect(errorMessageText).toMatch(/must provide a country name/i);
-    });
 
-    it('does not update the test country nav link', async () => {
-      /**
-       * 1. Pull off navbar contents.
-       * 2. Make assertions.it
-       */
+      await page.waitFor(errorMessageSelector);
+
+      const errorMessageText = await page.getContentsOf(errorMessageSelector);
       const navbarListContent = await page.getContentsOf(navbarListSelector);
 
       expect(navbarListContent).not.toMatch(
         new RegExp(testCountryEdited.name, 'gi')
       );
       expect(navbarListContent).toMatch(new RegExp(testCountry.name, 'gi'));
+      expect(errorMessageText).toMatch(/must provide a country name/i);
     });
   });
 
@@ -93,26 +88,20 @@ describe('when logged in and adds a new test photo', () => {
       });
     });
 
-    it('renders an error message', async () => {
+    it('renders an error message and does not update the test country nav link', async () => {
       /**
        * 1. Define the selector.
-       * 2. Pull of contents of the error message.
+       * 2. Pull off navbar and error message contents.
        * 3. Make assertions.
        */
       await page.waitFor(errorMessageSelector);
+
+      const navbarListContent = await page.getContentsOf(navbarListSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
+
       expect(errorMessageText).toMatch(
         /country name must contain at least 3 characters/i
       );
-    });
-
-    it('does not update the test country nav link', async () => {
-      /**
-       * 1. Pull off navbar contents.
-       * 2. Make assertions.it
-       */
-      const navbarListContent = await page.getContentsOf(navbarListSelector);
-
       expect(navbarListContent).not.toMatch(
         new RegExp(testCountryEdited.name, 'gi')
       );
