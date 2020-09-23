@@ -43,7 +43,10 @@ afterAll(async () => {
   });
 
   while (photo || editedPhoto) {
-    await deleteAsset(photo.upload.public_id);
+    photo
+      ? await deleteAsset(photo.upload.public_id)
+      : await deleteAsset(editedPhoto.upload.public_id);
+
     photo = await models.Photo.findOneAndDelete({
       caption: testPhoto.caption,
     });

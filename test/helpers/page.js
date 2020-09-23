@@ -124,40 +124,66 @@ export class CustomPage {
       '.dashboard > div:nth-child(2) > form > input[type=file]:nth-child(4)';
     const sendButtonSelector = '.dashboard > div:nth-child(2) > form > button';
 
-    await this.page.waitFor(addPhotoSelector);
-    await this.page.click(addPhotoSelector);
-    const inputUploadHandle = await this.page.$(fileInputSelector);
+    await this.waitFor(addPhotoSelector);
+    await this.click(addPhotoSelector);
+    const inputUploadHandle = await this.$(fileInputSelector);
 
     if (country) {
-      await this.page.type(countryInputSelector, country);
+      await this.type(countryInputSelector, country);
     }
     if (caption) {
-      await this.page.type(captionInputSelector, caption);
+      await this.type(captionInputSelector, caption);
     }
     if (featured) {
-      await this.page.click(featuredCheckboxSelector);
+      await this.click(featuredCheckboxSelector);
     }
     if (file) {
-      await this.page.click(fileInputSelector);
+      await this.click(fileInputSelector);
       inputUploadHandle.uploadFile(file);
     }
 
-    await this.page.click(sendButtonSelector);
-    await this.page.waitFor(50);
+    await this.click(sendButtonSelector);
+    await this.waitFor(50);
 
     if (file && country) {
-      await this.page.waitFor(4000);
+      await this.waitFor(4000);
     }
   }
 
   /**
    * Edits a photo.
-   * 1. Clicks the PhotoItem component to reveal the the caption.
-   * 2. Clicks the edit photo button to open the form.
-   * 3. Enter an updated data.
-   * 4. Click the
+   * 1. Define selectors.
+   * 2. Click the PhotoItem component to reveal the the caption.
+   * 3. Click the edit photo button to open the form.
+   * 4. Enter the updated data.
+   * 5. Click the update button.
+   * 6. Click the exit editing button.
    */
-  async editPhoto({ name, caption, featured } = testPhotoEdited) {}
+  async editPhoto({ caption } = testPhotoEdited) {
+    const photoItemSelector = 'figure.gallery-item';
+    const editPhotoButtonSelector =
+      'figure.gallery-item > figcaption > button:nth-child(2)';
+    const photoCaptionInputSelector =
+      'figure.gallery-item > figcaption > form > input[type=text]:nth-child(2)';
+    const updateButtonSelector =
+      'figure.gallery-item > figcaption > form > button';
+
+    await this.waitFor(2000);
+
+    await this.click(photoItemSelector, { clickCount: 1, delay: 500 });
+    await this.click(editPhotoButtonSelector);
+    await this.waitFor(photoCaptionInputSelector);
+
+    await this.click(photoCaptionInputSelector, { clickCount: 3 });
+    if (caption) {
+      await this.type(photoCaptionInputSelector, caption);
+    } else {
+      await this.keyboard.press('Backspace');
+    }
+
+    await this.click(updateButtonSelector);
+    await this.waitFor(300);
+  }
 
   /**
    * Edits a country.
@@ -181,23 +207,23 @@ export class CustomPage {
     const updateButtonSelector =
       '.dashboard > div:nth-child(3) > form > button[type=submit]';
 
-    await this.page.click(editCountriesButtonSelector);
-    await this.page.waitFor(300);
+    await this.click(editCountriesButtonSelector);
+    await this.waitFor(300);
 
-    await this.page.select(selectMenuSelector, initialCountry.name);
+    await this.select(selectMenuSelector, initialCountry.name);
 
-    await this.page.click(nameInputSelector, { clickCount: 3 });
+    await this.click(nameInputSelector, { clickCount: 3 });
     if (name) {
-      await this.page.type(nameInputSelector, name);
+      await this.type(nameInputSelector, name);
     } else {
-      await this.page.keyboard.press('Backspace');
+      await this.keyboard.press('Backspace');
     }
 
-    await this.page.click(descriptionInputSelector, { clickCount: 3 });
-    await this.page.type(descriptionInputSelector, description);
+    await this.click(descriptionInputSelector, { clickCount: 3 });
+    await this.type(descriptionInputSelector, description);
 
-    await this.page.click(updateButtonSelector);
-    await this.page.waitFor(300);
+    await this.click(updateButtonSelector);
+    await this.waitFor(300);
   }
 
   /**
@@ -206,7 +232,7 @@ export class CustomPage {
    * @returns {Promise<string>}
    */
   async getContentsOf(selector) {
-    return await this.page.$eval(selector, el => el.innerHTML);
+    return await this.$eval(selector, el => el.innerHTML);
   }
 
   /**
@@ -215,6 +241,6 @@ export class CustomPage {
    * @returns {Promise<string>}
    */
   async getPlaceholderOf(selector) {
-    return await this.page.$eval(selector, el => el.placeholder);
+    return await this.$eval(selector, el => el.placeholder);
   }
 }
