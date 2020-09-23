@@ -26,7 +26,7 @@ export const testPhotoEdited = {
   file: `${__dirname}/test-image.jpg`,
   country: 'test-country-edited',
   caption: 'test-caption-edited',
-  featured: false,
+  featured: true,
 };
 
 /**
