@@ -5,7 +5,7 @@ export const testUser = {
   username: 'johndoe',
   email: 'john@doe.com',
   password: 'password',
-  role: 'test',
+  role: 'admin',
   secret: process.env.ADMIN_PASSWORD,
 };
 
@@ -17,6 +17,32 @@ export const testPhoto = {
   country: 'test-country',
   caption: 'test-caption',
   featured: true,
+};
+
+/**
+ * @interface testPhotoEdited
+ */
+export const testPhotoEdited = {
+  file: `${__dirname}/test-image.jpg`,
+  country: 'test-country-edited',
+  caption: 'test-caption-edited',
+  featured: false,
+};
+
+/**
+ * @interface testCountry
+ */
+export const testCountry = {
+  name: testPhoto.country,
+  description: 'test-description',
+};
+
+/**
+ * @interface testCountryEdited
+ */
+export const testCountryEdited = {
+  name: testPhotoEdited.country,
+  description: 'test-description-edited',
 };
 
 export const SIGNUP = `
