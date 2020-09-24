@@ -11,19 +11,33 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-// Deletes an asset from cloudinary cloud.
+/**
+ * Deletes an asset from cloudinary.
+ * @param {string} public_id
+ * @return {Promise<any>}
+ */
 export const deleteAsset = async public_id => {
   let res = await cloudinary.uploader.destroy(public_id);
   throwError(!res, `(Cloudinary) Could not delete asset ${public_id}.`);
   console.log(`(Cloudinary) Deleted asset ${public_id}.`);
 };
 
+/**
+ * Deletes assets from cloudinary by tag name.
+ * @param {string} tag
+ * @return {Promise<any>}
+ */
 export const deleteAssetsByTag = async tag => {
   let res = await cloudinary.api.delete_resources_by_tag(tag);
   throwError(!res, `(Cloudinary) Could not delete assets with a tag ${tag}.`);
 };
 
-// Uploads an asset to cloudinary cloud.
+/**
+ * Uploads an asset to cloudinary.
+ * @param {{ file: object, country: string }} param0
+ * @param {string} author
+ * @return {Promise<any>}
+ */
 export const uploadAsset = async ({ file, country }, author) => {
   // Get metadata from uploading file.
   // Not extracting createReadStream function as it throws fs-capacitor error exceeding stack
@@ -43,7 +57,7 @@ export const uploadAsset = async ({ file, country }, author) => {
   const cloudinaryUpload = async stream => {
     try {
       await new Promise((resolve, reject) => {
-        const streamLoad = cloudinary.v2.uploader.upload_stream(
+        const streamLoad = cloudinary.uploader.upload_stream(
           {
             // Put file in the cloudinary folder.
             folder: process.env.CLOUDINARY_FOLDER_NAME,
