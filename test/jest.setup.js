@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'mongoose';
 import { models } from '../server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
-import { deleteAsset } from '../server/utils';
+import { deleteAsset, deleteAssetsByTag } from '../server/utils';
 
 // Increase test timeout.
 jest.setTimeout(40 * 1000);
@@ -30,28 +30,13 @@ beforeAll(async () => {
 afterAll(async () => {
   /**
    * 1. Delete a user, country, editedCountry, photo, editedPhoto.
-   * 2. Recursively delete all test photos from the database and cloudinary.
+   * 3. Delete all photos with a specific tag.
    */
-  await models.User.findOneAndDelete({ email: testUser.email });
-  await models.Country.findOneAndDelete({ name: testPhoto.country });
-  await models.Country.findOneAndDelete({ name: testPhotoEdited.country });
-  let photo = await models.Photo.findOneAndDelete({
-    caption: testPhoto.caption,
-  });
-  let editedPhoto = await models.Photo.findOneAndDelete({
-    caption: testPhotoEdited.caption,
-  });
-
-  while (photo || editedPhoto) {
-    photo
-      ? await deleteAsset(photo.upload.public_id)
-      : await deleteAsset(editedPhoto.upload.public_id);
-
-    photo = await models.Photo.findOneAndDelete({
-      caption: testPhoto.caption,
-    });
-    editedPhoto = await models.Photo.findOneAndDelete({
-      caption: testPhotoEdited.caption,
-    });
-  }
+  await models.User.deleteMany({ email: testUser.email });
+  await models.Country.deleteMany({ name: testPhoto.country });
+  await models.Country.deleteMany({ name: testPhotoEdited.country });
+  await models.Photo.deleteMany({ caption: testPhoto.caption });
+  await models.Photo.deleteMany({ caption: testPhotoEdited.caption });
+  await deleteAssetsByTag(testPhoto.country);
+  await deleteAssetsByTag(testPhotoEdited.country);
 });

@@ -1,5 +1,5 @@
 // Import cloudinary package necessary for file uploads.
-import cloudinary from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 
 // Import error handler helper.
 import { throwError } from './';
@@ -13,9 +13,14 @@ cloudinary.config({
 
 // Deletes an asset from cloudinary cloud.
 export const deleteAsset = async public_id => {
-  let result = await cloudinary.uploader.destroy(public_id);
-  throwError(!result, `(Cloudinary) Could not delete asset ${public_id}.`);
+  let res = await cloudinary.uploader.destroy(public_id);
+  throwError(!res, `(Cloudinary) Could not delete asset ${public_id}.`);
   console.log(`(Cloudinary) Deleted asset ${public_id}.`);
+};
+
+export const deleteAssetsByTag = async tag => {
+  let res = await cloudinary.api.delete_resources_by_tag(tag);
+  throwError(!res, `(Cloudinary) Could not delete assets with a tag ${tag}.`);
 };
 
 // Uploads an asset to cloudinary cloud.
