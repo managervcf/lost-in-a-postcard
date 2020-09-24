@@ -21,7 +21,6 @@ export const deleteAsset = async public_id => {
 export const deleteAssetsByTag = async tag => {
   let res = await cloudinary.api.delete_resources_by_tag(tag);
   throwError(!res, `(Cloudinary) Could not delete assets with a tag ${tag}.`);
-  console.log(`(Cloudinary) Deleted assets with a tag ${tag}.`);
 };
 
 // Uploads an asset to cloudinary cloud.
