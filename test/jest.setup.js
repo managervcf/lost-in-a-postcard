@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'mongoose';
 import { models } from '../server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
-import { deleteAsset } from '../server/utils';
+import { deleteAsset, deleteAssetsByTag } from '../server/utils';
 
 // Increase test timeout.
 jest.setTimeout(40 * 1000);
@@ -31,10 +31,12 @@ afterAll(async () => {
   /**
    * 1. Delete a user, country, editedCountry, photo, editedPhoto.
    * 2. Recursively delete all test photos from the database and cloudinary.
+   * 3. Delete all leftover photos with a specific tag.
    */
   await models.User.findOneAndDelete({ email: testUser.email });
   await models.Country.findOneAndDelete({ name: testPhoto.country });
   await models.Country.findOneAndDelete({ name: testPhotoEdited.country });
+
   let photo = await models.Photo.findOneAndDelete({
     caption: testPhoto.caption,
   });
@@ -54,4 +56,6 @@ afterAll(async () => {
       caption: testPhotoEdited.caption,
     });
   }
+
+  await deleteAssetsByTag(testPhoto.country);
 });
