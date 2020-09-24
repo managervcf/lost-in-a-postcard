@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'mongoose';
 import { models } from '../server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
-import { deleteAsset, deleteAssetsByTag } from '../server/utils';
+import { deleteAssetsByTag } from '../server/utils';
 
 // Increase test timeout.
 jest.setTimeout(40 * 1000);
