@@ -87,7 +87,7 @@ describe('when logs in and adds a new photo', () => {
          */
         await page.waitFor(heartIconSelector);
         await page.click(heartIconSelector, { delay: 100 });
-        await page.waitFor(2000);
+        await page.waitFor(3000);
       });
 
       it('increments the heart counter by 1', async () => {
