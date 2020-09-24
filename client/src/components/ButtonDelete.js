@@ -18,7 +18,7 @@ function DeleteButton({ id }) {
   if (!me) return null;
 
   return (
-    <button className="button" disabled={loading} onClick={deletePhoto}>
+    <button className="button danger" disabled={loading} onClick={deletePhoto}>
       {loading ? 'Deleting...' : 'Delete'}
     </button>
   );
