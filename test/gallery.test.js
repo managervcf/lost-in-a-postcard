@@ -59,6 +59,7 @@ describe('when navigates to the /photos/featured', () => {
        * Login with valid credentials (using the page.login method).
        */
       await page.login();
+      await page.waitFor(photoCaptionSelector);
     });
 
     it('renders the photo caption', async () => {
