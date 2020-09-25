@@ -32,4 +32,4 @@ script:
 
 # Add a decryption step for .env.enc => .env file.
 before_install:
-  - openssl aes-256-cbc -K $encrypted_c2c01679aafd_key -iv $encrypted_c2c01679aafd_iv -in .env-ci.enc -out .env -d
+  - openssl aes-256-cbc -K $encrypted_c2c01679aafd_key -iv $encrypted_c2c01679aafd_iv -in .env.ci.enc -out .env -d
