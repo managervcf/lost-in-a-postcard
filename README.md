@@ -10,7 +10,6 @@ To run the app, create `.env` file in the root directory and provide:
 
 ```
 PORT
-REDIS_URL
 DATABASE_URL
 JWT_SECRET
 CLOUDINARY_NAME
