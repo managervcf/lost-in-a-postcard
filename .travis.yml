@@ -1,0 +1,31 @@
+# Set up the environment.
+language: node_js
+node_js:
+  - '12.18.0'
+
+# Use a popular, small linux distro.
+dist: trusty
+
+# List of services needed.
+services:
+  - mongodb
+  - redis-server
+env:
+  - NODE_ENV=ci
+
+# Speeds up the building process.
+cache:
+  directories:
+    - node_modules
+    - client/node_modules
+
+# Install and build scripts.
+install:
+  - npm install
+  - npm run build
+
+script:
+  - nohup npm run start &
+  # Wait for the server to start.
+  - sleep 10
+  - npm run test
