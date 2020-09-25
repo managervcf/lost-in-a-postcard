@@ -255,9 +255,9 @@ export class CustomPage {
    * @param {object} variables
    */
   async fetch(method, query, variables) {
-    const callback = (_query, _variables, _endpoint) =>
+    const callback = (_query, _variables, _method, _endpoint) =>
       fetch(_endpoint, {
-        method: method.toUpperCase(),
+        method: _method.toUpperCase(),
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: _query, variables: _variables }),
       })
@@ -268,6 +268,7 @@ export class CustomPage {
       callback,
       query,
       variables,
+      method,
       this.graphQLEndpoint
     );
   }
