@@ -11,7 +11,7 @@ jest.setTimeout(40 * 1000);
 beforeAll(async () => {
   /**
    * 1. Connect to the database.
-   * 2. Signup a test user.
+   * 2. Signup the test user.
    */
   await connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
@@ -30,7 +30,7 @@ beforeAll(async () => {
 afterAll(async () => {
   /**
    * 1. Delete a user, country, editedCountry, photo, editedPhoto.
-   * 3. Delete all photos with a specific tag.
+   * 2. Delete all photos with a specific tag.
    */
   await models.User.deleteMany({ email: testUser.email });
   await models.Country.deleteMany({ name: testPhoto.country });

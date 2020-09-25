@@ -5,6 +5,7 @@ import {
   testPhotoEdited,
   testCountryEdited,
   testCountry,
+  DELETE_PHOTO,
 } from '../mocks';
 /**
  * Custom Page class using Proxy API to use puppeteer's Page class
@@ -41,6 +42,7 @@ export class CustomPage {
     this.page = page;
     this.browser = browser;
     this.baseUrl = 'http://localhost:3000';
+    this.graphQLEndpoint = 'http://localhost:4000/graphql';
   }
 
   /**
@@ -242,5 +244,31 @@ export class CustomPage {
    */
   async getPlaceholderOf(selector) {
     return await this.$eval(selector, el => el.placeholder);
+  }
+
+  /**
+   * Executes the native fetch function inside the chromium browser.
+   * The function will make a request to the graphQL endpoint calling
+   * the evaluate method on the Page class.
+   * @param {string} method
+   * @param {string} query
+   * @param {object} variables
+   */
+  async fetch(method, query, variables) {
+    const callback = (_query, _variables, _endpoint) =>
+      fetch(_endpoint, {
+        method: method.toUpperCase(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: _query, variables: _variables }),
+      })
+        .then(res => res.json())
+        .then(json => json.errors[0].message);
+
+    return await this.evaluate(
+      callback,
+      query,
+      variables,
+      this.graphQLEndpoint
+    );
   }
 }

@@ -1,5 +1,5 @@
 import { CustomPage } from './helpers/page';
-import { testPhoto } from './mocks';
+import { testPhoto, DELETE_PHOTO } from './mocks';
 import { models } from '../server/models';
 
 /**
@@ -138,41 +138,10 @@ describe('when not logged in', () => {
   describe('and when tries to delete a photo through the chromium console', () => {
     it('cannot delete a photo', async () => {
       /**
-       * 1. Define a stringified function.
-       *    a. Make a post request using the fetch API
-       *    b. Return the error message string.
-       * 2. Execute the function inside the chromium console.
-       * 3. Make assertions.
+       * 1. Make a post request inside the chromium console.
+       * 2. Make assertions.
        */
-      const callbackStringified = `(async () => {
-        const res = await fetch('http://localhost:4000/graphql', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: \`
-              mutation deletePhoto($id: ID!) {
-                deletePhoto(id: $id) {
-                  id
-                  country {
-                    name
-                  }
-                }
-              }
-            \`,
-            variables: {
-              id: 'randomIdString'
-            },
-          }),
-        });
-
-        const json = await res.json();
-        
-        return json.errors[0].message;
-      })()`;
-
-      const result = await page.evaluate(callbackStringified);
+      const result = await page.fetch('post', DELETE_PHOTO, { id: 'str' });
       expect(result).toMatch(/unauthenticated/i);
     });
   });
