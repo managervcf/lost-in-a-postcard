@@ -59,6 +59,7 @@ function PhotoFormNew() {
       <input
         className="file-upload"
         type="file"
+        accept="image/*"
         disabled={loading}
         value={file ? file.filename : 'Pick a photo'}
         onChange={e => setFile(e.target.files[0] || {})}
