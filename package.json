@@ -5,14 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "babel server -d dist",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run cache\"",
+    "build": "NPM_CONFIG_PRODUCTION=false npm run build-client && npm run build-server",
+    "build-client": "npm install --prefix client && npm run build --prefix client",
+    "build-server": "babel server -d dist",
     "cache": "redis-server",
     "client": "npm run start --prefix client",
-    "server": "npm run build && nodemon dist/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run cache\"",
+    "server": "npm run build-server && nodemon dist/index.js",
     "preinstall": "npx npm-force-resolutions",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run build",
-    "test": "jest --watchAll --forceExit --runInBand"
+    "heroku-postbuild": "npm run build",
+    "test": "jest --forceExit --runInBand"
   },
   "author": "Mateusz Pyzowski",
   "license": "ISC",
