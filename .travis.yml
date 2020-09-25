@@ -10,12 +10,9 @@ dist: trusty
 services:
   - mongodb
 
+# List of addons.
 addons:
   chrome: stable
-
-# List of environment variables.
-env:
-  - NODE_ENV=ci
 
 # Speeds up the building process.
 cache:
