@@ -6,7 +6,7 @@ import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
 import { deleteAssetsByTag } from '../server/utils';
 
 // Increase test timeout.
-jest.setTimeout(40 * 1000);
+jest.setTimeout(60 * 1000);
 
 beforeAll(async () => {
   /**

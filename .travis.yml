@@ -27,7 +27,7 @@ install:
 script:
   - nohup npm run start &
   # Wait for the server to start.
-  - sleep 10
+  - sleep 30
   - npm run test
 
 # Add a decryption step for .env.enc => .env file.
