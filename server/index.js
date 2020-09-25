@@ -23,7 +23,7 @@ const app = express();
 
 // Express will serve up production assets.
 const clientPath = path.resolve(__dirname + '/../client/build');
-if (process.env.NODE_ENV === 'production') {
+if (['production', 'ci'].includes(process.env.NODE_ENV)) {
   // Set static folder.
   app.use('/', express.static(clientPath));
   // Other requests go here.
