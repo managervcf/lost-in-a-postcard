@@ -33,7 +33,3 @@ script:
   # Wait for the server to start.
   - sleep 30
   - npm run test:ci
-
-# Add a decryption step for .env.enc => .env file.
-before_install:
-  - openssl aes-256-cbc -K $encrypted_f47fc5ed2408_key -iv $encrypted_f47fc5ed2408_iv -in .env.ci.enc -out .env -d
