@@ -64,3 +64,14 @@ export const SIGNUP = `
     }
   }
 `;
+
+export const DELETE_PHOTO = `
+  mutation deletePhoto($id: ID!) {
+    deletePhoto(id: $id) {
+      id
+      country {
+        name
+      }
+    }
+  }
+`;
