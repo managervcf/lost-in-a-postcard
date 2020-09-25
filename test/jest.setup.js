@@ -1,12 +1,12 @@
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
-import { connect } from 'mongoose';
+import { connect, disconnect } from 'mongoose';
 import { models } from '../server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
 import { deleteAssetsByTag } from '../server/utils';
 
 // Increase test timeout.
-jest.setTimeout(40 * 1000);
+jest.setTimeout(60 * 1000);
 
 beforeAll(async () => {
   /**
@@ -20,7 +20,7 @@ beforeAll(async () => {
     useFindAndModify: false,
   });
 
-  await axios.post('http://localhost:4000/graphql', {
+  await axios.post(`http://localhost:4000/graphql`, {
     query: SIGNUP,
     variables: testUser,
     headers: { 'Content-Type': 'application/json' },
@@ -39,4 +39,5 @@ afterAll(async () => {
   await models.Photo.deleteMany({ caption: testPhotoEdited.caption });
   await deleteAssetsByTag(testPhoto.country);
   await deleteAssetsByTag(testPhotoEdited.country);
+  await disconnect();
 });

@@ -6,9 +6,6 @@ import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
-// Apply caching logic.
-import './utils/cache';
-
 // Import schema, resolvers, models, helpers and config.
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
@@ -21,9 +18,12 @@ import { getMe, errorHandlingMiddleware } from './utils';
 // Create express server.
 const app = express();
 
+// Print out the current node environment.
+console.log('Node environment:', process.env.NODE_ENV);
+
 // Express will serve up production assets.
 const clientPath = path.resolve(__dirname + '/../client/build');
-if (process.env.NODE_ENV === 'production') {
+if (['production', 'ci'].includes(process.env.NODE_ENV)) {
   // Set static folder.
   app.use('/', express.static(clientPath));
   // Other requests go here.
