@@ -39,13 +39,15 @@ export const deleteAssetsByTag = async tag => {
  * @return {Promise<any>}
  */
 export const uploadAsset = async ({ file, country }, author) => {
-  // Get metadata from uploading file.
-  // Not extracting createReadStream function as it throws fs-capacitor error exceeding stack
-  // limit when called. Use createReadStream from 'fs' (File System) built-in node module instead.
+  // Get metadata from the uploaded file.
   const { createReadStream, filename, mimetype, encoding } = await file;
 
   // File validation.
-  throwError(!mimetype.includes('image/'), 'File must be an image!');
+  throwError(
+    filename.length > 0,
+    'Filename must contain at least 1 character.'
+  );
+  throwError(!mimetype.includes('image/'), 'File must be an image.');
 
   // Create readableStream with provided filepath.
   const readableStream = createReadStream();
