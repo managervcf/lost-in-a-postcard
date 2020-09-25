@@ -24,7 +24,8 @@ export class CustomPage {
      * 4. Combine customPage, page and browser and return a proxy.
      */
     const browser = await puppeteer.launch({
-      // headless: false,
+      headless: true,
+      args: ['--no-sandbox'],
     });
 
     const page = await browser.newPage();
