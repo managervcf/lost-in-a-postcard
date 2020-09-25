@@ -1,10 +1,9 @@
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
-import { connect } from 'mongoose';
+import { connect, disconnect } from 'mongoose';
 import { models } from '../server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
 import { deleteAssetsByTag } from '../server/utils';
-import { disconnect } from 'mongoose';
 
 // Increase test timeout.
 jest.setTimeout(60 * 1000);
@@ -14,18 +13,14 @@ beforeAll(async () => {
    * 1. Connect to the database.
    * 2. Signup the test user.
    */
-  await connect(
-    process.env.DATABASE_URL,
-    {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    },
-    () => console.log('Database connection established.')
-  );
+  await connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  });
 
-  await axios.post('http://localhost:4000/graphql', {
+  await axios.post(`http://localhost:4000/graphql`, {
     query: SIGNUP,
     variables: testUser,
     headers: { 'Content-Type': 'application/json' },

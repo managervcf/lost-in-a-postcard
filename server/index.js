@@ -18,6 +18,9 @@ import { getMe, errorHandlingMiddleware } from './utils';
 // Create express server.
 const app = express();
 
+// Print out the current node environment.
+console.log('Node environment:', process.env.NODE_ENV);
+
 // Express will serve up production assets.
 const clientPath = path.resolve(__dirname + '/../client/build');
 if (['production', 'ci'].includes(process.env.NODE_ENV)) {
