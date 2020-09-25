@@ -6,9 +6,6 @@ import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 
-// Apply caching logic.
-import './utils/cache';
-
 // Import schema, resolvers, models, helpers and config.
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';

@@ -17,7 +17,7 @@ export const connectDb = async () =>
       useUnifiedTopology: true,
       useFindAndModify: false,
     },
-    () => console.log('(MongoDB) Conntected to database.')
+    () => console.log('(MongoDB) Conntected to the database.')
   );
 
 // Define an object containing all models.

@@ -9,7 +9,8 @@ dist: trusty
 # List of services needed.
 services:
   - mongodb
-  - redis-server
+
+# List of environment variables.
 env:
   - NODE_ENV=ci
 
@@ -28,7 +29,7 @@ script:
   - nohup npm run start &
   # Wait for the server to start.
   - sleep 30
-  - npm run test
+  - npm run test:ci
 
 # Add a decryption step for .env.enc => .env file.
 before_install:
