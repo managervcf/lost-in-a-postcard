@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useMutation, useApolloClient } from 'react-apollo';
-import { ADD_PHOTO } from '../graphql/mutations';
 import Errors from './Errors';
+import { useUpload } from '../hooks/useUpload';
 
 function PhotoFormNew() {
   // Define country state variable.
@@ -10,18 +9,12 @@ function PhotoFormNew() {
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState({});
 
-  // Access apollo store.
-  const client = useApolloClient();
-
-  // Use mutation hook.
-  const [uploadMutation, { error, loading }] = useMutation(ADD_PHOTO, {
-    onCompleted: () => client.resetStore(),
-  });
+  const { uploadToS3, loading, error } = useUpload();
 
   // Define submit handler.
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    uploadMutation({ variables: { file, country, caption, featured } });
+    await uploadToS3({ file, country, caption, featured });
   };
 
   return (

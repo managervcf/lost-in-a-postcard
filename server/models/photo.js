@@ -23,6 +23,10 @@ const photoSchema = new Schema(
       width: String,
       height: String,
       size: Number,
+      key: {
+        type: String,
+        required: true,
+      },
     },
     caption: {
       type: String,
@@ -117,7 +121,7 @@ photoSchema.statics.findPhotos = async function ({
 // Creates a photo and associates it with user.
 photoSchema.statics.addPhoto = async function ({ id, username }, args) {
   // Pull off args.
-  const { file, country } = args;
+  const { file, country, caption, featured, key } = args;
   const { filename } = await file;
 
   // Input validation check.
@@ -150,7 +154,15 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
   }
 
   // Create new photo object.
-  const newPhoto = { ...args, upload, author: id, country: countryId };
+  const newPhoto = {
+    upload: { key, ...upload },
+    country,
+    caption,
+    featured,
+    key,
+    author: id,
+    country: countryId,
+  };
 
   // Save photo to database.
   const createdPhoto = await Photo.create(newPhoto);

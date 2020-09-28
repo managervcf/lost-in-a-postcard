@@ -18,7 +18,11 @@ function DeleteButton({ id }) {
   if (!me) return null;
 
   return (
-    <button className="button danger" disabled={loading} onClick={deletePhoto}>
+    <button
+      className="button danger"
+      disabled={loading}
+      onClick={async () => await deletePhoto()}
+    >
       {loading ? 'Deleting...' : 'Delete'}
     </button>
   );

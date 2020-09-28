@@ -14,6 +14,7 @@ export const PHOTOS = gql`
         clicks
         upload {
           url
+          key
         }
         author {
           username

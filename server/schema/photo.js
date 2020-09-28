@@ -19,6 +19,7 @@ export const photoSchema = gql`
       country: String!
       caption: String
       featured: Boolean
+      key: String!
     ): Photo!
     updatePhoto(
       id: ID!
@@ -64,5 +65,6 @@ export const photoSchema = gql`
     width: Int
     height: Int
     size: Int
+    key: String!
   }
 `;

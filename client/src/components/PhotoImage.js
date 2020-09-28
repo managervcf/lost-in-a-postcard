@@ -8,11 +8,14 @@ function PhotoImage({ upload, country, dim }) {
     dim,
   });
 
+  // Build an image url.
+  const url = `https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.com/${upload.key}`;
+
   return (
     <img
       className={imageClasses}
       // Transform URL based on provided app options.
-      src={transformUrl(upload.url)}
+      src={url}
       alt={country.name}
     />
   );

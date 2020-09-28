@@ -6,12 +6,14 @@ export const ADD_PHOTO = gql`
     $country: String!
     $caption: String
     $featured: Boolean
+    $key: String!
   ) {
     addPhoto(
       file: $file
       country: $country
       caption: $caption
       featured: $featured
+      key: $key
     ) {
       id
       country {
@@ -20,6 +22,7 @@ export const ADD_PHOTO = gql`
       }
       upload {
         url
+        key
       }
     }
   }

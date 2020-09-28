@@ -44,7 +44,7 @@ export const uploadAsset = async ({ file, country }, author) => {
 
   // File validation.
   throwError(
-    filename.length > 0,
+    filename.length < 1,
     'Filename must contain at least 1 character.'
   );
   throwError(!mimetype.includes('image/'), 'File must be an image.');
