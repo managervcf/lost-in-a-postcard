@@ -10,7 +10,6 @@ import { ApolloServer } from 'apollo-server-express';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { connectDb, models } from './models';
-import { maxFileSize, maxFiles } from './config';
 
 // Import middleware helpers.
 import { getMe, errorHandlingMiddleware } from './utils';
@@ -19,7 +18,7 @@ import { getMe, errorHandlingMiddleware } from './utils';
 const app = express();
 
 // Print out the current node environment.
-console.log('Node environment:', process.env.NODE_ENV);
+console.log('(Server) Node environment:', process.env.NODE_ENV);
 
 // Express will serve up production assets.
 const clientPath = path.resolve(__dirname + '/../client/build');
@@ -40,8 +39,6 @@ const server = new ApolloServer({
     origin: '*', // <- allow request from all domains.
     credentials: true, // <- enable CORS response for requests with credentials.
   },
-  // Upload limits.
-  uploads: { maxFileSize, maxFiles },
   typeDefs,
   resolvers,
   // Context is built once per request.

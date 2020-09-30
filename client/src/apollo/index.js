@@ -35,9 +35,9 @@ const authLink = setContext((_, { headers }) => {
 const link = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
-      graphQLErrors.map(({ message, locations, path }) =>
+      graphQLErrors.map(({ message, locations }) =>
         console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          `[GraphQL error]: Message: ${message}, Location: line: ${locations[0].line} column: ${locations[0].column}`
         )
       );
     if (networkError) console.log(`[Network error]: ${networkError}`);
