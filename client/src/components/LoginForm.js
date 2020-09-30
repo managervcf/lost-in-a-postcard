@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Errors from './Errors';
 
-function LoginForm({ mutate, loading, error }) {
-  // Access history.
+function LoginForm({ logIn, loading, error }) {
   const history = useHistory();
 
   const [login, setLogin] = useState('');
@@ -11,9 +10,7 @@ function LoginForm({ mutate, loading, error }) {
 
   const onSubmit = e => {
     e.preventDefault();
-    mutate({ variables: { login, password } });
-    setLogin('');
-    setPassword('');
+    logIn({ variables: { login, password } });
   };
 
   return (
