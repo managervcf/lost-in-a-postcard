@@ -3,7 +3,6 @@ import { useMutation, useApolloClient } from 'react-apollo';
 import axios from 'axios';
 import { ADD_PHOTO } from '../graphql/mutations/addPhoto';
 import { GET_PRESIGNED_URL } from '../graphql/mutations';
-import { ApolloError } from 'apollo-client';
 
 /**
  * Upload hook.
