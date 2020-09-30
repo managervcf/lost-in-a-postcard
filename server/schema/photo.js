@@ -15,11 +15,11 @@ export const photoSchema = gql`
 
   extend type Mutation {
     addPhoto(
-      file: Upload!
       country: String!
       caption: String
       featured: Boolean
       key: String!
+      size: Int!
     ): Photo!
     updatePhoto(
       id: ID!
@@ -60,11 +60,7 @@ export const photoSchema = gql`
   }
 
   type UploadedFile {
-    public_id: String!
-    url: String!
-    width: Int
-    height: Int
-    size: Int
     key: String!
+    size: Int!
   }
 `;

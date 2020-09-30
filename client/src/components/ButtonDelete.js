@@ -6,7 +6,7 @@ import { PHOTOS } from '../graphql/queries';
 function DeleteButton({ id }) {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
     variables: { id },
-    onCompleted: async () => await client.resetStore(),
+    onCompleted: () => client.resetStore(),
     refetchQueries: () => [{ query: PHOTOS }],
   });
 

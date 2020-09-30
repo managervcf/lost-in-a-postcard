@@ -9,7 +9,8 @@ function PhotoFormNew() {
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState({});
 
-  const { uploadToS3, loading, error } = useUpload();
+  // Use the custom useUpload hook.
+  const { uploadToS3, loading, getUrlError, uploadError } = useUpload();
 
   // Define submit handler.
   const onSubmit = async e => {
@@ -19,7 +20,7 @@ function PhotoFormNew() {
 
   return (
     <form className="form" onSubmit={onSubmit}>
-      <Errors error={error} />
+      <Errors error={getUrlError ? getUrlError : uploadError} />
       <input
         type="text"
         placeholder="Country"
@@ -52,7 +53,7 @@ function PhotoFormNew() {
       <input
         className="file-upload"
         type="file"
-        accept="image/*"
+        accept="image/jpeg"
         disabled={loading}
         value={file ? file.filename : 'Pick a photo'}
         onChange={e => setFile(e.target.files[0] || {})}

@@ -86,6 +86,7 @@ describe('when logs in and adds a new photo', () => {
          * 3. Wait for the count number to be updated.
          */
         await page.waitFor(heartIconSelector);
+        await page.waitFor(1000);
         await page.click(heartIconSelector, { delay: 100 });
         await page.waitFor(3000);
       });

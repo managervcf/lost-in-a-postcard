@@ -4,11 +4,11 @@ import { Schema, model } from 'mongoose';
 // Import pagination helper library.
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-// Import cloudinary helpers and error handler from middleware.
-import { uploadAsset, deleteAsset, throwError } from '../utils';
+// Import helpers and error handler from middleware.
+import { throwError, deletePhoto, getUploadUrl } from '../utils';
 
 // Import config options.
-import { requestedPhotosLimit, imageRegex } from '../config';
+import { requestedPhotosLimit, maxImageSize } from '../config';
 
 // Import models.
 import User from './user';
@@ -18,11 +18,10 @@ import Country from './country';
 const photoSchema = new Schema(
   {
     upload: {
-      public_id: String,
-      url: String,
-      width: String,
-      height: String,
-      size: Number,
+      size: {
+        type: Number,
+        required: true,
+      },
       key: {
         type: String,
         required: true,
@@ -39,6 +38,7 @@ const photoSchema = new Schema(
     clicks: {
       type: Number,
       default: 0,
+      min: [0, 'Cannot set clicks to less than 0.'],
     },
     country: {
       type: Schema.Types.ObjectId,
@@ -118,24 +118,45 @@ photoSchema.statics.findPhotos = async function ({
   };
 };
 
-// Creates a photo and associates it with user.
-photoSchema.statics.addPhoto = async function ({ id, username }, args) {
-  // Pull off args.
-  const { file, country, caption, featured, key } = args;
-  const { filename } = await file;
-
+/**
+ * Obtains a signed url from the AWS S3.
+ * 1. Validate inputs.
+ * 2. Obtain the signed url.
+ * @param {{ country: string, type: string, size: string }}
+ * @returns {{ url: string, key: string }}
+ */
+photoSchema.statics.getPresignedUrl = async function ({ country, type, size }) {
   // Input validation check.
   throwError(!country, 'Must provide a country name');
-  throwError(!filename, 'Must upload a file');
-  throwError(!filename.match(imageRegex), 'Uploaded file must be an image');
+  throwError(
+    country.length < 3,
+    'Country name must contain at least 3 characters'
+  );
+  throwError(!type, 'Must upload a file');
+  throwError(!type.match(/image\/jpeg/gi), 'File type must be of image/jpeg');
+  throwError(!size || size === 0, 'Must upload a file');
+  throwError(
+    size > maxImageSize,
+    `File size cannot exceed ${maxImageSize / 1000000} MB`
+  );
 
-  // Process file upload using helper function.
-  // Returns object with url and public_id.
-  const upload = await uploadAsset(args, username);
+  return await getUploadUrl();
+};
+
+// Creates a photo and associates it with user.
+photoSchema.statics.addPhoto = async function ({ id }, args) {
+  // Pull off args.
+  const { country, caption, featured, key, size } = args;
+
+  // Print out a log about the updated asset.
+  console.log(`(AWS S3) Uploaded asset ${key}.`);
+
+  // Input validation check.
+  throwError(!key, 'Must provide a key');
 
   // Check if country exists.
   const existingCountry = await Country.findOne({
-    name: args.country,
+    name: country,
   });
 
   // Define country id.
@@ -146,7 +167,7 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
     countryId = existingCountry.id;
   } else {
     // If country does not exist, create a new one.
-    const newCountry = { name: args.country };
+    const newCountry = { name: country };
     const createdCountry = await Country.create(newCountry);
     // Get ID from created country and assign it to new photo.
     countryId = createdCountry.id;
@@ -155,11 +176,12 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
 
   // Create new photo object.
   const newPhoto = {
-    upload: { key, ...upload },
-    country,
+    upload: {
+      key,
+      size,
+    },
     caption,
     featured,
-    key,
     author: id,
     country: countryId,
   };
@@ -184,7 +206,7 @@ photoSchema.statics.addPhoto = async function ({ id, username }, args) {
 
   // Return newly created photo.
   console.log(
-    `(GraphQL) Added photo from ${savedCountry.name} (${createdPhoto.upload.url}) by ${savedUser.username} (${savedUser.id})`
+    `(GraphQL) Added photo from ${savedCountry.name} (${createdPhoto.upload.key}) by ${savedUser.username} (${savedUser.id})`
   );
   return createdPhoto;
 };
@@ -197,9 +219,8 @@ photoSchema.statics.deletePhoto = async function (id) {
     .populate('author');
   throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
 
-  // Delete photo from cloudinary.
-  // Use public_id to find and delete an asset.
-  await deleteAsset(deletedPhoto.upload.public_id);
+  // Delete a photo from AWS S3 by the key property.
+  await deletePhoto(deletedPhoto.upload.key);
 
   // Get user by id to modify photos array.
   const user = await User.findById(deletedPhoto.author.id);

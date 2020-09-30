@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export const uploadSchema = gql`
   extend type Mutation {
-    getPresignedUrl: UploadConfig!
+    getPresignedUrl(country: String!, type: String, size: Int): UploadConfig!
   }
 
   type UploadConfig {

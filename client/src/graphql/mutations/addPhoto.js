@@ -2,18 +2,18 @@ import gql from 'graphql-tag';
 
 export const ADD_PHOTO = gql`
   mutation addPhoto(
-    $file: Upload!
     $country: String!
     $caption: String
     $featured: Boolean
     $key: String!
+    $size: Int!
   ) {
     addPhoto(
-      file: $file
       country: $country
       caption: $caption
       featured: $featured
       key: $key
+      size: $size
     ) {
       id
       country {
@@ -21,8 +21,8 @@ export const ADD_PHOTO = gql`
         description
       }
       upload {
-        url
         key
+        size
       }
     }
   }

@@ -13,8 +13,8 @@ export const PHOTOS = gql`
         featured
         clicks
         upload {
-          url
           key
+          size
         }
         author {
           username
