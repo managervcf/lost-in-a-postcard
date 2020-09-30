@@ -6,23 +6,22 @@ import { LOGIN } from '../graphql/mutations';
 import { ME } from '../graphql/queries';
 
 function Login() {
+  // Get history.
   const history = useHistory();
 
-  /**
-   * Login mutation. Await for queries to refetch first.
-   * 1. Set the token on the localStorage after
-   *    a successful mutation.
-   * 2. Reset the store to update the component.
-   * 3. Navigate to the /photos route.
-   */
+  // Login mutation.
   const [logIn, { loading, error, client }] = useMutation(LOGIN, {
     onCompleted: async ({ logIn }) => {
+      // Insert token into browser localStorage.
       localStorage.setItem('token', logIn.token);
+      // Reset apollo store to rerender react components.
       await client.resetStore();
       console.log('Logged in!');
+      // Move to main photo page.
       history.push('/photos');
     },
     refetchQueries: () => [{ query: ME }],
+    // Refetch queries, then mutate.
     awaitRefetchQueries: true,
   });
 
