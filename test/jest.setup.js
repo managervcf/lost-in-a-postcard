@@ -20,6 +20,8 @@ beforeAll(async () => {
     useFindAndModify: false,
   });
 
+  // await models.User.deleteMany({ email: testUser.email });
+
   await axios.post(`http://localhost:4000/graphql`, {
     query: SIGNUP,
     variables: testUser,

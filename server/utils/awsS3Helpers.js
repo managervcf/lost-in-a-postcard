@@ -98,3 +98,41 @@ export async function deletePhotos(keys) {
 
   return result;
 }
+
+/**
+ * Tags an asset.
+ * 1. Build the params object.
+ * 2. Define the result variable.
+ * 3. Try to putObjectTagging using a promise and
+ *    assign the result to the result variable.
+ * 4. Catch an error and assign it to the result.
+ * 5. Return the result.
+ * @param {string} key
+ * @param {string} tag
+ */
+export async function tagPhotoByCountry(key, tag) {
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: key,
+    Tagging: {
+      TagSet: [
+        {
+          Key: 'country',
+          Value: tag,
+        },
+      ],
+    },
+  };
+
+  let result;
+  try {
+    result = await s3.putObjectTagging(params).promise();
+    console.log(`(AWS S3) Tagged asset ${key}.`);
+  } catch (err) {
+    result = err;
+    console.log(`(AWS S3) Failed to tag asset ${keys}.`);
+    console.log(`(AWS S3) ${JSON.stringify(err)}.`);
+  }
+
+  return result;
+}
