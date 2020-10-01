@@ -5,7 +5,12 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 // Import helpers and error handler from middleware.
-import { throwError, deletePhoto, getUploadUrl } from '../utils';
+import {
+  throwError,
+  deletePhoto,
+  getUploadUrl,
+  tagPhotoByCountry,
+} from '../utils';
 
 // Import config options.
 import { requestedPhotosLimit, maxImageSize } from '../config';
@@ -147,6 +152,9 @@ photoSchema.statics.getPresignedUrl = async function ({ country, type, size }) {
 photoSchema.statics.addPhoto = async function ({ id }, args) {
   // Pull off args.
   const { country, caption, featured, key, size } = args;
+
+  // Add a tag to the uploaded asset.
+  await tagPhotoByCountry(key, country);
 
   // Print out a log about the updated asset.
   console.log(`(AWS S3) Uploaded asset ${key}.`);
