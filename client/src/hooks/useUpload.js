@@ -75,11 +75,11 @@ export const useUpload = () => {
       });
 
       console.log('(Upload) Added a new photo:', newPhoto);
-      setLoading(false);
       return newPhoto;
     } catch (err) {
-      setLoading(false);
       throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
