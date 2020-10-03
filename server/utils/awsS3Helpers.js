@@ -5,8 +5,10 @@ import { v1 as uuid } from 'uuid';
  * Create a new S3 instance.
  */
 const s3 = new S3({
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  },
 });
 
 /**

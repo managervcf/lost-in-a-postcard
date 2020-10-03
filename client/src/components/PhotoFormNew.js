@@ -59,7 +59,7 @@ function PhotoFormNew() {
         onChange={e => setFile(e.target.files[0] || {})}
       />
       <button className="button" disabled={loading} type="submit">
-        {loading ? 'Uploading...' : 'Send'}
+        {loading ? 'Uploading...' : 'Upload'}
       </button>
     </form>
   );
