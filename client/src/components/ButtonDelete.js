@@ -1,7 +1,6 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
 import { DELETE_PHOTO } from '../graphql/mutations';
-import { PHOTOS } from '../graphql/queries';
 
 function DeleteButton({ id }) {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
