@@ -20,6 +20,7 @@ function LoginForm({ mutate, loading, error }) {
     <form className="form" onSubmit={onSubmit}>
       <Errors error={error} />
       <input
+        id="login-username-input"
         type="text"
         placeholder="Login"
         value={login}
@@ -27,16 +28,26 @@ function LoginForm({ mutate, loading, error }) {
         autoFocus
       />
       <input
+        id="login-password-input"
         placeholder="Password"
         type="password"
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
       <div className="login-buttons">
-        <button className="button" type="submit" disabled={loading}>
+        <button
+          id="login-submit-button"
+          className="button"
+          type="submit"
+          disabled={loading}
+        >
           {!loading ? 'Login' : 'Logging in...'}
         </button>
-        <button className="button" onClick={() => history.push('/photos')}>
+        <button
+          id="login-back-button"
+          className="button"
+          onClick={() => history.push('/photos')}
+        >
           Back
         </button>
       </div>

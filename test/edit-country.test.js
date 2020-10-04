@@ -25,11 +25,9 @@ describe('when logged in and adds a new test photo', () => {
   /**
    * Define all necessary selectors.
    */
-  const editCountriesButtonSelector =
-    '#root > header > div.dashboard > div:nth-child(3) > button';
+  const editCountriesButtonSelector = '#edit-countries-button';
   const navbarListSelector = 'header > nav > ul';
-  const errorMessageSelector =
-    '.dashboard > div:nth-child(3) > form > div.error';
+  const errorMessageSelector = '#edit-countries > form > div.error';
 
   beforeEach(async () => {
     /**

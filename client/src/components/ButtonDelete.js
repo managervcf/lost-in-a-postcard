@@ -17,7 +17,7 @@ function DeleteButton({ id }) {
 
   return (
     <button
-      className="button danger"
+      className="button danger edit-photo-delete-button"
       disabled={loading}
       onClick={async () => await deletePhoto()}
     >
