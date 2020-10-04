@@ -11,7 +11,7 @@ import { testPhoto, testCountry, testPhotoEdited } from './mocks';
 let page;
 
 beforeEach(async () => {
-  page = await CustomPage.build(false);
+  page = await CustomPage.build();
 });
 
 afterEach(async () => {
