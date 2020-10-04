@@ -25,11 +25,9 @@ describe('when navigates to /login', () => {
   /**
    * Define selectors for all tests.
    */
-  const loginInputSelector =
-    '#root > main > form > input[type=text]:nth-child(1)';
-  const passwordInputSelector =
-    '#root > main > form > input[type=password]:nth-child(2)';
-  const loginButtonSelector = '#root > main > form > div > button:nth-child(1)';
+  const loginInputSelector = '#login-username-input';
+  const passwordInputSelector = '#login-password-input';
+  const loginButtonSelector = '#login-submit-button';
 
   beforeEach(async () => {
     /**
@@ -43,8 +41,8 @@ describe('when navigates to /login', () => {
      * 1. Pull out login and password input placeholders.
      * 2. Make assertions.
      */
-    const loginText = await page.getPlaceholderOf('input[type=text]');
-    const passwordText = await page.getPlaceholderOf('input[type=password]');
+    const loginText = await page.getPlaceholderOf(loginInputSelector);
+    const passwordText = await page.getPlaceholderOf(passwordInputSelector);
 
     expect(loginText).toMatch(/login/i);
     expect(passwordText).toMatch(/password/i);

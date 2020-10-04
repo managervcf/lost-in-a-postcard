@@ -36,7 +36,7 @@ describe('when logged in', () => {
      * 3. Make assertions.
      */
 
-    const spanSelector = 'div.user-info > p > span';
+    const spanSelector = '#user-info > p > span';
     const dashboardText = await page.getContentsOf(spanSelector);
     expect(dashboardText).toMatch(testUser.username);
   });
@@ -47,10 +47,9 @@ describe('when logged in', () => {
      * 2. Pull out selectors content.
      * 3. Make assertions.
      */
-    const logoutButtonSelector = '.logout-button';
-    const addPhotoButtonSelector = '.dashboard > div:nth-child(2) > button';
-    const editCountriesButtonSelector =
-      '.dashboard > div:nth-child(3) > button';
+    const logoutButtonSelector = '#logout-button';
+    const addPhotoButtonSelector = '#add-photo-button';
+    const editCountriesButtonSelector = '#edit-countries-button';
 
     const logoutButtonText = await page.getContentsOf(logoutButtonSelector);
     const addPhotoButtonText = await page.getContentsOf(addPhotoButtonSelector);
@@ -72,7 +71,7 @@ describe('when logged in', () => {
      * 4. Make assertions. Stringify error object and match it
      *    against the selector.
      */
-    const logoutButtonSelector = '.logout-button';
+    const logoutButtonSelector = '#logout-button';
     await page.logout();
 
     let error = '';

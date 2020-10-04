@@ -34,9 +34,10 @@ function PhotoFormEdit(props) {
   return (
     <form className="form" onSubmit={onSubmit}>
       <p>
-        Photo from {country.name} by {author.username}
+        Photo from {country?.name} by {author?.username}
       </p>
       <input
+        id="edit-photo-caption-input"
         type="text"
         placeholder={caption || 'Caption'}
         value={editedCaption}
@@ -44,12 +45,18 @@ function PhotoFormEdit(props) {
       />
       <label>Photo is{featured ? ' ' : ' not '}featured</label>
       <input
+        id="edit-photo-featured-input"
         type="checkbox"
         checked={editedFeatured}
         onChange={e => setEditedFeatured(e.target.checked)}
       />
-      <button className="button" type="sumbit" disabled={loading}>
-        {loading ? 'Loading...' : 'Update'}
+      <button
+        id="edit-photo-submit-button"
+        className="button"
+        type="sumbit"
+        disabled={loading}
+      >
+        {loading ? 'Updating...' : 'Update'}
       </button>
     </form>
   );

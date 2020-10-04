@@ -26,8 +26,10 @@ describe('when logs in and adds a new photo', () => {
   /**
    * Define selectors.
    */
-  const heartIconSelector = 'figure > div > svg';
-  const heartCounterSelector = 'figure > div > p';
+  const heartIconSelector =
+    '#root > main > article > figure:nth-child(2) > div > svg.heart-icon';
+  const heartCounterSelector =
+    '#root > main > article > figure:nth-child(2) > div > p.heart-counter';
 
   beforeEach(async () => {
     /**
@@ -52,7 +54,7 @@ describe('when logs in and adds a new photo', () => {
       error = e;
     }
 
-    expect(error.toString()).toMatch(new RegExp(heartIconSelector, 'gi'));
+    expect(error.toString()).toMatch(new RegExp('heart-icon', 'gi'));
   });
 
   describe('and when logs out', () => {

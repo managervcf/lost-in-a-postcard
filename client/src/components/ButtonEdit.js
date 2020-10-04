@@ -12,7 +12,10 @@ function ButtonDelete({ editMode, setEditMode }) {
   if (!me) return null;
 
   return (
-    <button className="button" onClick={() => setEditMode(!editMode)}>
+    <button
+      className="button edit-photo-button"
+      onClick={() => setEditMode(!editMode)}
+    >
       {editMode ? 'Exit editing' : 'Edit'}
     </button>
   );

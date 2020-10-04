@@ -102,7 +102,7 @@ describe('when logged in', () => {
        * 2. Pull of contents of the error message.
        * 3. Make assertions.
        */
-      const errorMessageSelector = 'div.error';
+      const errorMessageSelector = '#add-photo > form > div.error';
       await page.waitFor(errorMessageSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
       expect(errorMessageText).toMatch(/must provide a country name/i);
@@ -126,7 +126,7 @@ describe('when logged in', () => {
        * 2. Pull of contents of the error message.
        * 3. Make assertions.
        */
-      const errorMessageSelector = 'div.error';
+      const errorMessageSelector = '#add-photo > form > div.error';
       await page.waitFor(errorMessageSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
       expect(errorMessageText).toMatch(/must upload a file/i);

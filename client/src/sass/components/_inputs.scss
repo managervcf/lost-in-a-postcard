@@ -48,9 +48,10 @@ input {
 
 select {
   margin: 1rem 0;
+  padding: 0.5rem 1rem;
   display: flex;
-  align-items: center;
   color: inherit;
+  background-color: $color-main-background;
   font-family: inherit;
   font-size: inherit;
   border: inherit;
@@ -58,6 +59,7 @@ select {
 
   & option {
     text-align: center;
+    border: none;
 
     &:checked {
       color: $color-main-primary;
@@ -107,7 +109,7 @@ textarea {
     justify-items: space-around;
     color: rgba($color-main-text, 0.5);
     cursor: pointer;
-    transition: all $transition-time-medium-fast;
+    transition: all $transition-time-fast;
 
     &-checkbox {
       margin: 0.5rem;
@@ -115,15 +117,44 @@ textarea {
       align-self: center;
       color: $color-main-text;
       border-radius: $border-radius-large;
-      transition: all $transition-time-medium-fast;
+      transition: all $transition-time-fast;
     }
   }
 
   &-input {
-    height: 0;
+    // height: 0;
+    visibility: hidden;
     position: absolute;
 
     &:checked + label > .featured-label-checkbox {
+      color: $color-main-primary;
+      box-shadow: $shadow-neomorphic;
+    }
+  }
+}
+
+.selectable {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: $font-size-main;
+
+  &-item {
+    display: block;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: $color-main-text;
+    box-shadow: none;
+    border-radius: $border-radius-large;
+    transition: all $transition-time-fast;
+    cursor: pointer;
+  }
+
+  &-input {
+    visibility: hidden;
+    position: absolute;
+
+    &:checked + .selectable-item {
       color: $color-main-primary;
       box-shadow: $shadow-neomorphic;
     }

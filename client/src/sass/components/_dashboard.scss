@@ -1,12 +1,19 @@
 .dashboard,
-.form,
-.user-info {
+.dashboard-features,
+.form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.user-info {
+#user-info {
+  display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-photo,
+#edit-country {
 }
