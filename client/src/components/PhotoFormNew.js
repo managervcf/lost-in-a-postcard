@@ -40,7 +40,10 @@ function PhotoFormNew() {
   return (
     <form className="form" onSubmit={onSubmit}>
       <Errors error={getUrlError ? getUrlError : uploadError} />
-      <div className="selectable">{countryOptions}</div>
+      <div className="selectable">
+        <span>Existing countries: </span>
+        {countryOptions}
+      </div>
       <input
         id="add-photo-country-input"
         type="text"

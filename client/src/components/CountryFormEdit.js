@@ -78,7 +78,7 @@ function CountryFormEdit() {
     <form className="form" onSubmit={onSubmit}>
       <Errors error={mError} />
       <div className="selectable">
-        <span>Pick a country:</span>
+        <span>Pick a country: </span>
         {countryOptions}
       </div>
       <input
