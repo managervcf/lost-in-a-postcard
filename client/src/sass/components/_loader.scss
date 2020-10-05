@@ -1,9 +1,5 @@
-.loader-inline {
-  display: inline-block;
-}
-
-.loader-block {
+.loader {
+  @include centerFlexColumn;
   height: 50vh;
   width: 100%;
-  @include centerFlexColumn;
 }

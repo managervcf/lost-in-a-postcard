@@ -1,10 +1,8 @@
 import React from 'react';
-import Navbar from './Navbar';
 
 function Footer() {
   return (
-    <footer>
-      <Navbar />
+    <footer className="u-mt-small">
       <p>Domi & Mateusz</p>
     </footer>
   );

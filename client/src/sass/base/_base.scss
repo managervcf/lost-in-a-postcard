@@ -38,19 +38,6 @@ body {
   user-select: none;
 }
 
-.frame {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: $border-radius-large;
-  transition: box-shadow $transition-time-fast;
-
-  &:hover {
-    box-shadow: $shadow-neomorphic;
-  }
-}
-
 .form {
   @include centerFlexColumn;
 }

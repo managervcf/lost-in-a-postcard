@@ -5,12 +5,17 @@
 }
 
 .error {
-  margin: 0.5rem 1rem;
-  padding: 1rem 2rem;
-  border: 1px solid $color-main-primary;
-  border-radius: $border-radius-large;
-  box-shadow: $inset-shadow;
-  color: $color-main-primary;
-  background-color: rgba($color-main-primary, 0.05);
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
+
+  &-text {
+    margin: 0.5rem 1rem;
+    padding: 1rem 2rem;
+    border: 1px solid $color-main-primary;
+    border-radius: $border-radius-large;
+    box-shadow: $inset-shadow;
+    color: $color-main-primary;
+    background-color: rgba($color-main-primary, 0.05);
+    font-weight: bold;
+  }
 }

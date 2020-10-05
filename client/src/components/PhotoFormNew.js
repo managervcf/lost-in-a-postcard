@@ -5,23 +5,28 @@ import { useQuery } from 'react-apollo';
 import { COUNTRIES } from '../graphql/queries';
 
 function PhotoFormNew() {
-  // Define country state variable.
   const [country, setCountry] = useState('');
   const [caption, setCaption] = useState('');
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState({});
 
+  const { data } = useQuery(COUNTRIES);
+
   // Use the custom useUpload hook.
   const { uploadToS3, loading, getUrlError, uploadError } = useUpload();
 
-  const { data } = useQuery(COUNTRIES);
-
-  // Define submit handler.
-  const onSubmit = async e => {
+  /**
+   * Handles the form submit event.
+   * 1. Prevent the page refresh.
+   * 2. Upload the new photo.
+   * @param {Event} e
+   */
+  const handleSubmit = async e => {
     e.preventDefault();
     await uploadToS3({ file, country, caption, featured });
   };
 
+  // Bulid the country options.
   const countryOptions = [...data?.countries].map(({ name, id }) => (
     <div key={id}>
       <input
@@ -38,10 +43,10 @@ function PhotoFormNew() {
   ));
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <Errors error={getUrlError ? getUrlError : uploadError} />
       <div className="selectable">
-        <span>Existing countries: </span>
+        <span className="selectable-label">Existing countries:</span>
         {countryOptions}
       </div>
       <input
@@ -58,21 +63,17 @@ function PhotoFormNew() {
         value={caption}
         onChange={e => setCaption(e.target.value)}
       />
-      <div className="featured">
+      <div className="selectable">
+        <span className="selectable-label">Featured:</span>
         <input
-          className="featured-input"
+          id="add-photo-featured-input"
+          className="selectable-input"
           type="checkbox"
           checked={featured}
           onChange={e => setFeatured(e.target.checked)}
         />
-        <label className="featured-label" htmlFor="add-photo-featured-input">
-          Featured?
-          <span
-            id="add-photo-featured-input"
-            className="featured-label-checkbox"
-          >
-            {featured ? 'Yes' : 'No'}
-          </span>
+        <label className="selectable-item" htmlFor="add-photo-featured-input">
+          {featured ? 'Yes' : 'No'}
         </label>
       </div>
       <input
@@ -82,7 +83,7 @@ function PhotoFormNew() {
         accept="image/jpeg"
         disabled={loading}
         value={file ? file.filename : 'Pick a photo'}
-        onChange={e => setFile(e.target.files[0] || {})}
+        onChange={e => setFile(e.target.files[0] ?? {})}
       />
       <button
         id="add-photo-submit-button"

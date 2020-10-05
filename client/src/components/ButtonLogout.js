@@ -2,21 +2,20 @@ import React from 'react';
 import { useApolloClient } from 'react-apollo';
 
 function ButtonLogout() {
-  // Use apollo store.
   const client = useApolloClient();
 
+  /**
+   * Handles the logout button click event.
+   * 1. Remove the token property from the localStorage.
+   * 2. Reset the Apollo store to update the component.
+   */
+  const handleClick = async () => {
+    localStorage.removeItem('token');
+    await client.resetStore();
+  };
+
   return (
-    <button
-      id="logout-button"
-      className="button logout-button"
-      onClick={async () => {
-        // Remove auth token from browser localStorage.
-        localStorage.removeItem('token');
-        // Reset apollo store to rerender react components.
-        await client.resetStore();
-        console.log('Logged out!');
-      }}
-    >
+    <button id="logout-button" className="button" onClick={handleClick}>
       Logout
     </button>
   );

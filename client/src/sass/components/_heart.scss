@@ -5,7 +5,7 @@
 
   &-counter {
     font-size: $font-size-main-small;
-    color: rgba($color-main-primary, 0.6);
+    color: $color-icon;
 
     &-hidden {
       opacity: 0;
@@ -18,12 +18,5 @@
       transform: translateY(0);
       transition: all 0.3s 0.1s;
     }
-  }
-
-  &-icon {
-    cursor: pointer;
-    width: 2.5rem;
-    height: 2.5rem;
-    fill: rgba($color-main-primary, 0.6);
   }
 }

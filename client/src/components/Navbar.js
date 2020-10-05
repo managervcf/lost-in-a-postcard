@@ -10,14 +10,15 @@ function Navbar() {
   if (error) return null;
   if (loading) return null;
 
-  // Build navbar items.
+  /**
+   * Build the navbar items and sort them alphabetically.
+   */
   const navItems = data?.countries
-    // Sort alphabetically.
     .sort((a, b) => (a.name < b.name ? -1 : 1))
     .map(({ id, name }) => <NavbarItem key={id} countryName={name} />);
 
   return (
-    <nav className="navbar u-mb-small">
+    <nav className="navbar u-mb-small u-mt-small">
       <ul className="navbar-list">{navItems}</ul>
     </nav>
   );

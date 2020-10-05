@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
-import LoaderInline from './LoaderInline';
+import Loader from './Loader';
+import Errors from './Errors';
 import { EDIT_PHOTO } from '../graphql/mutations';
 
 function PhotoFormEdit(props) {
@@ -16,8 +17,13 @@ function PhotoFormEdit(props) {
     onCompleted: async () => await client.resetStore(),
   });
 
-  // Define submit handler.
-  const onSubmit = e => {
+  /**
+   * Handles the form submit event.
+   * 1. Prevent the page refresh.
+   * 2. Issue the editPhoto mutation.
+   * @param {Event} e
+   */
+  const handleSubmit = e => {
     e.preventDefault();
     updateMutation({
       variables: {
@@ -28,11 +34,11 @@ function PhotoFormEdit(props) {
     });
   };
 
-  if (error) return <p>{error.message}</p>;
-  if (loading) return <LoaderInline size={5} loading={loading} />;
+  if (error) return <Errors error={error} />;
+  if (loading) return <Loader loading={loading} />;
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <p>
         Photo from {country?.name} by {author?.username}
       </p>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
 import { DELETE_PHOTO } from '../graphql/mutations';
+import Errors from './Errors';
 
 function DeleteButton({ id }) {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
@@ -8,12 +9,7 @@ function DeleteButton({ id }) {
     onCompleted: () => client.resetStore(),
   });
 
-  // Check if user is logged in by checking the store.
-  const { me } = client.cache.data.data.ROOT_QUERY;
-
-  // Handle error and case where there is no user logged in.
-  if (error) return <p>{error.message}</p>;
-  if (!me) return null;
+  if (error) return <Errors error={error} />;
 
   return (
     <button

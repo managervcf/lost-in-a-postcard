@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Route } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
+import Errors from './Errors';
 import CountryFormEdit from './CountryFormEdit';
 import ButtonLogout from './ButtonLogout';
 import PhotoFormNew from './PhotoFormNew';
@@ -10,17 +10,16 @@ function Dashboard() {
   const [showPhotoFormNew, setShowPhotoFormNew] = useState(false);
   const [showCountryEditForm, setShowCountryEditForm] = useState(false);
 
-  // Query for user with additional option.
   const { loading, error, data } = useQuery(ME, {
     fetchPolicy: 'network-only',
   });
 
   // Handle loading, error and no user state.
   if (loading) return null;
-  else if (error) return null;
+  else if (error) return <Errors error={error} />;
   else if (!data.me) return null;
 
-  // Destructure username.
+  // Destructure theusername.
   const { username } = data.me;
 
   return (
@@ -31,28 +30,34 @@ function Dashboard() {
             Logged in as <strong>{username}</strong>
           </span>
         </p>
-        <Route component={ButtonLogout} />
+        <ButtonLogout />
       </div>
       <div className="dashboard-features">
         <div id="add-photo">
           <button
             id="add-photo-button"
             className="button"
-            onClick={() => setShowPhotoFormNew(!showPhotoFormNew)}
+            onClick={() => {
+              setShowPhotoFormNew(!showPhotoFormNew);
+              setShowCountryEditForm(false);
+            }}
           >
-            {!showPhotoFormNew ? 'Add Photo' : 'Close'}
+            {!showPhotoFormNew ? 'Add photo' : 'Close'}
           </button>
-          {showPhotoFormNew && <Route component={PhotoFormNew} />}
+          {showPhotoFormNew && <PhotoFormNew />}
         </div>
         <div id="edit-countries">
           <button
             id="edit-countries-button"
             className="button"
-            onClick={() => setShowCountryEditForm(!showCountryEditForm)}
+            onClick={() => {
+              setShowCountryEditForm(!showCountryEditForm);
+              setShowPhotoFormNew(false);
+            }}
           >
-            {!showCountryEditForm ? 'Edit Countries' : 'Close'}
+            {!showCountryEditForm ? 'Edit countries' : 'Close'}
           </button>
-          {showCountryEditForm && <Route component={CountryFormEdit} />}
+          {showCountryEditForm && <CountryFormEdit />}
         </div>
       </div>
     </div>
