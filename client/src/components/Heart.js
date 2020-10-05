@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { useMutation } from 'react-apollo';
-import { CLICK_PHOTO } from '../graphql/mutations';
-import { PHOTOS } from '../graphql/queries';
+import { CLICK_PHOTO, PHOTOS } from '../graphql';
 
 function Heart({ id, clicks }) {
   const [clicked, setClicked] = useState(false);

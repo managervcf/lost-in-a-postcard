@@ -4,7 +4,7 @@ import Errors from './Errors';
 import CountryFormEdit from './CountryFormEdit';
 import ButtonLogout from './ButtonLogout';
 import PhotoFormNew from './PhotoFormNew';
-import { ME } from '../graphql/queries';
+import { ME } from '../graphql';
 
 function Dashboard() {
   const [showPhotoFormNew, setShowPhotoFormNew] = useState(false);

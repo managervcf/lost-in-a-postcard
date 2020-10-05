@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
 import Errors from './Errors';
-import { COUNTRIES } from '../graphql/queries';
-import { UPDATE_COUNTRY } from '../graphql/mutations';
+import { COUNTRIES, UPDATE_COUNTRY } from '../graphql';
 
 function CountryFormEdit() {
   const [editedCountry, setEditedCountry] = useState({

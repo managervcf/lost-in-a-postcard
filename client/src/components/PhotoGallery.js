@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { useLocation, useRouteMatch } from 'react-router-dom';
-import PhotoItem from './PhotoItem';
-import PhotoGalleryDescription from './PhotoGalleryDescription';
-import Loader from './Loader';
 import Errors from './Errors';
+import Loader from './Loader';
 import Navbar from './Navbar';
-import { PHOTOS } from '../graphql/queries';
+import PhotoGalleryDescription from './PhotoGalleryDescription';
+import PhotoItem from './PhotoItem';
+import { PHOTOS } from '../graphql';
 import { buildQueryVariables } from '../utils';
 
 function PhotoGallery() {

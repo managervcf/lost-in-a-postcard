@@ -1,11 +1,14 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
-import axios from 'axios';
-import { ADD_PHOTO } from '../graphql/mutations/addPhoto';
-import { GET_PRESIGNED_URL } from '../graphql/mutations';
+import { ADD_PHOTO, GET_PRESIGNED_URL } from '../graphql';
 
 /**
  * Upload hook.
+ * 1. Use mutation hooks to get the presigned url and to add a new photo.
+ * 2. Define the loading and error state variables.
+ * 3. Access the apollo store.
+ * 4. Define the uploadToS3 function.
  * @returns {{
  *  uploadToS3: uploadToS3,
  *  loading: boolean,
@@ -14,16 +17,13 @@ import { GET_PRESIGNED_URL } from '../graphql/mutations';
  * }}
  */
 export const useUpload = () => {
-  // Use mutation hooks to get the presigned url and to add a new photo.
   const [getSignedUrl, { error: getUrlError }] = useMutation(GET_PRESIGNED_URL);
   const [addPhoto, { error: uploadError }] = useMutation(ADD_PHOTO, {
     onCompleted: () => client.resetStore(),
   });
 
-  // Define the loading and error state variables.
   const [loading, setLoading] = useState(false);
 
-  // Access the apollo store.
   const client = useApolloClient();
 
   /**

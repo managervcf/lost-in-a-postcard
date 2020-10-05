@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 import Loader from './Loader';
 import Errors from './Errors';
-import { EDIT_PHOTO } from '../graphql/mutations';
+import { EDIT_PHOTO } from '../graphql';
 
 function PhotoFormEdit(props) {
   const { id, country, caption, featured, author } = props;

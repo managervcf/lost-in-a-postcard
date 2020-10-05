@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-apollo';
 import Errors from './Errors';
 import { useUpload } from '../hooks/useUpload';
-import { useQuery } from 'react-apollo';
-import { COUNTRIES } from '../graphql/queries';
+import { COUNTRIES } from '../graphql';
 
 function PhotoFormNew() {
   const [country, setCountry] = useState('');

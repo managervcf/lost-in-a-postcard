@@ -4,13 +4,13 @@ import classnames from 'classnames';
 import PhotoImage from './PhotoImage';
 import PhotoCaption from './PhotoCaption';
 import Heart from './Heart';
+import { ME } from '../graphql';
 import {
   useOnScreen,
   useOnScroll,
   useOnClickOutside,
   useOnClickInside,
 } from '../hooks';
-import { ME } from '../graphql/queries';
 
 function PhotoItem(props) {
   const { data } = useQuery(ME);
