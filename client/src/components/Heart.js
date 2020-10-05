@@ -10,8 +10,11 @@ function Heart({ id, clicks }) {
     refetchQueries: [{ query: PHOTOS }],
   });
 
-  const showFilled = () => setClicked(true);
-  const showEmpty = () => setTimeout(() => setClicked(false), 1300);
+  /**
+   * Toggles the heart icon style.
+   * @param {boolean} showFilled
+   */
+  const toggleFilled = (showFilled = true) => setClicked(showFilled);
 
   const heartCounterClasses = classnames({
     'heart-counter': true,
@@ -19,15 +22,15 @@ function Heart({ id, clicks }) {
     'heart-counter-visible': clicked,
   });
 
+  const handleHeartClick = () => {
+    toggleFilled();
+    clickPhoto({ variables: { id } });
+  };
+
   return (
     <div className="heart">
       <p className={heartCounterClasses}>{clicks}</p>
-      <svg
-        className="heart-icon"
-        onPointerLeave={showEmpty}
-        onPointerDown={showFilled}
-        onPointerUp={() => clickPhoto({ variables: { id } })}
-      >
+      <svg className="icon" onPointerUp={handleHeartClick}>
         <use
           xlinkHref={`./assets/icons/icons.svg#icon-heart${
             clicked ? '' : '-outlined'
