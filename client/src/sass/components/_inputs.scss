@@ -73,7 +73,9 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   width: 100%;
-  max-height: 20rem;
+  min-height: 4rem;
+  max-height: 25rem;
+  min-width: 15rem;
   max-width: 30rem;
   text-align: center;
   border: 1px solid $color-light-grey;
@@ -96,43 +98,6 @@ textarea {
   box-shadow: none !important;
 }
 
-.featured {
-  position: relative;
-  font-size: $font-size-main;
-  transition: all $transition-time-medium-fast;
-
-  &-label {
-    margin: 0.5rem;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-items: space-around;
-    color: rgba($color-main-text, 0.5);
-    cursor: pointer;
-    transition: all $transition-time-fast;
-
-    &-checkbox {
-      margin: 0.5rem;
-      padding: 0.5rem 1rem;
-      align-self: center;
-      color: $color-main-text;
-      border-radius: $border-radius-large;
-      transition: all $transition-time-fast;
-    }
-  }
-
-  &-input {
-    // height: 0;
-    visibility: hidden;
-    position: absolute;
-
-    &:checked + label > .featured-label-checkbox {
-      color: $color-main-primary;
-      box-shadow: $shadow-neomorphic;
-    }
-  }
-}
-
 .selectable {
   position: relative;
   display: flex;
@@ -148,6 +113,13 @@ textarea {
     border-radius: $border-radius-large;
     transition: all $transition-time-fast;
     cursor: pointer;
+  }
+
+  &-label {
+    display: block;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    color: rgba($color-main-text, 0.5);
   }
 
   &-input {
