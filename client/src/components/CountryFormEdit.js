@@ -15,22 +15,26 @@ function CountryFormEdit() {
   const { loading: qLoading, error: qError, data, client } = useQuery(
     COUNTRIES
   );
+
   const [updateCountry, { loading: mLoading, error: mError }] = useMutation(
     UPDATE_COUNTRY
   );
 
-  // Handles submit event.
-  const onSubmit = e => {
-    // Prevent default browser behavior.
+  /**
+   * Handles submit event.
+   * 1. Prevent the refresh.
+   * 2. Issue a query to update the country.
+   *    a) Reset the Apollo store on completed
+   *       to update the DOM.
+   * 3. Reset the editedCountry state variable.
+   * @param {Event} e
+   */
+  const handleSubmit = e => {
     e.preventDefault();
-    // Mutate using provided function
     updateCountry({
       variables: editedCountry,
       onCompleted: () => client.resetStore(),
-      // Refetches query after mutation to update the DOM.
-      refetchQueries: () => [{ query: COUNTRIES }],
     });
-    // Reset state to empty strings.
     setEditedCountry({ id: '', name: '', description: '' });
   };
 
@@ -47,17 +51,23 @@ function CountryFormEdit() {
     setEditedCountry({ id, name, description });
   };
 
-  // Handles on change events.
+  /**
+   * Handles on change events.
+   * 1. Update the editedCountry state variable
+   *    with the changed input value.
+   * @param {Event} e
+   */
   const handleInputChange = e =>
     setEditedCountry({
       ...editedCountry,
       [e.target.name]: e.target.value,
     });
 
-  // Handles query error and loading state.
+  // Handles the query error and loading state.
   if (qLoading) return null;
-  if (qError) return null;
+  if (qError) return <Errors error={qError} />;
 
+  // Build the country options.
   const countryOptions = [...data?.countries?.sort()].map(({ name, id }) => (
     <div key={id} className="selectable-group">
       <input
@@ -75,7 +85,7 @@ function CountryFormEdit() {
   ));
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <Errors error={mError} />
       <div className="selectable">
         <span className="selectable-label">Pick a country:</span>
@@ -91,6 +101,7 @@ function CountryFormEdit() {
       />
       <textarea
         id="edit-country-description-input"
+        className="textarea"
         value={editedCountry.description}
         name="description"
         onChange={handleInputChange}

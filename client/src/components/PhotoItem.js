@@ -17,7 +17,7 @@ function PhotoItem(props) {
 
   // Returns a boolean indicating if ref is visible on screen.
   const ref = useRef();
-  const onScreen = useOnScreen(ref, '-25%');
+  const onScreen = useOnScreen(ref, '-15%');
   const [visible, setVisible] = useState(false);
 
   /**

@@ -22,9 +22,16 @@ function Heart({ id, clicks }) {
     'heart-counter-visible': clicked,
   });
 
+  /**
+   * Handles the click event on the heart icon.
+   * 1. Set the clicked state variable to true.
+   * 2. If clicked is false, issue the clickPhoto mutation.
+   */
   const handleHeartClick = () => {
     toggleFilled();
-    clickPhoto({ variables: { id } });
+    if (!clicked) {
+      clickPhoto({ variables: { id } });
+    }
   };
 
   return (

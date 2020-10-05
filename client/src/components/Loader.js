@@ -2,23 +2,12 @@ import React from 'react';
 import { PropagateLoader } from 'react-spinners';
 import withLoader from '../wrappers/withLoader';
 
-/**
- * List of available loaders:
- * HashLoader
- * RingLoader
- * CircleLoader
- * BounceLoader
- * PropagateLoader
- * GridLoader
- * FadeLoader
- */
-
-function LoaderBlock({ loading, size }) {
+function Loader({ loading, size }) {
   return (
-    <div className="loader-block">
+    <div className="loader">
       <PropagateLoader
         css={{ transform: 'rotateZ(90deg)' }}
-        size={size}
+        size={size ?? 5}
         color={'#d9721e'}
         loading={loading}
       />
@@ -26,4 +15,4 @@ function LoaderBlock({ loading, size }) {
   );
 }
 
-export default withLoader(LoaderBlock);
+export default withLoader(Loader);

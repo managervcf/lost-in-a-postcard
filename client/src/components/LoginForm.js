@@ -3,13 +3,19 @@ import { useHistory } from 'react-router-dom';
 import Errors from './Errors';
 
 function LoginForm({ mutate, loading, error }) {
-  // Access history.
   const history = useHistory();
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = e => {
+  /**
+   * Handles the form submit event.
+   * 1. Prevent the page refresh.
+   * 2. Issue the logIn mutation.
+   * 3. Reset the login and password state variables.
+   * @param {Event} e
+   */
+  const handleSubmit = e => {
     e.preventDefault();
     mutate({ variables: { login, password } });
     setLogin('');
@@ -17,7 +23,7 @@ function LoginForm({ mutate, loading, error }) {
   };
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <Errors error={error} />
       <input
         id="login-username-input"

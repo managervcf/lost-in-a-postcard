@@ -15,12 +15,18 @@ function PhotoFormNew() {
   // Use the custom useUpload hook.
   const { uploadToS3, loading, getUrlError, uploadError } = useUpload();
 
-  // Define submit handler.
-  const onSubmit = async e => {
+  /**
+   * Handles the form submit event.
+   * 1. Prevent the page refresh.
+   * 2. Upload the new photo.
+   * @param {Event} e
+   */
+  const handleSubmit = async e => {
     e.preventDefault();
     await uploadToS3({ file, country, caption, featured });
   };
 
+  // Bulid the country options.
   const countryOptions = [...data?.countries].map(({ name, id }) => (
     <div key={id}>
       <input
@@ -37,7 +43,7 @@ function PhotoFormNew() {
   ));
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <Errors error={getUrlError ? getUrlError : uploadError} />
       <div className="selectable">
         <span className="selectable-label">Existing countries:</span>

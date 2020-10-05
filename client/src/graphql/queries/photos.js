@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 
 export const PHOTOS = gql`
   query photos($country: String, $featured: Boolean, $limit: Int, $page: Int) {

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-// Create a wrapping component, that adds a div around
-// passed component and gives it animation class so it
-// can animate itself in.
+/**
+ * Create a wrapping component, that adds a div around
+ * passed component and gives it animation class so it
+ * can animate itself in.
+ * @param {Component} WrappedComponent
+ * @returns {Component}
+ */
 const withLoader = WrappedComponent => {
   return class extends Component {
     // Define a constructor so we can use didMount state to false.

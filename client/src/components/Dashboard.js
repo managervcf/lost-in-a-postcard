@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
+import Errors from './Errors';
 import CountryFormEdit from './CountryFormEdit';
 import ButtonLogout from './ButtonLogout';
 import PhotoFormNew from './PhotoFormNew';
@@ -9,17 +10,16 @@ function Dashboard() {
   const [showPhotoFormNew, setShowPhotoFormNew] = useState(false);
   const [showCountryEditForm, setShowCountryEditForm] = useState(false);
 
-  // Query for user with additional option.
   const { loading, error, data } = useQuery(ME, {
     fetchPolicy: 'network-only',
   });
 
   // Handle loading, error and no user state.
   if (loading) return null;
-  else if (error) return null;
+  else if (error) return <Errors error={error} />;
   else if (!data.me) return null;
 
-  // Destructure username.
+  // Destructure theusername.
   const { username } = data.me;
 
   return (

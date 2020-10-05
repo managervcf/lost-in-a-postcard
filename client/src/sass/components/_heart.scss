@@ -5,7 +5,7 @@
 
   &-counter {
     font-size: $font-size-main-small;
-    color: rgba($color-main-primary, 0.6);
+    color: $color-icon;
 
     &-hidden {
       opacity: 0;

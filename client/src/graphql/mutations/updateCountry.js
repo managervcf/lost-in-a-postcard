@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 
 export const UPDATE_COUNTRY = gql`
   mutation updateCountry($id: ID!, $name: String!, $description: String) {
