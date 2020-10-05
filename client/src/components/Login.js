@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from 'react-apollo';
 import LoginForm from './LoginForm';
-import { LOGIN } from '../graphql/mutations';
+import { LOGIN } from '../graphql';
 
 function Login() {
   const history = useHistory();
