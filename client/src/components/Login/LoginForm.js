@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Errors from './Errors';
+import Errors from '../common/Errors';
 
 function LoginForm({ mutate, loading, error }) {
   const history = useHistory();

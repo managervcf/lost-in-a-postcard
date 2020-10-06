@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
-import { DELETE_PHOTO } from '../graphql';
-import Errors from './Errors';
+import { DELETE_PHOTO } from '../../graphql';
+import Errors from '../common/Errors';
 
 function DeleteButton({ id }) {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
@@ -13,7 +13,7 @@ function DeleteButton({ id }) {
 
   return (
     <button
-      className="button danger edit-photo-delete-button"
+      className="button edit-photo-delete-button u-danger"
       disabled={loading}
       onClick={async () => await deletePhoto()}
     >

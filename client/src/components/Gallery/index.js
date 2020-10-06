@@ -1,15 +1,15 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { useLocation, useRouteMatch } from 'react-router-dom';
-import Errors from './Errors';
-import Loader from './Loader';
-import Navbar from './Navbar';
-import PhotoGalleryDescription from './PhotoGalleryDescription';
-import PhotoItem from './PhotoItem';
-import { PHOTOS } from '../graphql';
-import { buildQueryVariables } from '../utils';
+import Errors from '../common/Errors';
+import Loader from '../common/Loader';
+import Navbar from '../Navbar';
+import GalleryDescription from './GalleryDescription';
+import Photo from '../Photo';
+import { PHOTOS } from '../../graphql';
+import { buildQueryVariables } from '../../utils';
 
-function PhotoGallery() {
+function Gallery() {
   // Use location and match object.
   const location = useLocation();
   const match = useRouteMatch();
@@ -27,18 +27,18 @@ function PhotoGallery() {
   if (data.photos.docs.length === 0)
     return <Errors text="No photos found  :(" />;
 
-  // Build gallery items.
-  const galleryItems = data.photos.docs.map(photo => (
-    <PhotoItem key={photo.id} {...photo} />
+  // Build photo items.
+  const photoItems = data.photos.docs.map(photo => (
+    <Photo key={photo.id} {...photo} />
   ));
 
   return (
     <article className="gallery u-mb-small">
-      <PhotoGalleryDescription countryName={country} featured={featured} />
-      {galleryItems}
+      <GalleryDescription countryName={country} featured={featured} />
+      {photoItems}
       <Navbar />
     </article>
   );
 }
 
-export default PhotoGallery;
+export default Gallery;

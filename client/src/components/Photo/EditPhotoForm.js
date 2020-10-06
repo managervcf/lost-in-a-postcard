@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
-import Loader from './Loader';
-import Errors from './Errors';
-import { EDIT_PHOTO } from '../graphql';
+import DeleteButton from './DeleteButton';
+import Errors from '../common/Errors';
+import { EDIT_PHOTO } from '../../graphql';
 
 function PhotoFormEdit(props) {
-  const { id, country, caption, featured, author } = props;
+  const { id, country, caption, featured } = props;
   const [editedCaption, setEditedCaption] = useState(caption);
   const [editedFeatured, setEditedFeatured] = useState(featured);
 
@@ -35,27 +35,41 @@ function PhotoFormEdit(props) {
   };
 
   if (error) return <Errors error={error} />;
-  if (loading) return <Loader loading={loading} />;
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <p>
-        Photo from {country?.name} by {author?.username}
-      </p>
+      <div className="u-mb-medium frame">
+        <p className="u-mb-small">
+          <span className="u-text-dim">Country: </span> {country.name}
+        </p>
+        <p className="u-mb-small">
+          <span className="u-text-dim">Caption: </span> {caption}
+        </p>
+        <p>
+          <span className="u-text-dim">Featured: </span>{' '}
+          {featured ? 'Yes' : 'No'}
+        </p>
+      </div>
       <input
         id="edit-photo-caption-input"
         type="text"
-        placeholder={caption || 'Caption'}
+        placeholder={caption ?? ''}
         value={editedCaption}
         onChange={e => setEditedCaption(e.target.value)}
       />
-      <label>Photo is{featured ? ' ' : ' not '}featured</label>
-      <input
-        id="edit-photo-featured-input"
-        type="checkbox"
-        checked={editedFeatured}
-        onChange={e => setEditedFeatured(e.target.checked)}
-      />
+      <div className="selectable">
+        <span className="selectable-label">Featured:</span>
+        <input
+          id="edit-photo-featured-input"
+          className="selectable-input"
+          type="checkbox"
+          checked={editedFeatured}
+          onChange={e => setEditedFeatured(e.target.checked)}
+        />
+        <label className="selectable-item" htmlFor="edit-photo-featured-input">
+          {editedFeatured ? 'Yes' : 'No'}
+        </label>
+      </div>
       <button
         id="edit-photo-submit-button"
         className="button"
@@ -64,6 +78,7 @@ function PhotoFormEdit(props) {
       >
         {loading ? 'Updating...' : 'Update'}
       </button>
+      <DeleteButton id={id} />
     </form>
   );
 }

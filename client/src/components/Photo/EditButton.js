@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ButtonDelete({ editMode, setEditMode }) {
+function EditButton({ editMode, setEditMode }) {
   return (
     <button
       className="button edit-photo-button"
@@ -11,4 +11,4 @@ function ButtonDelete({ editMode, setEditMode }) {
   );
 }
 
-export default ButtonDelete;
+export default EditButton;

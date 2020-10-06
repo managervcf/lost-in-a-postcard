@@ -98,7 +98,7 @@ input {
     display: block;
     margin: 0.5rem;
     padding: 0.5rem;
-    color: rgba($color-main-text, 0.5);
+    color: $color-main-text-dim;
   }
 
   &-input {

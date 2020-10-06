@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
-import Errors from './Errors';
-import { useUpload } from '../hooks/useUpload';
-import { COUNTRIES } from '../graphql';
+import Errors from '../common/Errors';
+import { useUpload } from '../../hooks/useUpload';
+import { COUNTRIES } from '../../graphql';
 
-function PhotoFormNew() {
+function AddPhotoForm() {
   const [country, setCountry] = useState('');
   const [caption, setCaption] = useState('');
   const [featured, setFeatured] = useState(false);
@@ -97,4 +97,4 @@ function PhotoFormNew() {
   );
 }
 
-export default PhotoFormNew;
+export default AddPhotoForm;
