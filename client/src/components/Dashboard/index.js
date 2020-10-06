@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
-import Errors from '../common/Errors';
-import EditCountriesForm from './EditCountriesForm';
 import AddPhotoForm from './AddPhotoForm';
-import { ME } from '../../graphql';
+import EditCountriesForm from './EditCountriesForm';
 import UserInfo from './UserInfo';
+import { ME } from '../../graphql';
 
 function Dashboard() {
   const [showAddPhotoForm, setShowAddPhotoForm] = useState(false);
@@ -16,7 +15,7 @@ function Dashboard() {
 
   // Handle loading, error and no user state.
   if (loading) return null;
-  else if (error) return <Errors error={error} />;
+  else if (error) return null;
   else if (!data.me) return null;
 
   // Destructure theusername.
