@@ -3,14 +3,16 @@ import React from 'react';
 /**
  * A component responsible for displaying errors
  * received from the graphQL API.
- * @param {{ error: ApolloError, text: string }} props
+ * @param {{ error?: { message: string }, text?: string }} props
  */
 function Error({ error, text }) {
   const parsedError = error?.message
     .replace('GraphQL error: ', '')
     .replace('Network error: ', '');
 
-  return error || text ? (
+  const isError = error || text;
+
+  return isError ? (
     <div className="error">
       <div className="error-text">{text ?? parsedError}</div>
     </div>
