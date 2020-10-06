@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
-import Errors from './Errors';
-import { COUNTRIES, UPDATE_COUNTRY } from '../graphql';
+import Errors from '../common/Errors';
+import { COUNTRIES, UPDATE_COUNTRY } from '../../graphql';
 
-function CountryFormEdit() {
+function EditCountriesForm() {
   const [editedCountry, setEditedCountry] = useState({
     id: '',
     name: '',
@@ -118,4 +118,4 @@ function CountryFormEdit() {
   );
 }
 
-export default CountryFormEdit;
+export default EditCountriesForm;

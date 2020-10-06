@@ -1,9 +1,9 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
-import withLoader from '../wrappers/withLoader';
-import { COUNTRIES } from '../graphql';
+import withLoader from '../../wrappers/withLoader';
+import { COUNTRIES } from '../../graphql';
 
-function PhotoGalleryDescription({ countryName, featured }) {
+function GalleryDescription({ countryName, featured }) {
   const { loading, error, data } = useQuery(COUNTRIES);
 
   // Handle loading, error and description display.
@@ -23,4 +23,4 @@ function PhotoGalleryDescription({ countryName, featured }) {
   );
 }
 
-export default withLoader(PhotoGalleryDescription);
+export default withLoader(GalleryDescription);

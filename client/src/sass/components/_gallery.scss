@@ -39,19 +39,16 @@
     transition: inherit;
 
     &-title {
-      line-height: $line-height-main;
-    }
-
-    &-description {
       font-weight: bold;
       line-height: $line-height-main;
     }
 
+    &-description {
+      line-height: $line-height-main;
+    }
+
     &-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      @include centerFlexColumn;
     }
   }
 }

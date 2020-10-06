@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import ButtonEdit from './ButtonEdit';
-import ButtonDelete from './ButtonDelete';
-import PhotoFormEdit from './PhotoFormEdit';
-import PhotoCaptionContent from './PhotoCaptionContent';
+import EditButton from './EditButton';
+import EditPhotoForm from './EditPhotoForm';
+import PhotoInfo from './PhotoInfo';
 
-function PhotoCaption(props) {
+function PhotoDetails(props) {
   // Checks if the caption is in the edit mode.
   const [editMode, setEditMode] = useState(false);
 
@@ -19,14 +18,17 @@ function PhotoCaption(props) {
   return (
     <figcaption className={captionClasses}>
       {editMode ? (
-        <PhotoFormEdit {...props} />
+        <EditPhotoForm {...props} />
       ) : (
-        <PhotoCaptionContent {...props} />
+        <PhotoInfo
+          country={props.country}
+          caption={props.caption}
+          featured={props.featured}
+        />
       )}
-      <ButtonEdit editMode={editMode} setEditMode={setEditMode} />
-      <ButtonDelete {...props} />
+      <EditButton editMode={editMode} setEditMode={setEditMode} />
     </figcaption>
   );
 }
 
-export default PhotoCaption;
+export default PhotoDetails;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Errors from './Errors';
+import Errors from '../common/Errors';
 
-function NoMatch() {
+function NotFound() {
   return (
     <>
       <Errors text="Oops! Page you are looking for does not exist." />
@@ -13,4 +13,4 @@ function NoMatch() {
   );
 }
 
-export default NoMatch;
+export default NotFound;

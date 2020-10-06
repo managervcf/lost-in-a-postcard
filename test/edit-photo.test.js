@@ -69,7 +69,7 @@ describe(`when logged in, adds a new photo and navigates to /photos/${testCountr
        * 5. Make assertions.
        */
       const captionSelector =
-        'figure.gallery-item > figcaption > section > p.gallery-caption-description';
+        'figure.gallery-item > figcaption > section > p.gallery-caption-title';
       const exitEditingButtonSelector =
         'figure.gallery-item > figcaption > button:nth-child(2)';
 

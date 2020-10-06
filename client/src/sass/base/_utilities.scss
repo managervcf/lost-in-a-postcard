@@ -1,3 +1,13 @@
+.u-mtb-medium {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.u-mtb-small {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
 .u-mt-medium {
   margin-top: 2rem !important;
 }
@@ -14,6 +24,10 @@
   margin-bottom: 1rem !important;
 }
 
-.danger {
+.u-danger {
   color: #ab1f15 !important;
+}
+
+.u-text-dim {
+  color: $color-main-text-dim;
 }

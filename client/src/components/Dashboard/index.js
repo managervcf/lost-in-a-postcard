@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
-import Errors from './Errors';
-import CountryFormEdit from './CountryFormEdit';
-import ButtonLogout from './ButtonLogout';
-import PhotoFormNew from './PhotoFormNew';
-import { ME } from '../graphql';
+import Errors from '../common/Errors';
+import EditCountriesForm from './EditCountriesForm';
+import AddPhotoForm from './AddPhotoForm';
+import { ME } from '../../graphql';
+import UserInfo from './UserInfo';
 
 function Dashboard() {
-  const [showPhotoFormNew, setShowPhotoFormNew] = useState(false);
-  const [showCountryEditForm, setShowCountryEditForm] = useState(false);
+  const [showAddPhotoForm, setShowAddPhotoForm] = useState(false);
+  const [showEditCountriesForm, setShowEditCountriesForm] = useState(false);
 
   const { loading, error, data } = useQuery(ME, {
     fetchPolicy: 'network-only',
@@ -24,40 +24,33 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <div id="user-info">
-        <p>
-          <span>
-            Logged in as <strong>{username}</strong>
-          </span>
-        </p>
-        <ButtonLogout />
-      </div>
+      <UserInfo username={username} />
       <div className="dashboard-features">
         <div id="add-photo">
           <button
             id="add-photo-button"
             className="button"
             onClick={() => {
-              setShowPhotoFormNew(!showPhotoFormNew);
-              setShowCountryEditForm(false);
+              setShowAddPhotoForm(!showAddPhotoForm);
+              setShowEditCountriesForm(false);
             }}
           >
-            {!showPhotoFormNew ? 'Add photo' : 'Close'}
+            {!showAddPhotoForm ? 'Add photo' : 'Close'}
           </button>
-          {showPhotoFormNew && <PhotoFormNew />}
+          {showAddPhotoForm && <AddPhotoForm />}
         </div>
         <div id="edit-countries">
           <button
             id="edit-countries-button"
             className="button"
             onClick={() => {
-              setShowCountryEditForm(!showCountryEditForm);
-              setShowPhotoFormNew(false);
+              setShowEditCountriesForm(!showEditCountriesForm);
+              setShowAddPhotoForm(false);
             }}
           >
-            {!showCountryEditForm ? 'Edit countries' : 'Close'}
+            {!showEditCountriesForm ? 'Edit countries' : 'Close'}
           </button>
-          {showCountryEditForm && <CountryFormEdit />}
+          {showEditCountriesForm && <EditCountriesForm />}
         </div>
       </div>
     </div>

@@ -2,17 +2,17 @@ import React, { useState, useRef } from 'react';
 import { useQuery } from 'react-apollo';
 import classnames from 'classnames';
 import PhotoImage from './PhotoImage';
-import PhotoCaption from './PhotoCaption';
-import Heart from './Heart';
-import { ME } from '../graphql';
+import PhotoBack from './PhotoBack';
+import Heart from '../Heart';
+import { ME } from '../../graphql';
 import {
   useOnScreen,
   useOnScroll,
   useOnClickOutside,
   useOnClickInside,
-} from '../hooks';
+} from '../../hooks';
 
-function PhotoItem(props) {
+function Photo(props) {
   const { data } = useQuery(ME);
 
   // Returns a boolean indicating if ref is visible on screen.
@@ -33,17 +33,21 @@ function PhotoItem(props) {
   useOnClickOutside(ref, hideCaption);
   useOnClickInside(ref, showCaption);
 
-  const photoItemClasses = classnames({
+  const photoClasses = classnames({
     'gallery-item': true,
     'fade-out': !onScreen,
     'fade-in': onScreen,
   });
 
   return (
-    <figure ref={ref} className={photoItemClasses}>
-      <PhotoImage {...props} dim={data?.me && visible} />
+    <figure ref={ref} className={photoClasses}>
+      <PhotoImage
+        upload={props.upload}
+        country={props.country}
+        dim={data?.me && visible}
+      />
       {data?.me ? (
-        <PhotoCaption {...props} visible={visible} />
+        <PhotoBack {...props} visible={visible} />
       ) : (
         <Heart id={props.id} clicks={props.clicks} />
       )}
@@ -51,4 +55,4 @@ function PhotoItem(props) {
   );
 }
 
-export default PhotoItem;
+export default Photo;

@@ -4,9 +4,9 @@ import Logo from './Logo';
 import Login from './Login';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import NoMatch from './NoMatch';
+import NotFound from './NotFound';
 import Dashboard from './Dashboard';
-import PhotoGallery from './PhotoGallery';
+import Gallery from './Gallery';
 
 function App() {
   return (
@@ -20,8 +20,8 @@ function App() {
         <Switch>
           <Redirect exact from="/" to="/photos/featured" />
           <Route exact path="/login" component={Login} />
-          <Route path="/photos" component={PhotoGallery} />
-          <Route component={NoMatch} />
+          <Route path="/photos" component={Gallery} />
+          <Route component={NotFound} />
         </Switch>
       </main>
       <Footer />

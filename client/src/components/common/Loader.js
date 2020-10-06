@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropagateLoader } from 'react-spinners';
-import withLoader from '../wrappers/withLoader';
+import withLoader from '../../wrappers/withLoader';
 
 function Loader({ loading, size }) {
   return (
