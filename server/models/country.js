@@ -15,7 +15,7 @@ const countrySchema = new Schema(
     },
     description: {
       type: String,
-      default: 'There is no country description yet.',
+      default: '',
     },
     photos: [
       {
