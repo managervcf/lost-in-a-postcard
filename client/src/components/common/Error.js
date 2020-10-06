@@ -5,7 +5,7 @@ import React from 'react';
  * received from the graphQL API.
  * @param {{ error: ApolloError, text: string }} props
  */
-function Errors({ error, text }) {
+function Error({ error, text }) {
   const parsedError = error?.message
     .replace('GraphQL error: ', '')
     .replace('Network error: ', '');
@@ -17,4 +17,4 @@ function Errors({ error, text }) {
   ) : null;
 }
 
-export default Errors;
+export default Error;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Errors from '../common/Errors';
+import Error from '../common/Error';
 
 function LoginForm({ mutate, loading, error }) {
   const history = useHistory();
@@ -24,7 +24,7 @@ function LoginForm({ mutate, loading, error }) {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <Errors error={error} />
+      <Error error={error} />
       <input
         id="login-username-input"
         type="text"

@@ -4,7 +4,7 @@ import withLoader from '../../wrappers/withLoader';
 
 function Logo() {
   return (
-    <h1 className="heading-primary u-mb-medium">
+    <h1 className="heading-primary u-mb-small">
       <Link to="/photos">Lost in a Postcard</Link>
     </h1>
   );

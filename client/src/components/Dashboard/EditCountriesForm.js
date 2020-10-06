@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
-import Errors from '../common/Errors';
+import Error from '../common/Error';
 import { COUNTRIES, UPDATE_COUNTRY } from '../../graphql';
 
 function EditCountriesForm() {
@@ -64,7 +64,7 @@ function EditCountriesForm() {
 
   // Handles the query error and loading state.
   if (qLoading) return null;
-  if (qError) return <Errors error={qError} />;
+  if (qError) return <Error error={qError} />;
 
   // Build the country options.
   const countryOptions = [...data?.countries?.sort()].map(({ name, id }) => (
@@ -85,7 +85,7 @@ function EditCountriesForm() {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <Errors error={mError} />
+      <Error error={mError} />
       <div className="selectable">
         <span className="selectable-label">Pick a country:</span>
         {countryOptions}

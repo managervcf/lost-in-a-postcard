@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
-import Errors from '../common/Errors';
+import Error from '../common/Error';
 import { useUpload } from '../../hooks/useUpload';
 import { COUNTRIES } from '../../graphql';
 
@@ -44,7 +44,7 @@ function AddPhotoForm() {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <Errors error={getUrlError ? getUrlError : uploadError} />
+      <Error error={getUrlError ? getUrlError : uploadError} />
       <div className="selectable">
         <span className="selectable-label">Existing countries:</span>
         {countryOptions}
