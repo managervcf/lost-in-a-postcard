@@ -15,11 +15,9 @@ function Gallery() {
   const match = useRouteMatch();
 
   // Build a query depending on url.
-  const { country, featured } = buildQueryVariables(location, match);
+  const variables = buildQueryVariables(location, match);
 
-  const { data, loading, error } = useQuery(PHOTOS, {
-    variables: { country, featured },
-  });
+  const { data, loading, error } = useQuery(PHOTOS, { variables });
 
   // Handle the error, loading and lack of photos cases.
   if (error) return <Error text="Cannot load the gallery :(" />;
@@ -34,7 +32,7 @@ function Gallery() {
 
   return (
     <article className="gallery u-mb-small">
-      <GalleryDescription countryName={country} featured={featured} />
+      <GalleryDescription {...variables} />
       {photoItems}
       <Navbar />
     </article>
