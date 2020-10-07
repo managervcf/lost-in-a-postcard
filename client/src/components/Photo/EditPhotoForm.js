@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 import DeleteButton from './DeleteButton';
 import Error from '../common/Error';
+import withAnimation from '../../wrappers/withAnimation';
 import { EDIT_PHOTO } from '../../graphql';
 
 function PhotoFormEdit(props) {
@@ -83,4 +84,4 @@ function PhotoFormEdit(props) {
   );
 }
 
-export default PhotoFormEdit;
+export default withAnimation(PhotoFormEdit);

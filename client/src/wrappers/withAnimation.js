@@ -8,7 +8,7 @@ import classnames from 'classnames';
  * @param {Component} WrappedComponent
  * @returns {Component}
  */
-const withLoader = WrappedComponent => {
+const withAnimation = WrappedComponent => {
   return class extends Component {
     // Define a constructor so we can use didMount state to false.
     constructor(props) {
@@ -37,4 +37,4 @@ const withLoader = WrappedComponent => {
   };
 };
 
-export default withLoader;
+export default withAnimation;

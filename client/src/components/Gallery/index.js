@@ -6,6 +6,7 @@ import Loader from '../common/Loader';
 import Navbar from '../Navbar';
 import GalleryDescription from './GalleryDescription';
 import Photo from '../Photo';
+import withAnimation from '../../wrappers/withAnimation';
 import { PHOTOS } from '../../graphql';
 import { buildQueryVariables } from '../../utils';
 
@@ -39,4 +40,4 @@ function Gallery() {
   );
 }
 
-export default Gallery;
+export default withAnimation(Gallery);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import withLoader from '../../wrappers/withLoader';
+import withAnimation from '../../wrappers/withAnimation';
 
 function Logo() {
   return (
@@ -10,4 +10,4 @@ function Logo() {
   );
 }
 
-export default withLoader(Logo);
+export default withAnimation(Logo);

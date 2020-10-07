@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import withLoader from '../../wrappers/withLoader';
+import withAnimation from '../../wrappers/withAnimation';
 
 function NavbarItem({ countryName }) {
   return (
@@ -14,4 +14,4 @@ function NavbarItem({ countryName }) {
   );
 }
 
-export default withLoader(NavbarItem);
+export default withAnimation(NavbarItem);

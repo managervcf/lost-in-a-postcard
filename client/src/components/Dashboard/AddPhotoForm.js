@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
 import Error from '../common/Error';
+import withAnimation from '../../wrappers/withAnimation';
 import { useUpload } from '../../hooks/useUpload';
 import { COUNTRIES } from '../../graphql';
 
@@ -97,4 +98,4 @@ function AddPhotoForm() {
   );
 }
 
-export default AddPhotoForm;
+export default withAnimation(AddPhotoForm);

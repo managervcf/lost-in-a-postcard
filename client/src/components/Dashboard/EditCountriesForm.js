@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
 import Error from '../common/Error';
+import withAnimation from '../../wrappers/withAnimation';
 import { COUNTRIES, UPDATE_COUNTRY } from '../../graphql';
 
 function EditCountriesForm() {
@@ -118,4 +119,4 @@ function EditCountriesForm() {
   );
 }
 
-export default EditCountriesForm;
+export default withAnimation(EditCountriesForm);

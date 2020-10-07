@@ -99,6 +99,7 @@ input {
     margin: 0.5rem;
     padding: 0.5rem;
     color: $color-main-text-dim;
+    transition: all $transition-time-slow;
   }
 
   &-input {
