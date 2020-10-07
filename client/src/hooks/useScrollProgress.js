@@ -24,6 +24,5 @@ export function useScrollProgress() {
     return () => document.removeEventListener('scroll', followScroll);
   }, [progress]);
 
-  console.log('progress', progress);
   return { progress };
 }
