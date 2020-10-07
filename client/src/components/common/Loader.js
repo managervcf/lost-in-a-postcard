@@ -2,6 +2,10 @@ import React from 'react';
 import { PropagateLoader } from 'react-spinners';
 import withLoader from '../../wrappers/withLoader';
 
+/**
+ * Animated loading component.
+ * @param {{ loading?: boolean, size?: number }} props
+ */
 function Loader({ loading, size }) {
   return (
     <div className="loader">

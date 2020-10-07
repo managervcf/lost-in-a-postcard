@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 import DeleteButton from './DeleteButton';
-import Errors from '../common/Errors';
+import Error from '../common/Error';
 import { EDIT_PHOTO } from '../../graphql';
 
 function PhotoFormEdit(props) {
@@ -34,7 +34,7 @@ function PhotoFormEdit(props) {
     });
   };
 
-  if (error) return <Errors error={error} />;
+  if (error) return <Error error={error} />;
 
   return (
     <form className="form" onSubmit={handleSubmit}>

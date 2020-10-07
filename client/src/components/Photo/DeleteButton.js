@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
 import { DELETE_PHOTO } from '../../graphql';
-import Errors from '../common/Errors';
+import Error from '../common/Error';
 
 function DeleteButton({ id }) {
   const [deletePhoto, { loading, error, client }] = useMutation(DELETE_PHOTO, {
@@ -9,7 +9,7 @@ function DeleteButton({ id }) {
     onCompleted: () => client.resetStore(),
   });
 
-  if (error) return <Errors error={error} />;
+  if (error) return <Error error={error} />;
 
   return (
     <button

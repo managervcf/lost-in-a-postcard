@@ -4,14 +4,16 @@ import Logo from './Logo';
 import Login from './Login';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import Gallery from './Gallery';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
-import Gallery from './Gallery';
+import ProgressBar from './ProgressBar';
 
 function App() {
   return (
     <>
       <header>
+        <ProgressBar />
         <Logo />
         <Navbar />
         <Dashboard />

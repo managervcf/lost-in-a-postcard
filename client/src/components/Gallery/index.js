@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { useLocation, useRouteMatch } from 'react-router-dom';
-import Errors from '../common/Errors';
+import Error from '../common/Error';
 import Loader from '../common/Loader';
 import Navbar from '../Navbar';
 import GalleryDescription from './GalleryDescription';
@@ -15,17 +15,15 @@ function Gallery() {
   const match = useRouteMatch();
 
   // Build a query depending on url.
-  const { country, featured } = buildQueryVariables(location, match);
+  const variables = buildQueryVariables(location, match);
 
-  const { data, loading, error } = useQuery(PHOTOS, {
-    variables: { country, featured },
-  });
+  const { data, loading, error } = useQuery(PHOTOS, { variables });
 
   // Handle the error, loading and lack of photos cases.
-  if (error) return <Errors text="Cannot load the gallery :(" />;
+  if (error) return <Error text="Cannot load the gallery :(" />;
   if (loading) return <Loader loading={loading} />;
   if (data.photos.docs.length === 0)
-    return <Errors text="No photos found  :(" />;
+    return <Error text="No photos found  :(" />;
 
   // Build photo items.
   const photoItems = data.photos.docs.map(photo => (
@@ -34,7 +32,7 @@ function Gallery() {
 
   return (
     <article className="gallery u-mb-small">
-      <GalleryDescription countryName={country} featured={featured} />
+      <GalleryDescription {...variables} />
       {photoItems}
       <Navbar />
     </article>

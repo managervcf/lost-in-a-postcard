@@ -1,0 +1,20 @@
+.progress-bar[value] {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.15rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.progress-bar[value]::-webkit-progress-bar {
+  background-color: transparent;
+  transition: all $transition-time-fast ease-out;
+}
+.progress-bar[value]::-webkit-progress-value {
+  background: $color-main-primary;
+  // border-radius: 1rem;
+  transition: all $transition-time-fast ease-out;
+}
