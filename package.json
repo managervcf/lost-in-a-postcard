@@ -4,7 +4,7 @@
   "description": "Lost in a Postcard. Travel photography portfolio by Domi & Matt.",
   "main": "src/server/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node src/dist/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm run build:client && npm run build:server",
     "build:client": "npm install --prefix src/client && npm run build --prefix src/client",
