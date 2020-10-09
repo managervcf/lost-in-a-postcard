@@ -18,7 +18,7 @@ addons:
 cache:
   directories:
     - node_modules
-    - client/node_modules
+    - src/client/node_modules
 
 # Install and build scripts.
 install:
