@@ -20,8 +20,14 @@ input {
     background-color: rgba($color-main-primary, 0.7);
   }
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   // Edit file input.
-  &::-webkit-file-upload-button {
+  &::-webkit-file-upload-button,
+  &::-webkit-file-selector-button {
     margin: inherit;
     padding: inherit;
     background-color: inherit;

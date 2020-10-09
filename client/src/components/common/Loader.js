@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropagateLoader } from 'react-spinners';
-import withLoader from '../../wrappers/withLoader';
+import withAnimation from '../../wrappers/withAnimation';
 
 /**
  * Animated loading component.
@@ -19,4 +19,4 @@ function Loader({ loading, size }) {
   );
 }
 
-export default withLoader(Loader);
+export default withAnimation(Loader);

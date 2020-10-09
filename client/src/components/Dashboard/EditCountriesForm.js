@@ -72,7 +72,7 @@ function EditCountriesForm() {
       <input
         id={name}
         className="selectable-input"
-        type="checkbox"
+        type="radio"
         checked={name === editedCountry.name}
         onChange={handleSelect}
         value={name}

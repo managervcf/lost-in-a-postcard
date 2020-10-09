@@ -40,7 +40,7 @@ function PhotoFormEdit(props) {
     <form className="form" onSubmit={handleSubmit}>
       <div className="u-mb-medium frame">
         <p className="u-mb-small">
-          <span className="u-text-dim">Country: </span> {country.name}
+          <span className="u-text-dim">Country: </span> {country?.name}
         </p>
         <p className="u-mb-small">
           <span className="u-text-dim">Caption: </span> {caption}

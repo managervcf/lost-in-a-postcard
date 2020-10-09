@@ -2,19 +2,19 @@
   &-out {
     visibility: hidden !important;
     opacity: 0 !important;
-    transform: scale(0.99) translateY(0.5rem) !important;
-    transition: all $transition-time-medium ease-out !important;
+    transform: translateY(0.5rem) !important;
+    transition: all $transition-time-medium-fast ease-out !important;
   }
 
   &-in {
     visibility: visible !important;
     opacity: 1 !important;
-    transform: scale(1) translateY(0) !important;
+    transform: translateY(0) !important;
     transition: all $transition-time-medium-fast ease-out !important;
   }
 }
 
 .dim {
   opacity: 0.2 !important;
-  transition: opacity 0.5s ease !important;
+  transition: opacity $transition-time-medium-fast ease !important;
 }
