@@ -1,11 +1,21 @@
 import React from 'react';
 import { useScrollProgress } from '../../hooks';
+import classnames from 'classnames';
 
-function ProgressBar() {
+function ProgressBar({ fixed, value, max }) {
   const { progress } = useScrollProgress();
 
+  const progressBarClasses = classnames({
+    'progress-bar': true,
+    fixed,
+  });
+
   return (
-    <progress className="progress-bar" max={100} value={progress}></progress>
+    <progress
+      className={progressBarClasses}
+      max={max ?? 100}
+      value={value ?? (progress || 0)}
+    ></progress>
   );
 }
 

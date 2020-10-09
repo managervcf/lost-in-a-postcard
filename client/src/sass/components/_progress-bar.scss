@@ -1,8 +1,6 @@
 .progress-bar[value] {
   z-index: 100;
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 0.15rem;
   -webkit-appearance: none;
@@ -17,4 +15,10 @@
   background: $color-main-primary;
   // border-radius: 1rem;
   transition: all $transition-time-fast ease-out;
+}
+
+.fixed[value] {
+  position: fixed;
+  top: 0;
+  left: 0;
 }

@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <header>
-        <ProgressBar />
+        <ProgressBar fixed />
         <Logo />
         <Navbar />
         <Dashboard />
