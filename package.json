@@ -17,7 +17,7 @@
     "test:ci": "jest --runInBand --ci"
   },
   "author": "Mateusz Pyzowski",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "apollo-server-express": "^2.17.0",
     "aws-sdk": "^2.761.0",
