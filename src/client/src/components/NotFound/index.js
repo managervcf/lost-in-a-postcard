@@ -5,9 +5,9 @@ import Error from '../common/Error';
 function NotFound() {
   return (
     <>
-      <Error text="Oops! Page you are looking for does not exist." />
+      <Error text="Page you are looking for does not exist" />
       <button className="button">
-        <Link to="/">Return to the main page.</Link>
+        <Link to="/">Main page</Link>
       </button>
     </>
   );
