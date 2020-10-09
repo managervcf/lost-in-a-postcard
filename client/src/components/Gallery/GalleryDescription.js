@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
-import withLoader from '../../wrappers/withLoader';
+import withAnimation from '../../wrappers/withAnimation';
 import { COUNTRIES } from '../../graphql';
 
 function GalleryDescription({ countryName, featured }) {
@@ -23,4 +23,4 @@ function GalleryDescription({ countryName, featured }) {
   );
 }
 
-export default withLoader(GalleryDescription);
+export default withAnimation(GalleryDescription);
