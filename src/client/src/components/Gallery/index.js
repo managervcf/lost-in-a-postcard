@@ -20,10 +20,10 @@ function Gallery() {
   const { data, loading, error } = useQuery(PHOTOS, { variables });
 
   // Handle the error, loading and lack of photos cases.
-  if (error) return <Error text="Cannot load the gallery :(" />;
+  if (error) return <Error text="Cannot load the gallery" />;
   if (loading) return <Loader loading={loading} />;
   if (data.photos.docs.length === 0)
-    return <Error text="No photos found  :(" />;
+    return <Error text={`No photos found for ${variables.country}`} />;
 
   // Build photo items.
   const photoItems = data.photos.docs.map(photo => (

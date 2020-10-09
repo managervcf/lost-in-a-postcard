@@ -108,6 +108,10 @@ function AddPhotoForm() {
     ? 'None'
     : 'No';
 
+  // Photos chosen message.
+  const n = newPhoto.files.length;
+  const photosChosen = n > 0 && <span>{`${n} photo${n > 1 ? 's' : ''}`}</span>;
+
   return (
     <form className="form" onSubmit={handleSubmit}>
       <Error text={err} error={getUrlError ?? uploadError} />
@@ -128,7 +132,7 @@ function AddPhotoForm() {
         id="add-photo-caption-input"
         name="caption"
         type="text"
-        placeholder="Caption"
+        placeholder={multipleSelected ? 'Caption (disabled)' : 'Caption'}
         value={newPhoto.caption}
         disabled={multipleSelected}
         onChange={handleInputChange}
@@ -147,16 +151,23 @@ function AddPhotoForm() {
           {featuredText}
         </label>
       </div>
-      <input
-        id="add-photo-file-input"
-        className="file-upload"
-        name="files"
-        type="file"
-        accept="image/jpeg"
-        multiple
-        disabled={loading}
-        onChange={handleInputChange}
-      />
+      <div className="file-upload-container">
+        <label className="file-upload button">
+          <svg className="icon">
+            <use xlinkHref="./assets/icons/icons.svg#icon-upload"></use>
+          </svg>
+          <input
+            id="add-photo-file-input"
+            name="files"
+            type="file"
+            accept="image/jpeg"
+            multiple
+            disabled={loading}
+            onChange={handleInputChange}
+          />
+        </label>
+        {photosChosen}
+      </div>
       <button
         id="add-photo-submit-button"
         className="button"
