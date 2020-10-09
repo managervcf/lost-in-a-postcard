@@ -10,6 +10,11 @@
   transition: all $transition-time-fast;
   cursor: pointer;
 
+  &[type='submit'] {
+    color: $color-main-primary;
+    background-color: rgba($color-main-primary, 0.01);
+  }
+
   &:focus {
     box-shadow: $shadow-neomorphic-focus;
   }
@@ -17,6 +22,10 @@
   &:active {
     box-shadow: none;
     transform: translateY(0.2rem);
+  }
+
+  &:disabled {
+    opacity: 0.3;
   }
 }
 
