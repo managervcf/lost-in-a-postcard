@@ -4,6 +4,7 @@ import Error from '../common/Error';
 import ProgressBar from '../ProgressBar';
 import { useUpload } from '../../hooks';
 import { COUNTRIES } from '../../graphql';
+import { Errors } from '../../constants';
 
 function AddPhotoForm() {
   const [newPhoto, setNewPhoto] = useState({
@@ -35,9 +36,9 @@ function AddPhotoForm() {
     e.preventDefault();
 
     if (!newPhoto.country) {
-      setErr('Must provide a country name');
+      setErr(Errors.NoCountryNameProvided);
     } else if (newPhoto.files.length === 0) {
-      setErr('Must upload a file');
+      setErr(Errors.NoFileProvided);
     } else {
       setErr(null);
     }
@@ -47,16 +48,18 @@ function AddPhotoForm() {
         ...newPhoto,
         file,
       });
+
       setProgress([...newPhoto.files].indexOf(file) + 1);
     }
 
-    setTimeout(() => setProgress(0), 1000);
     setNewPhoto({
       country: '',
       caption: '',
       featured: false,
       files: [],
     });
+
+    setTimeout(() => setProgress(0), 1000);
   };
 
   /**

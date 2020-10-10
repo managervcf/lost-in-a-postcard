@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
+import { DefaultAnimationClasses } from '../constants';
 
 /**
  * Create a wrapping component, that adds a div around
@@ -15,7 +16,7 @@ import classnames from 'classnames';
  */
 export function withAnimation(
   WrappedComponent,
-  { preMountClass, postMountClass } = {}
+  { preMountClass, postMountClass } = DefaultAnimationClasses
 ) {
   return props => {
     const [didMount, setDidMount] = useState(false);
@@ -25,8 +26,8 @@ export function withAnimation(
     }, [didMount]);
 
     let animateClasses = classnames({
-      [preMountClass ?? 'fade-out']: !didMount,
-      [postMountClass ?? 'fade-in']: didMount,
+      [preMountClass]: !didMount,
+      [postMountClass]: didMount,
     });
 
     return (
