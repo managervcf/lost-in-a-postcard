@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
-import { useMutation, useApolloClient } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 import DeleteButton from './DeleteButton';
 import Error from '../common/Error';
 import { EDIT_PHOTO } from '../../graphql';
 
-function PhotoFormEdit(props) {
-  const { id, country, caption, featured } = props;
-  const [editedCaption, setEditedCaption] = useState(caption);
-  const [editedFeatured, setEditedFeatured] = useState(featured);
-
-  // Access apollo store.
-  const client = useApolloClient();
+function PhotoFormEdit({ id, country, caption, featured }) {
+  const [editedPhoto, setEditedPhoto] = useState({ id, caption, featured });
 
   // Use mutation hook.
-  const [updateMutation, { error, loading }] = useMutation(EDIT_PHOTO, {
-    onCompleted: async () => await client.resetStore(),
+  const [updateMutation, { error, loading, client }] = useMutation(EDIT_PHOTO, {
+    onCompleted: () => client.resetStore(),
   });
 
   /**
@@ -26,13 +21,26 @@ function PhotoFormEdit(props) {
   const handleSubmit = e => {
     e.preventDefault();
     updateMutation({
-      variables: {
-        id,
-        caption: editedCaption,
-        featured: editedFeatured,
-      },
+      variables: editedPhoto,
     });
   };
+
+  /**
+   * Handles on change events.
+   * 1. Update the editedPhoto state variable
+   *    with the changed input value.
+   * @param {Event} e
+   */
+  const handleInputChange = e =>
+    setEditedPhoto({
+      ...editedPhoto,
+      [e.target.name]:
+        e.target.type === 'text'
+          ? e.target.value
+          : e.target.type === 'checkbox'
+          ? e.target.checked
+          : null,
+    });
 
   if (error) return <Error error={error} />;
 
@@ -52,22 +60,24 @@ function PhotoFormEdit(props) {
       </div>
       <input
         id="edit-photo-caption-input"
+        name="caption"
         type="text"
-        placeholder={caption ?? ''}
-        value={editedCaption}
-        onChange={e => setEditedCaption(e.target.value)}
+        placeholder={caption}
+        value={editedPhoto.caption}
+        onChange={handleInputChange}
       />
       <div className="selectable">
         <span className="selectable-label">Featured:</span>
         <input
           id="edit-photo-featured-input"
           className="selectable-input"
+          name="featured"
           type="checkbox"
-          checked={editedFeatured}
-          onChange={e => setEditedFeatured(e.target.checked)}
+          checked={editedPhoto.featured}
+          onChange={handleInputChange}
         />
         <label className="selectable-item" htmlFor="edit-photo-featured-input">
-          {editedFeatured ? 'Yes' : 'No'}
+          {editedPhoto.featured ? 'Yes' : 'No'}
         </label>
       </div>
       <button

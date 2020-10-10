@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
 import Error from '../common/Error';
 import { COUNTRIES, UPDATE_COUNTRY } from '../../graphql';
+import { Errors } from '../../constants';
 
 function EditCountriesForm() {
   const [editedCountry, setEditedCountry] = useState({
@@ -9,6 +10,8 @@ function EditCountriesForm() {
     name: '',
     description: '',
   });
+
+  const [err, setErr] = useState(null);
 
   // Use apollo-client query and mutation hooks.
   const { loading: qLoading, error: qError, data, client } = useQuery(
@@ -22,6 +25,7 @@ function EditCountriesForm() {
   /**
    * Handles submit event.
    * 1. Prevent the refresh.
+   * 2. Check for errors.
    * 2. Issue a query to update the country.
    *    a) Reset the Apollo store on completed
    *       to update the DOM.
@@ -30,10 +34,22 @@ function EditCountriesForm() {
    */
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (!editedCountry.id) {
+      setErr(Errors.NoIdProvided);
+    } else if (!editedCountry.name) {
+      setErr(Errors.NoCountryNameProvided);
+    } else if (editedCountry.name.length < 3) {
+      setErr(Errors.CountryNameTooShort);
+    } else {
+      setErr(null);
+    }
+
     updateCountry({
       variables: editedCountry,
       onCompleted: () => client.resetStore(),
     });
+
     setEditedCountry({ id: '', name: '', description: '' });
   };
 
@@ -85,7 +101,7 @@ function EditCountriesForm() {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <Error error={mError} />
+      <Error text={err} error={mError} />
       <div className="selectable">
         <span className="selectable-label">Pick a country:</span>
         {countryOptions}
