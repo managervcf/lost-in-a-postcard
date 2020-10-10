@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
-import withAnimation from '../../wrappers/withAnimation';
+import { withAnimation } from '../../wrappers';
 import { COUNTRIES } from '../../graphql';
 
 function GalleryDescription({ countryName, featured }) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import withAnimation from '../../wrappers/withAnimation';
+import { withAnimation } from '../../wrappers';
 
 function Logo() {
   return (

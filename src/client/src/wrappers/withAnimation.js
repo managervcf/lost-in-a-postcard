@@ -1,40 +1,38 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 
 /**
  * Create a wrapping component, that adds a div around
  * passed component and gives it animation class so it
  * can animate itself in.
+ * 1. Initialize the didMount state variable to false.
+ * 2. Set the didMount to true inside the useEffect hook.
+ *    This way the component knows it has rendered.
+ * 3. Build the animation classes.
+ * 4. Return the wrapped component.
  * @param {Component} WrappedComponent
  * @returns {Component}
  */
-const withAnimation = WrappedComponent => {
-  return class extends Component {
-    // Define a constructor so we can use didMount state to false.
-    constructor(props) {
-      super(props);
-      this.state = { didMount: false };
-    }
+export function withAnimation(
+  WrappedComponent,
+  { preMountClass, postMountClass } = {}
+) {
+  return props => {
+    const [didMount, setDidMount] = useState(false);
 
-    // When component mounts, set didMount to true instantly.
-    componentDidMount() {
-      this.setState({ didMount: true });
-    }
+    useEffect(() => {
+      setDidMount(true);
+    }, [didMount]);
 
-    render() {
-      // Construct wrapper animation classes.
-      let animateClasses = classnames({
-        'fade-out': !this.state.didMount,
-        'fade-in': this.state.didMount,
-      });
+    let animateClasses = classnames({
+      [preMountClass ?? 'fade-out']: !didMount,
+      [postMountClass ?? 'fade-in']: didMount,
+    });
 
-      return (
-        <div className={animateClasses}>
-          <WrappedComponent {...this.props} />
-        </div>
-      );
-    }
+    return (
+      <div className={animateClasses}>
+        <WrappedComponent {...props} />
+      </div>
+    );
   };
-};
-
-export default withAnimation;
+}

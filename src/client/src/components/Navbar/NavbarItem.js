@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import withAnimation from '../../wrappers/withAnimation';
+import { withAnimation } from '../../wrappers';
 
 function NavbarItem({ countryName }) {
   return (
