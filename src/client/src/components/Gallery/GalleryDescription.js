@@ -3,7 +3,7 @@ import { useQuery } from 'react-apollo';
 import { withAnimation } from '../../wrappers';
 import { COUNTRIES } from '../../graphql';
 
-function GalleryDescription({ countryName, featured }) {
+function GalleryDescription({ country, featured }) {
   const { loading, error, data } = useQuery(COUNTRIES);
 
   // Handle loading, error and description display.
@@ -12,15 +12,17 @@ function GalleryDescription({ countryName, featured }) {
   if (!data) return null;
 
   // Find the country based on the url.
-  const country = data.countries.find(
-    ({ name }) => name.toLowerCase() === countryName
+  const currentCountry = data.countries.find(
+    ({ name }) => name.toLowerCase() === country?.toLowerCase()
   );
 
-  return (
+  return featured || currentCountry?.description ? (
     <section className="gallery-description">
-      {featured ? 'Portfolio Dominiki & Mateusza.' : country?.description}
+      {featured
+        ? 'Portfolio Dominiki & Mateusza.'
+        : currentCountry?.description}
     </section>
-  );
+  ) : null;
 }
 
 export default withAnimation(GalleryDescription);

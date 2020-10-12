@@ -106,7 +106,10 @@ input {
   position: relative;
   display: flex;
   align-items: center;
+  max-width: 75%;
+  justify-content: center;
   font-size: $font-size-main;
+  flex-wrap: wrap;
 
   &-item {
     display: block;

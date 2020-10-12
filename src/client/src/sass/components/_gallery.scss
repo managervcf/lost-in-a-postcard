@@ -5,12 +5,12 @@
   align-items: center;
 
   &-description {
-    margin: 1rem 0;
+    margin-bottom: 1rem;
     max-width: 50rem;
   }
 
   &-item {
-    margin: 1rem 0 0.5rem 0;
+    margin: 1rem 0;
     position: relative;
     display: flex;
     overflow: hidden;
@@ -22,8 +22,8 @@
   }
 
   &-image {
-    max-height: 85vh;
-    max-width: 95vw;
+    max-height: 87vh;
+    max-width: 97vw;
     opacity: 1;
     transition: inherit;
   }
