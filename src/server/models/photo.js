@@ -108,10 +108,18 @@ photoSchema.statics.findPhotos = async function ({
   // Return requested photos.
   console.log(
     `(GraphQL) ${
-      country ? `Searched for ${country}. ` : 'No search phrase. '
-    }Retrieved ${res.docs.length} photos from page ${page}/${
+      country && featured
+        ? `Visited /photos/featured/${country}. `
+        : country
+        ? `Visited /photos/${country}. `
+        : featured
+        ? `Visited /photos/featured. `
+        : 'Visited /photos. '
+    }Found ${res.docs.length} photos from page ${page}/${
       res.totalPages
-    }. Requested ${limit} out of ${res.total} photos meeting query criteria.`
+    }. Requested ${limit} out of ${
+      res.totalDocs
+    } photos meeting query criteria.`
   );
 
   // Return page of photos.
