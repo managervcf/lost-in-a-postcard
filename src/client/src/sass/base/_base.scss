@@ -38,10 +38,6 @@ body {
   user-select: none;
 }
 
-.form {
-  @include centerFlexColumn;
-}
-
 a {
   text-decoration: none;
   color: $color-main-text;

@@ -1,0 +1,5 @@
+.form {
+  @include centerFlexColumn;
+  min-width: 20rem;
+  max-width: 50rem;
+}
