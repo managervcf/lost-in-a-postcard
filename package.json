@@ -16,7 +16,7 @@
     "node": "13.14.0",
     "npm": "6.14.7"
   },
-  "main": "dist/src/server/index.js",
+  "main": "src/dist/index.js",
   "scripts": {
     "start": "node src/dist/index.js",
     "dev": "npm run build:server && concurrently \"npm run server\" \"npm run client\"",
