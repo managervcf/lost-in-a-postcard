@@ -20,9 +20,11 @@
   "scripts": {
     "start": "node src/dist/index.js",
     "dev": "npm run build:server && concurrently \"npm run server\" \"npm run client\"",
+    "clean:client": "rm -rf src/client/build",
+    "clean:server": "rm -rf src/dist",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "npm install --prefix src/client && npm run build --prefix src/client",
-    "build:server": "tsc",
+    "build:client": "npm run clean:client && npm install --prefix src/client && npm run build --prefix src/client",
+    "build:server": "npm run clean:server && tsc",
     "client": "npm run start --prefix src/client",
     "server": "nodemon src/dist/index.js",
     "heroku-postbuild": "npm run build",
