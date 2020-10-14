@@ -14,7 +14,7 @@ function ProgressBar({ fixed, value, max }) {
     <progress
       className={progressBarClasses}
       max={max ?? 100}
-      value={value ?? (progress || 0)}
+      value={value ?? progress}
     ></progress>
   );
 }
