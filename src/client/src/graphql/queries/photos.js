@@ -20,6 +20,9 @@ export const PHOTOS = gql`
           username
         }
       }
+      pageInfo {
+        hasNextPage
+      }
     }
   }
 `;

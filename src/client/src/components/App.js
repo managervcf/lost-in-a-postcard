@@ -7,13 +7,11 @@ import Footer from './Footer';
 import Gallery from './Gallery';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
-import ProgressBar from './ProgressBar';
 
 function App() {
   return (
     <>
       <header>
-        <ProgressBar fixed />
         <Logo />
         <Navbar />
         <Dashboard />

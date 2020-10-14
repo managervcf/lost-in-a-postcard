@@ -6,3 +6,4 @@ export * from './useOnScroll';
 export * from './useOnClickInside';
 export * from './useOnClickOutside';
 export * from './useScrollProgress';
+export * from './usePageBottom';
