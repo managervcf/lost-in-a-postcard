@@ -24,7 +24,7 @@ export const userSchema = gql`
   }
 
   type Token {
-    token: String!
+    token: String
   }
 
   type User {

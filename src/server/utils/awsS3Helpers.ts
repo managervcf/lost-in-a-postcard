@@ -1,15 +1,18 @@
 import { S3 } from 'aws-sdk';
 import { v1 as uuid } from 'uuid';
+import { GetUploadUrlResult } from '../types/upload';
 
 /**
  * Create a new S3 instance.
  */
 const s3 = new S3({
   credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
   },
 });
+
+const Bucket = process.env.S3_BUCKET_NAME!;
 
 /**
  * Gets a presigned url necessary to perform a file upload.
@@ -20,14 +23,13 @@ const s3 = new S3({
  * 4. Obtain a signed url from S3.
  * 5. Print out a log to the console.
  * 6. Returns the url along with the key (upload filename).
- * @return {Promise<{ url: string, key: string }>}
  */
-export async function getUploadUrl() {
+export async function getUploadUrl(): Promise<GetUploadUrlResult> {
   const operationName = 'putObject';
   const folder = process.env.S3_FOLDER_NAME;
   const key = `${folder}/${uuid()}.jpeg`;
   const params = {
-    Bucket: process.env.S3_BUCKET_NAME,
+    Bucket,
     ContentType: 'image/jpeg',
     Key: key,
   };
@@ -47,15 +49,14 @@ export async function getUploadUrl() {
  *    assign the result to the result variable.
  * 4. Catch an error and assign it to the result.
  * 5. Return the result.
- * @param {string} key
  */
-export async function deletePhoto(key) {
+export async function deletePhoto(key: string): Promise<S3.DeleteObjectOutput> {
   const params = {
-    Bucket: process.env.S3_BUCKET_NAME,
+    Bucket,
     Key: key,
   };
 
-  let result;
+  let result: S3.DeleteObjectOutput;
   try {
     result = await s3.deleteObject(params).promise();
     console.log(`(AWS S3) Deleted asset ${key}.`);
@@ -77,21 +78,22 @@ export async function deletePhoto(key) {
  *    assign the result to the result variable.
  * 5. Catch an error and assign it to the result.
  * 6. Return the result.
- * @param {array} keys
  */
-export async function deletePhotos(keys) {
+export async function deletePhotos(
+  keys: string[]
+): Promise<S3.DeleteObjectsOutput> {
   const Objects = [...keys].map(key => ({ Key: key }));
   const params = {
-    Bucket: process.env.S3_BUCKET_NAME,
+    Bucket,
     Delete: {
       Objects,
     },
   };
 
-  let result;
+  let result: S3.DeleteObjectsOutput;
   try {
     result = await s3.deleteObjects(params).promise();
-    console.log(`(AWS S3) Deleted asset ${key}.`);
+    console.log(`(AWS S3) Deleted asset ${keys}.`);
   } catch (err) {
     result = err;
     console.log(`(AWS S3) Failed to delete assets ${keys}.`);
@@ -109,12 +111,13 @@ export async function deletePhotos(keys) {
  *    assign the result to the result variable.
  * 4. Catch an error and assign it to the result.
  * 5. Return the result.
- * @param {string} key
- * @param {string} tag
  */
-export async function tagPhotoByCountry(key, tag) {
+export async function tagPhotoByCountry(
+  key: string,
+  tag: string
+): Promise<S3.PutObjectTaggingOutput> {
   const params = {
-    Bucket: process.env.S3_BUCKET_NAME,
+    Bucket,
     Key: key,
     Tagging: {
       TagSet: [
@@ -126,13 +129,13 @@ export async function tagPhotoByCountry(key, tag) {
     },
   };
 
-  let result;
+  let result: S3.PutObjectTaggingOutput;
   try {
     result = await s3.putObjectTagging(params).promise();
     console.log(`(AWS S3) Tagged asset ${key}.`);
   } catch (err) {
     result = err;
-    console.log(`(AWS S3) Failed to tag asset ${keys}.`);
+    console.log(`(AWS S3) Failed to tag asset ${key}.`);
     console.log(`(AWS S3) ${JSON.stringify(err)}.`);
   }
 

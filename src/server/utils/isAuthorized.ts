@@ -1,3 +1,6 @@
+import { Context } from '../types';
+import { ResolverFn } from '../types';
+
 /**
  * Authorization guard. Checks if the user is a photo owner
  * or an admin.
@@ -8,7 +11,12 @@
  * 5. Otherwise, let user through and return resolver.
  * @param {function} next
  */
-export const isAuthorized = next => async (parent, args, context, info) => {
+export const isAuthorized = (next: ResolverFn): ResolverFn => async (
+  parent: any,
+  args: any,
+  context: Context,
+  info: any
+): Promise<ResolverFn> => {
   const { me, models } = context;
 
   if (!me) {
@@ -24,5 +32,6 @@ export const isAuthorized = next => async (parent, args, context, info) => {
   if (photo?.author != me.id) {
     throw new Error('Unauthorized. You are not the photo owner');
   }
+
   return next(parent, args, context, info);
 };

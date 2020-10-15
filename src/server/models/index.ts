@@ -2,15 +2,16 @@
 import { connect } from 'mongoose';
 
 // Import all models.
-import User from './user';
-import Photo from './photo';
-import Country from './country';
+import { User } from './user';
+import { Photo } from './photo';
+import { Country } from './country';
 
 // Define a function that connects to database.
 // Pass options to avoid deprecation warnings.
+
 export const connectDb = async () =>
   await connect(
-    process.env.DATABASE_URL,
+    process.env.DATABASE_URL!,
     {
       useNewUrlParser: true,
       useCreateIndex: true,

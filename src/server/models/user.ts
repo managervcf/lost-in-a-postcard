@@ -1,17 +1,24 @@
 // Import helper functions from mongoose and unique validator.
-import { Schema, model } from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator';
+import { Schema, model, Types } from 'mongoose';
+import mongooseUniqueValidator from 'mongoose-unique-validator';
 import bcrypt from 'bcryptjs';
 
 // Import jsonwebtoken for authentication.
-import jwt from 'jsonwebtoken';
+import { sign, Secret, SignOptions } from 'jsonwebtoken';
 
 // Import email regex helper and error handler from middleware.
-import { throwError } from '../utils';
 import { emailRegex, jwtExpiryTime } from '../config/index';
 
 // Import Photo model.
-import Photo from './photo';
+import { Photo } from './photo';
+import {
+  AuthResult,
+  CurrentUser,
+  LogInArgs,
+  UserAttributes,
+  UserDoc,
+  UserModel,
+} from '../types';
 
 // Define schema.
 const userSchema = new Schema(
@@ -27,6 +34,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       unique: true,
+      uniqueCaseInsensitive: true,
       trim: true,
       lowercase: true,
       required: true,
@@ -48,14 +56,16 @@ const userSchema = new Schema(
 );
 
 // Insert schema plugins.
-userSchema.plugin(uniqueValidator);
+userSchema.plugin(mongooseUniqueValidator);
 
 // BUSINESS LOGIC.
 
 // Enable finding user by both email and username.
-userSchema.statics.findByLogin = async function (login) {
+userSchema.statics.findByLogin = async function (
+  login: string
+): Promise<UserDoc | null> {
   // Try to find by username.
-  const user = await User.findOne({ username: login });
+  let user = await User.findOne({ username: login });
 
   // If not found, try finding by email.
   if (!user) {
@@ -67,37 +77,59 @@ userSchema.statics.findByLogin = async function (login) {
 };
 
 // Function that creates a token valid for 15 minutes.
-const createToken = ({ id, email, username, role }) =>
-  jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {
-    expiresIn: jwtExpiryTime,
-  });
+const createToken = ({ id, email, username, role }: CurrentUser): string =>
+  sign(
+    { id, email, username, role } as object,
+    process.env.JWT_SECRET! as Secret,
+    {
+      expiresIn: jwtExpiryTime,
+    } as SignOptions
+  );
 
 // Create new user.
-userSchema.statics.signUp = async function ({ secret, ...newUser }) {
+userSchema.statics.signUp = async function ({
+  secret,
+  ...newUser
+}: UserAttributes): Promise<AuthResult> {
   // Check if user has provided the secret admin pasword correctly.
-  throwError(
-    secret !== process.env.ADMIN_PASSWORD,
-    'Cannot sign up, you are not an admin.'
-  );
+  if (secret !== process.env.ADMIN_PASSWORD!) {
+    throw new Error('Cannot sign up, you are not an admin.');
+  }
 
   // Create new user and save it to the database.
   const createdUser = new User(newUser);
   const savedUser = await createdUser.save();
-  throwError(!savedUser, 'Cannot create new user.');
+
+  if (!savedUser) {
+    throw new Error('Cannot create new user.');
+  }
 
   // Return new user.
   console.log(
     `(GraphQL) Added user ${createdUser.username} (${createdUser.id}) with email ${createdUser.email}.`
   );
-  return { token: createToken(savedUser) };
+
+  // Create an auth token.
+  const token = createToken(savedUser);
+
+  return { token };
 };
 
 // Login user.
-userSchema.statics.logIn = async function ({ login, password }) {
+userSchema.statics.logIn = async function ({
+  login,
+  password,
+}: LogInArgs): Promise<AuthResult> {
   // Checks if credentials were provided.
-  throwError(!login, 'You must provide a username.');
-  throwError(!password, 'You must provide a password.');
-  throwError(password.length < 7, 'Password must be at least 7 characters.');
+  if (!login) {
+    throw new Error('You must provide a username.');
+  }
+  if (!password) {
+    throw new Error('You must provide a password.');
+  }
+  if (password.length < 7) {
+    throw new Error('Password must be at least 7 characters.');
+  }
 
   // Try to find by username.
   let user = await User.findOne({ username: login });
@@ -106,28 +138,46 @@ userSchema.statics.logIn = async function ({ login, password }) {
   if (!user) {
     user = await User.findOne({ email: login });
   }
-  throwError(!user, `User '${login}' does not exist.`);
+
+  if (!user) {
+    throw new Error(`User '${login}' does not exist.`);
+  }
 
   // Compare passwords.
   const valid = bcrypt.compareSync(password, user.password);
-  throwError(!valid, `The password is invalid.`);
+
+  if (!valid) {
+    throw new Error(`The password is invalid.`);
+  }
 
   // Return the toker
   console.log(
     `(GraphQL) Logged in user ${user.username}. The username and password combination is correct.`
   );
-  return { token: createToken(user) };
+
+  // Create an auth token.
+  const token = createToken(user);
+  console.log('token', token);
+  return { token };
 };
 
 // Delete a user and cascade delete associated with it photos.
-userSchema.statics.deleteUser = async function (id) {
+userSchema.statics.deleteUser = async function (
+  id: Types.ObjectId
+): Promise<UserDoc> {
   // Find and delete user.
   const deletedUser = await User.findByIdAndRemove(id);
-  throwError(!deletedUser, 'Cannot delete user. User does not exist.');
+
+  if (!deletedUser) {
+    throw new Error('Cannot delete user. User does not exist.');
+  }
 
   // Find and delete user's photos.
   const deletedPhotos = await Photo.deleteMany({ author: id });
-  throwError(!deletedPhotos, `Cannot delete photos of user ${id}`);
+
+  if (!deletedPhotos) {
+    throw new Error(`Cannot delete photos of user ${id}`);
+  }
 
   // Return deleted user.
   console.log(
@@ -141,18 +191,14 @@ userSchema.statics.deleteUser = async function (id) {
 // we will first check to see if the user is being created or changed.
 // If the user is not being created or changed, we will
 // skip over the hashing part. We don’t want to hash our already hashed data.
-userSchema.pre('save', function (next) {
+userSchema.pre<UserDoc>('save', function (next) {
   if (!this.isModified('password')) {
     return next();
   }
-
   // Synchronously generates a hash for the given string.
   this.password = bcrypt.hashSync(this.password, 10);
   next();
 });
 
 // Create model out of schema.
-const User = model('User', userSchema);
-
-// Export default model.
-export default User;
+export const User = model<UserDoc, UserModel>('User', userSchema);
