@@ -33,7 +33,7 @@ export const photoSchema = gql`
 
   type PhotoConnection {
     docs: [Photo!]!
-    pageInfo: PageInfo!
+    pageInfo: PageInfo
   }
 
   type PageInfo {

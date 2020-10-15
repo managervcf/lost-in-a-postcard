@@ -1,23 +1,29 @@
 // Import helper functions from mongoose.
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types, PaginateResult } from 'mongoose';
 
 // Import pagination helper library.
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 // Import helpers and error handler from middleware.
-import {
-  throwError,
-  deletePhoto,
-  getUploadUrl,
-  tagPhotoByCountry,
-} from '../utils';
+import { deletePhoto, getUploadUrl, tagPhotoByCountry } from '../utils';
 
 // Import config options.
 import { requestedPhotosLimit, maxImageSize } from '../config';
 
 // Import models.
-import User from './user';
-import Country from './country';
+import { User } from './user';
+import { Country } from './country';
+import {
+  AddPhotoArgs,
+  CurrentUser,
+  FindPhotosArgs,
+  GetPresignedUrlArgs,
+  PhotoAttributes,
+  PhotoDoc,
+  PhotoModel,
+  PhotoPopulatedDoc,
+  UserDoc,
+} from '../types';
 
 // Define schema.
 const photoSchema = new Schema(
@@ -34,6 +40,7 @@ const photoSchema = new Schema(
     },
     caption: {
       type: String,
+      default: '',
       trim: true,
     },
     featured: {
@@ -57,7 +64,6 @@ const photoSchema = new Schema(
   // Enable auto timestamps.
   { timestamps: true }
 );
-
 // Insert plugins.
 photoSchema.plugin(mongoosePaginate);
 
@@ -69,9 +75,11 @@ photoSchema.statics.findPhotos = async function ({
   featured,
   limit = requestedPhotosLimit,
   page = 1,
-}) {
+}: FindPhotosArgs): Promise<PaginateResult<PhotoDoc>> {
   // Validate page and limit variables.
-  throwError(page < 1 || limit < 1, 'Page or limit cannot be less than 1.');
+  if (page < 1 || limit < 1) {
+    throw new Error('Page or limit cannot be less than 1.');
+  }
 
   // Create pagination options variable.
   const paginationOptions = {
@@ -83,27 +91,33 @@ photoSchema.statics.findPhotos = async function ({
   };
 
   // Create an empty mongoose query.
-  let query = {};
+  let query: { country?: Types.ObjectId; featured?: boolean } = {};
 
   // If there is a country that need to be searched for, build new query.
   if (country) {
     // Form trimmed and case-insensitive country name ready for query.
-    query.name = new RegExp(country.trim(), 'i'); // 'i' - case-insensitive flag
-
     // Find searched country.
-    let foundCountry = await Country.findOne(query);
+    let foundCountry = await Country.findOne({
+      name: new RegExp(country.trim(), 'i'),
+    });
 
     // If found a country, build a query with its id.
-    query = foundCountry ? { country: foundCountry.id } : { country: null };
+    if (foundCountry) {
+      query = { country: foundCountry.id };
+    }
   }
 
+  // If featured, add an additional query param featured.
   if (featured) {
     query.featured = featured;
   }
 
   // Make a query using mongoose-paginate library.
-  const res = await Photo.paginate(query, paginationOptions);
-  throwError(!res, 'Cannot get requested photos.');
+  const result = await Photo.paginate(query, paginationOptions);
+
+  if (!result) {
+    throw new Error('Cannot get requested photos.');
+  }
 
   // Return requested photos.
   console.log(
@@ -115,49 +129,55 @@ photoSchema.statics.findPhotos = async function ({
         : featured
         ? `Visited /photos/featured. `
         : 'Visited /photos. '
-    }Found ${res.docs.length} photos from page ${page}/${
-      res.totalPages
+    }Found ${result.docs.length} photos from page ${page}/${
+      result.totalPages
     }. Requested ${limit} out of ${
-      res.totalDocs
+      result.totalDocs
     } photos meeting query criteria.`
   );
 
   // Return page of photos.
-  return {
-    docs: res.docs,
-    pageInfo: {
-      ...res,
-    },
-  };
+  return result;
 };
 
 /**
  * Obtains a signed url from the AWS S3.
  * 1. Validate inputs.
  * 2. Obtain the signed url.
- * @param {{ country: string, type: string, size: string }}
- * @returns {{ url: string, key: string }}
  */
-photoSchema.statics.getPresignedUrl = async function ({ country, type, size }) {
+photoSchema.statics.getPresignedUrl = async function ({
+  country,
+  type,
+  size,
+}: GetPresignedUrlArgs) {
   // Input validation check.
-  throwError(!country, 'Must provide a country name');
-  throwError(
-    country.length < 3,
-    'Country name must contain at least 3 characters'
-  );
-  throwError(!type, 'Must upload a file');
-  throwError(!type.match(/image\/jpeg/gi), 'File type must be of image/jpeg');
-  throwError(!size || size === 0, 'Must upload a file');
-  throwError(
-    size > maxImageSize,
-    `File size cannot exceed ${maxImageSize / 1000000} MB`
-  );
+  if (!country) {
+    throw new Error('Must provide a country name');
+  }
+  if (country.length < 3) {
+    throw new Error('Country name must contain at least 3 characters');
+  }
+  if (!type) {
+    throw new Error('Must upload a file');
+  }
+  if (!type.match(/image\/jpeg/gi)) {
+    throw new Error('File type must be of image/jpeg');
+  }
+  if (!size || size === 0) {
+    throw new Error('Must upload a file');
+  }
+  if (size > maxImageSize) {
+    throw new Error(`File size cannot exceed ${maxImageSize / 1000000} MB`);
+  }
 
   return await getUploadUrl();
 };
 
 // Creates a photo and associates it with user.
-photoSchema.statics.addPhoto = async function ({ id }, args) {
+photoSchema.statics.addPhoto = async function (
+  { id }: CurrentUser,
+  args: AddPhotoArgs
+): Promise<PhotoDoc> {
   // Pull off args.
   const { country, caption, featured, key, size } = args;
 
@@ -168,7 +188,9 @@ photoSchema.statics.addPhoto = async function ({ id }, args) {
   console.log(`(AWS S3) Uploaded asset ${key}.`);
 
   // Input validation check.
-  throwError(!key, 'Must provide a key');
+  if (!key) {
+    throw new Error('Must provide a key');
+  }
 
   // Check if country exists.
   const existingCountry = await Country.findOne({
@@ -176,22 +198,25 @@ photoSchema.statics.addPhoto = async function ({ id }, args) {
   });
 
   // Define country id.
-  let countryId = '';
+  let countryId: Types.ObjectId;
 
   if (existingCountry) {
     // Get ID from existing country and assign it to new photo.
     countryId = existingCountry.id;
   } else {
     // If country does not exist, create a new one.
-    const newCountry = { name: country };
+    const newCountry = { name: country, photos: [] };
     const createdCountry = await Country.create(newCountry);
     // Get ID from created country and assign it to new photo.
     countryId = createdCountry.id;
-    throwError(!createdCountry, 'Could not create new country.');
+
+    if (!createdCountry) {
+      throw new Error('Could not create new country.');
+    }
   }
 
   // Create new photo object.
-  const newPhoto = {
+  const newPhoto: PhotoAttributes = {
     upload: {
       key,
       size,
@@ -203,22 +228,39 @@ photoSchema.statics.addPhoto = async function ({ id }, args) {
   };
 
   // Save photo to database.
-  const createdPhoto = await Photo.create(newPhoto);
-  throwError(!createdPhoto, 'Could not create new photo.');
+  const createdPhoto = await Photo.create<PhotoAttributes>(newPhoto);
+
+  if (!createdPhoto) {
+    throw new Error('Could not create new photo.');
+  }
 
   // Find user and update it's photos.
   const user = await User.findById(id);
-  throwError(!user, 'User is not logged in or does not exist');
+
+  if (!user) {
+    throw new Error('User is not logged in or does not exist');
+  }
+
   user.photos = [...user.photos, createdPhoto.id];
   const savedUser = await user.save();
-  throwError(!savedUser, 'Cannot assign new photo to user.');
+
+  if (!savedUser) {
+    throw new Error('Cannot assign the new photo to the user.');
+  }
 
   // Find country and update it's photos.
   const foundCountry = await Country.findById(countryId);
-  throwError(!foundCountry, 'Country does not exist');
+
+  if (!foundCountry) {
+    throw new Error('Country does not exist');
+  }
+
   foundCountry.photos = [...foundCountry.photos, createdPhoto.id];
   const savedCountry = await foundCountry.save();
-  throwError(!savedCountry, 'Cannot assign new photo to country.');
+
+  if (!savedCountry) {
+    throw new Error('Cannot assign the new photo to the country.');
+  }
 
   // Return newly created photo.
   console.log(
@@ -227,20 +269,34 @@ photoSchema.statics.addPhoto = async function ({ id }, args) {
   return createdPhoto;
 };
 
-// Delete a photo and update user.
-photoSchema.statics.deletePhoto = async function (id) {
-  // Delete photo and populate author field to access his id.
-  const deletedPhoto = await Photo.findByIdAndDelete(id)
+photoSchema.statics.findPopulated = async function (id: Types.ObjectId) {
+  return await Photo.findByIdAndDelete(id)
     .populate('country')
     .populate('author');
-  throwError(!deletedPhoto, 'Cannot delete photo. Photo does not exist.');
+};
+
+// Delete a photo and update user.
+photoSchema.statics.deletePhoto = async function (
+  id: Types.ObjectId
+): Promise<PhotoPopulatedDoc> {
+  // Delete photo and populate author field to access his id.
+  const deletedPhoto: PhotoPopulatedDoc = (await Photo.findPopulated(id))
+    .populate('country')
+    .populate('author');
+
+  if (!deletedPhoto.author || !deletedPhoto.country) {
+    throw new Error('Cannot delete photo. Photo does not exist.');
+  }
 
   // Delete a photo from AWS S3 by the key property.
   await deletePhoto(deletedPhoto.upload.key);
 
   // Get user by id to modify photos array.
-  const user = await User.findById(deletedPhoto.author.id);
-  throwError(!user, 'User does not exist.');
+  const user: UserDoc | null = await User.findById(deletedPhoto.author.id);
+
+  if (!user) {
+    throw new Error('User does not exist.');
+  }
 
   // Update user with updated photos array.
   const updatedUser = await User.findByIdAndUpdate(
@@ -248,11 +304,17 @@ photoSchema.statics.deletePhoto = async function (id) {
     { photos: user.photos.filter(photoId => photoId != id) },
     { new: true }
   );
-  throwError(!updatedUser, 'Cannot update user. User does not exist.');
+
+  if (!updatedUser) {
+    throw new Error('Cannot update user. User does not exist.');
+  }
 
   // Get country by id to modify photos array.
   const country = await Country.findById(deletedPhoto.country.id);
-  throwError(!country, 'Country does not exist.');
+
+  if (!country) {
+    throw new Error('Country does not exist.');
+  }
 
   // Update country with updated photos array.
   const updatedCountry = await Country.findByIdAndUpdate(
@@ -261,15 +323,17 @@ photoSchema.statics.deletePhoto = async function (id) {
     { new: true }
   );
 
-  throwError(!updatedCountry, 'Cannot update country. Country does not exist.');
+  if (!updatedCountry) {
+    throw new Error('Cannot update country. Country does not exist.');
+  }
 
   // Delete country if the removed photo was the last from this country.
-  if (updatedCountry.photos.length === 0) {
+  if (updatedCountry.photos?.length === 0) {
     const deletedCountry = await Country.findByIdAndDelete(updatedCountry.id);
-    throwError(
-      !deletedCountry,
-      'Cannot delete country. Country does not exist.'
-    );
+
+    if (!deletedCountry) {
+      throw new Error('Cannot delete country. Country does not exist.');
+    }
     console.log(`(MongoDB) Deleted ${deletedCountry.name} country.`);
   }
 
@@ -281,10 +345,17 @@ photoSchema.statics.deletePhoto = async function (id) {
 };
 
 // Delete a photo and update user.
-photoSchema.statics.clickPhoto = async function (id) {
+photoSchema.statics.clickPhoto = async function (
+  id: Types.ObjectId
+): Promise<PhotoDoc> {
   const clickedPhoto = await Photo.findByIdAndUpdate(id, {
     $inc: { clicks: 1 },
   });
+
+  if (!clickedPhoto) {
+    throw new Error('Photo not found');
+  }
+
   console.log(
     `(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}).`
   );
@@ -292,7 +363,7 @@ photoSchema.statics.clickPhoto = async function (id) {
 };
 
 // Create model out of schema.
-const Photo = model('Photo', photoSchema);
-
-// Export deafult model.
-export default Photo;
+export const Photo = model<PhotoDoc | PhotoPopulatedDoc, PhotoModel>(
+  'Photo',
+  photoSchema
+);

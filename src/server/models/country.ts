@@ -1,6 +1,6 @@
 // Import mongoose helpers.
 import { Schema, model } from 'mongoose';
-import { throwError } from '../utils';
+import { CountryDoc, CountryModel, UpdateCountryArgs } from '../types';
 
 // Define schema.
 const countrySchema = new Schema(
@@ -32,18 +32,23 @@ countrySchema.statics.updateCountry = async function ({
   id,
   name,
   description,
-}) {
+}: UpdateCountryArgs) {
   /**
    * 1. Perform validation checks.
    * 2. Update the record in the database.
    * 3. Return the updated record.
    */
-  throwError(!id, 'Must provide a country id');
-  throwError(!name, 'Must provide a country name');
-  throwError(
-    name.length < 3,
-    'Country name must contain at least 3 characters.'
-  );
+
+  if (!id) {
+    throw new Error('Must provide a country id');
+  }
+  if (!name) {
+    throw new Error('Must provide a country name');
+  }
+  if (name.length < 3) {
+    throw new Error('Country name must contain at least 3 characters.');
+  }
+
   const updatedCountry = await Country.findByIdAndUpdate(
     id,
     { name, description },
@@ -52,6 +57,7 @@ countrySchema.statics.updateCountry = async function ({
   return updatedCountry;
 };
 
-const Country = model('Country', countrySchema);
-
-export default Country;
+export const Country = model<CountryDoc, CountryModel>(
+  'Country',
+  countrySchema
+);

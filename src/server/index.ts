@@ -1,6 +1,4 @@
 import 'dotenv/config';
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -43,7 +41,7 @@ if (['production', 'ci'].includes(process.env.NODE_ENV)) {
  */
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers: resolvers as any,
   context: ({ req }) => ({ models, me: getMe(req) }),
 });
 
