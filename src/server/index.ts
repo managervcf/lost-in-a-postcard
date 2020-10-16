@@ -21,7 +21,7 @@ if (!process.env.NODE_ENV) {
 console.log('(Server) Node environment:', process.env.NODE_ENV);
 
 // Serve up production assets.
-const clientPath = path.resolve(__dirname + '/../client/build');
+const clientPath = path.resolve(__dirname + '/../../src/client/build');
 
 /**
  * If in production or ci environment, set static folder and
