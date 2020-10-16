@@ -18,15 +18,16 @@
   },
   "main": "src/dist/index.js",
   "scripts": {
-    "start": "node src/dist/index.js",
+    "start": "node dist/server/index.js",
     "dev": "npm run build:server && concurrently \"npm run server\" \"npm run client\"",
     "clean:client": "rm -rf src/client/build",
-    "clean:server": "rm -rf src/dist",
+    "clean:server": "rm -rf dist",
     "build": "npm run build:client && npm run build:server",
     "build:client": "npm run clean:client && npm install --prefix src/client && npm run build --prefix src/client",
-    "build:server": "npm run clean:server && tsc",
+    "build:server": "npm run clean:server && tsc && npm run copy:images",
+    "copy:images": "cp src/test/mocks/*.jpg dist/test/mocks/",
     "client": "npm run start --prefix src/client",
-    "server": "nodemon src/dist/index.js",
+    "server": "nodemon dist/server/index.js",
     "heroku-postbuild": "npm run build",
     "test": "jest --runInBand --watchAll",
     "test:ci": "jest --runInBand --ci"
@@ -53,12 +54,13 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.0",
-    "@babel/preset-env": "^7.12.0",
-    "@babel/preset-typescript": "^7.12.0",
+    "@types/jest": "^26.0.14",
+    "@types/puppeteer": "^3.0.2",
+    "babel-jest": "^24.9.0",
     "concurrently": "^5.3.0",
     "jest": "^24.9.0",
     "nodemon": "^2.0.4",
-    "puppeteer": "^5.2.1"
+    "puppeteer": "^5.2.1",
+    "ts-jest": "^26.4.1"
   }
 }

@@ -1,10 +1,8 @@
 module.exports = {
-  // Includes environmental variables inside the .env file.
-  setupFiles: ['dotenv/config'],
-  // Includes the jest.setup.js file.
-  setupFilesAfterEnv: ['./src/test/jest.setup.js'],
-  // Sets the test environment.
-  testEnvironment: 'node',
-  // Makes logs more verbose.
-  verbose: true,
+  preset: 'ts-jest', // Sets the preset.
+  setupFiles: ['dotenv/config'], // Includes environmental variables inside the .env file.
+  testPathIgnorePatterns: ['./src/test/*'], // Excludes the non-compiled test files.
+  setupFilesAfterEnv: ['./dist/test/jest.setup.js'], // Includes the jest.setup.js file.
+  testEnvironment: 'node', // Sets the test environment.
+  verbose: true, // Makes logs more verbose.
 };
