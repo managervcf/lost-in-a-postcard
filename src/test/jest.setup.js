@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime';
 import axios from 'axios';
 import { connect, disconnect } from 'mongoose';
 import { models } from '../server/models';
