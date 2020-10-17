@@ -12,7 +12,7 @@ jest.setTimeout(60 * 1000);
  * 2. Signup the test user.
  */
 beforeAll(async () => {
-  await connect(process.env.DATABASE_URL, {
+  await connect(process.env.DATABASE_URL!, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,

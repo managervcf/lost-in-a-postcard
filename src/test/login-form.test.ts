@@ -8,7 +8,7 @@ import { testUser } from './mocks';
  *               a new tab inside chromium.
  * @afterEach - Close the browser.
  */
-let page;
+let page: CustomPage;
 
 beforeEach(async () => {
   page = await CustomPage.build();

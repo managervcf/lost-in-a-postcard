@@ -1,21 +1,27 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import {
   testUser,
   testPhoto,
   testPhotoEdited,
   testCountryEdited,
   testCountry,
-  DELETE_PHOTO,
 } from '../mocks';
+
 /**
  * Custom Page class using Proxy API to use puppeteer's Page class
  * as well as custom function defined to make tests more readable.
  */
 export class CustomPage {
+  // Use a wildcard property to work easily with a Proxy.
+  [key: string]: any;
+  baseUrl =
+    process.env.NODE_ENV === 'ci'
+      ? `http://localhost:${process.env.PORT}`
+      : 'http://localhost:3000';
+  graphQLEndpoint = `http://localhost:${process.env.PORT}/graphql`;
+
   /**
    * Builds an instance of the CustomPage.
-   * @param {boolean} headless
-   * @returns {Promise}
    */
   static async build(headless = true) {
     /**
@@ -34,39 +40,28 @@ export class CustomPage {
     const customPage = new CustomPage(page, browser);
 
     return new Proxy(customPage, {
-      get: function (target, property) {
-        return target[property] || browser[property] || page[property];
+      get: function (target, property: keyof CustomPage) {
+        if (property in target) {
+          return target[property];
+        } else if (property in browser) {
+          return browser[property as keyof Browser];
+        } else if (property in page) {
+          return page[property as keyof Page];
+        }
+        return target[property];
       },
     });
   }
 
-  constructor(page, browser) {
-    this.page = page;
-    this.browser = browser;
-    this.baseUrl =
-      process.env.NODE_ENV === 'ci'
-        ? `http://localhost:${process.env.PORT}`
-        : 'http://localhost:3000';
-    this.graphQLEndpoint = `http://localhost:${process.env.PORT}/graphql`;
-  }
+  constructor(public page: Page, public browser: Browser) {}
 
   /**
    * Navigates to specified, relative path.
-   * @param {String} path
-   * @returns {Promise<void>}
    */
   async goTo(path = '') {
     await this.goto(this.baseUrl + path, {
       waitUntil: 'load',
     });
-  }
-
-  /**
-   * Closes the browser.
-   * @returns {Promise<void>}
-   */
-  async close() {
-    await this.browser.close();
   }
 
   /**
@@ -77,10 +72,11 @@ export class CustomPage {
    * 4. Click the login button.
    * 5. Wait for the logout button to appear
    *    to ensure correct login.
-   * @param {{ username: string, password: string }} param0
-   * @return {Promise<void>}
    */
-  async login({ username, password } = testUser) {
+  async login({
+    username,
+    password,
+  }: { username: string; password: string } = testUser) {
     await this.goTo('/login');
     const loginInputSelector = '#login-username-input';
     const passwordInputSelector = '#login-password-input';
@@ -95,7 +91,6 @@ export class CustomPage {
    * Logs out the test user.
    * 1. Click on the logout button.
    * 2. Wait for the page UI to update.
-   * @returns {Promise<void>}
    */
   async logout() {
     await this.click('#logout-button');
@@ -113,10 +108,18 @@ export class CustomPage {
    * 7. If valid data was provided, waits for the asset
    *    to be uploaded and the records to be saved in
    *    the database.
-   * @param {{ file: string, country: string, caption: string, featured: boolean }} photo
-   * @return {Promise<void>}
    */
-  async addPhoto({ file, country, caption, featured } = testPhoto) {
+  async addPhoto({
+    file,
+    country,
+    caption,
+    featured,
+  }: {
+    file: string;
+    country: string;
+    caption?: string;
+    featured?: boolean;
+  } = testPhoto) {
     const addPhotoSelector = '#add-photo-button';
     const countryInputSelector = '#add-photo-country-input';
     const captionInputSelector = '#add-photo-caption-input';
@@ -223,11 +226,9 @@ export class CustomPage {
 
   /**
    * Gets the contents of the element.
-   * @param {String} element
-   * @returns {Promise<string>}
    */
-  async getContentsOf(selector) {
-    return await this.$eval(selector, el => el.innerHTML);
+  async getContentsOf(selector: string) {
+    return await this.page.$eval(selector, el => el.innerHTML);
   }
 
   /**
@@ -235,20 +236,22 @@ export class CustomPage {
    * @param {String} selector
    * @returns {Promise<string>}
    */
-  async getPlaceholderOf(selector) {
-    return await this.$eval(selector, el => el.placeholder);
+  async getPlaceholderOf(selector: string) {
+    return await this.page.$eval(selector, (el: any) => el.placeholder);
   }
 
   /**
    * Executes the native fetch function inside the chromium browser.
    * The function will make a request to the graphQL endpoint calling
    * the evaluate method on the Page class.
-   * @param {string} method
-   * @param {string} query
-   * @param {object} variables
    */
-  async fetch(method, query, variables) {
-    const callback = (_query, _variables, _method, _endpoint) =>
+  async fetch(method: string, query: string, variables: object) {
+    const callback = (
+      _query: string,
+      _variables: string,
+      _method: string,
+      _endpoint: string
+    ) =>
       fetch(_endpoint, {
         method: _method.toUpperCase(),
         headers: { 'Content-Type': 'application/json' },

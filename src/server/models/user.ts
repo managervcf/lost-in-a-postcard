@@ -157,7 +157,7 @@ userSchema.statics.logIn = async function ({
 
   // Create an auth token.
   const token = createToken(user);
-  console.log('token', token);
+
   return { token };
 };
 
