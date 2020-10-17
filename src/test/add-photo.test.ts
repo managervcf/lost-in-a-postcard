@@ -9,7 +9,7 @@ import { models } from '../server/models';
  *               a new tab inside chromium.
  * @afterEach - Close the browser.
  */
-let page;
+let page: CustomPage;
 
 beforeEach(async () => {
   page = await CustomPage.build();
@@ -70,7 +70,7 @@ describe('when logged in', () => {
           throw new Error('Photo not found in the database');
         }
         const galleryContent = await page.getContentsOf(gallerySelector);
-        const re = new RegExp(savedPhoto?.upload.public_id, 'g');
+        const re = new RegExp(savedPhoto?.upload.key, 'g');
         expect(galleryContent).toMatch(re);
       } catch (e) {
         console.log(e);

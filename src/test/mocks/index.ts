@@ -1,6 +1,3 @@
-/**
- * @interface testUser
- */
 export const testUser = {
   username: 'johndoe',
   email: 'john@doe.com',
@@ -9,9 +6,6 @@ export const testUser = {
   secret: process.env.ADMIN_PASSWORD,
 };
 
-/**
- * @interface testPhoto
- */
 export const testPhoto = {
   file: `${__dirname}/test-image.jpg`,
   country: 'test-country',
@@ -19,9 +13,6 @@ export const testPhoto = {
   featured: true,
 };
 
-/**
- * @interface testPhotoEdited
- */
 export const testPhotoEdited = {
   file: `${__dirname}/test-image.jpg`,
   country: 'test-country-edited',
@@ -29,17 +20,11 @@ export const testPhotoEdited = {
   featured: true,
 };
 
-/**
- * @interface testCountry
- */
 export const testCountry = {
   name: testPhoto.country,
   description: 'test-description',
 };
 
-/**
- * @interface testCountryEdited
- */
 export const testCountryEdited = {
   name: testPhotoEdited.country,
   description: 'test-description-edited',

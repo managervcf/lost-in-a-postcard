@@ -7,7 +7,7 @@ import { CustomPage } from './helpers/page';
  *               a new tab inside chromium.
  * @afterEach - Close the browser.
  */
-let page;
+let page: CustomPage;
 
 beforeEach(async () => {
   page = await CustomPage.build();
@@ -20,13 +20,13 @@ afterEach(async () => {
 /**
  * Test suites.
  */
-it('renders the footer text', async () => {
+it('renders the logo', async () => {
   /**
    * 1. Navigate to /.
    * 2. Pull off contents of the selector.
    * 3. Make assertions.
    */
   await page.goTo();
-  const footerText = await page.getContentsOf('#root > footer > p');
-  expect(footerText).toMatch(/domi &amp; mateusz/i);
+  const logoText = await page.getContentsOf('header > div > h1 > a');
+  expect(logoText).toMatch(/lost in a postcard/i);
 });
