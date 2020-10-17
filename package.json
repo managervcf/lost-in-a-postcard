@@ -18,7 +18,7 @@
   },
   "main": "src/server/index.ts",
   "scripts": {
-    "start": "pm2 start build/server/index.js -i max",
+    "start": "pm2 start build/server/index.js -i 2",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "ts-node-dev src/server/index.ts",
     "dev:client": "sleep 5 && npm run start --prefix src/client",
