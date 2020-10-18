@@ -1,5 +1,4 @@
-import { Context } from '../types';
-import { ResolverFn } from '../types';
+import { Context, ResolverFn } from '../types';
 
 /**
  * Authorization guard. Checks if the user is a photo owner

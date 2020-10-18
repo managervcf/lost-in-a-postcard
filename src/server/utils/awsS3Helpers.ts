@@ -1,18 +1,19 @@
 import { S3 } from 'aws-sdk';
 import { v1 as uuid } from 'uuid';
-import { GetUploadUrlResult } from '../types/upload';
+import { config } from '../config';
+import { GetUploadUrlResult } from '../types';
 
 /**
  * Create a new S3 instance.
  */
 const s3 = new S3({
   credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+    accessKeyId: config.s3.accessKeyId,
+    secretAccessKey: config.s3.secretAccessKey,
   },
 });
 
-const Bucket = process.env.S3_BUCKET_NAME!;
+const Bucket = config.s3.bucketName;
 
 /**
  * Gets a presigned url necessary to perform a file upload.
@@ -26,8 +27,7 @@ const Bucket = process.env.S3_BUCKET_NAME!;
  */
 export async function getUploadUrl(): Promise<GetUploadUrlResult> {
   const operationName = 'putObject';
-  const folder = process.env.S3_FOLDER_NAME;
-  const key = `${folder}/${uuid()}.jpeg`;
+  const key = `${config.s3.folderName}/${uuid()}.jpeg`;
   const params = {
     Bucket,
     ContentType: 'image/jpeg',

@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 import { sign, Secret, SignOptions } from 'jsonwebtoken';
 
 // Import email regex helper and error handler from middleware.
-import { emailRegex, jwtExpiryTime } from '../config/index';
+import { config } from '../config';
 
 // Import Photo model.
 import { Photo } from './photo';
@@ -38,7 +38,7 @@ const userSchema = new Schema(
       trim: true,
       lowercase: true,
       required: true,
-      match: [emailRegex, 'Incorrect email address.'],
+      match: [config.emailRegex, 'Incorrect email address.'],
     },
     password: {
       type: String,
@@ -80,9 +80,9 @@ userSchema.statics.findByLogin = async function (
 const createToken = ({ id, email, username, role }: CurrentUser): string =>
   sign(
     { id, email, username, role } as object,
-    process.env.JWT_SECRET! as Secret,
+    config.jwt.secret as Secret,
     {
-      expiresIn: jwtExpiryTime,
+      expiresIn: config.jwt.expiryTime,
     } as SignOptions
   );
 
@@ -92,7 +92,7 @@ userSchema.statics.signUp = async function ({
   ...newUser
 }: UserAttributes): Promise<AuthResult> {
   // Check if user has provided the secret admin pasword correctly.
-  if (secret !== process.env.ADMIN_PASSWORD!) {
+  if (secret !== config.adminPassword) {
     throw new Error('Cannot sign up, you are not an admin.');
   }
 

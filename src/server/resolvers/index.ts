@@ -10,4 +10,4 @@ export const resolvers = [
   photoResolvers,
   countryResolvers,
   uploadResolvers,
-];
+] as any[];

@@ -18,10 +18,10 @@ export interface UserDoc extends Document {
 }
 
 export interface UserModel extends Model<UserDoc> {
-  findByLogin(login: UserDoc['username']): Promise<UserDoc | null>;
+  findByLogin(login: string): Promise<UserDoc | null>;
   signUp(newUser: UserAttributes): Promise<AuthResult>;
   logIn({ login, password }: LogInArgs): Promise<AuthResult>;
-  deleteUser(id: UserDoc['id']): Promise<UserDoc>;
+  deleteUser(id: Types.ObjectId): Promise<UserDoc>;
 }
 
 export interface LogInArgs {

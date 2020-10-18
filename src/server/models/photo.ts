@@ -8,7 +8,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { deletePhoto, getUploadUrl, tagPhotoByCountry } from '../utils';
 
 // Import config options.
-import { requestedPhotosLimit, maxImageSize } from '../config';
+import { config } from '../config';
 
 // Import models.
 import { User } from './user';
@@ -73,7 +73,7 @@ photoSchema.plugin(mongoosePaginate);
 photoSchema.statics.findPhotos = async function ({
   country = '',
   featured,
-  limit = requestedPhotosLimit,
+  limit = config.requestedPhotosLimit,
   page = 1,
 }: FindPhotosArgs): Promise<PaginateResult<PhotoDoc>> {
   // Validate page and limit variables.
@@ -166,8 +166,10 @@ photoSchema.statics.getPresignedUrl = async function ({
   if (!size || size === 0) {
     throw new Error('Must upload a file');
   }
-  if (size > maxImageSize) {
-    throw new Error(`File size cannot exceed ${maxImageSize / 1000000} MB`);
+  if (size > config.maxImageSize) {
+    throw new Error(
+      `File size cannot exceed ${config.maxImageSize / 1000000} MB`
+    );
   }
 
   return await getUploadUrl();

@@ -5,13 +5,14 @@ import { connect } from 'mongoose';
 import { User } from './user';
 import { Photo } from './photo';
 import { Country } from './country';
+import { config } from '../config';
 
 // Define a function that connects to database.
 // Pass options to avoid deprecation warnings.
 
 export const connectDb = async () =>
   await connect(
-    process.env.DATABASE_URL!,
+    config.databaseUrl,
     {
       useNewUrlParser: true,
       useCreateIndex: true,
