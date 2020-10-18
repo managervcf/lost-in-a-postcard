@@ -1,4 +1,5 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
+import { config } from '../../src/server/config';
 import {
   testUser,
   testPhoto,
@@ -15,10 +16,10 @@ export class CustomPage {
   // Use a wildcard property to work easily with a Proxy.
   [key: string]: any;
   baseUrl =
-    process.env.NODE_ENV === 'ci'
-      ? `http://localhost:${process.env.PORT}`
+    config.nodeEnv === 'ci'
+      ? `http://localhost:${config.port}`
       : 'http://localhost:3000';
-  graphQLEndpoint = `http://localhost:${process.env.PORT}/graphql`;
+  graphQLEndpoint = `http://localhost:${config.port}/graphql`;
 
   /**
    * Builds an instance of the CustomPage.

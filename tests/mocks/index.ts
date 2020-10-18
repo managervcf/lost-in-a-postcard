@@ -1,9 +1,11 @@
+import { config } from '../../src/server/config';
+
 export const testUser = {
   username: 'johndoe',
   email: 'john@doe.com',
   password: 'password',
   role: 'admin',
-  secret: process.env.ADMIN_PASSWORD,
+  secret: config.adminPassword,
 };
 
 export const testPhoto = {

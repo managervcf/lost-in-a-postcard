@@ -1,7 +1,6 @@
-// Authentication helper. Checks if the user is logged in.
-
 import { Context, ResolverFn } from '../types';
 
+// Authentication helper. Checks if the user is logged in.
 // Used to wrap resolvers to block sensitive queries.
 export const isAuthenticated = (next: ResolverFn): ResolverFn => (
   parent: any,

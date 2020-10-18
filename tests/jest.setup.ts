@@ -3,6 +3,7 @@ import { connect, disconnect } from 'mongoose';
 import { models } from '../src/server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
 import { deletePhoto } from '../src/server/utils';
+import { config } from '../src/server/config';
 
 // Increase test timeout.
 jest.setTimeout(60 * 1000);
@@ -12,7 +13,7 @@ jest.setTimeout(60 * 1000);
  * 2. Signup the test user.
  */
 beforeAll(async () => {
-  await connect(process.env.DATABASE_URL!, {
+  await connect(config.databaseUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,

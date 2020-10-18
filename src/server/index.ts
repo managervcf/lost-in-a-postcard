@@ -8,26 +8,23 @@ import { resolvers } from './resolvers';
 import { connectDb, models } from './models';
 
 import { getMe } from './utils';
+import { config } from './config';
+
+// Check if environmental variables have been defined.
+config.checkEnvVariables();
 
 // Create an express server.
 const app = express();
 
-// Check the environmental variables.
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'development';
-}
-
 // Print out the current node environment.
-console.log('(Server) Node environment:', process.env.NODE_ENV);
-
-// Serve up production assets.
-const clientPath = path.resolve(__dirname + '/../../src/client/build');
+console.log(`(Server) Node environment: ${config.nodeEnv}`);
 
 /**
  * If in production or ci environment, set static folder and
  * catch all other requests.
  */
-if (['production', 'ci'].includes(process.env.NODE_ENV)) {
+if (['production', 'ci'].includes(config.nodeEnv)) {
+  const clientPath = path.resolve(__dirname + '/../../src/client/build');
   app.use('/', express.static(clientPath));
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(clientPath, 'index.html'))
@@ -41,7 +38,7 @@ if (['production', 'ci'].includes(process.env.NODE_ENV)) {
  */
 const server = new ApolloServer({
   typeDefs,
-  resolvers: resolvers as any,
+  resolvers: resolvers,
   context: ({ req }) => ({ models, me: getMe(req) }),
 });
 
@@ -55,12 +52,14 @@ server.applyMiddleware({
   },
 });
 
-// After connection with database is established,
-// express application will start.
+/**
+ * After connection with database is established,
+ * express application will start.
+ */
 const start = async () => {
   await connectDb();
-  app.listen(process.env.PORT, () =>
-    console.log(`(Server) Listening on http://localhost:${process.env.PORT}.`)
+  app.listen(config.port, () =>
+    console.log(`(Server) Listening on port ${config.port}.`)
   );
 };
 
