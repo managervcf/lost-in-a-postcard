@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { connect, disconnect } from 'mongoose';
-import { models } from '../server/models';
+import { models } from '../src/server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
-import { deletePhoto } from '../server/utils';
+import { deletePhoto } from '../src/server/utils';
 
 // Increase test timeout.
 jest.setTimeout(60 * 1000);

@@ -4,7 +4,7 @@ const { jsWithTs: tsjPreset } = require('ts-jest/presets');
 
 module.exports = {
   setupFiles: ['dotenv/config'], // Includes environmental variables inside the .env file.
-  setupFilesAfterEnv: ['<rootDir>/src/test/jest.setup.ts'], // Includes the jest.setup.js file.
+  setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'], // Includes the jest.setup.js file.
   testEnvironment: 'node', // Sets the test environment.
   testPathIgnorePatterns: ['<rootDir>/build/*'], // Excludes the non-compiled test files.
   transform: {
