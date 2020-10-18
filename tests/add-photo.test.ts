@@ -1,6 +1,6 @@
 import { CustomPage } from './helpers/page';
 import { testPhoto, DELETE_PHOTO } from './mocks';
-import { models } from '../server/models';
+import { models } from '../src/server/models';
 
 /**
  * Define page variable in the global scope
