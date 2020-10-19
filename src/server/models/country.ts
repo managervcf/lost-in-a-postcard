@@ -1,4 +1,3 @@
-// Import mongoose helpers.
 import { Schema, model } from 'mongoose';
 import { CountryDoc, CountryModel, UpdateCountryArgs } from '../types';
 

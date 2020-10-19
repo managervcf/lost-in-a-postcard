@@ -1,3 +1,5 @@
+import { Secret, SignOptions } from 'jsonwebtoken';
+
 /**
  * Config variables holding all the important and customizable configuration
  * options of the application.
@@ -44,6 +46,12 @@ export const config = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
 
   /**
+   * Setting deciding if client static files should be served.
+   */
+  isProduction: function () {
+    return ['production', 'ci'].includes(this.nodeEnv);
+  },
+  /**
    * Server port.
    */
   port: process.env.PORT ?? '4000',
@@ -62,8 +70,8 @@ export const config = {
    * JWT config variables.
    */
   jwt: {
-    expiryTime: '3h',
-    secret: process.env.JWT_SECRET!,
+    expiryTime: '3h' as SignOptions['expiresIn'],
+    secret: process.env.JWT_SECRET! as Secret,
   },
 
   /**

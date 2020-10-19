@@ -2,12 +2,10 @@ import 'dotenv/config';
 import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { connectDb, models } from './models';
-
-import { getMe } from './utils';
+import { getCurrentUser } from './utils';
 import { config } from './config';
 
 // Check if environmental variables have been defined.
@@ -23,7 +21,7 @@ console.log(`(Server) Node environment: ${config.nodeEnv}`);
  * If in production or ci environment, set static folder and
  * catch all other requests.
  */
-if (['production', 'ci'].includes(config.nodeEnv)) {
+if (config.isProduction()) {
   const clientPath = path.resolve(__dirname + '/../../src/client/build');
   app.use('/', express.static(clientPath));
   app.get('*', (req, res) =>
@@ -39,7 +37,7 @@ if (['production', 'ci'].includes(config.nodeEnv)) {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ models, me: getMe(req) }),
+  context: ({ req }) => ({ models, me: getCurrentUser(req) }),
 });
 
 // Apply middleware.
