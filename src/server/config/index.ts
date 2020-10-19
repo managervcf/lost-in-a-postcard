@@ -46,6 +46,12 @@ export const config = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
 
   /**
+   * Setting deciding if client static files should be served.
+   */
+  isProduction: function () {
+    return ['production', 'ci'].includes(this.nodeEnv);
+  },
+  /**
    * Server port.
    */
   port: process.env.PORT ?? '4000',
