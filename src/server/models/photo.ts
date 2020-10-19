@@ -15,6 +15,8 @@ import { User } from './user';
 import { Country } from './country';
 import {
   AddPhotoArgs,
+  CountryAttributes,
+  CountryDoc,
   CurrentUser,
   FindPhotosArgs,
   GetPresignedUrlArgs,
@@ -207,8 +209,8 @@ photoSchema.statics.addPhoto = async function (
     countryId = existingCountry.id;
   } else {
     // If country does not exist, create a new one.
-    const newCountry = { name: country, photos: [] };
-    const createdCountry = await Country.create(newCountry);
+    const newCountry = { name: country };
+    const createdCountry = await Country.create<CountryAttributes>(newCountry);
     // Get ID from created country and assign it to new photo.
     countryId = createdCountry.id;
 

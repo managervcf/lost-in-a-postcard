@@ -79,3 +79,9 @@ export interface AddPhotoArgs {
   caption?: string;
   featured?: boolean;
 }
+
+export interface UpdatePhotoArgs {
+  id: Types.ObjectId;
+  caption?: string;
+  featured?: boolean;
+}

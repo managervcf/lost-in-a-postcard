@@ -1,19 +1,19 @@
-import { CountryResolvers } from '../types';
-// Import resolver guards.
 import { isAuthorized } from '../utils';
+import { Resolvers, UpdateCountryArgs, CountryDoc } from '../types';
 
-// Create and immediately export default resolvers.
-export const countryResolvers: CountryResolvers = {
+// Create and immediately export resolvers.
+export const countryResolvers: Resolvers<CountryDoc> = {
   Query: {
     countries: async (parent, args, { models }) =>
       await models.Country.find({}),
-    country: async (parent, { name }, { models }) =>
+    country: async (parent, { name }: { name: string }, { models }) =>
       await models.Country.findOne({ name }),
   },
 
   Mutation: {
-    updateCountry: isAuthorized((parent, args, { models }) =>
-      models.Country.updateCountry(args)
+    updateCountry: isAuthorized(
+      async (parent, args: UpdateCountryArgs, { models }) =>
+        await models.Country.updateCountry(args)
     ),
   },
 
