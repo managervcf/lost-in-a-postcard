@@ -1,19 +1,11 @@
-// Import helper functions from mongoose and unique validator.
+import bcrypt from 'bcryptjs';
 import { Schema, model, Types } from 'mongoose';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
-import bcrypt from 'bcryptjs';
-
-// Import jsonwebtoken for authentication.
-import { sign, Secret, SignOptions } from 'jsonwebtoken';
-
-// Import email regex helper and error handler from middleware.
+import { createToken } from '../utils';
 import { config } from '../config';
-
-// Import Photo model.
 import { Photo } from './photo';
 import {
   AuthResult,
-  CurrentUser,
   LogInArgs,
   UserAttributes,
   UserDoc,
@@ -75,16 +67,6 @@ userSchema.statics.findByLogin = async function (
   // Return found user.
   return user;
 };
-
-// Function that creates a token valid for 15 minutes.
-const createToken = ({ id, email, username, role }: CurrentUser): string =>
-  sign(
-    { id, email, username, role } as object,
-    config.jwt.secret as Secret,
-    {
-      expiresIn: config.jwt.expiryTime,
-    } as SignOptions
-  );
 
 // Create new user.
 userSchema.statics.signUp = async function ({

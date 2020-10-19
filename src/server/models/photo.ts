@@ -1,22 +1,12 @@
-// Import helper functions from mongoose.
 import { Schema, model, Types, PaginateResult } from 'mongoose';
-
-// Import pagination helper library.
 import mongoosePaginate from 'mongoose-paginate-v2';
-
-// Import helpers and error handler from middleware.
 import { deletePhoto, getUploadUrl, tagPhotoByCountry } from '../utils';
-
-// Import config options.
 import { config } from '../config';
-
-// Import models.
 import { User } from './user';
 import { Country } from './country';
 import {
   AddPhotoArgs,
   CountryAttributes,
-  CountryDoc,
   CurrentUser,
   FindPhotosArgs,
   GetPresignedUrlArgs,
