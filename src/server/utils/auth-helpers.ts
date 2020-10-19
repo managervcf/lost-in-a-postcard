@@ -6,8 +6,13 @@ import { CurrentUser } from '../types';
 /**
  * Creates an authentication token.
  */
-export function createToken(payload: CurrentUser): string {
-  return sign(payload, config.jwt.secret, {
+export function createToken({
+  id,
+  email,
+  username,
+  role,
+}: CurrentUser): string {
+  return sign({ id, email, username, role }, config.jwt.secret, {
     expiresIn: config.jwt.expiryTime,
   });
 }
