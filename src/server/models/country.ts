@@ -28,17 +28,17 @@ const countrySchema = new Schema(
   { timestamps: true }
 );
 
+/**
+ * Updates the country record.
+ * 1. Perform validation checks.
+ * 2. Update the record in the database.
+ * 3. Return the updated record.
+ */
 countrySchema.statics.updateCountry = async function ({
   id,
   name,
   description,
-}: UpdateCountryArgs) {
-  /**
-   * 1. Perform validation checks.
-   * 2. Update the record in the database.
-   * 3. Return the updated record.
-   */
-
+}: UpdateCountryArgs): Promise<CountryDoc | null> {
   if (!id) {
     throw new Error('Must provide a country id');
   }

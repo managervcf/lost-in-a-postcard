@@ -1,19 +1,19 @@
 import { Types } from 'mongoose';
-// Import resolver guards.
 import { isAuthenticated, isAuthorized } from '../utils';
 import {
   AddPhotoArgs,
   FindPhotosArgs,
   PhotoDoc,
-  PhotoResolvers,
+  Resolvers,
+  UpdatePhotoArgs,
 } from '../types';
 
-// Create and immediately export default resolvers.
-export const photoResolvers: PhotoResolvers = {
+// Create and immediately export resolvers.
+export const photoResolvers: Resolvers<PhotoDoc> = {
   Query: {
     photos: async (parent, args: FindPhotosArgs, { models }) =>
       await models.Photo.findPhotos(args),
-    photo: async (parent, { id }, { models }) =>
+    photo: async (parent, { id }: { id: Types.ObjectId }, { models }) =>
       await models.Photo.findById(id),
   },
 
@@ -23,7 +23,7 @@ export const photoResolvers: PhotoResolvers = {
         await models.Photo.addPhoto(me, args)
     ),
     updatePhoto: isAuthorized(
-      async (parent, args, { models }) =>
+      async (parent, args: UpdatePhotoArgs, { models }) =>
         await models.Photo.findByIdAndUpdate(args.id, args, { new: true })
     ),
     deletePhoto: isAuthorized(
@@ -34,11 +34,11 @@ export const photoResolvers: PhotoResolvers = {
   },
 
   Photo: {
-    country: async ({ country }: PhotoDoc, args, { models }) =>
+    country: async ({ country }, args, { models }) =>
       await models.Country.findById(country),
-    author: async ({ author }: PhotoDoc, args, { models }) =>
+    author: async ({ author }, args, { models }) =>
       await models.User.findById(author),
-    createdAt: ({ createdAt }: PhotoDoc, args, context) => createdAt.toString(),
-    updatedAt: ({ updatedAt }: PhotoDoc, args, context) => updatedAt.toString(),
+    createdAt: ({ createdAt }, args, context) => createdAt.toString(),
+    updatedAt: ({ updatedAt }, args, context) => updatedAt.toString(),
   },
 };

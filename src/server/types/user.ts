@@ -15,6 +15,8 @@ export interface UserDoc extends Document {
   email: string;
   role: string;
   photos: Types.ObjectId[] | [];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface UserModel extends Model<UserDoc> {

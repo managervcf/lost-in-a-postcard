@@ -1,13 +1,13 @@
 // Import all resolvers.
-import { userResolvers } from './user';
-import { photoResolvers } from './photo';
 import { countryResolvers } from './country';
+import { photoResolvers } from './photo';
 import { uploadResolvers } from './upload';
+import { userResolvers } from './user';
 
 // Export all resolvers as an array.
 export const resolvers = [
-  userResolvers,
-  photoResolvers,
   countryResolvers,
+  photoResolvers,
   uploadResolvers,
-] as any[];
+  userResolvers,
+];

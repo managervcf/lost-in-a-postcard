@@ -10,10 +10,16 @@ export interface CountryDoc extends Document {
   name: string;
   description?: string;
   photos: Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CountryModel extends Model<CountryDoc> {
-  updateCountry({ id, name, description }: UpdateCountryArgs): CountryDoc;
+  updateCountry({
+    id,
+    name,
+    description,
+  }: UpdateCountryArgs): Promise<CountryDoc | null>;
 }
 
 export interface UpdateCountryArgs {

@@ -38,7 +38,7 @@ if (['production', 'ci'].includes(config.nodeEnv)) {
  */
 const server = new ApolloServer({
   typeDefs,
-  resolvers: resolvers,
+  resolvers,
   context: ({ req }) => ({ models, me: getMe(req) }),
 });
 
