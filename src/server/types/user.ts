@@ -19,16 +19,17 @@ export interface UserDoc extends Document {
   updatedAt: Date;
 }
 
-export interface UserModel extends Model<UserDoc> {
-  findByLogin(login: string): Promise<UserDoc | null>;
-  signUp(newUser: UserAttributes): Promise<AuthResult>;
-  logIn({ login, password }: LogInArgs): Promise<AuthResult>;
-  deleteUser(id: Types.ObjectId): Promise<UserDoc>;
-}
+export interface UserModel extends Model<UserDoc> {}
 
 export interface LogInArgs {
   login: string;
   password: string;
+}
+
+export interface UpdateUserArgs {
+  id: Types.ObjectId;
+  username: string;
+  email: string;
 }
 
 export interface CurrentUser {
