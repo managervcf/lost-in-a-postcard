@@ -3,11 +3,13 @@ import { config } from '../config';
 import {
   AddPhotoArgs,
   CountryAttributes,
+  CountryDoc,
   FieldResolver,
   FindPhotosArgs,
   PhotoAttributes,
   PhotoDoc,
   UpdatePhotoArgs,
+  UserDoc,
 } from '../types';
 import { tagPhotoByCountry, deletePhoto } from '../utils';
 
@@ -19,7 +21,7 @@ export abstract class PhotoService {
     parent,
     { id },
     { models }
-  ) => await models.Photo.findById(id);
+  ): Promise<PhotoDoc | null> => await models.Photo.findById(id);
 
   /**
    * Finds and paginates requested photos.
@@ -203,7 +205,7 @@ export abstract class PhotoService {
     parent,
     args: UpdatePhotoArgs,
     { models }
-  ) =>
+  ): Promise<PhotoDoc | null> =>
     await models.Photo.findByIdAndUpdate(args.id, args, {
       new: true,
       runValidators: true,
@@ -316,7 +318,7 @@ export abstract class PhotoService {
     { author },
     args,
     { models }
-  ) => {
+  ): Promise<UserDoc | null> => {
     if (!(author instanceof models.User)) {
       return await models.User.findById(author);
     }
@@ -327,7 +329,7 @@ export abstract class PhotoService {
     { country },
     args,
     { models }
-  ) => {
+  ): Promise<CountryDoc | null> => {
     if (!(country instanceof models.Country)) {
       return await models.Country.findById(country);
     }

@@ -1,6 +1,10 @@
 import { config } from '../config';
 import { models } from '../models';
-import { FieldResolver, GetPresignedUrlArgs } from '../types';
+import {
+  FieldResolver,
+  GetPresignedUrlArgs,
+  GetUploadUrlResult,
+} from '../types';
 import { getUploadUrl } from '../utils';
 
 export class UploadService {
@@ -12,7 +16,11 @@ export class UploadService {
   static getPresignedUrl: FieldResolver<
     typeof models,
     GetPresignedUrlArgs
-  > = async (parent, { country, type, size }, context) => {
+  > = async (
+    parent,
+    { country, type, size },
+    context
+  ): Promise<GetUploadUrlResult> => {
     // Input validation check.
     if (!country) {
       throw new Error('Must provide a country name');

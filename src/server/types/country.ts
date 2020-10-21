@@ -1,4 +1,5 @@
 import { Document, Model, Types } from 'mongoose';
+import { PhotoDoc } from './';
 
 export interface CountryAttributes {
   name: string;
@@ -9,7 +10,7 @@ export interface CountryDoc extends Document {
   id: Types.ObjectId;
   name: string;
   description?: string;
-  photos: Types.ObjectId[];
+  photos: (Types.ObjectId | PhotoDoc)[];
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,4 +1,5 @@
 import { Document, Model, Types } from 'mongoose';
+import { PhotoDoc } from './';
 
 export interface UserAttributes {
   username: string;
@@ -14,7 +15,7 @@ export interface UserDoc extends Document {
   secret: string;
   email: string;
   role: string;
-  photos: Types.ObjectId[] | [];
+  photos: (Types.ObjectId | PhotoDoc)[];
   createdAt: Date;
   updatedAt: Date;
 }
