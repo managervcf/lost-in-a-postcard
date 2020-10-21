@@ -7,6 +7,7 @@ import {
   UserDoc,
   LogInArgs,
   UpdateUserArgs,
+  PhotoDoc,
 } from '../types';
 import { createToken } from '../utils';
 
@@ -14,14 +15,20 @@ export class UserService {
   /**
    * Checks the current user.
    */
-  static me: FieldResolver<UserDoc> = async (parent, args, { me, models }) =>
-    me ? await models.User.findById(me.id) : null;
+  static me: FieldResolver<UserDoc> = async (
+    parent,
+    args,
+    { me, models }
+  ): Promise<UserDoc | null> => (me ? await models.User.findById(me.id) : null);
 
   /**
    * Finds all existing user.
    */
-  static users: FieldResolver<UserDoc> = async (parent, args, { models }) =>
-    await models.User.find({});
+  static users: FieldResolver<UserDoc> = async (
+    parent,
+    args,
+    { models }
+  ): Promise<UserDoc[]> => await models.User.find({});
 
   /**
    * Enables finding user by both email and username.
@@ -169,9 +176,9 @@ export class UserService {
   /**
    * Finds user's photos.
    */
-  static usersPhotos: FieldResolver<UserDoc> = async (
+  static photos: FieldResolver<UserDoc> = async (
     { id },
     args,
     { models }
-  ) => await models.Photo.find({ author: id });
+  ): Promise<PhotoDoc[]> => await models.Photo.find({ author: id });
 }

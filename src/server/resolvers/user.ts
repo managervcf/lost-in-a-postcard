@@ -18,7 +18,7 @@ export const userResolvers: Resolvers<UserDoc> = {
   },
 
   User: {
-    photos: UserService.usersPhotos,
+    photos: UserService.photos,
     createdAt: ({ createdAt }) => createdAt.toDateString(),
     updatedAt: ({ updatedAt }) => updatedAt.toDateString(),
   },

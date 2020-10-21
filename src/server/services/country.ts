@@ -1,4 +1,9 @@
-import { UpdateCountryArgs, CountryDoc, FieldResolver } from '../types';
+import {
+  UpdateCountryArgs,
+  CountryDoc,
+  FieldResolver,
+  PhotoDoc,
+} from '../types';
 
 export class CountryService {
   /**
@@ -8,7 +13,7 @@ export class CountryService {
     parent,
     args,
     { models }
-  ) => await models.Country.find({});
+  ): Promise<CountryDoc[]> => await models.Country.find({});
 
   /**
    * Searches for a country with a specific name.
@@ -17,7 +22,7 @@ export class CountryService {
     parent,
     { name },
     { models }
-  ) => await models.Country.findOne({ name });
+  ): Promise<CountryDoc | null> => await models.Country.findOne({ name });
 
   /**
    * Updates the country record.
@@ -51,6 +56,9 @@ export class CountryService {
   /**
    * Finds country photos.
    */
-  static photos: FieldResolver<CountryDoc> = async ({ id }, args, { models }) =>
-    await models.Country.find({ country: id });
+  static photos: FieldResolver<CountryDoc> = async (
+    { id },
+    args,
+    { models }
+  ): Promise<PhotoDoc[]> => await models.Photo.find({ country: id });
 }
