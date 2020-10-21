@@ -4,10 +4,9 @@ import { gql } from 'apollo-server-express';
 // Define and export schema.
 export const userSchema = gql`
   extend type Query {
-    users: [User!]
-    user(id: ID!): User
-    userByLogin(login: String!): User
     me: User
+    userByLogin(login: String!): User
+    users: [User!]
   }
 
   extend type Mutation {

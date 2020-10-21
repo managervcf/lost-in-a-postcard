@@ -5,7 +5,7 @@ import {
   PaginateResult,
   PaginateOptions,
 } from 'mongoose';
-import { CountryDoc, CurrentUser, UserDoc } from './';
+import { CountryDoc, UserDoc } from './';
 
 export interface PhotoAttributes {
   upload: {
@@ -18,7 +18,7 @@ export interface PhotoAttributes {
   country?: Types.ObjectId;
 }
 
-export interface PhotoBaseDoc extends Document {
+export interface PhotoDoc extends Document {
   id: Types.ObjectId;
   upload: {
     size: number;
@@ -29,16 +29,8 @@ export interface PhotoBaseDoc extends Document {
   clicks: number;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface PhotoDoc extends PhotoBaseDoc {
-  country: Types.ObjectId;
-  author: Types.ObjectId;
-}
-
-export interface PhotoPopulatedDoc extends PhotoBaseDoc {
-  country: CountryDoc | null;
-  author: UserDoc | null;
+  country: Types.ObjectId | CountryDoc;
+  author: Types.ObjectId | UserDoc;
 }
 
 export interface PhotoModel extends Model<PhotoDoc> {
@@ -46,12 +38,6 @@ export interface PhotoModel extends Model<PhotoDoc> {
     query: any,
     paginationOptions: PaginateOptions
   ): Promise<PaginateResult<PhotoDoc>>;
-  findPhotos(args: FindPhotosArgs): Promise<PaginateResult<PhotoDoc>>;
-  findPopulated(id: Types.ObjectId): Promise<PhotoPopulatedDoc>;
-  getPresignedUrl(args: GetPresignedUrlArgs): Promise<getPresignedUrlResult>;
-  addPhoto(me: CurrentUser, args: AddPhotoArgs): Promise<PhotoDoc>;
-  deletePhoto(id: Types.ObjectId): Promise<PhotoPopulatedDoc>;
-  clickPhoto(id: Types.ObjectId): Promise<PhotoDoc>;
 }
 
 export interface GetPresignedUrlArgs {

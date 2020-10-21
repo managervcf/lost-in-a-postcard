@@ -14,13 +14,7 @@ export interface CountryDoc extends Document {
   updatedAt: Date;
 }
 
-export interface CountryModel extends Model<CountryDoc> {
-  updateCountry({
-    id,
-    name,
-    description,
-  }: UpdateCountryArgs): Promise<CountryDoc | null>;
-}
+export interface CountryModel extends Model<CountryDoc> {}
 
 export interface UpdateCountryArgs {
   id: Types.ObjectId;
