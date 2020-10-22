@@ -7,7 +7,7 @@ import {
 } from '../types';
 import { getUploadUrl } from '../utils';
 
-export class UploadService {
+export abstract class UploadService {
   /**
    * Obtains a signed url from the AWS S3.
    * 1. Validate inputs.

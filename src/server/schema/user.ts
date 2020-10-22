@@ -5,7 +5,7 @@ import { gql } from 'apollo-server-express';
 export const userSchema = gql`
   extend type Query {
     me: User
-    userByLogin(login: String!): User
+    userByLogin(login: String!): User!
     users: [User!]
   }
 
@@ -18,7 +18,7 @@ export const userSchema = gql`
       role: String
     ): Token!
     logIn(login: String!, password: String!): Token!
-    updateUser(username: String, email: String): User
+    updateUser(username: String, email: String): User!
     deleteUser: User!
   }
 

@@ -11,7 +11,7 @@ import {
 } from '../types';
 import { createToken } from '../utils';
 
-export class UserService {
+export abstract class UserService {
   /**
    * Checks the current user.
    */
@@ -33,7 +33,7 @@ export class UserService {
   /**
    * Enables finding user by both email and username.
    */
-  static findByLogin: FieldResolver<UserDoc, { login: string }> = async (
+  static userByLogin: FieldResolver<UserDoc, { login: string }> = async (
     parent,
     { login },
     { models }
@@ -138,11 +138,18 @@ export class UserService {
     parent,
     args,
     { me, models }
-  ): Promise<UserDoc | null> =>
-    await models.User.findByIdAndUpdate(me.id, args, {
+  ): Promise<UserDoc> => {
+    const updatedUser = await models.User.findByIdAndUpdate(me.id, args, {
       new: true,
       runValidators: true,
     });
+
+    if (!updatedUser) {
+      throw new Error(`Cannot update a user with an id ${me.id}`);
+    }
+
+    return updatedUser;
+  };
 
   /**
    * Deletes the user.

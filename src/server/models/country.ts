@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { CountryDoc, CountryModel, UpdateCountryArgs } from '../types';
+import { CountryDoc, CountryModel } from '../types';
 
 // Define schema.
 const countrySchema = new Schema(
