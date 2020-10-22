@@ -60,7 +60,9 @@ export abstract class UserService {
   ): Promise<AuthResult> => {
     // Check if user has provided the secret admin pasword correctly.
     if (secret !== config.adminPassword) {
-      throw new Error('Cannot sign up, you are not an admin.');
+      throw new Error(
+        `Cannot sign up, you are not an admin. Secret '${secret}' is incorrect`
+      );
     }
 
     // Create new user and save it to the database.async (parent, args: LogInArgs, { models })
@@ -121,9 +123,7 @@ export abstract class UserService {
     }
 
     // Return the toker
-    console.log(
-      `(GraphQL) Logged in user ${user.username}. The username and password combination is correct.`
-    );
+    console.log(`(GraphQL) Logged in as ${user.username}.`);
 
     // Create an auth token.
     const token = createToken(user);
@@ -145,7 +145,7 @@ export abstract class UserService {
     });
 
     if (!updatedUser) {
-      throw new Error(`Cannot update a user with an id ${me.id}`);
+      throw new Error(`Cannot update a user with an id '${me.id}'`);
     }
 
     return updatedUser;
@@ -163,14 +163,16 @@ export abstract class UserService {
     const deletedUser = await models.User.findByIdAndRemove(me.id);
 
     if (!deletedUser) {
-      throw new Error('Cannot delete user. User does not exist.');
+      throw new Error(
+        `Cannot delete user. User with an id '${me.id}' does not exist`
+      );
     }
 
     // Find and delete user's photos.
     const deletedPhotos = await models.Photo.deleteMany({ author: me.id });
 
     if (!deletedPhotos) {
-      throw new Error(`Cannot delete photos of user ${me.id}`);
+      throw new Error(`Cannot delete photos of user '${me.id}'`);
     }
 
     // Return deleted user.

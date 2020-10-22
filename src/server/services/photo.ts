@@ -1,4 +1,4 @@
-import { Types, PaginateResult } from 'mongoose';
+import { Types, PaginateResult, PaginateOptions } from 'mongoose';
 import { config } from '../config';
 import {
   AddPhotoArgs,
@@ -25,7 +25,7 @@ export abstract class PhotoService {
     const foundPhoto = await models.Photo.findById(id);
 
     if (!foundPhoto) {
-      throw new Error(`Photo with an id ${id} does not exist`);
+      throw new Error(`Photo with an id '${id}' does not exist`);
     }
 
     return foundPhoto;
@@ -36,12 +36,7 @@ export abstract class PhotoService {
    */
   static findPhotos: FieldResolver<PhotoDoc, FindPhotosArgs> = async (
     parent,
-    {
-      country = '',
-      featured,
-      limit = config.requestedPhotosLimit,
-      page = 1,
-    }: FindPhotosArgs,
+    { country, featured, page = 1, limit = config.requestedPhotosLimit },
     { models }
   ): Promise<PaginateResult<PhotoDoc>> => {
     // Validate page and limit variables.
@@ -50,7 +45,7 @@ export abstract class PhotoService {
     }
 
     // Create pagination options variable.
-    const paginationOptions = {
+    const paginationOptions: PaginateOptions = {
       // Return in specified order.
       sort: { createdAt: 'descending' },
       // Passed user specified pagination criteria.

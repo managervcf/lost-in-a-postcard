@@ -25,9 +25,15 @@ export abstract class UploadService {
     if (!country) {
       throw new Error('Must provide a country name');
     }
-    if (country.length < 3) {
-      throw new Error('Country name must contain at least 3 characters');
+    if (country.trim().length < 3) {
+      throw new Error(
+        `Country name '${country}' has a length of ${country.length} and is not a valid name. It must contain at least 3 characters`
+      );
     }
+
+    // Trim the country name.
+    country = country.trim();
+
     if (!type) {
       throw new Error('Must upload a file');
     }
@@ -39,7 +45,9 @@ export abstract class UploadService {
     }
     if (size > config.maxImageSize) {
       throw new Error(
-        `File size cannot exceed ${config.maxImageSize / 1000000} MB`
+        `File size cannot exceed ${
+          config.maxImageSize / 1e6
+        } MB. Provided file size ${size / 1e6} MB`
       );
     }
 

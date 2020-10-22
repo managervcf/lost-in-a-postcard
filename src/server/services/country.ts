@@ -26,7 +26,7 @@ export abstract class CountryService {
     const foundCountry = await models.Country.findOne({ name });
 
     if (!foundCountry) {
-      throw new Error(`Cannot find a country with a name ${name} `);
+      throw new Error(`Cannot find a country with a name ${name}`);
     }
 
     return foundCountry;
@@ -49,8 +49,14 @@ export abstract class CountryService {
     if (!name) {
       throw new Error('Must provide a country name');
     }
-    if (name.length < 3) {
-      throw new Error('Country name must contain at least 3 characters.');
+
+    // Trim the country name.
+    name = name.trim();
+
+    if (name.trim().length < 3) {
+      throw new Error(
+        `Country name '${name}' has a length of ${name.length} and is not a valid name. It must contain at least 3 characters`
+      );
     }
 
     const updatedCountry = await models.Country.findByIdAndUpdate(
