@@ -5,7 +5,7 @@ import {
   PhotoDoc,
 } from '../types';
 
-export class CountryService {
+export abstract class CountryService {
   /**
    * Finds all countries.
    */
@@ -22,7 +22,15 @@ export class CountryService {
     parent,
     { name },
     { models }
-  ): Promise<CountryDoc | null> => await models.Country.findOne({ name });
+  ): Promise<CountryDoc> => {
+    const foundCountry = await models.Country.findOne({ name });
+
+    if (!foundCountry) {
+      throw new Error(`Cannot find a country with a name ${name} `);
+    }
+
+    return foundCountry;
+  };
 
   /**
    * Updates the country record.
@@ -34,7 +42,7 @@ export class CountryService {
     parent,
     { id, name, description },
     { models }
-  ): Promise<CountryDoc | null> => {
+  ): Promise<CountryDoc> => {
     if (!id) {
       throw new Error('Must provide a country id');
     }
@@ -50,6 +58,11 @@ export class CountryService {
       { name, description },
       { new: true, runValidators: true }
     );
+
+    if (!updatedCountry) {
+      throw new Error(`Cannot update a country with an id ${id}`);
+    }
+
     return updatedCountry;
   };
 

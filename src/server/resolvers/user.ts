@@ -6,7 +6,7 @@ import { UserService } from '../services';
 export const userResolvers: Resolvers<UserDoc> = {
   Query: {
     me: UserService.me,
-    userByLogin: UserService.findByLogin,
+    userByLogin: UserService.userByLogin,
     users: UserService.users,
   },
 

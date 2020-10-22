@@ -21,7 +21,15 @@ export abstract class PhotoService {
     parent,
     { id },
     { models }
-  ): Promise<PhotoDoc | null> => await models.Photo.findById(id);
+  ): Promise<PhotoDoc> => {
+    const foundPhoto = await models.Photo.findById(id);
+
+    if (!foundPhoto) {
+      throw new Error(`Photo with an id ${id} does not exist`);
+    }
+
+    return foundPhoto;
+  };
 
   /**
    * Finds and paginates requested photos.
@@ -205,11 +213,18 @@ export abstract class PhotoService {
     parent,
     args: UpdatePhotoArgs,
     { models }
-  ): Promise<PhotoDoc | null> =>
-    await models.Photo.findByIdAndUpdate(args.id, args, {
+  ): Promise<PhotoDoc> => {
+    const updatedPhoto = await models.Photo.findByIdAndUpdate(args.id, args, {
       new: true,
       runValidators: true,
     });
+
+    if (!updatedPhoto) {
+      throw new Error(`Cannot update a photo with an id ${args.id}`);
+    }
+
+    return updatedPhoto;
+  };
 
   // Delete a photo and update user.
   static deletePhoto: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
@@ -305,7 +320,7 @@ export abstract class PhotoService {
     });
 
     if (!clickedPhoto) {
-      throw new Error('Photo not found');
+      throw new Error(`Photo with an id ${id} does not exist`);
     }
 
     console.log(
@@ -318,21 +333,35 @@ export abstract class PhotoService {
     { author },
     args,
     { models }
-  ): Promise<UserDoc | null> => {
-    if (!(author instanceof models.User)) {
-      return await models.User.findById(author);
+  ): Promise<UserDoc> => {
+    if (author instanceof models.User) {
+      throw new Error(`Cannot find a user, ${author} is not a valid id.`);
+    } else {
+      const foundUser = await models.User.findById(author);
+
+      if (!foundUser) {
+        throw new Error(`Cannot find a user with an id ${author}`);
+      }
+
+      return foundUser;
     }
-    return null;
   };
 
   static country: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
     { country },
     args,
     { models }
-  ): Promise<CountryDoc | null> => {
-    if (!(country instanceof models.Country)) {
-      return await models.Country.findById(country);
+  ): Promise<CountryDoc> => {
+    if (country instanceof models.Country) {
+      throw new Error(`Cannot find a country, ${country} is not a valid id.`);
+    } else {
+      const foundCountry = await models.Country.findById(country);
+
+      if (!foundCountry) {
+        throw new Error(`Cannot find a country with an id ${country}`);
+      }
+
+      return foundCountry;
     }
-    return null;
   };
 }
