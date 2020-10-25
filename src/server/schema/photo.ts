@@ -51,7 +51,7 @@ export const photoSchema = gql`
     id: ID!
     upload: UploadedFile!
     country: Country!
-    caption: String
+    caption: String!
     featured: Boolean!
     clicks: Int!
     author: User!
