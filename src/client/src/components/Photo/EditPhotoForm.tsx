@@ -13,8 +13,18 @@ interface PhotoFormEditProps {
   featured: boolean;
 }
 
+interface EditedPhotoState {
+  id: string;
+  caption: string;
+  featured: boolean;
+}
+
 function PhotoFormEdit({ id, country, caption, featured }: PhotoFormEditProps) {
-  const [editedPhoto, setEditedPhoto] = useState({ id, caption, featured });
+  const [editedPhoto, setEditedPhoto] = useState<EditedPhotoState>({
+    id,
+    caption,
+    featured,
+  });
 
   // Use mutation hook.
   const [updateMutation, { error, loading, client }] = useMutation<

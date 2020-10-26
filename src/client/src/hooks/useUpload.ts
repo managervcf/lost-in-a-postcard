@@ -9,7 +9,19 @@ import {
   GetPresignedUrlVars,
   GET_PRESIGNED_URL,
 } from '../graphql';
-import { FileUploadArgs } from '../types';
+
+/**
+ * Arguments necessary to upload a file to AWS S3.
+ */
+interface FileUploadArgs {
+  file: {
+    type: string;
+    size: number;
+  };
+  country: string;
+  caption: string;
+  featured: boolean;
+}
 
 /**
  * Upload hook.

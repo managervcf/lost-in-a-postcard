@@ -6,15 +6,22 @@ import { useUpload } from '../../hooks';
 import { COUNTRIES } from '../../graphql';
 import { Errors } from '../../constants';
 
+interface NewPhotoState {
+  country: string;
+  caption: string;
+  featured: boolean;
+  files: any[];
+}
+
 function AddPhotoForm() {
-  const [newPhoto, setNewPhoto] = useState({
+  const [newPhoto, setNewPhoto] = useState<NewPhotoState>({
     country: '',
     caption: '',
     featured: false,
     files: [],
   });
 
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>(0);
   const [err, setErr] = useState<Errors | null>(null);
 
   const { data } = useQuery(COUNTRIES);

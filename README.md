@@ -1,6 +1,6 @@
 ## Lost in a Postcard
 
-A photography portfolio site built with React on the front-end. It uses GraphQL and Apollo Client to communicate with the back-end. The server is built with Apollo Server, Mongoose and MongoDB and exposes a single GraphQL endpoint. It features JWT authentication and uses the AWS S3 cloud storage.
+A photography portfolio site written in TypeScript. Built with React on the front-end. It uses GraphQL and Apollo Client to communicate with the back-end. The back-end is built with Apollo Server, GraphQL, Mongoose and MongoDB. It features JWT authentication and uses the AWS S3 cloud storage.
 
 ## Development
 
@@ -24,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Test
 
-The app uses `jest` and `puppeteer` to perfom integration tests in order to make sure all the separate parts of the app are working nicely with each other. To run tests in your development environment, run `npm run test` script.
+The app uses `jest` and `puppeteer` to perfom e2e tests in order to make sure all the separate parts of the app are working correctly with each other. To run tests in your development environment, run `npm run test` script.
 
 ## Continuous Integration
 
