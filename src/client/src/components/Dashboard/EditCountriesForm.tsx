@@ -10,8 +10,14 @@ import {
 } from '../../graphql';
 import { Errors } from '../../constants';
 
+interface EditedCountryState {
+  id: string;
+  name: string;
+  description: string;
+}
+
 function EditCountriesForm() {
-  const [editedCountry, setEditedCountry] = useState({
+  const [editedCountry, setEditedCountry] = useState<EditedCountryState>({
     id: '',
     name: '',
     description: '',

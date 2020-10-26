@@ -9,11 +9,18 @@ interface LoginFormProps {
   error: ApolloError | undefined;
 }
 
+interface CredentialsState {
+  login: string;
+  password: string;
+}
+
 function LoginForm({ mutate, loading, error }: LoginFormProps) {
   const history = useHistory();
 
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState<CredentialsState>({
+    login: '',
+    password: '',
+  });
 
   /**
    * Handles the form submit event.
@@ -23,9 +30,8 @@ function LoginForm({ mutate, loading, error }: LoginFormProps) {
    */
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    mutate({ variables: { login, password } });
-    setLogin('');
-    setPassword('');
+    mutate({ variables: credentials });
+    setCredentials({ login: '', password: '' });
   };
 
   return (
@@ -35,16 +41,20 @@ function LoginForm({ mutate, loading, error }: LoginFormProps) {
         id="login-username-input"
         type="text"
         placeholder="Login"
-        value={login}
-        onChange={e => setLogin(e.target.value)}
+        value={credentials.login}
+        onChange={e =>
+          setCredentials({ ...credentials, login: e.target.value })
+        }
         autoFocus
       />
       <input
         id="login-password-input"
         placeholder="Password"
         type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+        value={credentials.password}
+        onChange={e =>
+          setCredentials({ ...credentials, password: e.target.value })
+        }
       />
       <div className="login-buttons">
         <button

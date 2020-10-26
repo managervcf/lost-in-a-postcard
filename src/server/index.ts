@@ -22,7 +22,7 @@ console.log(`(Server) Node environment: ${config.nodeEnv}`);
  * catch all other requests.
  */
 if (config.isProduction()) {
-  const clientPath = path.resolve(__dirname + '/../../src/client/build');
+  const clientPath = path.resolve(`${__dirname}/../../src/client/build`);
   app.use('/', express.static(clientPath));
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(clientPath, 'index.html'))
