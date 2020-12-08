@@ -26,7 +26,7 @@
     "clean:server": "rm -rf build",
     "build": "npm run build:client && npm run build:server",
     "build:client": "npm run clean:client && npm install --prefix src/client && npm run build --prefix src/client",
-    "build:server": "npm run clean:server && tsc",
+    "build:server": "npm run clean:server && tsc --project tsconfig.json",
     "heroku-postbuild": "npm run build",
     "test": "jest --runInBand --watchAll",
     "test:ci": "jest --runInBand --ci"
