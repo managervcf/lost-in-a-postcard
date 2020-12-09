@@ -1,0 +1,30 @@
+name: Deploy master branch to AWS Elastic Beanstalk
+
+on: 
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code from GitHub
+        uses: actions/checkout@v1
+        
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+        
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: lost-in-a-postcard
+          environment_name: LostInAPostcard-env
+          version_label: "lost-in-a-postcard-deployment-v1"
+          region: ap-southeast-2
+          deployment_package: deploy.zip
+      
+      - name: Application deployed
+        run: echo Application successfully deployed to AWS Elastic Beanstalk!
