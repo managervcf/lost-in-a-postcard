@@ -3,6 +3,7 @@ build
 dist
 .env
 .env.ci
+.env.docker
 .vscode
 dump.rdb
 nohup*
