@@ -4,6 +4,6 @@ COPY package*.json ./
 COPY src/client/package*.json src/client/
 RUN npm install
 RUN npm install --prefix src/client
-COPY . .
+COPY . ./
 RUN npm run build
 CMD ["npm", "start"]
