@@ -22,8 +22,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: lost-in-a-postcard
           environment_name: LostInAPostcard-env
-          version_label: "lost-in-a-postcard-deployment-v1"
-          use_existing_version_if_available: true
+          version_label: ${{ github.SHA }}
           region: ap-southeast-2
           deployment_package: deploy.zip
       
