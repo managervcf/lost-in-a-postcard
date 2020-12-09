@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": "13.14.0",
+    "node": "12.18.0",
     "npm": "6.14.7"
   },
   "main": "src/server/index.ts",
