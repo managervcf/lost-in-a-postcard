@@ -1,20 +1,42 @@
 name: Deploy master branch to AWS Elastic Beanstalk
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
     steps:
       - name: Checkout source code from GitHub
         uses: actions/checkout@v1
-        
+
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashfiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Setup Node v.${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependecies
+        run: npm install && npm install --prefix src/client
+
+      - name: Build application for production
+        run: npm run build
+
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
-        
+
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v14
         with:
@@ -25,6 +47,6 @@ jobs:
           version_label: ${{ github.SHA }}
           region: ap-southeast-2
           deployment_package: deploy.zip
-      
+
       - name: Application deployed
         run: echo Application successfully deployed to AWS Elastic Beanstalk!
