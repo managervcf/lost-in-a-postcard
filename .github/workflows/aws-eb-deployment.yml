@@ -13,7 +13,7 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - name: Checkout source code from GitHub
+      - name: Checkout source code
         uses: actions/checkout@v1
 
       - name: Cache node_modules
@@ -24,12 +24,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Setup Node v.${{ matrix.node-version }}
+      - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependecies
+      - name: Install dependecies for server and client
         run: npm install && npm install --prefix src/client
 
       - name: Build application for production
