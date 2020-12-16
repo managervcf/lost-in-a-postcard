@@ -7,7 +7,12 @@ import {
   InMemoryCache,
 } from 'apollo-boost';
 
-const baseUrl = process.env.REACT_APP_GRAPHQL_URI ?? '';
+const baseUrl =
+  process.env.REACT_APP_GRAPHQL_URI ?? process.env.NODE_ENV === 'development'
+    ? 'http://localhost:4000'
+    : '';
+
+console.log(process.env.NODE_ENV);
 
 const httpLink = new HttpLink({
   uri: `${baseUrl}/graphql`,
