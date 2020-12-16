@@ -12,8 +12,6 @@ const baseUrl =
     ? 'http://localhost:4000'
     : '';
 
-console.log(process.env.NODE_ENV);
-
 const httpLink = new HttpLink({
   uri: `${baseUrl}/graphql`,
   credentials: 'same-origin',
