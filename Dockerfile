@@ -6,4 +6,4 @@ RUN npm install
 RUN npm install --prefix src/client
 COPY . ./
 RUN npm run build
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
