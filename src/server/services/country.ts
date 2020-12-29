@@ -1,28 +1,21 @@
-import {
-  UpdateCountryArgs,
-  CountryDoc,
-  FieldResolver,
-  PhotoDoc,
-} from '../types';
+import { Types } from 'mongoose';
+import { UpdateCountryArgs, CountryDoc, PhotoDoc, Context } from '../types';
 
 export abstract class CountryService {
   /**
    * Finds all countries.
    */
-  static countries: FieldResolver<CountryDoc> = async (
-    parent,
-    args,
-    { models }
-  ): Promise<CountryDoc[]> => await models.Country.find({});
+  static async getCountries(models: Context['models']): Promise<CountryDoc[]> {
+    return models.Country.find({});
+  }
 
   /**
    * Searches for a country with a specific name.
    */
-  static country: FieldResolver<CountryDoc, { name: string }> = async (
-    parent,
-    { name },
-    { models }
-  ): Promise<CountryDoc> => {
+  static async getCountry(
+    name: string,
+    models: Context['models']
+  ): Promise<CountryDoc> {
     const foundCountry = await models.Country.findOne({ name });
 
     if (!foundCountry) {
@@ -30,7 +23,7 @@ export abstract class CountryService {
     }
 
     return foundCountry;
-  };
+  }
 
   /**
    * Updates the country record.
@@ -38,11 +31,10 @@ export abstract class CountryService {
    * 2. Update the record in the database.
    * 3. Return the updated record.
    */
-  static updateCountry: FieldResolver<CountryDoc, UpdateCountryArgs> = async (
-    parent,
-    { id, name, description },
-    { models }
-  ): Promise<CountryDoc> => {
+  static async updateCountry(
+    { id, name, description }: UpdateCountryArgs,
+    models: Context['models']
+  ): Promise<CountryDoc> {
     if (!id) {
       throw new Error('Must provide a country id');
     }
@@ -70,14 +62,15 @@ export abstract class CountryService {
     }
 
     return updatedCountry;
-  };
+  }
 
   /**
    * Finds country photos.
    */
-  static photos: FieldResolver<CountryDoc> = async (
-    { id },
-    args,
-    { models }
-  ): Promise<PhotoDoc[]> => await models.Photo.find({ country: id });
+  static async getPhotos(
+    id: Types.ObjectId,
+    models: Context['models']
+  ): Promise<PhotoDoc[]> {
+    return models.Photo.find({ country: id });
+  }
 }

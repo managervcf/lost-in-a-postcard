@@ -2,9 +2,9 @@ import { Types, PaginateResult, PaginateOptions } from 'mongoose';
 import { config } from '../config';
 import {
   AddPhotoArgs,
+  Context,
   CountryAttributes,
   CountryDoc,
-  FieldResolver,
   FindPhotosArgs,
   PhotoAttributes,
   PhotoDoc,
@@ -17,11 +17,10 @@ export abstract class PhotoService {
   /**
    * Finds a photo based on the id.
    */
-  static findPhoto: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
-    parent,
-    { id },
-    { models }
-  ): Promise<PhotoDoc> => {
+  static async getPhoto(
+    id: Types.ObjectId,
+    models: Context['models']
+  ): Promise<PhotoDoc> {
     const foundPhoto = await models.Photo.findById(id);
 
     if (!foundPhoto) {
@@ -29,16 +28,20 @@ export abstract class PhotoService {
     }
 
     return foundPhoto;
-  };
+  }
 
   /**
    * Finds and paginates requested photos.
    */
-  static findPhotos: FieldResolver<PhotoDoc, FindPhotosArgs> = async (
-    parent,
-    { country, featured, page = 1, limit = config.requestedPhotosLimit },
-    { models }
-  ): Promise<PaginateResult<PhotoDoc>> => {
+  static async getPhotos(
+    {
+      country,
+      featured,
+      page = 1,
+      limit = config.requestedPhotosLimit,
+    }: FindPhotosArgs,
+    models: Context['models']
+  ): Promise<PaginateResult<PhotoDoc>> {
     // Validate page and limit variables.
     if (page < 1 || limit < 1) {
       throw new Error('Page or limit cannot be less than 1.');
@@ -101,16 +104,15 @@ export abstract class PhotoService {
 
     // Return page of photos.
     return result;
-  };
+  }
 
   /**
    * Creates a photo and associates it with user.
    */
-  static addPhoto: FieldResolver<PhotoDoc> = async (
-    parent,
+  static async addPhoto(
     args: AddPhotoArgs,
-    { me, models }
-  ): Promise<PhotoDoc> => {
+    { me, models }: Context
+  ): Promise<PhotoDoc> {
     // Pull off args.
     const { country, caption, featured, key, size } = args;
 
@@ -202,13 +204,12 @@ export abstract class PhotoService {
       `(GraphQL) Added photo from ${savedCountry.name} (${createdPhoto.upload.key}) by ${savedUser.username} (${savedUser.id})`
     );
     return createdPhoto;
-  };
+  }
 
-  static updatePhoto: FieldResolver<PhotoDoc, UpdatePhotoArgs> = async (
-    parent,
+  static async updatePhoto(
     args: UpdatePhotoArgs,
-    { models }
-  ): Promise<PhotoDoc> => {
+    models: Context['models']
+  ): Promise<PhotoDoc> {
     const updatedPhoto = await models.Photo.findByIdAndUpdate(args.id, args, {
       new: true,
       runValidators: true,
@@ -219,14 +220,15 @@ export abstract class PhotoService {
     }
 
     return updatedPhoto;
-  };
+  }
 
-  // Delete a photo and update user.
-  static deletePhoto: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
-    parent,
-    { id },
-    { models }
-  ): Promise<PhotoDoc> => {
+  /**
+   * Delete a photo and update user.
+   */
+  static async deletePhoto(
+    id: Types.ObjectId,
+    models: Context['models']
+  ): Promise<PhotoDoc> {
     // Delete photo and populate author field to access his id.
     const deletedPhoto = await models.Photo.findByIdAndDelete(id)
       .populate('country')
@@ -300,16 +302,15 @@ export abstract class PhotoService {
       `(GraphQL) Deleted photo from ${updatedCountry.name} (${deletedPhoto.id}) by ${updatedUser.username} (${updatedUser.id})`
     );
     return deletedPhoto;
-  };
+  }
 
   /**
    * Increments the clicks proptery on the photo.
    */
-  static clickPhoto: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
-    parent,
-    { id },
-    { models }
-  ): Promise<PhotoDoc> => {
+  static async clickPhoto(
+    id: Types.ObjectId,
+    models: Context['models']
+  ): Promise<PhotoDoc> {
     const clickedPhoto = await models.Photo.findByIdAndUpdate(id, {
       $inc: { clicks: 1 },
     });
@@ -322,13 +323,12 @@ export abstract class PhotoService {
       `(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}).`
     );
     return clickedPhoto;
-  };
+  }
 
-  static author: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
-    { author },
-    args,
-    { models }
-  ): Promise<UserDoc> => {
+  static async getAuthor(
+    author: PhotoDoc['author'],
+    models: Context['models']
+  ): Promise<UserDoc> {
     if (author instanceof models.User) {
       throw new Error(`Cannot find a user, ${author} is not a valid id.`);
     } else {
@@ -340,13 +340,12 @@ export abstract class PhotoService {
 
       return foundUser;
     }
-  };
+  }
 
-  static country: FieldResolver<PhotoDoc, { id: Types.ObjectId }> = async (
-    { country },
-    args,
-    { models }
-  ): Promise<CountryDoc> => {
+  static async getCountry(
+    country: PhotoDoc['country'],
+    models: Context['models']
+  ): Promise<CountryDoc> {
     if (country instanceof models.Country) {
       throw new Error(`Cannot find a country, ${country} is not a valid id.`);
     } else {
@@ -358,5 +357,5 @@ export abstract class PhotoService {
 
       return foundCountry;
     }
-  };
+  }
 }

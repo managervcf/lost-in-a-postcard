@@ -1,13 +1,14 @@
 import bcrypt from 'bcryptjs';
+import { Types } from 'mongoose';
 import { config } from '../config';
 import {
   UserAttributes,
   AuthResult,
-  FieldResolver,
   UserDoc,
   LogInArgs,
   UpdateUserArgs,
   PhotoDoc,
+  Context,
 } from '../types';
 import { createToken } from '../utils';
 
@@ -15,29 +16,24 @@ export abstract class UserService {
   /**
    * Checks the current user.
    */
-  static me: FieldResolver<UserDoc> = async (
-    parent,
-    args,
-    { me, models }
-  ): Promise<UserDoc | null> => (me ? await models.User.findById(me.id) : null);
+  static async getMe({ me, models }: Context): Promise<UserDoc | null> {
+    return me ? await models.User.findById(me.id) : null;
+  }
 
   /**
    * Finds all existing user.
    */
-  static users: FieldResolver<UserDoc> = async (
-    parent,
-    args,
-    { models }
-  ): Promise<UserDoc[]> => await models.User.find({});
+  static async getUsers(models: Context['models']): Promise<UserDoc[]> {
+    return await models.User.find({});
+  }
 
   /**
    * Enables finding user by both email and username.
    */
-  static userByLogin: FieldResolver<UserDoc, { login: string }> = async (
-    parent,
-    { login },
-    { models }
-  ): Promise<UserDoc | null> => {
+  static async getUserByLogin(
+    login: string,
+    models: Context['models']
+  ): Promise<UserDoc | null> {
     // Try to find by username.
     let user = await models.User.findOne({ username: login });
 
@@ -48,16 +44,15 @@ export abstract class UserService {
 
     // Return found user.
     return user;
-  };
+  }
 
   /**
    * Signs up a new user.
    */
-  static signUp: FieldResolver<UserDoc, UserAttributes> = async (
-    parent,
+  static async signUp(
     { secret, ...newUser }: UserAttributes,
-    { models }
-  ): Promise<AuthResult> => {
+    models: Context['models']
+  ): Promise<AuthResult> {
     // Check if user has provided the secret admin pasword correctly.
     if (secret !== config.adminPassword) {
       throw new Error(
@@ -82,16 +77,15 @@ export abstract class UserService {
     const token = createToken(savedUser);
 
     return { token };
-  };
+  }
 
   /**
    * Logs user in.
    */
-  static logIn: FieldResolver<UserDoc, LogInArgs> = async (
-    parent,
-    { login, password },
-    { models }
-  ): Promise<AuthResult> => {
+  static async logIn(
+    { login, password }: LogInArgs,
+    models: Context['models']
+  ): Promise<AuthResult> {
     // Checks if credentials were provided.
     if (!login) {
       throw new Error('You must provide a username.');
@@ -129,16 +123,15 @@ export abstract class UserService {
     const token = createToken(user);
 
     return { token };
-  };
+  }
 
   /**
    * Updates the user.
    */
-  static updateUser: FieldResolver<UserDoc, UpdateUserArgs> = async (
-    parent,
-    args,
-    { me, models }
-  ): Promise<UserDoc> => {
+  static async updateUser(
+    args: UpdateUserArgs,
+    { me, models }: Context
+  ): Promise<UserDoc> {
     const updatedUser = await models.User.findByIdAndUpdate(me.id, args, {
       new: true,
       runValidators: true,
@@ -149,16 +142,12 @@ export abstract class UserService {
     }
 
     return updatedUser;
-  };
+  }
 
   /**
    * Deletes the user.
    */
-  static deleteUser: FieldResolver<UserDoc> = async (
-    parent,
-    args,
-    { me, models }
-  ): Promise<UserDoc | null> => {
+  static async deleteUser({ me, models }: Context): Promise<UserDoc | null> {
     // Find and delete user.
     const deletedUser = await models.User.findByIdAndRemove(me.id);
 
@@ -180,14 +169,15 @@ export abstract class UserService {
       `(GraphQL) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${deletedPhotos.n} corresponding photos.`
     );
     return deletedUser;
-  };
+  }
 
   /**
    * Finds user's photos.
    */
-  static photos: FieldResolver<UserDoc> = async (
-    { id },
-    args,
-    { models }
-  ): Promise<PhotoDoc[]> => await models.Photo.find({ author: id });
+  static async getPhotos(
+    id: Types.ObjectId,
+    models: Context['models']
+  ): Promise<PhotoDoc[]> {
+    return await models.Photo.find({ author: id });
+  }
 }
