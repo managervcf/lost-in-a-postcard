@@ -3,7 +3,7 @@ import { models } from '../models';
 import { UpdateCountryArgs, CountryDoc, PhotoDoc } from '../types';
 
 class CountryService {
-  readonly repositories = models;
+  constructor(private repositories: typeof models) {}
   /**
    * Finds all countries.
    */
@@ -72,4 +72,4 @@ class CountryService {
   }
 }
 
-export const countryService = new CountryService();
+export const countryService = new CountryService(models);

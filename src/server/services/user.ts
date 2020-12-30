@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 class UserService {
-  readonly repositories = models;
+  constructor(private repositories: typeof models) {}
   /**
    * Checks the current user.
    */
@@ -175,4 +175,4 @@ class UserService {
   }
 }
 
-export const userService = new UserService();
+export const userService = new UserService(models);

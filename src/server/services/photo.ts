@@ -15,8 +15,7 @@ import {
 } from '../types';
 
 class PhotoService {
-  readonly repositories = models;
-
+  constructor(private repositories: typeof models) {}
   /**
    * Finds a photo based on the id.
    */
@@ -350,4 +349,4 @@ class PhotoService {
   }
 }
 
-export const photoService = new PhotoService();
+export const photoService = new PhotoService(models);
