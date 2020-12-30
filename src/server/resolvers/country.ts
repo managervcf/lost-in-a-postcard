@@ -1,24 +1,23 @@
 import { isAuthorized } from '../utils';
+import { countryService } from '../services';
 import { Resolvers, CountryDoc, UpdateCountryArgs } from '../types';
-import { CountryService } from '../services';
 
 // Create and immediately export resolvers.
 export const countryResolvers: Resolvers<CountryDoc> = {
   Query: {
-    countries: (parent, args, { models }) =>
-      CountryService.getCountries(models),
-    country: (parent, { name }: { name: string }, { models }) =>
-      CountryService.getCountry(name, models),
+    countries: (parent, args, context) => countryService.getCountries(),
+    country: (parent, { name }: { name: string }, context) =>
+      countryService.getCountry(name),
   },
 
   Mutation: {
-    updateCountry: isAuthorized((parent, args: UpdateCountryArgs, { models }) =>
-      CountryService.updateCountry(args, models)
+    updateCountry: isAuthorized((parent, args: UpdateCountryArgs, context) =>
+      countryService.updateCountry(args)
     ),
   },
 
   Country: {
-    photos: ({ id }, args, { models }) => CountryService.getPhotos(id, models),
+    photos: ({ id }, args, context) => countryService.getPhotos(id),
     createdAt: ({ createdAt }, args, context) => createdAt.toString(),
     updatedAt: ({ updatedAt }, args, context) => updatedAt.toString(),
   },
