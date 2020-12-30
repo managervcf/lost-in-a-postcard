@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { Types } from 'mongoose';
 import { config } from '../config';
+import { models } from '../models';
+import { createToken } from '../utils';
 import {
   UserAttributes,
   AuthResult,
@@ -10,36 +12,33 @@ import {
   PhotoDoc,
   Context,
 } from '../types';
-import { createToken } from '../utils';
 
-export abstract class UserService {
+class UserService {
+  constructor(private repositories: typeof models) {}
   /**
    * Checks the current user.
    */
-  static async getMe({ me, models }: Context): Promise<UserDoc | null> {
-    return me ? await models.User.findById(me.id) : null;
+  async getMe(me: Context['me']): Promise<UserDoc | null> {
+    return me ? await this.repositories.User.findById(me.id) : null;
   }
 
   /**
    * Finds all existing user.
    */
-  static async getUsers(models: Context['models']): Promise<UserDoc[]> {
-    return await models.User.find({});
+  async getUsers(): Promise<UserDoc[]> {
+    return await this.repositories.User.find({});
   }
 
   /**
    * Enables finding user by both email and username.
    */
-  static async getUserByLogin(
-    login: string,
-    models: Context['models']
-  ): Promise<UserDoc | null> {
+  async getUserByLogin(login: string): Promise<UserDoc | null> {
     // Try to find by username.
-    let user = await models.User.findOne({ username: login });
+    let user = await this.repositories.User.findOne({ username: login });
 
     // If not found, try finding by email.
     if (!user) {
-      user = await models.User.findOne({ email: login });
+      user = await this.repositories.User.findOne({ email: login });
     }
 
     // Return found user.
@@ -49,10 +48,7 @@ export abstract class UserService {
   /**
    * Signs up a new user.
    */
-  static async signUp(
-    { secret, ...newUser }: UserAttributes,
-    models: Context['models']
-  ): Promise<AuthResult> {
+  async signUp({ secret, ...newUser }: UserAttributes): Promise<AuthResult> {
     // Check if user has provided the secret admin pasword correctly.
     if (secret !== config.adminPassword) {
       throw new Error(
@@ -61,7 +57,7 @@ export abstract class UserService {
     }
 
     // Create new user and save it to the database.async (parent, args: LogInArgs, { models })
-    const createdUser = new models.User(newUser);
+    const createdUser = new this.repositories.User(newUser);
     const savedUser = await createdUser.save();
 
     if (!savedUser) {
@@ -82,10 +78,7 @@ export abstract class UserService {
   /**
    * Logs user in.
    */
-  static async logIn(
-    { login, password }: LogInArgs,
-    models: Context['models']
-  ): Promise<AuthResult> {
+  async logIn({ login, password }: LogInArgs): Promise<AuthResult> {
     // Checks if credentials were provided.
     if (!login) {
       throw new Error('You must provide a username.');
@@ -98,11 +91,11 @@ export abstract class UserService {
     }
 
     // Try to find by username.
-    let user = await models.User.findOne({ username: login });
+    let user = await this.repositories.User.findOne({ username: login });
 
     // If not found, try finding by email.
     if (!user) {
-      user = await models.User.findOne({ email: login });
+      user = await this.repositories.User.findOne({ email: login });
     }
 
     if (!user) {
@@ -128,14 +121,15 @@ export abstract class UserService {
   /**
    * Updates the user.
    */
-  static async updateUser(
-    args: UpdateUserArgs,
-    { me, models }: Context
-  ): Promise<UserDoc> {
-    const updatedUser = await models.User.findByIdAndUpdate(me.id, args, {
-      new: true,
-      runValidators: true,
-    });
+  async updateUser(args: UpdateUserArgs, me: Context['me']): Promise<UserDoc> {
+    const updatedUser = await this.repositories.User.findByIdAndUpdate(
+      me.id,
+      args,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!updatedUser) {
       throw new Error(`Cannot update a user with an id '${me.id}'`);
@@ -147,9 +141,9 @@ export abstract class UserService {
   /**
    * Deletes the user.
    */
-  static async deleteUser({ me, models }: Context): Promise<UserDoc | null> {
+  async deleteUser(me: Context['me']): Promise<UserDoc | null> {
     // Find and delete user.
-    const deletedUser = await models.User.findByIdAndRemove(me.id);
+    const deletedUser = await this.repositories.User.findByIdAndRemove(me.id);
 
     if (!deletedUser) {
       throw new Error(
@@ -158,7 +152,9 @@ export abstract class UserService {
     }
 
     // Find and delete user's photos.
-    const deletedPhotos = await models.Photo.deleteMany({ author: me.id });
+    const deletedPhotos = await this.repositories.Photo.deleteMany({
+      author: me.id,
+    });
 
     if (!deletedPhotos) {
       throw new Error(`Cannot delete photos of user '${me.id}'`);
@@ -174,10 +170,9 @@ export abstract class UserService {
   /**
    * Finds user's photos.
    */
-  static async getPhotos(
-    id: Types.ObjectId,
-    models: Context['models']
-  ): Promise<PhotoDoc[]> {
-    return await models.Photo.find({ author: id });
+  async getPhotos(id: Types.ObjectId): Promise<PhotoDoc[]> {
+    return await this.repositories.Photo.find({ author: id });
   }
 }
+
+export const userService = new UserService(models);

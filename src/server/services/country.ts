@@ -1,22 +1,21 @@
 import { Types } from 'mongoose';
-import { UpdateCountryArgs, CountryDoc, PhotoDoc, Context } from '../types';
+import { models } from '../models';
+import { UpdateCountryArgs, CountryDoc, PhotoDoc } from '../types';
 
-export abstract class CountryService {
+class CountryService {
+  constructor(private repositories: typeof models) {}
   /**
    * Finds all countries.
    */
-  static async getCountries(models: Context['models']): Promise<CountryDoc[]> {
-    return models.Country.find({});
+  async getCountries(): Promise<CountryDoc[]> {
+    return this.repositories.Country.find({});
   }
 
   /**
    * Searches for a country with a specific name.
    */
-  static async getCountry(
-    name: string,
-    models: Context['models']
-  ): Promise<CountryDoc> {
-    const foundCountry = await models.Country.findOne({ name });
+  async getCountry(name: string): Promise<CountryDoc> {
+    const foundCountry = await this.repositories.Country.findOne({ name });
 
     if (!foundCountry) {
       throw new Error(`Cannot find a country with a name ${name}`);
@@ -31,10 +30,11 @@ export abstract class CountryService {
    * 2. Update the record in the database.
    * 3. Return the updated record.
    */
-  static async updateCountry(
-    { id, name, description }: UpdateCountryArgs,
-    models: Context['models']
-  ): Promise<CountryDoc> {
+  async updateCountry({
+    id,
+    name,
+    description,
+  }: UpdateCountryArgs): Promise<CountryDoc> {
     if (!id) {
       throw new Error('Must provide a country id');
     }
@@ -51,7 +51,7 @@ export abstract class CountryService {
       );
     }
 
-    const updatedCountry = await models.Country.findByIdAndUpdate(
+    const updatedCountry = await this.repositories.Country.findByIdAndUpdate(
       id,
       { name, description },
       { new: true, runValidators: true }
@@ -67,10 +67,9 @@ export abstract class CountryService {
   /**
    * Finds country photos.
    */
-  static async getPhotos(
-    id: Types.ObjectId,
-    models: Context['models']
-  ): Promise<PhotoDoc[]> {
-    return models.Photo.find({ country: id });
+  async getPhotos(id: Types.ObjectId): Promise<PhotoDoc[]> {
+    return this.repositories.Photo.find({ country: id });
   }
 }
+
+export const countryService = new CountryService(models);

@@ -1,14 +1,14 @@
 import { config } from '../config';
-import { GetPresignedUrlArgs, GetUploadUrlResult } from '../types';
 import { getUploadUrl } from '../utils';
+import { GetPresignedUrlArgs, GetUploadUrlResult } from '../types';
 
-export abstract class UploadService {
+class UploadService {
   /**
    * Obtains a signed url from the AWS S3.
    * 1. Validate inputs.
    * 2. Obtain the signed url.
    */
-  static async getPresignedUrl({
+  async getPresignedUrl({
     country,
     type,
     size,
@@ -46,3 +46,5 @@ export abstract class UploadService {
     return await getUploadUrl();
   }
 }
+
+export const uploadService = new UploadService();

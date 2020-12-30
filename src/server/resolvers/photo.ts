@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+import { photoService } from '../services';
 import { isAuthenticated, isAuthorized } from '../utils';
 import {
   AddPhotoArgs,
@@ -6,37 +8,33 @@ import {
   Resolvers,
   UpdatePhotoArgs,
 } from '../types';
-import { PhotoService } from '../services/photo';
-import { Types } from 'mongoose';
 
 // Create and immediately export resolvers.
 export const photoResolvers: Resolvers<PhotoDoc> = {
   Query: {
-    photo: (parent, { id }, { models }) => PhotoService.getPhoto(id, models),
-    photos: (parent, args: FindPhotosArgs, { models }) =>
-      PhotoService.getPhotos(args, models),
+    photo: (parent, { id }, context) => photoService.getPhoto(id),
+    photos: (parent, args: FindPhotosArgs, context) =>
+      photoService.getPhotos(args),
   },
 
   Mutation: {
-    addPhoto: isAuthenticated((parent, args: AddPhotoArgs, context) =>
-      PhotoService.addPhoto(args, context)
+    addPhoto: isAuthenticated((parent, args: AddPhotoArgs, { me }) =>
+      photoService.addPhoto(args, me)
     ),
-    clickPhoto: (parent, { id }: { id: Types.ObjectId }, { models }) =>
-      PhotoService.clickPhoto(id, models),
-    updatePhoto: isAuthorized((parent, args: UpdatePhotoArgs, { models }) =>
-      PhotoService.updatePhoto(args, models)
+    clickPhoto: (parent, { id }: { id: Types.ObjectId }, context) =>
+      photoService.clickPhoto(id),
+    updatePhoto: isAuthorized((parent, args: UpdatePhotoArgs, context) =>
+      photoService.updatePhoto(args)
     ),
     deletePhoto: isAuthorized(
-      (parent, { id }: { id: Types.ObjectId }, { models }) =>
-        PhotoService.deletePhoto(id, models)
+      (parent, { id }: { id: Types.ObjectId }, context) =>
+        photoService.deletePhoto(id)
     ),
   },
 
   Photo: {
-    country: ({ country }, args, { models }) =>
-      PhotoService.getCountry(country, models),
-    author: ({ author }, args, { models }) =>
-      PhotoService.getAuthor(author, models),
+    country: ({ country }, args, context) => photoService.getCountry(country),
+    author: ({ author }, args, context) => photoService.getAuthor(author),
     createdAt: ({ createdAt }, args, context) => createdAt.toString(),
     updatedAt: ({ updatedAt }, args, context) => updatedAt.toString(),
   },

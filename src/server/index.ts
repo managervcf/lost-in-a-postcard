@@ -4,7 +4,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
-import { connectDb, models } from './models';
+import { connectDb } from './models';
 import { getCurrentUser } from './utils';
 import { config } from './config';
 
@@ -37,7 +37,7 @@ if (config.isProduction()) {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ models, me: getCurrentUser(req) }),
+  context: ({ req }) => ({ me: getCurrentUser(req) }),
 });
 
 // Apply middleware.
