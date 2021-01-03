@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Types } from 'mongoose';
+import { Photo, User } from '../models';
 import { config } from '../config';
-import { models } from '../models';
 import { createToken } from '../utils';
 import {
   UserAttributes,
@@ -11,22 +11,24 @@ import {
   UpdateUserArgs,
   PhotoDoc,
   Context,
+  UserModel,
+  PhotoModel,
 } from '../types';
 
 class UserService {
-  constructor(private repositories: typeof models) {}
+  constructor(private userModel: UserModel, private photoModel: PhotoModel) {}
   /**
    * Checks the current user.
    */
   async getMe(me: Context['me']): Promise<UserDoc | null> {
-    return me ? await this.repositories.User.findById(me.id) : null;
+    return me ? await this.userModel.findById(me.id) : null;
   }
 
   /**
    * Finds all existing user.
    */
   async getUsers(): Promise<UserDoc[]> {
-    return await this.repositories.User.find({});
+    return await this.userModel.find({});
   }
 
   /**
@@ -34,11 +36,11 @@ class UserService {
    */
   async getUserByLogin(login: string): Promise<UserDoc | null> {
     // Try to find by username.
-    let user = await this.repositories.User.findOne({ username: login });
+    let user = await this.userModel.findOne({ username: login });
 
     // If not found, try finding by email.
     if (!user) {
-      user = await this.repositories.User.findOne({ email: login });
+      user = await this.userModel.findOne({ email: login });
     }
 
     // Return found user.
@@ -56,8 +58,8 @@ class UserService {
       );
     }
 
-    // Create new user and save it to the database.async (parent, args: LogInArgs, { models })
-    const createdUser = new this.repositories.User(newUser);
+    // Create new user and save it to the database.
+    const createdUser = new this.userModel(newUser);
     const savedUser = await createdUser.save();
 
     if (!savedUser) {
@@ -91,11 +93,11 @@ class UserService {
     }
 
     // Try to find by username.
-    let user = await this.repositories.User.findOne({ username: login });
+    let user = await this.userModel.findOne({ username: login });
 
     // If not found, try finding by email.
     if (!user) {
-      user = await this.repositories.User.findOne({ email: login });
+      user = await this.userModel.findOne({ email: login });
     }
 
     if (!user) {
@@ -122,14 +124,10 @@ class UserService {
    * Updates the user.
    */
   async updateUser(args: UpdateUserArgs, me: Context['me']): Promise<UserDoc> {
-    const updatedUser = await this.repositories.User.findByIdAndUpdate(
-      me.id,
-      args,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const updatedUser = await this.userModel.findByIdAndUpdate(me.id, args, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedUser) {
       throw new Error(`Cannot update a user with an id '${me.id}'`);
@@ -143,7 +141,7 @@ class UserService {
    */
   async deleteUser(me: Context['me']): Promise<UserDoc | null> {
     // Find and delete user.
-    const deletedUser = await this.repositories.User.findByIdAndRemove(me.id);
+    const deletedUser = await this.userModel.findByIdAndRemove(me.id);
 
     if (!deletedUser) {
       throw new Error(
@@ -152,7 +150,7 @@ class UserService {
     }
 
     // Find and delete user's photos.
-    const deletedPhotos = await this.repositories.Photo.deleteMany({
+    const deletedPhotos = await this.photoModel.deleteMany({
       author: me.id,
     });
 
@@ -171,8 +169,8 @@ class UserService {
    * Finds user's photos.
    */
   async getPhotos(id: Types.ObjectId): Promise<PhotoDoc[]> {
-    return await this.repositories.Photo.find({ author: id });
+    return await this.photoModel.find({ author: id });
   }
 }
 
-export const userService = new UserService(models);
+export const userService = new UserService(User, Photo);

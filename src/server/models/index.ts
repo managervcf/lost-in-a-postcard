@@ -1,8 +1,12 @@
 import { connect } from 'mongoose';
-import { User } from './user';
-import { Photo } from './photo';
-import { Country } from './country';
 import { config } from '../config';
+
+/**
+ * Export an unified models interface.
+ */
+export { User } from './user';
+export { Photo } from './photo';
+export { Country } from './country';
 
 /**
  * Connects to the database.
@@ -23,8 +27,3 @@ export const connectDb = async () => {
     throw new Error(error);
   }
 };
-
-/**
- * Export an unified models interface.
- */
-export const models = { User, Photo, Country };

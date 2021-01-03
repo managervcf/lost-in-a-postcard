@@ -1,6 +1,6 @@
 import { CustomPage } from './helpers/page';
 import { testPhoto, DELETE_PHOTO } from './mocks';
-import { models } from '../src/server/models';
+import { Photo } from '../src/server/models';
 
 /**
  * Define page variable in the global scope
@@ -63,7 +63,7 @@ describe('when logged in', () => {
       expect.assertions(1);
       try {
         const gallerySelector = '.gallery';
-        const savedPhoto = await models.Photo.findOne({
+        const savedPhoto = await Photo.findOne({
           caption: testPhoto.caption,
         });
         if (!savedPhoto) {

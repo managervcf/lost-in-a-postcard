@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { connect, disconnect } from 'mongoose';
-import { models } from '../src/server/models';
+import { Country, Photo, User } from '../src/server/models';
 import { testUser, testPhoto, SIGNUP, testPhotoEdited } from './mocks';
 import { deletePhoto } from '../src/server/utils';
 import { config } from '../src/server/config';
@@ -20,8 +20,6 @@ beforeAll(async () => {
     useFindAndModify: false,
   });
 
-  // await models.User.deleteMany({ email: testUser.email });
-
   await axios.post(`http://localhost:4000/graphql`, {
     query: SIGNUP,
     variables: testUser,
@@ -36,14 +34,14 @@ beforeAll(async () => {
  * 3. Disconnect from the database.
  */
 afterAll(async () => {
-  await models.User.deleteMany({ email: testUser.email });
-  await models.Country.deleteMany({ name: testPhoto.country });
-  await models.Country.deleteMany({ name: testPhotoEdited.country });
+  await User.deleteMany({ email: testUser.email });
+  await Country.deleteMany({ name: testPhoto.country });
+  await Country.deleteMany({ name: testPhotoEdited.country });
 
-  let photo = await models.Photo.findOneAndDelete({
+  let photo = await Photo.findOneAndDelete({
     caption: testPhoto.caption,
   });
-  let editedPhoto = await models.Photo.findOneAndDelete({
+  let editedPhoto = await Photo.findOneAndDelete({
     caption: testPhotoEdited.caption,
   });
 
@@ -55,10 +53,10 @@ afterAll(async () => {
       await deletePhoto(editedPhoto.upload.key);
     }
 
-    photo = await models.Photo.findOneAndDelete({
+    photo = await Photo.findOneAndDelete({
       caption: testPhoto.caption,
     });
-    editedPhoto = await models.Photo.findOneAndDelete({
+    editedPhoto = await Photo.findOneAndDelete({
       caption: testPhotoEdited.caption,
     });
   }
