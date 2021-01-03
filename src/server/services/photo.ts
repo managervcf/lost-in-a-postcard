@@ -1,26 +1,33 @@
 import { Types, PaginateResult, PaginateOptions } from 'mongoose';
 import { tagPhotoByCountry, deletePhoto } from '../utils';
 import { config } from '../config';
-import { models } from '../models';
+import { Country, Photo, User } from '../models';
 import {
   AddPhotoArgs,
   Context,
   CountryAttributes,
   CountryDoc,
+  CountryModel,
   FindPhotosArgs,
   PhotoAttributes,
   PhotoDoc,
+  PhotoModel,
   UpdatePhotoArgs,
   UserDoc,
+  UserModel,
 } from '../types';
 
 class PhotoService {
-  constructor(private repositories: typeof models) {}
+  constructor(
+    private photoModel: PhotoModel,
+    private countryModel: CountryModel,
+    private userModel: UserModel
+  ) {}
   /**
    * Finds a photo based on the id.
    */
   async getPhoto(id: Types.ObjectId): Promise<PhotoDoc> {
-    const foundPhoto = await this.repositories.Photo.findById(id);
+    const foundPhoto = await this.photoModel.findById(id);
 
     if (!foundPhoto) {
       throw new Error(`Photo with an id '${id}' does not exist`);
@@ -59,7 +66,7 @@ class PhotoService {
     if (country) {
       // Form trimmed and case-insensitive country name ready for query.
       // Find searched country.
-      let foundCountry = await this.repositories.Country.findOne({
+      let foundCountry = await this.countryModel.findOne({
         name: new RegExp(country.trim(), 'i'),
       });
 
@@ -75,10 +82,7 @@ class PhotoService {
     }
 
     // Make a query using mongoose-paginate library.
-    const result = await this.repositories.Photo.paginate(
-      query,
-      paginationOptions
-    );
+    const result = await this.photoModel.paginate(query, paginationOptions);
 
     if (!result) {
       throw new Error('Cannot get requested photos.');
@@ -124,7 +128,7 @@ class PhotoService {
     }
 
     // Check if country exists.
-    const existingCountry = await this.repositories.Country.findOne({
+    const existingCountry = await this.countryModel.findOne({
       name: country,
     });
 
@@ -137,7 +141,7 @@ class PhotoService {
     } else {
       // If country does not exist, create a new one.
       const newCountry = { name: country };
-      const createdCountry = await this.repositories.Country.create<CountryAttributes>(
+      const createdCountry = await this.countryModel.create<CountryAttributes>(
         newCountry
       );
       // Get ID from created country and assign it to new photo.
@@ -161,7 +165,7 @@ class PhotoService {
     };
 
     // Save photo to database.
-    const createdPhoto = await this.repositories.Photo.create<PhotoAttributes>(
+    const createdPhoto = await this.photoModel.create<PhotoAttributes>(
       newPhoto
     );
 
@@ -170,7 +174,7 @@ class PhotoService {
     }
 
     // Find user and update it's photos.
-    const user = await this.repositories.User.findById(me.id);
+    const user = await this.userModel.findById(me.id);
 
     if (!user) {
       throw new Error('User is not logged in or does not exist');
@@ -184,7 +188,7 @@ class PhotoService {
     }
 
     // Find country and update it's photos.
-    const foundCountry = await this.repositories.Country.findById(countryId);
+    const foundCountry = await this.countryModel.findById(countryId);
 
     if (!foundCountry) {
       throw new Error('Country does not exist');
@@ -205,7 +209,7 @@ class PhotoService {
   }
 
   async updatePhoto(args: UpdatePhotoArgs): Promise<PhotoDoc> {
-    const updatedPhoto = await this.repositories.Photo.findByIdAndUpdate(
+    const updatedPhoto = await this.photoModel.findByIdAndUpdate(
       args.id,
       args,
       {
@@ -226,7 +230,8 @@ class PhotoService {
    */
   async deletePhoto(id: Types.ObjectId): Promise<PhotoDoc> {
     // Delete photo and populate author field to access his id.
-    const deletedPhoto = await this.repositories.Photo.findByIdAndDelete(id)
+    const deletedPhoto = await this.photoModel
+      .findByIdAndDelete(id)
       .populate('country')
       .populate('author');
 
@@ -234,11 +239,11 @@ class PhotoService {
       throw new Error('Cannot delete photo. Photo does not exist.');
     }
 
-    if (!(deletedPhoto.country instanceof this.repositories.Country)) {
+    if (!(deletedPhoto.country instanceof this.countryModel)) {
       throw new Error('Cannot populate photo with country');
     }
 
-    if (!(deletedPhoto.author instanceof this.repositories.User)) {
+    if (!(deletedPhoto.author instanceof this.userModel)) {
       throw new Error('Cannot populate photo with country');
     }
 
@@ -246,14 +251,14 @@ class PhotoService {
     await deletePhoto(deletedPhoto.upload.key);
 
     // Get user by id to modify photos array.
-    const user = await this.repositories.User.findById(deletedPhoto.author.id);
+    const user = await this.userModel.findById(deletedPhoto.author.id);
 
     if (!user) {
       throw new Error('User does not exist.');
     }
 
     // Update user with updated photos array.
-    const updatedUser = await this.repositories.User.findByIdAndUpdate(
+    const updatedUser = await this.userModel.findByIdAndUpdate(
       deletedPhoto.author.id,
       { photos: user.photos.filter(photoId => photoId != id) },
       { new: true }
@@ -264,16 +269,14 @@ class PhotoService {
     }
 
     // Get country by id to modify photos array.
-    const country = await this.repositories.Country.findById(
-      deletedPhoto.country.id
-    );
+    const country = await this.countryModel.findById(deletedPhoto.country.id);
 
     if (!country) {
       throw new Error('Country does not exist.');
     }
 
     // Update country with updated photos array.
-    const updatedCountry = await this.repositories.Country.findByIdAndUpdate(
+    const updatedCountry = await this.countryModel.findByIdAndUpdate(
       deletedPhoto.country.id,
       { photos: country.photos.filter(photoId => photoId != id) },
       { new: true }
@@ -285,7 +288,7 @@ class PhotoService {
 
     // Delete country if the removed photo was the last from this country.
     if (updatedCountry.photos?.length === 0) {
-      const deletedCountry = await this.repositories.Country.findByIdAndDelete(
+      const deletedCountry = await this.countryModel.findByIdAndDelete(
         updatedCountry.id
       );
 
@@ -306,7 +309,7 @@ class PhotoService {
    * Increments the clicks proptery on the photo.
    */
   async clickPhoto(id: Types.ObjectId): Promise<PhotoDoc> {
-    const clickedPhoto = await this.repositories.Photo.findByIdAndUpdate(id, {
+    const clickedPhoto = await this.photoModel.findByIdAndUpdate(id, {
       $inc: { clicks: 1 },
     });
 
@@ -321,10 +324,10 @@ class PhotoService {
   }
 
   async getAuthor(author: PhotoDoc['author']): Promise<UserDoc> {
-    if (author instanceof this.repositories.User) {
+    if (author instanceof this.userModel) {
       throw new Error(`Cannot find a user, ${author} is not a valid id.`);
     } else {
-      const foundUser = await this.repositories.User.findById(author);
+      const foundUser = await this.userModel.findById(author);
 
       if (!foundUser) {
         throw new Error(`Cannot find a user with an id ${author}`);
@@ -335,10 +338,10 @@ class PhotoService {
   }
 
   async getCountry(country: PhotoDoc['country']): Promise<CountryDoc> {
-    if (country instanceof this.repositories.Country) {
+    if (country instanceof this.countryModel) {
       throw new Error(`Cannot find a country, ${country} is not a valid id.`);
     } else {
-      const foundCountry = await this.repositories.Country.findById(country);
+      const foundCountry = await this.countryModel.findById(country);
 
       if (!foundCountry) {
         throw new Error(`Cannot find a country with an id ${country}`);
@@ -349,4 +352,4 @@ class PhotoService {
   }
 }
 
-export const photoService = new PhotoService(models);
+export const photoService = new PhotoService(Photo, Country, User);

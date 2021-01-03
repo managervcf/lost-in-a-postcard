@@ -1,21 +1,30 @@
 import { Types } from 'mongoose';
-import { models } from '../models';
-import { UpdateCountryArgs, CountryDoc, PhotoDoc } from '../types';
+import { Country, Photo } from '../models';
+import {
+  UpdateCountryArgs,
+  CountryDoc,
+  PhotoDoc,
+  CountryModel,
+  PhotoModel,
+} from '../types';
 
 class CountryService {
-  constructor(private repositories: typeof models) {}
+  constructor(
+    private countryModel: CountryModel,
+    private photoModel: PhotoModel
+  ) {}
   /**
    * Finds all countries.
    */
   async getCountries(): Promise<CountryDoc[]> {
-    return this.repositories.Country.find({});
+    return this.countryModel.find({});
   }
 
   /**
    * Searches for a country with a specific name.
    */
   async getCountry(name: string): Promise<CountryDoc> {
-    const foundCountry = await this.repositories.Country.findOne({ name });
+    const foundCountry = await this.countryModel.findOne({ name });
 
     if (!foundCountry) {
       throw new Error(`Cannot find a country with a name ${name}`);
@@ -51,7 +60,7 @@ class CountryService {
       );
     }
 
-    const updatedCountry = await this.repositories.Country.findByIdAndUpdate(
+    const updatedCountry = await this.countryModel.findByIdAndUpdate(
       id,
       { name, description },
       { new: true, runValidators: true }
@@ -68,8 +77,8 @@ class CountryService {
    * Finds country photos.
    */
   async getPhotos(id: Types.ObjectId): Promise<PhotoDoc[]> {
-    return this.repositories.Photo.find({ country: id });
+    return this.photoModel.find({ country: id });
   }
 }
 
-export const countryService = new CountryService(models);
+export const countryService = new CountryService(Country, Photo);
