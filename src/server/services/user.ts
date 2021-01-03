@@ -58,7 +58,7 @@ class UserService {
       );
     }
 
-    // Create new user and save it to the database.async (parent, args: LogInArgs, { models })
+    // Create new user and save it to the database.
     const createdUser = new this.userModel(newUser);
     const savedUser = await createdUser.save();
 
