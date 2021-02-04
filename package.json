@@ -63,7 +63,7 @@
     "ts-node-dev": "^1.0.0-pre.65"
   },
   "bugs": {
-    "url": "https://github.com/managervcf/lost-in-a-postcard"
+    "url": "https://github.com/managervcf/lost-in-a-postcard/issues"
   },
   "homepage": "https://github.com/managervcf/lost-in-a-postcard/#readme"
 }
