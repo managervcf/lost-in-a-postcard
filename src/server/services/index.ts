@@ -1,4 +1,4 @@
-export * from './country';
-export * from './photo';
-export * from './upload';
+export * from './country.service';
+export * from './photo.service';
+export * from './upload.service';
 export * from './user';

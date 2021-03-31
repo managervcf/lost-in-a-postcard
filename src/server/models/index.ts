@@ -4,9 +4,9 @@ import { config } from '../config';
 /**
  * Export an unified models interface.
  */
-export { User } from './user';
-export { Photo } from './photo';
-export { Country } from './country';
+export { User } from './user.model';
+export { Photo } from './photo.model';
+export { Country } from './country.model';
 
 /**
  * Connects to the database.
