@@ -1,7 +1,7 @@
 // Import all resolvers.
-import { countryResolvers } from './country';
-import { photoResolvers } from './photo';
-import { uploadResolvers } from './upload';
+import { countryResolvers } from './country.resolver';
+import { photoResolvers } from './photo.resolver';
+import { uploadResolvers } from './upload.resolver';
 import { userResolvers } from './user';
 
 // Export all resolvers as an array.

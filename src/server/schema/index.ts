@@ -2,10 +2,10 @@
 import { gql } from 'apollo-server-express';
 
 // Import every part of schema.
-import { userSchema } from './user';
-import { photoSchema } from './photo';
-import { countrySchema } from './country';
-import { uploadSchema } from './upload';
+import { userSchema } from './user.schema';
+import { photoSchema } from './photo.schema';
+import { countrySchema } from './country.schema';
+import { uploadSchema } from './upload.schema';
 
 // Define linkSchema that bonds all schemas together.
 const linkSchema = gql`
