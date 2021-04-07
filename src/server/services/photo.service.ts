@@ -116,16 +116,16 @@ class PhotoService {
     // Pull off args.
     const { country, caption, featured, key, size } = args;
 
+    // Input validation check.
+    if (!key) {
+      throw new Error('Must provide a key');
+    }
+
     // Add a tag to the uploaded asset.
     await tagPhotoByCountry(key, country);
 
     // Print out a log about the updated asset.
     console.log(`(AWS S3) Uploaded asset ${key}.`);
-
-    // Input validation check.
-    if (!key) {
-      throw new Error('Must provide a key');
-    }
 
     // Check if country exists.
     const existingCountry = await this.countryModel.findOne({
