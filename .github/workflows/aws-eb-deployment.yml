@@ -48,6 +48,7 @@ jobs:
           version_label: ${{ github.SHA }}
           region: ap-southeast-2
           deployment_package: deploy.zip
+          use_existing_version_if_available: true
 
       - name: Application deployed
         run: echo Application successfully deployed to AWS Elastic Beanstalk!
