@@ -16,6 +16,13 @@ const s3 = new S3({
 const Bucket = config.s3.bucketName;
 
 /**
+ * Generates a random AWS Key.
+ */
+function generateAWSKey(folderName?: string) {
+  return `${folderName ?? 'temp'}/${uuid()}.jpeg`;
+}
+
+/**
  * Gets a presigned url necessary to perform a file upload.
  * 1. Define the operationName as 'putObject' which is
  *    basically a file upload operation.
@@ -27,7 +34,7 @@ const Bucket = config.s3.bucketName;
  */
 export async function getUploadUrl(): Promise<GetUploadUrlResult> {
   const operationName = 'putObject';
-  const key = `${config.s3.folderName}/${uuid()}.jpeg`;
+  const key = generateAWSKey(config.s3.folderName);
   const params = {
     Bucket,
     ContentType: 'image/jpeg',
