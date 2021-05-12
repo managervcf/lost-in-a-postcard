@@ -22,7 +22,7 @@ export const config = {
    * A function that checks if all the environmet variables
    * with keys defined in the config.envVariablesList are defined.
    */
-  checkEnvVariables: function () {
+  checkEnvVariables() {
     let missing: string[] = [];
 
     this.envVariablesList.forEach(env => {
@@ -48,7 +48,7 @@ export const config = {
   /**
    * Setting deciding if client static files should be served.
    */
-  isProduction: function () {
+  isProduction() {
     return ['production', 'ci'].includes(this.nodeEnv);
   },
   /**
