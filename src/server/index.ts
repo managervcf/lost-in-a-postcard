@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import path from 'path';
-import express from 'express';
+import express, { Application } from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
@@ -12,7 +12,7 @@ import { config } from './config';
 config.checkEnvVariables();
 
 // Create an express server.
-const app = express();
+const app: Application = express();
 
 // Print out the current node environment.
 console.log(`(Server) Node environment: ${config.nodeEnv}`);
@@ -34,7 +34,7 @@ if (config.isProduction()) {
  * Context is built once per request and used for authentication
  * and providing common data available for all resolvers.
  */
-const server = new ApolloServer({
+const server: ApolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({ me: getCurrentUser(req) }),
@@ -54,11 +54,19 @@ server.applyMiddleware({
  * After connection with database is established,
  * express application will start.
  */
-const start = async () => {
-  await connectDb();
-  app.listen(config.port, () =>
-    console.log(`(Server) Listening on port ${config.port}.`)
-  );
-};
+async function start() {
+  try {
+    await connectDb();
+    app.listen(config.port, () =>
+      console.log(`(Server) Listening on port ${config.port}.`)
+    );
+  } catch (error) {
+    console.log('(Server) Unable to connect to the database.', error);
+    process.exit(1);
+  }
+}
 
+/**
+ * Initialize the application.
+ */
 start();
