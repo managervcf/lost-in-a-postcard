@@ -2,7 +2,7 @@
 import { countryResolvers } from './country.resolver';
 import { photoResolvers } from './photo.resolver';
 import { uploadResolvers } from './upload.resolver';
-import { userResolvers } from './user.resolver';
+import { userResolvers } from './user';
 
 // Export all resolvers as an array.
 export const resolvers = [
