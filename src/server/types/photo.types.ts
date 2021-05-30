@@ -40,17 +40,6 @@ export interface PhotoModel extends Model<PhotoDoc> {
   ): Promise<PaginateResult<PhotoDoc>>;
 }
 
-export interface GetPresignedUrlArgs {
-  country: string;
-  type: string;
-  size: number;
-}
-
-export interface getPresignedUrlResult {
-  url: string;
-  key: string;
-}
-
 export interface FindPhotosArgs {
   page?: number;
   limit?: number;
