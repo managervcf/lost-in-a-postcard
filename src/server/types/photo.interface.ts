@@ -5,7 +5,7 @@ import {
   PaginateResult,
   PaginateOptions,
 } from 'mongoose';
-import { CountryDoc, UserDoc } from './';
+import { CountryDoc, UserDoc } from '.';
 
 export interface PhotoAttributes {
   upload: {

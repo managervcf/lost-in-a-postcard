@@ -1,5 +1,5 @@
 import { Document, Model, Types } from 'mongoose';
-import { PhotoDoc } from './';
+import { PhotoDoc } from '.';
 
 export interface UserAttributes {
   username: string;
