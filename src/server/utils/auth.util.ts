@@ -38,17 +38,14 @@ export function getCurrentUser(request: Request): CurrentUser | null {
 /**
  * Authentication guard. Checks if the user is logged in.
  */
-export const isAuthenticated = <TSource, TArgs>(
-  next: FieldResolver<TSource, TArgs>
-): FieldResolver<TSource, TArgs> => (
-  parent,
-  args,
-  context,
-  info
-): FieldResolver<TSource, TArgs> =>
-  !context.me
-    ? new Error('Unauthenticated. Please log in.')
-    : next(parent, args, context, info);
+export const isAuthenticated =
+  <TSource, TArgs>(
+    next: FieldResolver<TSource, TArgs>
+  ): FieldResolver<TSource, TArgs> =>
+  (parent, args, context, info): FieldResolver<TSource, TArgs> =>
+    !context.me
+      ? new Error('Unauthenticated. Please log in.')
+      : next(parent, args, context, info);
 
 /**
  * Authorization guard. Checks if the current user is an admin.
@@ -58,23 +55,20 @@ export const isAuthenticated = <TSource, TArgs>(
  * 4. Otherwise, let user through and return resolver.
  * @param {function} next
  */
-export const isAuthorized = <TSource, TArgs>(
-  next: FieldResolver<TSource, TArgs>
-): FieldResolver<TSource, TArgs> => (
-  parent,
-  args,
-  context,
-  info
-): FieldResolver<TSource, TArgs> => {
-  const { me } = context;
+export const isAuthorized =
+  <TSource, TArgs>(
+    next: FieldResolver<TSource, TArgs>
+  ): FieldResolver<TSource, TArgs> =>
+  (parent, args, context, info): FieldResolver<TSource, TArgs> => {
+    const { me } = context;
 
-  if (!me) {
-    throw new Error('Unauthenticated. Please log in.');
-  }
+    if (!me) {
+      throw new Error('Unauthenticated. Please log in.');
+    }
 
-  if (me.role !== 'admin') {
-    throw new Error('Unauthorized. You are not an admin.');
-  }
+    if (me.role !== 'admin') {
+      throw new Error('Unauthorized. You are not an admin.');
+    }
 
-  return next(parent, args, context, info);
-};
+    return next(parent, args, context, info);
+  };
