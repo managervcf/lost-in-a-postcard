@@ -1,11 +1,11 @@
 import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-} from 'apollo-boost';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
+
+console.dir({
+  REACT_APP_GRAPHQL_URI: process.env.REACT_APP_GRAPHQL_URI,
+  NODE_ENV: process.env.NODE_ENV,
+});
 
 const baseUrl =
   process.env.REACT_APP_GRAPHQL_URI ?? process.env.NODE_ENV === 'development'
@@ -29,21 +29,19 @@ const authLink = setContext((operation, { headers }) => {
   };
 });
 
-const errorLink = onError(
-  ({ graphQLErrors, networkError, forward, operation }) => {
-    if (graphQLErrors)
-      graphQLErrors.map(({ message, locations }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: line: ${locations?.[0].line} column: ${locations?.[0].column}`
-        )
-      );
-    if (networkError) {
-      console.log(`[Network error]: ${networkError}`);
-    }
-
-    return forward(operation);
+const errorLink = onError(({ graphQLErrors, networkError, forward, operation }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: line: ${locations?.[0].line} column: ${locations?.[0].column}`
+      )
+    );
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
   }
-);
+
+  return forward(operation);
+});
 
 /**
  * Create the Apollo Client.
@@ -52,3 +50,5 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from([errorLink, authLink, httpLink]),
 });
+
+console.log({ client });
