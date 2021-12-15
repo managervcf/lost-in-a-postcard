@@ -2,15 +2,17 @@ import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
 
+const baseUrl = process.env.REACT_APP_GRAPHQL_URI
+  ? process.env.REACT_APP_GRAPHQL_URI
+  : process.env.NODE_ENV === 'development'
+  ? 'http://localhost:4000'
+  : '';
+
 console.dir({
   REACT_APP_GRAPHQL_URI: process.env.REACT_APP_GRAPHQL_URI,
   NODE_ENV: process.env.NODE_ENV,
+  baseUrl,
 });
-
-const baseUrl =
-  process.env.REACT_APP_GRAPHQL_URI ?? process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4000'
-    : '';
 
 const httpLink = new HttpLink({
   uri: `${baseUrl}/graphql`,
@@ -50,5 +52,3 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from([errorLink, authLink, httpLink]),
 });
-
-console.log({ client });
