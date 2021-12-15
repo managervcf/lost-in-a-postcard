@@ -1,33 +1,36 @@
-import { match } from 'react-router-dom';
+import { PathMatch } from 'react-router-dom';
+import { FETCH_LIMIT } from '../constants';
 import { PhotosVars } from '../graphql';
 
 /**
  * Helper function that builds query variables for photo query.
- * 1. Initialize the query variables variable.
- * 2. If the match.isExact is true (/photos), return an empty object.
- * 3. If the pathname includes the /photos/featured, set the feature
- *    property on the variable object to true.
- * 4. Set the country property on the variables object to whatever else
- *    is left behind the /photos or /photos/featured.
- * 5. Return the query variables.
+ * 1. Define base `queryVariables`.
+ * 2. Check if there is match object present, if not, return `queryVariables`.
+ * 3. Destructure properties off match object.
+ * 4. Edit `queryVariables` based on the `pathname`, `country`, `featured` properties.
  */
-export function buildQueryVariables(
-  location: Location,
-  { isExact, path }: match
-) {
-  let queryVariables: PhotosVars = {};
 
-  if (!isExact) {
-    const featuredPath = `${path}/featured`;
+export function buildQueryVars(match: PathMatch | null = null): Partial<PhotosVars> {
+  const queryVariables: Partial<PhotosVars> = {
+    limit: FETCH_LIMIT,
+    featured: false,
+    country: undefined,
+  };
 
-    if (location.pathname.includes(featuredPath)) {
-      queryVariables.featured = true;
-    }
+  if (!match) {
+    return queryVariables;
+  }
 
-    queryVariables.country = location.pathname
-      .replace(`${path}/${queryVariables.featured ? 'featured' : ''}`, '')
-      .replace('/', '')
-      .toLowerCase();
+  const {
+    params: { country, '*': featured },
+  } = match;
+
+  if (featured === 'featured') {
+    queryVariables.featured = true;
+  }
+
+  if (country && country !== 'all') {
+    queryVariables.country = country.replaceAll('-', ' ');
   }
 
   return queryVariables;

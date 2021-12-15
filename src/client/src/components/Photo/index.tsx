@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { useQuery } from 'react-apollo';
 import classnames from 'classnames';
-import PhotoImage from './PhotoImage';
-import PhotoBack from './PhotoBack';
-import Heart from '../Heart';
-import { ME } from '../../graphql';
+import { PhotoImage } from './PhotoImage';
+import { PhotoDetails } from './PhotoDetails';
+import { Heart } from '../Heart';
+import { ME, MeData } from '../../graphql';
 import {
   useOnScreen,
   useOnScroll,
@@ -25,8 +25,8 @@ interface PhotoProps {
   };
 }
 
-function Photo(props: PhotoProps) {
-  const { data } = useQuery(ME);
+export function Photo(props: PhotoProps) {
+  const { data } = useQuery<MeData>(ME);
 
   // Returns a boolean indicating if ref is visible on screen.
   const ref = useRef<any>();
@@ -57,15 +57,13 @@ function Photo(props: PhotoProps) {
       <PhotoImage
         upload={props.upload}
         country={props.country}
-        dim={data?.me && visible}
+        dim={!!data?.me && visible}
       />
       {data?.me ? (
-        <PhotoBack {...props} visible={visible} />
+        <PhotoDetails {...props} visible={visible} />
       ) : (
         <Heart id={props.id} clicks={props.clicks} />
       )}
     </figure>
   );
 }
-
-export default Photo;

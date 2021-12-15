@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation } from 'react-apollo';
-import DeleteButton from './DeleteButton';
-import Error from '../common/Error';
+import { DeleteButton } from './DeleteButton';
+import { Error } from '../common';
 import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
 
 interface PhotoFormEditProps {
@@ -19,7 +19,12 @@ interface EditedPhotoState {
   featured: boolean;
 }
 
-function PhotoFormEdit({ id, country, caption, featured }: PhotoFormEditProps) {
+export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
+  id,
+  country,
+  caption,
+  featured,
+}) => {
   const [editedPhoto, setEditedPhoto] = useState<EditedPhotoState>({
     id,
     caption,
@@ -75,10 +80,10 @@ function PhotoFormEdit({ id, country, caption, featured }: PhotoFormEditProps) {
           <span className="u-text-dim">Caption: </span> {caption}
         </p>
         <p>
-          <span className="u-text-dim">Featured: </span>{' '}
-          {featured ? 'Yes' : 'No'}
+          <span className="u-text-dim">Featured: </span> {featured ? 'Yes' : 'No'}
         </p>
       </div>
+      <hr />
       <input
         id="edit-photo-caption-input"
         name="caption"
@@ -112,6 +117,4 @@ function PhotoFormEdit({ id, country, caption, featured }: PhotoFormEditProps) {
       <DeleteButton id={id} />
     </form>
   );
-}
-
-export default PhotoFormEdit;
+};

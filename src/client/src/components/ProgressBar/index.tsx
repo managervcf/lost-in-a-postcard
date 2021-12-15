@@ -4,11 +4,11 @@ import classnames from 'classnames';
 
 interface ProgressBarProps {
   fixed?: boolean;
-  value: number;
-  max: number;
+  value?: number;
+  max?: number;
 }
 
-function ProgressBar({ fixed, value, max }: ProgressBarProps) {
+export function ProgressBar({ fixed = false, value, max = 100 }: ProgressBarProps) {
   const { progress } = useScrollProgress();
 
   const progressBarClasses = classnames({
@@ -19,10 +19,8 @@ function ProgressBar({ fixed, value, max }: ProgressBarProps) {
   return (
     <progress
       className={progressBarClasses}
-      max={max ?? 100}
+      max={max}
       value={value ?? progress}
     ></progress>
   );
 }
-
-export default ProgressBar;

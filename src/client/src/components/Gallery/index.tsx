@@ -1,80 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from 'react-apollo';
-import { useLocation, useRouteMatch } from 'react-router-dom';
-import Photo from '../Photo';
-import Navbar from '../Navbar';
-import GalleryDescription from './GalleryDescription';
-import Error from '../common/Error';
-import Loader from '../common/Loader';
+import { useMatch } from 'react-router-dom';
+import { Photo } from '../Photo';
+import { GalleryDescription } from './GalleryDescription';
+import { Error, Loader } from '../common';
 import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
 import { usePageBottom } from '../../hooks';
-import { buildQueryVariables } from '../../utils';
+import { buildQueryVars } from '../../utils';
 
-function Gallery() {
-  const [page, setPage] = useState(2);
+export const Gallery: React.FC = () => {
   const { bottom } = usePageBottom(200);
-
-  const location: any = useLocation();
-  const match = useRouteMatch();
+  const match = useMatch({ path: '/photos/:country/*' });
 
   // Build a query depending on url.
-  const variables = buildQueryVariables(location, match);
-  const { data, loading, error, fetchMore } = useQuery<PhotosData, PhotosVars>(
-    PHOTOS,
-    { variables }
-  );
+  const variables = buildQueryVars(match);
 
-  // Pull out the hasNextPage variable.
-  const hasNextPage = data?.photos.pageInfo?.hasNextPage;
-  const nextPage = data?.photos.pageInfo?.nextPage ?? page;
+  const { data, loading, error, fetchMore } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
+    variables,
+  });
 
   /**
    * Fetches more photos while there is more and when bottom
    * of the page has been reached.
    */
   useEffect(() => {
-    function fetchMorePhotos() {
+    if (!data?.photos) {
+      return;
+    }
+
+    // Destructure `nextPage` and `hasNextPage`.
+    const { nextPage, hasNextPage } = data?.photos;
+
+    if (bottom && hasNextPage) {
       fetchMore({
-        variables: { ...variables, page },
-        updateQuery: (prev, { fetchMoreResult }) =>
-          !fetchMoreResult
-            ? prev
+        variables: { ...variables, page: nextPage },
+        updateQuery: (oldData, { fetchMoreResult: newData }) =>
+          !newData
+            ? oldData
             : {
-                ...fetchMoreResult,
+                ...newData,
                 photos: {
-                  ...fetchMoreResult.photos,
-                  docs: [...prev.photos.docs, ...fetchMoreResult.photos.docs],
+                  ...newData.photos,
+                  docs: [...oldData.photos.docs, ...newData.photos.docs],
                 },
               },
       });
-
-      setPage(nextPage);
     }
-
-    if (bottom && hasNextPage) {
-      fetchMorePhotos();
-    }
-    // eslint-disable-next-line
-  }, [bottom, hasNextPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bottom]);
 
   // Handle the error, loading and lack of photos cases.
-  if (error) return <Error text="Cannot load the gallery" />;
-  if (loading) return <Loader loading={loading} />;
-  if (data?.photos.docs.length === 0)
-    return <Error text={`No photos found for ${variables.country}`} />;
+  if (loading) {
+    return <Loader loading={loading} />;
+  }
 
-  // Build photo items.
-  const photoItems = data?.photos.docs.map(photo => (
-    <Photo key={photo.id} {...photo} />
-  ));
+  if (data?.photos.docs.length === 0) {
+    return <Error text={`No photos found for ${variables.country}`} />;
+  }
+
+  if (error) {
+    return <Error text="Cannot load the gallery" />;
+  }
 
   return (
-    <article className="gallery u-mb-small">
+    <article className="gallery">
       <GalleryDescription {...variables} />
-      {photoItems}
-      <Navbar />
+      {data?.photos.docs.map(photo => (
+        <Photo key={photo.id} {...photo} />
+      ))}
     </article>
   );
-}
-
-export default Gallery;
+};

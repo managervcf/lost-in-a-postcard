@@ -1,22 +1,31 @@
 .heart {
   position: absolute;
-  bottom: 2%;
-  right: 2%;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  color: $color-main-primary;
+  transition: all $transition-time-fast;
+
+  &-clicked > &-icon {
+    // fill: $color-main-primary;
+    animation: heart-clicked $transition-time-very-slow
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both 50ms;
+  }
 
   &-counter {
-    font-size: $font-size-main-small;
-    color: $color-icon;
+    color: $color-main-primary;
+    font-size: $font-size-main;
+    font-weight: bold;
+    border-radius: $border-radius-large;
+    transition: all $transition-time-medium-fast;
 
     &-hidden {
       opacity: 0;
-      transform: translateY(6rem);
-      transition: transform 0.4s, opacity 0.2s;
+      transform: translateY(-6rem);
     }
 
     &-visible {
       opacity: 1;
-      transform: translateY(0);
-      transition: all 0.3s 0.1s;
+      transform: translateY();
     }
   }
 }

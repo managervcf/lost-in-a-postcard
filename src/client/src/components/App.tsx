@@ -1,32 +1,30 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import Logo from './Logo';
-import Login from './Login';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import Gallery from './Gallery';
-import NotFound from './NotFound';
-import Dashboard from './Dashboard';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Login } from './Login';
+import { Header } from './Header';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
+import { Gallery } from './Gallery';
+import { NotFound } from './NotFound';
+import { Dashboard } from './Dashboard';
 
-function App() {
-  return (
-    <>
-      <header>
-        <Logo />
-        <Navbar />
-        <Dashboard />
-      </header>
-      <main>
-        <Switch>
-          <Redirect exact from="/" to="/photos/featured" />
-          <Route exact path="/login" component={Login} />
-          <Route path="/photos" component={Gallery} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <Footer />
-    </>
-  );
-}
-
-export default App;
+export const App: React.FC = () => (
+  <>
+    <header>
+      <Header />
+      <Navbar />
+      <Dashboard />
+    </header>
+    <hr />
+    <main>
+      <Routes>
+        <Route path="/" element={<Navigate to="/photos/all/featured" />} />
+        <Route path="/photos/*" element={<Gallery />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </main>
+    <hr />
+    <Footer />
+  </>
+);

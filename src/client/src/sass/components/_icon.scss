@@ -3,4 +3,9 @@
   height: 2.5rem;
   fill: $color-icon;
   cursor: pointer;
+
+  &-large {
+    width: 3rem;
+    height: 3rem;
+  }
 }

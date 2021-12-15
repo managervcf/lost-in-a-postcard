@@ -1,13 +1,13 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
 import { DeletePhotoData, DeletePhotoVars, DELETE_PHOTO } from '../../graphql';
-import Error from '../common/Error';
+import { Button, Error } from '../common';
 
 interface DeleteButtonProps {
   id: string;
 }
 
-function DeleteButton({ id }: DeleteButtonProps) {
+export const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
   const [deletePhoto, { loading, error, client }] = useMutation<
     DeletePhotoData,
     DeletePhotoVars
@@ -19,14 +19,12 @@ function DeleteButton({ id }: DeleteButtonProps) {
   if (error) return <Error error={error} />;
 
   return (
-    <button
-      className="button edit-photo-delete-button u-danger"
+    <Button
+      className="edit-photo-delete-button u-danger"
       disabled={loading}
       onClick={async () => await deletePhoto()}
     >
       {loading ? 'Deleting...' : 'Delete'}
-    </button>
+    </Button>
   );
-}
-
-export default DeleteButton;
+};

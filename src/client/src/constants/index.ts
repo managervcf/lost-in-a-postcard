@@ -16,3 +16,8 @@ export enum Errors {
   NoFileProvided = 'Must upload a file',
   NoIdProvided = 'Must choose a country',
 }
+
+/**
+ * Photo fetch limit.
+ */
+export const FETCH_LIMIT = 10;

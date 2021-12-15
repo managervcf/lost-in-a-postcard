@@ -10,7 +10,7 @@ interface ErrorProps {
  * A component responsible for displaying errors
  * received from the graphQL API.
  */
-function Error({ error, text }: ErrorProps) {
+export function Error({ error, text }: ErrorProps) {
   const parsedError = error?.message
     .replace('GraphQL error: ', '')
     .replace('Network error: ', '');
@@ -23,5 +23,3 @@ function Error({ error, text }: ErrorProps) {
     </div>
   ) : null;
 }
-
-export default Error;

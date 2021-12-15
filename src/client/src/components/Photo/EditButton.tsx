@@ -5,15 +5,8 @@ interface EditButtonProps {
   setEditMode: Function;
 }
 
-function EditButton({ editMode, setEditMode }: EditButtonProps) {
-  return (
-    <button
-      className="button edit-photo-button"
-      onClick={() => setEditMode(!editMode)}
-    >
-      {editMode ? 'Exit editing' : 'Edit'}
-    </button>
-  );
-}
-
-export default EditButton;
+export const EditButton: React.FC<EditButtonProps> = ({ editMode, setEditMode }) => (
+  <button className="button edit-photo-button" onClick={() => setEditMode(!editMode)}>
+    {editMode ? 'Exit editing' : 'Edit'}
+  </button>
+);

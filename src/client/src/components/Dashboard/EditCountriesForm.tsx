@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
-import Error from '../common/Error';
+import { Button, Error } from '../common';
 import {
   COUNTRIES,
   CountriesData,
@@ -9,33 +9,35 @@ import {
   UPDATE_COUNTRY,
 } from '../../graphql';
 import { Errors } from '../../constants';
+import { useLocalStorage } from '../../hooks';
 
 interface EditedCountryState {
   id: string;
   name: string;
-  description: string;
+  description?: string;
 }
 
-function EditCountriesForm() {
-  const [editedCountry, setEditedCountry] = useState<EditedCountryState>({
-    id: '',
-    name: '',
-    description: '',
-  });
-
+export const EditCountriesForm: React.FC = () => {
   const [err, setErr] = useState<Errors | null>(null);
 
-  // Use apollo-client query and mutation hooks.
-  const { loading: qLoading, error: qError, data } = useQuery<CountriesData>(
-    COUNTRIES
-  );
+  const { value: editedCountry, setter: setEditedCountry } =
+    useLocalStorage<EditedCountryState>('edited_country', {
+      id: '',
+      name: '',
+      description: '',
+    });
 
-  const [
-    updateCountry,
-    { loading: mLoading, error: mError, client },
-  ] = useMutation<UpdateCountryData, UpdateCountryVars>(UPDATE_COUNTRY, {
-    onCompleted: () => client?.resetStore(),
-  });
+  // Use apollo-client query and mutation hooks.
+  const {
+    loading: countriesLoading,
+    error: countriesError,
+    data,
+  } = useQuery<CountriesData>(COUNTRIES);
+
+  const [updateCountry, { loading: updateCountryLoading, error: updateCountryError }] =
+    useMutation<UpdateCountryData, UpdateCountryVars>(UPDATE_COUNTRY, {
+      refetchQueries: [{ query: COUNTRIES }],
+    });
 
   /**
    * Handles submit event.
@@ -71,15 +73,13 @@ function EditCountriesForm() {
    * Handles select event.
    * 1. Find the country with the name equal to the input value.
    * 2. Set the editedCountry state variable.
-   * @param {Event} e
    */
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    const foundCountry = data?.countries.find(
-      ({ name }) => name === e.target.value
-    );
+    const foundCountry = data?.countries.find(({ name }) => name === e.target.value);
+
     if (foundCountry) {
       const { id, name, description } = foundCountry;
-      setEditedCountry({ id, name, description: description ?? '' });
+      setEditedCountry({ id, name, description });
     }
   };
 
@@ -87,19 +87,21 @@ function EditCountriesForm() {
    * Handles on change events.
    * 1. Update the editedCountry state variable
    *    with the changed input value.
-   * @param {Event} e
    */
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) =>
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setEditedCountry({
       ...editedCountry,
       [e.target.name]: e.target.value,
     });
 
   // Handles the query error and loading state.
-  if (qLoading) return null;
-  if (qError) return <Error error={qError} />;
+  if (countriesLoading || !data?.countries) {
+    return null;
+  }
+
+  if (countriesError) {
+    return <Error error={countriesError} />;
+  }
 
   // Build the country options.
   const countryOptions = [...data?.countries?.sort()].map(({ name, id }) => (
@@ -108,7 +110,7 @@ function EditCountriesForm() {
         id={name}
         className="selectable-input"
         type="radio"
-        checked={name === editedCountry.name}
+        checked={id === editedCountry.id}
         onChange={handleSelect}
         value={name}
       />
@@ -119,12 +121,13 @@ function EditCountriesForm() {
   ));
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <Error text={err} error={mError} />
+    <form id="edit-countries-form" className="form" onSubmit={handleSubmit}>
+      <Error text={err} error={updateCountryError} />
       <div className="selectable">
         <span className="selectable-label">Pick a country:</span>
         {countryOptions}
       </div>
+      <hr />
       <input
         id="edit-country-name-input"
         type="text"
@@ -132,6 +135,7 @@ function EditCountriesForm() {
         name="name"
         onChange={handleInputChange}
         placeholder="Name"
+        disabled={updateCountryLoading}
       />
       <textarea
         id="edit-country-description-input"
@@ -140,17 +144,17 @@ function EditCountriesForm() {
         name="description"
         onChange={handleInputChange}
         placeholder="Description"
+        disabled={updateCountryLoading}
       />
-      <button
+      <Button
         id="edit-country-submit-button"
         className="button"
-        type="submit"
-        disabled={mLoading || !editedCountry.id}
+        disabled={updateCountryLoading || !editedCountry.id}
+        primary
+        submit
       >
-        {!mLoading ? 'Update' : 'Updating...'}
-      </button>
+        {!updateCountryLoading ? 'Update' : 'Updating...'}
+      </Button>
     </form>
   );
-}
-
-export default EditCountriesForm;
+};

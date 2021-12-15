@@ -21,10 +21,15 @@ interface Photo {
 export interface PhotosData {
   photos: {
     docs: Photo[];
-    pageInfo?: {
-      hasNextPage: boolean;
-      nextPage?: number;
-    };
+    totalDocs: number;
+    limit: number;
+    totalPages: number;
+    page: number;
+    pagingCounter: number;
+    hasPrevPage: boolean;
+    hasNextPage: boolean;
+    prevPage?: number;
+    nextPage?: number;
   };
 }
 
@@ -55,10 +60,14 @@ export const PHOTOS = gql`
           username
         }
       }
-      pageInfo {
-        hasNextPage
-        nextPage
-      }
+      totalDocs
+      limit
+      totalPages
+      page
+      hasPrevPage
+      hasNextPage
+      prevPage
+      nextPage
     }
   }
 `;

@@ -8,14 +8,10 @@ interface PhotoInfoProps {
   featured: boolean;
 }
 
-function PhotoInfo({ country, caption, featured }: PhotoInfoProps) {
-  return (
-    <section className="gallery-caption-content">
-      <p className="gallery-caption-title">{caption}</p>
-      <p className="gallery-caption-description">{country?.name}</p>
-      {featured && <p className="gallery-caption-description">Featured</p>}
-    </section>
-  );
-}
-
-export default PhotoInfo;
+export const PhotoInfo: React.FC<PhotoInfoProps> = ({ country, caption, featured }) => (
+  <section className="gallery-caption-content">
+    <p className="gallery-caption-title">{caption}</p>
+    <p className="gallery-caption-description">{country?.name}</p>
+    {featured && <p className="gallery-caption-description">Featured</p>}
+  </section>
+);
