@@ -26,10 +26,9 @@ describe('when logs in and adds a new photo', () => {
   /**
    * Define selectors.
    */
-  const heartIconSelector =
-    '#root > main > article > figure:nth-child(2) > div > svg.icon';
+  const heartIconSelector = 'article.gallery > figure:nth-child(2) > div > svg.icon';
   const heartCounterSelector =
-    '#root > main > article > figure:nth-child(2) > div > p.heart-counter';
+    'article.gallery > figure:nth-child(2) > div > div.heart-counter';
 
   beforeEach(async () => {
     /**
@@ -47,7 +46,7 @@ describe('when logs in and adds a new photo', () => {
      * 3. Make assertions.
      */
 
-    let error = {};
+    let error: any = {};
     try {
       await page.getContentsOf(heartIconSelector);
     } catch (e) {
@@ -66,16 +65,14 @@ describe('when logs in and adds a new photo', () => {
       await page.goTo(`/photos/${testCountry.name}`);
     });
 
-    it('renders the heart icon and the heart counter at 0', async () => {
+    it('renders the heart icon and the hear counter at 0', async () => {
       /**
        * 1. Pull off the contents of the selector.
        * 2. Make assertions.
        */
-      await page.waitFor(heartIconSelector);
+      await page.waitForSelector(heartIconSelector);
       const heartIconContent = await page.getContentsOf(heartIconSelector);
-      const heartCounterContent = await page.getContentsOf(
-        heartCounterSelector
-      );
+      const heartCounterContent = await page.getContentsOf(heartCounterSelector);
       expect(heartIconContent).toMatch(/icon-heart/gi);
       expect(heartCounterContent).toEqual('0');
     });
@@ -87,19 +84,17 @@ describe('when logs in and adds a new photo', () => {
          * 2. Click the heart icon with a delay like a normal user.
          * 3. Wait for the count number to be updated.
          */
-        await page.waitFor(heartIconSelector);
-        await page.waitFor(1000);
+        await page.waitForSelector(heartIconSelector);
+        await page.waitForTimeout(1000);
         await page.click(heartIconSelector, { delay: 100 });
-        await page.waitFor(3000);
+        await page.waitForTimeout(3000);
       });
 
       it('increments the heart counter by 1', async () => {
         /**
          * 1. Pull off the contents of the selector.
          */
-        const heartCounterContent = await page.getContentsOf(
-          heartCounterSelector
-        );
+        const heartCounterContent = await page.getContentsOf(heartCounterSelector);
         expect(heartCounterContent).toEqual('1');
       });
     });

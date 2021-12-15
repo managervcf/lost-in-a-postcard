@@ -27,7 +27,7 @@ describe('when logged in and adds a new test photo', () => {
    */
   const editCountriesButtonSelector = '#edit-countries-button';
   const navbarListSelector = 'header > nav > ul';
-  const errorMessageSelector = '#edit-countries > form > div.error';
+  const errorMessageSelector = '.error-text ';
 
   beforeEach(async () => {
     /**
@@ -65,14 +65,12 @@ describe('when logged in and adds a new test photo', () => {
        * 3. Make assertions.
        */
 
-      await page.waitFor(errorMessageSelector);
+      await page.waitForSelector(errorMessageSelector);
 
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
       const navbarListContent = await page.getContentsOf(navbarListSelector);
 
-      expect(navbarListContent).not.toMatch(
-        new RegExp(testCountryEdited.name, 'gi')
-      );
+      expect(navbarListContent).not.toMatch(new RegExp(testCountryEdited.name, 'gi'));
       expect(navbarListContent).toMatch(new RegExp(testCountry.name, 'gi'));
       expect(errorMessageText).toMatch(/must provide a country name/i);
     });
@@ -92,7 +90,7 @@ describe('when logged in and adds a new test photo', () => {
        * 2. Pull off navbar and error message contents.
        * 3. Make assertions.
        */
-      await page.waitFor(errorMessageSelector);
+      await page.waitForSelector(errorMessageSelector);
 
       const navbarListContent = await page.getContentsOf(navbarListSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
@@ -100,9 +98,7 @@ describe('when logged in and adds a new test photo', () => {
       expect(errorMessageText).toMatch(
         /country name must contain at least 3 characters/i
       );
-      expect(navbarListContent).not.toMatch(
-        new RegExp(testCountryEdited.name, 'gi')
-      );
+      expect(navbarListContent).not.toMatch(new RegExp(testCountryEdited.name, 'gi'));
       expect(navbarListContent).toMatch(new RegExp(testCountry.name, 'gi'));
     });
   });
@@ -121,10 +117,9 @@ describe('when logged in and adds a new test photo', () => {
        * 2. Make assertions.it
        */
       const navbarListContent = await page.getContentsOf(navbarListSelector);
+      await page.waitForTimeout(10000);
 
-      expect(navbarListContent).toMatch(
-        new RegExp(testCountryEdited.name, 'gi')
-      );
+      expect(navbarListContent).toMatch(new RegExp(testCountryEdited.name, 'gi'));
     });
   });
 });

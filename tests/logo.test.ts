@@ -27,6 +27,6 @@ it('renders the logo', async () => {
    * 3. Make assertions.
    */
   await page.goTo();
-  const logoText = await page.getContentsOf('header > div > h1 > a');
+  const logoText = await page.getContentsOf('h1 > a');
   expect(logoText).toMatch(/lost in a postcard/i);
 });

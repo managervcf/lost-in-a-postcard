@@ -15,16 +15,15 @@ import {
 export class CustomPage {
   // Use a wildcard property to work easily with a Proxy.
   [key: string]: any;
+
   baseUrl =
-    config.nodeEnv === 'ci'
-      ? `http://localhost:${config.port}`
-      : 'http://localhost:3000';
+    config.nodeEnv === 'ci' ? `http://localhost:${config.port}` : 'http://localhost:3000';
   graphQLEndpoint = `http://localhost:${config.port}/graphql`;
 
   /**
    * Builds an instance of the CustomPage.
    */
-  static async build(headless = true) {
+  static async build(headless = false) {
     /**
      * 1. Create a Browser instance, passing an options object.
      * 2. Create a Page instance.
@@ -41,7 +40,7 @@ export class CustomPage {
     const customPage = new CustomPage(page, browser);
 
     return new Proxy(customPage, {
-      get: function (target, property: keyof CustomPage) {
+      get: function (target, property: keyof CustomPage & symbol) {
         if (property in target) {
           return target[property];
         } else if (property in browser) {
@@ -74,10 +73,7 @@ export class CustomPage {
    * 5. Wait for the logout button to appear
    *    to ensure correct login.
    */
-  async login({
-    username,
-    password,
-  }: { username: string; password: string } = testUser) {
+  async login({ username, password }: { username: string; password: string } = testUser) {
     await this.goTo('/login');
     const loginInputSelector = '#login-username-input';
     const passwordInputSelector = '#login-password-input';
@@ -85,7 +81,7 @@ export class CustomPage {
     await this.type(loginInputSelector, username);
     await this.type(passwordInputSelector, password);
     await this.click(loginButtonSelector);
-    await this.waitFor(300);
+    await this.waitForTimeout(300);
   }
 
   /**
@@ -94,8 +90,8 @@ export class CustomPage {
    * 2. Wait for the page UI to update.
    */
   async logout() {
+    await this.waitForTimeout(2000);
     await this.click('#logout-button');
-    await this.waitFor(200);
   }
 
   /**
@@ -127,9 +123,11 @@ export class CustomPage {
     const featuredCheckboxSelector = '#add-photo-featured-input';
     const fileInputSelector = '#add-photo-file-input';
     const sendButtonSelector = '#add-photo-submit-button';
+    const closeModalButtonSelector = 'button.modal-dialog-close-button';
 
-    await this.waitFor(addPhotoSelector);
+    await this.waitForSelector(addPhotoSelector);
     await this.click(addPhotoSelector);
+    await this.waitForTimeout(300);
     const inputUploadHandle = await this.$(fileInputSelector);
 
     if (country) {
@@ -147,11 +145,13 @@ export class CustomPage {
     }
 
     await this.click(sendButtonSelector);
-    await this.waitFor(50);
+    await this.waitForTimeout(50);
 
     if (file && country) {
-      await this.waitFor(5000);
+      await this.waitForTimeout(5000);
     }
+
+    await this.click(closeModalButtonSelector);
   }
 
   /**
@@ -170,11 +170,11 @@ export class CustomPage {
     const photoCaptionInputSelector = '#edit-photo-caption-input';
     const updateButtonSelector = '#edit-photo-submit-button';
 
-    await this.waitFor(2000);
+    await this.waitForTimeout(2000);
 
     await this.click(photoItemSelector, { clickCount: 1, delay: 500 });
     await this.click(editPhotoButtonSelector);
-    await this.waitFor(photoCaptionInputSelector);
+    await this.waitForSelector(photoCaptionInputSelector);
 
     await this.click(photoCaptionInputSelector, { clickCount: 3 });
     if (caption) {
@@ -184,7 +184,7 @@ export class CustomPage {
     }
 
     await this.click(updateButtonSelector);
-    await this.waitFor(300);
+    await this.waitForTimeout(300);
   }
 
   /**
@@ -200,16 +200,19 @@ export class CustomPage {
     initialCountry = testCountry
   ) {
     const editCountriesButtonSelector = '#edit-countries-button';
-    const pickedCountrySelector = `#edit-countries > form > div > div > input[value="${initialCountry.name}"] + label`;
+    const pickedCountrySelector = `#edit-countries-form > div > div > input[value="${initialCountry.name}"] + label`;
     const nameInputSelector = '#edit-country-name-input';
     const descriptionInputSelector = '#edit-country-description-input';
     const updateButtonSelector = `#edit-country-submit-button`;
+    const closeModalButtonSelector = 'button.modal-dialog-close-button';
 
-    await this.click(editCountriesButtonSelector);
+    await this.waitForTimeout(1000);
+    await this.click(editCountriesButtonSelector, { delay: 300 });
 
-    await this.waitFor(pickedCountrySelector);
+    await this.waitForTimeout(500);
+    await this.waitForSelector(pickedCountrySelector);
     await this.click(pickedCountrySelector, { delay: 100 });
-    await this.waitFor(300);
+    await this.waitForTimeout(300);
 
     await this.click(nameInputSelector, { clickCount: 3 });
     if (name) {
@@ -222,7 +225,8 @@ export class CustomPage {
     await this.type(descriptionInputSelector, description);
 
     await this.click(updateButtonSelector);
-    await this.waitFor(300);
+
+    await this.click(closeModalButtonSelector);
   }
 
   /**
@@ -261,12 +265,6 @@ export class CustomPage {
         .then(res => res.json())
         .then(json => json.errors[0].message);
 
-    return await this.evaluate(
-      callback,
-      query,
-      variables,
-      method,
-      this.graphQLEndpoint
-    );
+    return await this.evaluate(callback, query, variables, method, this.graphQLEndpoint);
   }
 }

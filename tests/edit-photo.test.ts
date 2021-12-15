@@ -45,10 +45,8 @@ describe(`when logged in, adds a new photo and navigates to /photos/${testCountr
      * 2. Make assertions.
      */
 
-    await page.waitFor(editPhotoButtonSelector);
-    const editPhotoButtonContent = await page.getContentsOf(
-      editPhotoButtonSelector
-    );
+    await page.waitForSelector(editPhotoButtonSelector);
+    const editPhotoButtonContent = await page.getContentsOf(editPhotoButtonSelector);
     expect(editPhotoButtonContent).toMatch(/edit/i);
   });
 
@@ -74,7 +72,7 @@ describe(`when logged in, adds a new photo and navigates to /photos/${testCountr
         'figure.gallery-item > figcaption > button:nth-child(2)';
 
       await page.click(exitEditingButtonSelector);
-      await page.waitFor(captionSelector);
+      await page.waitForSelector(captionSelector);
       const captionContent = await page.getContentsOf(captionSelector);
       expect(captionContent).toEqual(testPhotoEdited.caption);
       expect(captionContent).not.toEqual(testPhoto.caption);
