@@ -1,13 +1,13 @@
 import { Schema, model } from 'mongoose';
-import { CountryDoc, CountryModel } from '../types';
+import { CountryAttributes, CountryDoc, CountryModel } from '../types';
 
 // Define schema.
-const countrySchema = new Schema(
+const countrySchema = new Schema<CountryDoc, CountryModel>(
   {
     name: {
       type: String,
       trim: true,
-      unique: [true, 'Country already exists.'],
+      unique: true,
       required: [true, 'Country is required.'],
       minlength: [3, 'Country name must contain at least 3 characters.'],
       maxlength: [20, 'Country name must contain no more than 20 characters.'],
@@ -27,7 +27,4 @@ const countrySchema = new Schema(
   { timestamps: true }
 );
 
-export const Country = model<CountryDoc, CountryModel>(
-  'Country',
-  countrySchema
-);
+export const Country = model<CountryDoc, CountryModel>('Country', countrySchema);

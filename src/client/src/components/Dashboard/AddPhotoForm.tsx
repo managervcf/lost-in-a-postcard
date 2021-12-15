@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useQuery } from 'react-apollo';
-import Error from '../common/Error';
-import ProgressBar from '../ProgressBar';
-import { useUpload } from '../../hooks';
-import { COUNTRIES } from '../../graphql';
+import { Button, Error } from '../common';
+import { ProgressBar } from '../ProgressBar';
+import { useLocalStorage, useUpload } from '../../hooks';
+import { COUNTRIES, CountriesData } from '../../graphql';
 import { Errors } from '../../constants';
 
 interface NewPhotoState {
@@ -13,21 +13,24 @@ interface NewPhotoState {
   files: any[];
 }
 
-function AddPhotoForm() {
-  const [newPhoto, setNewPhoto] = useState<NewPhotoState>({
-    country: '',
-    caption: '',
-    featured: false,
-    files: [],
-  });
-
+export const AddPhotoForm: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [err, setErr] = useState<Errors | null>(null);
 
-  const { data } = useQuery(COUNTRIES);
-
   // Use the custom useUpload hook.
   const { uploadToS3, loading, getUrlError, uploadError } = useUpload();
+
+  const { value: newPhoto, setter: setNewPhoto } = useLocalStorage<NewPhotoState>(
+    'new_photo',
+    {
+      country: '',
+      caption: '',
+      featured: false,
+      files: [],
+    }
+  );
+
+  const { data } = useQuery<CountriesData>(COUNTRIES);
 
   /**
    * Handles the form submit event.
@@ -37,7 +40,6 @@ function AddPhotoForm() {
    *    upload each one of them.
    * 3. Reset state variables.
    * 4. After a timeout, reset the progress bar.
-   * @param {Event} e
    */
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -48,32 +50,31 @@ function AddPhotoForm() {
       setErr(Errors.NoFileProvided);
     } else {
       setErr(null);
-    }
 
-    for (let file of newPhoto.files) {
-      await uploadToS3({
-        ...newPhoto,
-        file,
+      for (let file of newPhoto.files) {
+        await uploadToS3({
+          ...newPhoto,
+          file,
+        });
+
+        setProgress([...newPhoto.files].indexOf(file) + 1);
+      }
+
+      setNewPhoto({
+        country: '',
+        caption: '',
+        featured: false,
+        files: [],
       });
 
-      setProgress([...newPhoto.files].indexOf(file) + 1);
+      setTimeout(() => setProgress(0), 1000);
     }
-
-    setNewPhoto({
-      country: '',
-      caption: '',
-      featured: false,
-      files: [],
-    });
-
-    setTimeout(() => setProgress(0), 1000);
   };
 
   /**
    * Handles on change events.
    * 1. Update the newPhoto state variable
    *    with the changed input value.
-   * @param {Event} e
    */
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     setNewPhoto({
@@ -89,7 +90,8 @@ function AddPhotoForm() {
     });
 
   // Bulid the country options.
-  const countryOptions = [...data?.countries].map(({ name, id }) => (
+  const countries = data?.countries ?? [];
+  const countryOptions = countries.map(({ name, id }) => (
     <div key={id}>
       <input
         id={id}
@@ -99,6 +101,7 @@ function AddPhotoForm() {
         value={name}
         checked={name === newPhoto.country}
         onChange={handleInputChange}
+        disabled={loading}
       />
       <label className="selectable-item" htmlFor={id}>
         {name}
@@ -125,11 +128,12 @@ function AddPhotoForm() {
   return (
     <form className="form" onSubmit={handleSubmit}>
       <Error text={err} error={getUrlError ?? uploadError} />
-      <ProgressBar max={newPhoto.files.length} value={progress || 0} />
       <div className="selectable">
         <span className="selectable-label">Existing countries:</span>
         {countryOptions}
       </div>
+      <hr />
+      <ProgressBar max={newPhoto.files.length} value={progress} />
       <input
         id="add-photo-country-input"
         name="country"
@@ -137,6 +141,7 @@ function AddPhotoForm() {
         placeholder="Country"
         value={newPhoto.country}
         onChange={handleInputChange}
+        disabled={loading}
       />
       <input
         id="add-photo-caption-input"
@@ -144,8 +149,8 @@ function AddPhotoForm() {
         type="text"
         placeholder={multipleSelected ? 'Caption (disabled)' : 'Caption'}
         value={newPhoto.caption}
-        disabled={multipleSelected}
         onChange={handleInputChange}
+        disabled={multipleSelected || loading}
       />
       <div className="selectable">
         <span className="selectable-label">Featured:</span>
@@ -156,6 +161,7 @@ function AddPhotoForm() {
           type="checkbox"
           checked={newPhoto.featured}
           onChange={handleInputChange}
+          disabled={loading}
         />
         <label className="selectable-item" htmlFor="add-photo-featured-input">
           {featuredText}
@@ -178,16 +184,15 @@ function AddPhotoForm() {
         </label>
         {photosChosen}
       </div>
-      <button
+      <Button
         id="add-photo-submit-button"
         className="button"
         disabled={loading}
-        type="submit"
+        primary
+        submit
       >
         {loading ? 'Uploading...' : 'Upload'}
-      </button>
+      </Button>
     </form>
   );
-}
-
-export default AddPhotoForm;
+};

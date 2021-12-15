@@ -45,7 +45,7 @@ describe('when logged in', () => {
        * 3. Create a new regex based on the test country name.
        * 4. Make assertions.
        */
-      const navbarListSelector = 'header > nav > ul';
+      const navbarListSelector = '.navbar-list';
       const navbarListContent = await page.getContentsOf(navbarListSelector);
       const regex = new RegExp(testPhoto.country, 'gi');
       expect(navbarListContent).toMatch(regex);
@@ -102,8 +102,8 @@ describe('when logged in', () => {
        * 2. Pull of contents of the error message.
        * 3. Make assertions.
        */
-      const errorMessageSelector = '#add-photo > form > div.error';
-      await page.waitFor(errorMessageSelector);
+      const errorMessageSelector = 'div.error-text';
+      await page.waitForSelector(errorMessageSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
       expect(errorMessageText).toMatch(/must provide a country name/i);
     });
@@ -126,8 +126,8 @@ describe('when logged in', () => {
        * 2. Pull of contents of the error message.
        * 3. Make assertions.
        */
-      const errorMessageSelector = '#add-photo > form > div.error';
-      await page.waitFor(errorMessageSelector);
+      const errorMessageSelector = 'div.error-text';
+      await page.waitForSelector(errorMessageSelector);
       const errorMessageText = await page.getContentsOf(errorMessageSelector);
       expect(errorMessageText).toMatch(/must upload a file/i);
     });

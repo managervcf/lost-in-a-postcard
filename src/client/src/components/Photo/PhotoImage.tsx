@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-interface PhotoImageProps {
+export interface PhotoImageProps {
   dim: boolean;
   country: {
     name: string;
@@ -11,16 +11,11 @@ interface PhotoImageProps {
   };
 }
 
-function PhotoImage({ upload, country, dim }: PhotoImageProps) {
-  const imageClasses = classnames({
-    'gallery-image': true,
-    dim,
-  });
+export const PhotoImage: React.FC<PhotoImageProps> = ({ upload, country, dim }) => {
+  const imageClasses = classnames({ dim, 'gallery-image': true });
 
   // Build the image url.
   const url = `https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.com/${upload.key}`;
 
   return <img className={imageClasses} src={url} alt={country.name ?? ''} />;
-}
-
-export default PhotoImage;
+};

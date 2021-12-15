@@ -1,62 +1,67 @@
 import 'dotenv/config';
 import path from 'path';
+import http from 'http';
 import express, { Application } from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} from 'apollo-server-core';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { connectDb } from './models';
 import { getCurrentUser } from './utils';
 import { config } from './config';
 
-// Check if environmental variables have been defined.
-config.checkEnvVariables();
+async function main() {
+  // Check if environmental variables have been defined.
+  config.checkEnvVariables();
 
-// Create an express server.
-const app: Application = express();
+  // Create an express and http server.
+  const app: Application = express();
+  const httpServer = http.createServer(app);
 
-// Print out the current node environment.
-console.log(`(Server) Node environment: ${config.nodeEnv}`);
+  /**
+   * If in production or ci environment, set static folder and
+   * catch all other requests.
+   */
+  if (config.isProduction()) {
+    const clientPath = path.resolve(`${__dirname}/../../src/client/build`);
 
-/**
- * If in production or ci environment, set static folder and
- * catch all other requests.
- */
-if (config.isProduction()) {
-  const clientPath = path.resolve(`${__dirname}/../../src/client/build`);
-  app.use('/', express.static(clientPath));
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(clientPath, 'index.html'))
-  );
-}
+    app.use('/', express.static(clientPath));
+    app.get('*', (_req, res) => res.sendFile(path.resolve(clientPath, 'index.html')));
+  }
 
-/**
- * Create an Apollo Server.
- * Context is built once per request and used for authentication
- * and providing common data available for all resolvers.
- */
-const server: ApolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req }) => ({ me: getCurrentUser(req) }),
-});
+  /**
+   * Create an Apollo Server.
+   * Context is built once per request and used for authentication
+   * and providing common data available for all resolvers.
+   */
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
+    context: ({ req }) => ({ me: getCurrentUser(req) }),
+  });
 
-// Apply middleware.
-server.applyMiddleware({
-  app,
-  path: '/graphql',
-  cors: {
-    origin: '*', // <- allow request from all domains.
-    credentials: true, // <- enable CORS response for requests with credentials.
-  },
-});
+  // Start server. Without this, apollo will throw an error.
+  await server.start();
 
-/**
- * After connection with database is established,
- * express application will start.
- */
-async function start() {
+  // Apply middleware.
+  server.applyMiddleware({
+    app,
+    path: '/graphql',
+  });
+
+  /**
+   * After connection with database is established,
+   * express application will start.
+   */
   try {
-    await connectDb();
+    connectDb();
     app.listen(config.port, () =>
       console.log(`(Server) Listening on port ${config.port}.`)
     );
@@ -66,7 +71,4 @@ async function start() {
   }
 }
 
-/**
- * Initialize the application.
- */
-start();
+main();

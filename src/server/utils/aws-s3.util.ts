@@ -43,7 +43,7 @@ export async function getUploadUrl(): Promise<GetUploadUrlResult> {
 
   const url = await s3.getSignedUrlPromise(operationName, params);
 
-  console.log(`(AWS S3) Obtained a signed url for ${key}. URL: ${url}`);
+  console.info(`(AWS S3) Obtained a signed url for ${key}. URL: ${url}`);
 
   return { url, key };
 }
@@ -57,20 +57,21 @@ export async function getUploadUrl(): Promise<GetUploadUrlResult> {
  * 4. Catch an error and assign it to the result.
  * 5. Return the result.
  */
-export async function deletePhoto(key: string): Promise<S3.DeleteObjectOutput> {
+export async function deletePhoto(
+  key: string
+): Promise<S3.DeleteObjectOutput | undefined> {
   const params = {
     Bucket,
     Key: key,
   };
 
-  let result: S3.DeleteObjectOutput;
+  let result: S3.DeleteObjectOutput | undefined = undefined;
   try {
     result = await s3.deleteObject(params).promise();
-    console.log(`(AWS S3) Deleted asset ${key}.`);
+    console.info(`(AWS S3) Deleted asset ${key}.`);
   } catch (err) {
-    result = err;
-    console.log(`(AWS S3) Failed to delete asset ${key}.`);
-    console.log(`(AWS S3)  ${JSON.stringify(err)}.`);
+    console.info(`(AWS S3) Failed to delete asset ${key}.`);
+    console.error(`(AWS S3)  ${JSON.stringify(err)}.`);
   }
 
   return result;
@@ -88,7 +89,7 @@ export async function deletePhoto(key: string): Promise<S3.DeleteObjectOutput> {
  */
 export async function deletePhotos(
   keys: string[]
-): Promise<S3.DeleteObjectsOutput> {
+): Promise<S3.DeleteObjectsOutput | undefined> {
   const Objects = [...keys].map(key => ({ Key: key }));
   const params = {
     Bucket,
@@ -97,14 +98,13 @@ export async function deletePhotos(
     },
   };
 
-  let result: S3.DeleteObjectsOutput;
+  let result: S3.DeleteObjectsOutput | undefined = undefined;
   try {
     result = await s3.deleteObjects(params).promise();
-    console.log(`(AWS S3) Deleted asset ${keys}.`);
+    console.info(`(AWS S3) Deleted asset ${keys}.`);
   } catch (err) {
-    result = err;
-    console.log(`(AWS S3) Failed to delete assets ${keys}.`);
-    console.log(`(AWS S3) ${JSON.stringify(err)}.`);
+    console.info(`(AWS S3) Failed to delete assets ${keys}.`);
+    console.error(`(AWS S3) ${JSON.stringify(err)}.`);
   }
 
   return result;
@@ -122,7 +122,7 @@ export async function deletePhotos(
 export async function tagPhotoByCountry(
   key: string,
   tag: string
-): Promise<S3.PutObjectTaggingOutput> {
+): Promise<S3.PutObjectTaggingOutput | undefined> {
   const params = {
     Bucket,
     Key: key,
@@ -136,14 +136,13 @@ export async function tagPhotoByCountry(
     },
   };
 
-  let result: S3.PutObjectTaggingOutput;
+  let result: S3.PutObjectTaggingOutput | undefined = undefined;
   try {
     result = await s3.putObjectTagging(params).promise();
-    console.log(`(AWS S3) Tagged asset ${key}.`);
+    console.info(`(AWS S3) Tagged asset ${key}.`);
   } catch (err) {
-    result = err;
-    console.log(`(AWS S3) Failed to tag asset ${key}.`);
-    console.log(`(AWS S3) ${JSON.stringify(err)}.`);
+    console.info(`(AWS S3) Failed to tag asset ${key}.`);
+    console.error(`(AWS S3) ${JSON.stringify(err)}.`);
   }
 
   return result;

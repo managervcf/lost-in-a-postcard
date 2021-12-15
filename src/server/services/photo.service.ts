@@ -100,9 +100,7 @@ class PhotoService {
           : 'Visited /photos. '
       }Found ${result.docs.length} photos from page ${page}/${
         result.totalPages
-      }. Requested ${limit} out of ${
-        result.totalDocs
-      } photos meeting query criteria.`
+      }. Requested ${limit} out of ${result.totalDocs} photos meeting query criteria.`
     );
 
     // Return page of photos.
@@ -165,9 +163,7 @@ class PhotoService {
     };
 
     // Save photo to database.
-    const createdPhoto = await this.photoModel.create<PhotoAttributes>(
-      newPhoto
-    );
+    const createdPhoto = await this.photoModel.create<PhotoAttributes>(newPhoto);
 
     if (!createdPhoto) {
       throw new Error('Could not create new photo.');
@@ -209,14 +205,10 @@ class PhotoService {
   }
 
   async updatePhoto(args: UpdatePhotoArgs): Promise<PhotoDoc> {
-    const updatedPhoto = await this.photoModel.findByIdAndUpdate(
-      args.id,
-      args,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const updatedPhoto = await this.photoModel.findByIdAndUpdate(args.id, args, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedPhoto) {
       throw new Error(`Cannot update a photo with an id ${args.id}`);
@@ -288,9 +280,7 @@ class PhotoService {
 
     // Delete country if the removed photo was the last from this country.
     if (updatedCountry.photos?.length === 0) {
-      const deletedCountry = await this.countryModel.findByIdAndDelete(
-        updatedCountry.id
-      );
+      const deletedCountry = await this.countryModel.findByIdAndDelete(updatedCountry.id);
 
       if (!deletedCountry) {
         throw new Error('Cannot delete country. Country does not exist.');
@@ -317,9 +307,7 @@ class PhotoService {
       throw new Error(`Photo with an id ${id} does not exist`);
     }
 
-    console.log(
-      `(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}).`
-    );
+    console.log(`(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}).`);
     return clickedPhoto;
   }
 

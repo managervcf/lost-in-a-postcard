@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import EditButton from './EditButton';
-import EditPhotoForm from './EditPhotoForm';
-import PhotoInfo from './PhotoInfo';
+import { EditButton } from './EditButton';
+import { PhotoEdit } from './PhotoEdit';
+import { PhotoInfo } from './PhotoInfo';
 
 interface PhotoDetailsProps {
   visible: boolean;
@@ -14,7 +14,7 @@ interface PhotoDetailsProps {
   };
 }
 
-function PhotoDetails(props: PhotoDetailsProps) {
+export const PhotoDetails: React.FC<PhotoDetailsProps> = props => {
   // Checks if the caption is in the edit mode.
   const [editMode, setEditMode] = useState(false);
 
@@ -28,7 +28,7 @@ function PhotoDetails(props: PhotoDetailsProps) {
   return (
     <figcaption className={captionClasses}>
       {editMode ? (
-        <EditPhotoForm {...props} />
+        <PhotoEdit {...props} />
       ) : (
         <PhotoInfo
           country={props.country}
@@ -39,6 +39,4 @@ function PhotoDetails(props: PhotoDetailsProps) {
       <EditButton editMode={editMode} setEditMode={setEditMode} />
     </figcaption>
   );
-}
-
-export default PhotoDetails;
+};

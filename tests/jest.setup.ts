@@ -13,12 +13,7 @@ jest.setTimeout(60 * 1000);
  * 2. Signup the test user.
  */
 beforeAll(async () => {
-  await connect(config.databaseUrl, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  });
+  await connect(config.databaseUrl);
 
   await axios.post(`http://localhost:4000/graphql`, {
     query: SIGNUP,

@@ -106,14 +106,18 @@ input {
   position: relative;
   display: flex;
   align-items: center;
-  max-width: 75%;
+  max-width: 90%;
   justify-content: center;
   font-size: $font-size-main;
   flex-wrap: wrap;
 
+  &:hover &-label {
+    // color: $color-main-primary;
+  }
+
   &-item {
     display: block;
-    margin: 0.5rem;
+    margin: 0.5rem 0.2rem;
     padding: 0.5rem 1rem;
     color: $color-main-text;
     box-shadow: none;
@@ -135,6 +139,10 @@ input {
 
     &:checked + .selectable-item {
       color: $color-main-primary;
+      box-shadow: $shadow-neomorphic;
+    }
+
+    &:hover + .selectable-item {
       box-shadow: $shadow-neomorphic;
     }
   }

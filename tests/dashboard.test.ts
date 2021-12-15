@@ -36,7 +36,7 @@ describe('when logged in', () => {
      * 3. Make assertions.
      */
 
-    const spanSelector = '#user-info > p > span';
+    const spanSelector = '#user-info > p > strong';
     const dashboardText = await page.getContentsOf(spanSelector);
     expect(dashboardText).toMatch(testUser.username);
   });
@@ -53,12 +53,10 @@ describe('when logged in', () => {
 
     const logoutButtonText = await page.getContentsOf(logoutButtonSelector);
     const addPhotoButtonText = await page.getContentsOf(addPhotoButtonSelector);
-    const editCountriesButtonText = await page.getContentsOf(
-      editCountriesButtonSelector
-    );
+    const editCountriesButtonText = await page.getContentsOf(editCountriesButtonSelector);
 
     expect(logoutButtonText).toMatch(/logout/i);
-    expect(addPhotoButtonText).toMatch(/add photo/i);
+    expect(addPhotoButtonText).toMatch(/add new photo/i);
     expect(editCountriesButtonText).toMatch(/edit countries/i);
   });
 
@@ -76,6 +74,7 @@ describe('when logged in', () => {
 
     let error = '';
     try {
+      await page.waitForSelector(logoutButtonSelector);
       await page.getContentsOf(logoutButtonSelector);
     } catch (err) {
       error = err;

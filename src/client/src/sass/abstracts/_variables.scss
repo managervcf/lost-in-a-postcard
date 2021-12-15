@@ -8,10 +8,12 @@ $color-very-light-grey: #f0f0f0;
 $color-light-grey: #efefef;
 $color-black: #000;
 
-$color-main-primary: #d9721e;
+$color-main-primary: #f8a488;
+// $color-main-primary: #d9721e;
 $color-main-primary-light: #fff8f2;
 $color-main-primary-dark: #7a4112;
 $color-main-background: $color-very-light-grey;
+$color-heart: #c85c5c;
 $color-main-text: rgba($color-black, 0.9);
 $color-main-text-dim: rgba($color-main-text, 0.5);
 $color-icon: rgba($color-main-primary, 0.6);
@@ -26,6 +28,8 @@ $line-height-main: 3.2rem;
 $line-height-huge: 10rem;
 $font-size-button: 1.5rem;
 $font-size-h1: 4.2rem;
+$font-size-h2: 2.8rem;
+$font-size-h3: 2.2rem;
 
 // Shadows.
 $shadow: 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,

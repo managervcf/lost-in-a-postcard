@@ -1,11 +1,9 @@
 import React from 'react';
+import { Navbar } from '../Navbar';
 
-function Footer() {
-  return (
-    <footer className="u-mt-small">
-      <p>Domi & Mateusz</p>
-    </footer>
-  );
-}
-
-export default Footer;
+export const Footer = () => (
+  <footer className="footer">
+    <Navbar />
+    <p>Domi & Mateusz</p>
+  </footer>
+);

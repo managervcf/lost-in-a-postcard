@@ -1,7 +1,7 @@
 # Set up the environment.
 language: node_js
 node_js:
-  - 12.18.0
+  - 16.10.0
 
 # Use a popular, small linux distro.
 dist: trusty
