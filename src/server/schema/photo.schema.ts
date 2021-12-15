@@ -5,12 +5,7 @@ import { gql } from 'apollo-server-express';
 export const photoSchema = gql`
   extend type Query {
     photo(id: ID!): Photo!
-    photos(
-      country: String
-      featured: Boolean
-      limit: Int
-      page: Int
-    ): PhotoConnection!
+    photos(country: String, featured: Boolean, limit: Int, page: Int): PhotoConnection!
   }
 
   extend type Mutation {
@@ -21,22 +16,13 @@ export const photoSchema = gql`
       key: String!
       size: Int!
     ): Photo!
-    updatePhoto(
-      id: ID!
-      country: String
-      caption: String
-      featured: Boolean
-    ): Photo!
+    updatePhoto(id: ID!, country: String, caption: String, featured: Boolean): Photo!
     deletePhoto(id: ID!): Photo!
     clickPhoto(id: ID!): Photo!
   }
 
   type PhotoConnection {
     docs: [Photo!]!
-    pageInfo: PageInfo
-  }
-
-  type PageInfo {
     totalDocs: Int!
     limit: Int!
     page: Int!

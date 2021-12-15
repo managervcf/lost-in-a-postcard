@@ -1,4 +1,4 @@
-import { Document, Model, Types } from 'mongoose';
+import { DeepPartial, Document, Model, Types } from 'mongoose';
 import { PhotoDoc } from './';
 
 export interface CountryAttributes {
@@ -10,7 +10,7 @@ export interface CountryDoc extends Document {
   id: Types.ObjectId;
   name: string;
   description?: string;
-  photos: (Types.ObjectId | PhotoDoc)[];
+  photos: (DeepPartial<Types.ObjectId | PhotoDoc> | undefined)[];
   createdAt: Date;
   updatedAt: Date;
 }

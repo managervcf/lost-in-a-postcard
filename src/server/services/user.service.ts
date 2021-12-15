@@ -144,9 +144,7 @@ class UserService {
     const deletedUser = await this.userModel.findByIdAndRemove(me.id);
 
     if (!deletedUser) {
-      throw new Error(
-        `Cannot delete user. User with an id '${me.id}' does not exist`
-      );
+      throw new Error(`Cannot delete user. User with an id '${me.id}' does not exist`);
     }
 
     // Find and delete user's photos.
@@ -160,7 +158,7 @@ class UserService {
 
     // Return deleted user.
     console.log(
-      `(GraphQL) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${deletedPhotos.n} corresponding photos.`
+      `(GraphQL) Deleted user ${deletedUser.username} (${deletedUser.id}) and ${deletedPhotos.deletedCount} corresponding photos.`
     );
     return deletedUser;
   }

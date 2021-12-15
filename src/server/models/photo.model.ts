@@ -3,7 +3,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { PhotoDoc, PhotoModel } from '../types';
 
 // Define schema.
-const photoSchema = new Schema(
+const photoSchema = new Schema<PhotoDoc, PhotoModel>(
   {
     upload: {
       size: {

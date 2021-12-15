@@ -13,8 +13,7 @@ import {
 export const photoResolvers: Resolvers<PhotoDoc> = {
   Query: {
     photo: (parent, { id }, context) => photoService.getPhoto(id),
-    photos: (parent, args: FindPhotosArgs, context) =>
-      photoService.getPhotos(args),
+    photos: (parent, args: FindPhotosArgs, context) => photoService.getPhotos(args),
   },
 
   Mutation: {
@@ -26,9 +25,8 @@ export const photoResolvers: Resolvers<PhotoDoc> = {
     updatePhoto: isAuthorized((parent, args: UpdatePhotoArgs, context) =>
       photoService.updatePhoto(args)
     ),
-    deletePhoto: isAuthorized(
-      (parent, { id }: { id: Types.ObjectId }, context) =>
-        photoService.deletePhoto(id)
+    deletePhoto: isAuthorized((parent, { id }: { id: Types.ObjectId }, context) =>
+      photoService.deletePhoto(id)
     ),
   },
 

@@ -1,4 +1,4 @@
-import { Document, Model, Types } from 'mongoose';
+import { DeepPartial, Document, Model, Types } from 'mongoose';
 import { PhotoDoc } from '.';
 
 export interface UserAttributes {
@@ -15,7 +15,7 @@ export interface UserDoc extends Document {
   secret: string;
   email: string;
   role: string;
-  photos: (Types.ObjectId | PhotoDoc)[];
+  photos: (DeepPartial<Types.ObjectId | PhotoDoc> | undefined)[];
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,11 +1,10 @@
 import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
-import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { config } from '../config';
 import { UserDoc, UserModel } from '../types';
 
 // Define schema.
-const userSchema = new Schema(
+const userSchema = new Schema<UserDoc, UserModel>(
   {
     username: {
       type: String,
@@ -38,9 +37,6 @@ const userSchema = new Schema(
   // Enable auto timestamps.
   { timestamps: true }
 );
-
-// Insert schema plugins.
-userSchema.plugin(mongooseUniqueValidator);
 
 /**
  * IMPORTANT PASSWORD SECURITY STEP.

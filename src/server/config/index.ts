@@ -25,6 +25,9 @@ export const config = {
   checkEnvVariables() {
     let missing: string[] = [];
 
+    // Print out the current node environment.
+    console.log(`(Server) Node environment: ${this.nodeEnv}.`);
+
     this.envVariablesList.forEach(env => {
       if (!(env in process.env)) {
         missing = [...missing, env];
@@ -33,9 +36,7 @@ export const config = {
 
     if (missing.length > 0) {
       throw new Error(
-        `Environment variables missing (${
-          missing.length
-        }): ${missing.toString()}`
+        `Environment variables missing (${missing.length}): ${missing.toString()}`
       );
     }
   },
