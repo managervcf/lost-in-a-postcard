@@ -5,6 +5,12 @@
   color: $color-main-primary;
   transition: all $transition-time-fast;
 
+  &-clicked > &-counter {
+    // fill: $color-main-primary;
+    animation: heart-counter-clicked $transition-time-very-slow
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both 50ms;
+  }
+
   &-clicked > &-icon {
     // fill: $color-main-primary;
     animation: heart-clicked $transition-time-very-slow
@@ -16,6 +22,7 @@
     font-size: $font-size-main;
     font-weight: bold;
     border-radius: $border-radius-large;
+    text-shadow: $shadow-text;
     transition: all $transition-time-medium-fast;
 
     &-hidden {

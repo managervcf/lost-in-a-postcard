@@ -1,0 +1,33 @@
+.camera {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-main-primary;
+  transition: opacity $transition-time-fast;
+
+  &-details {
+    // font-weight: bold;
+    color: $color-main-primary;
+    opacity: 0;
+    padding-right: 1rem;
+    text-shadow: $shadow-text;
+    transition: text-shadow 0s;
+
+    &-hidden {
+      animation: fade-out 0.7s ease-out both;
+    }
+
+    &-visible {
+      animation: fade-in 0.9s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    }
+  }
+
+  &-icon {
+    &:hover + .camera-details {
+      color: red;
+    }
+  }
+}

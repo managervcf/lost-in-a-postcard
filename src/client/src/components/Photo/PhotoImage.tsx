@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { AWS_URL } from '../../constants';
 
 export interface PhotoImageProps {
   dim: boolean;
@@ -15,7 +16,7 @@ export const PhotoImage: React.FC<PhotoImageProps> = ({ upload, country, dim }) 
   const imageClasses = classnames({ dim, 'gallery-image': true });
 
   // Build the image url.
-  const url = `https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.com/${upload.key}`;
+  const url = `${AWS_URL}${upload.key}`;
 
   return <img className={imageClasses} src={url} alt={country.name ?? ''} />;
 };

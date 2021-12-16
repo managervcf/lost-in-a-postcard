@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { useMutation } from 'react-apollo';
-import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO, PHOTOS } from '../../graphql';
+import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO, PHOTOS } from '../../../graphql';
 
 interface HeartProps {
   id: string;

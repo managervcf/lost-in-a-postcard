@@ -65,12 +65,36 @@
     transform: translateZ(-140rem);
   }
   40% {
-    transform: scale(1.1);
+    transform: scale(1.15);
   }
   50% {
     fill: $color-heart;
   }
   100% {
     transform: translateZ(0);
+  }
+}
+
+@keyframes heart-counter-clicked {
+  50% {
+    color: $color-heart;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

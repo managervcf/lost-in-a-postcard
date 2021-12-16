@@ -13,7 +13,7 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
     DeletePhotoVars
   >(DELETE_PHOTO, {
     variables: { id },
-    onCompleted: () => client?.resetStore(),
+    onCompleted: () => client?.reFetchObservableQueries(),
   });
 
   if (error) return <Error error={error} />;

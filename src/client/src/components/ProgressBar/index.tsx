@@ -8,7 +8,11 @@ interface ProgressBarProps {
   max?: number;
 }
 
-export function ProgressBar({ fixed = false, value, max = 100 }: ProgressBarProps) {
+export const ProgressBar: React.FC<ProgressBarProps> = ({
+  fixed = false,
+  value,
+  max = 100,
+}) => {
   const { progress } = useScrollProgress();
 
   const progressBarClasses = classnames({
@@ -23,4 +27,4 @@ export function ProgressBar({ fixed = false, value, max = 100 }: ProgressBarProp
       value={value ?? progress}
     ></progress>
   );
-}
+};

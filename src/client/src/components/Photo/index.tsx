@@ -3,7 +3,7 @@ import { useQuery } from 'react-apollo';
 import classnames from 'classnames';
 import { PhotoImage } from './PhotoImage';
 import { PhotoDetails } from './PhotoDetails';
-import { Heart } from '../Heart';
+import { Heart } from './Heart';
 import { ME, MeData } from '../../graphql';
 import {
   useOnScreen,
@@ -11,6 +11,7 @@ import {
   useOnClickOutside,
   useOnClickInside,
 } from '../../hooks';
+import { Camera } from './Camera';
 
 interface PhotoProps {
   id: string;
@@ -23,13 +24,16 @@ interface PhotoProps {
   upload: {
     key: string;
   };
+  author: {
+    username: string;
+  };
 }
 
-export function Photo(props: PhotoProps) {
+export const Photo: React.FC<PhotoProps> = props => {
   const { data } = useQuery<MeData>(ME);
 
   // Returns a boolean indicating if ref is visible on screen.
-  const ref = useRef<any>();
+  const ref = useRef<HTMLElement>(null);
   const onScreen = useOnScreen(ref, '-15%');
   const [visible, setVisible] = useState(false);
 
@@ -62,8 +66,11 @@ export function Photo(props: PhotoProps) {
       {data?.me ? (
         <PhotoDetails {...props} visible={visible} />
       ) : (
-        <Heart id={props.id} clicks={props.clicks} />
+        <>
+          <Camera country={props.country.name} author={props.author.username} />
+          <Heart id={props.id} clicks={props.clicks} />
+        </>
       )}
     </figure>
   );
-}
+};

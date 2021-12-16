@@ -8,12 +8,6 @@ const baseUrl = process.env.REACT_APP_GRAPHQL_URI
   ? 'http://localhost:4000'
   : '';
 
-console.dir({
-  REACT_APP_GRAPHQL_URI: process.env.REACT_APP_GRAPHQL_URI,
-  NODE_ENV: process.env.NODE_ENV,
-  baseUrl,
-});
-
 const httpLink = new HttpLink({
   uri: `${baseUrl}/graphql`,
   credentials: 'same-origin',
