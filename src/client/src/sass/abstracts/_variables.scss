@@ -11,7 +11,7 @@ $color-black: #000;
 $color-main-primary: #f8a488;
 $color-main-primary-opposite: #075b77;
 $color-main-primary-light: #fff8f2;
-$color-main-primary-dark: #7a4112;
+$color-main-primary-dark: #cf8c75;
 $color-main-background: $color-very-light-grey;
 $color-heart: #c85c5c;
 $color-main-text: rgba($color-black, 0.9);
@@ -19,8 +19,9 @@ $color-main-text-dim: rgba($color-main-text, 0.5);
 $color-icon: rgba($color-main-primary, 0.6);
 $shadow-color-light: rgba($color-white, 0.5);
 $shadow-color-dark: rgba($color-white, 0.4);
-$shadow-text: 0.2rem 0.2rem 0.7rem rgba($color-main-primary-opposite, 0.3),
-  0rem -0.4rem 1rem rgba($color-white, 0.3);
+$shadow-text: 0.2rem 0.2rem 0.7rem rgba($color-main-primary-opposite, 0.2),
+  0rem -0.1rem 0.4rem rgba($color-main-primary-opposite, 0.2),
+  -0.2rem -0.3rem 0.8rem rgba($color-white, 0.5);
 
 // Fonts.
 $font-family-main: 'Quicksand', sans-serif;

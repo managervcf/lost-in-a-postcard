@@ -6,28 +6,24 @@
   justify-content: center;
   align-items: center;
   color: $color-main-primary;
-  transition: opacity $transition-time-fast;
+  transition: all $transition-time-fast;
 
   &-details {
-    // font-weight: bold;
-    color: $color-main-primary;
     opacity: 0;
-    padding-right: 0.7rem;
+    margin-right: 0.7rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: $border-radius-large;
+    color: $color-main-primary;
+    font-weight: bold;
     text-shadow: $shadow-text;
-    transition: text-shadow 0s;
 
     &-hidden {
-      animation: fade-out 0.7s ease-out both;
+      animation: fade-out $transition-time-medium-slow ease-out both;
     }
 
     &-visible {
-      animation: fade-in 0.9s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-    }
-  }
-
-  &-icon {
-    &:hover + .camera-details {
-      color: red;
+      backdrop-filter: blur(1px) saturate(90%);
+      animation: fade-in $transition-time-slow cubic-bezier(0.39, 0.575, 0.565, 1) both;
     }
   }
 }
