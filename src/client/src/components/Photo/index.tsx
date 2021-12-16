@@ -67,7 +67,7 @@ export const Photo: React.FC<PhotoProps> = props => {
         <PhotoDetails {...props} visible={visible} />
       ) : (
         <>
-          <Camera country={props.country.name} author={props.author.username} />
+          <Camera country={props.country.name} caption={props.caption} />
           <Heart id={props.id} clicks={props.clicks} />
         </>
       )}

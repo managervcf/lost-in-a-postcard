@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 
 interface CameraProps {
   country: string;
-  author: string;
+  caption: string;
 }
 
-export const Camera: React.FC<CameraProps> = ({ country, author }) => {
+export const Camera: React.FC<CameraProps> = ({ country, caption }) => {
   const [show, setShow] = useState(false);
 
   /**
@@ -37,7 +37,8 @@ export const Camera: React.FC<CameraProps> = ({ country, author }) => {
   return (
     <div className="camera">
       <div className={cameraDetailsClasses}>
-        {country} by {author}
+        {caption ? `${caption}, ` : ' '}
+        {country}
       </div>
       <svg className="icon camera-icon" onPointerUp={showDetails}>
         <use
