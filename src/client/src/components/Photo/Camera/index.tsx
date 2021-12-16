@@ -7,26 +7,31 @@ interface CameraProps {
 }
 
 export const Camera: React.FC<CameraProps> = ({ country, author }) => {
-  const [showDetails, setShowDetails] = useState(false);
+  const [show, setShow] = useState(false);
 
   /**
    * Hides photo details.
    */
-  const hideDetails = () => setShowDetails(false);
+  const hideDetails = () => setShow(false);
+
+  /**
+   * Shows photo details.
+   */
+  const showDetails = () => setShow(true);
 
   /**
    * After some time, hide photo details.
    */
   useEffect(() => {
-    if (showDetails) {
+    if (show) {
       setTimeout(hideDetails, 2000);
     }
-  }, [showDetails]);
+  }, [show]);
 
   const cameraDetailsClasses = classNames({
     'camera-details': true,
-    'camera-details-hidden': !showDetails,
-    'camera-details-visible': showDetails,
+    'camera-details-hidden': !show,
+    'camera-details-visible': show,
   });
 
   return (
@@ -34,14 +39,9 @@ export const Camera: React.FC<CameraProps> = ({ country, author }) => {
       <div className={cameraDetailsClasses}>
         {country} by {author}
       </div>
-      <svg
-        className="icon camera-icon"
-        onPointerUp={() => setShowDetails(showDetails => !showDetails)}
-      >
+      <svg className="icon camera-icon" onPointerUp={showDetails}>
         <use
-          xlinkHref={`./assets/icons/icons.svg#icon-camera${
-            showDetails ? '' : '-outlined'
-          }`}
+          xlinkHref={`./assets/icons/icons.svg#icon-camera${show ? '' : '-outlined'}`}
         />
       </svg>
     </div>
