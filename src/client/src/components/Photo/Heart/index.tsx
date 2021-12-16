@@ -49,7 +49,7 @@ export const Heart: React.FC<HeartProps> = ({ id, clicks }) => {
   return (
     <div className={heartClasses}>
       <div className={heartCounterClasses}>{clicks}</div>
-      <svg className="icon icon-large heart-icon" onPointerUp={handleHeartClick}>
+      <svg className="icon heart-icon" onPointerUp={handleHeartClick}>
         <use
           xlinkHref={`./assets/icons/icons.svg#icon-heart${clicked ? '' : '-outlined'}`}
         />

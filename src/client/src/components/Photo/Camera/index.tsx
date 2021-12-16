@@ -35,7 +35,7 @@ export const Camera: React.FC<CameraProps> = ({ country, author }) => {
         {country} by {author}
       </div>
       <svg
-        className="icon icon-large camera-icon"
+        className="icon camera-icon"
         onPointerUp={() => setShowDetails(showDetails => !showDetails)}
       >
         <use
