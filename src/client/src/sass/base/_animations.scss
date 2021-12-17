@@ -21,13 +21,11 @@
   &-in {
     visibility: visible !important;
     transform: translateY(0);
-    transition: all $transition-time-fast ease-out !important;
   }
 
   &-out {
     visibility: hidden !important;
     transform: translateY(-3rem);
-    transition: all $transition-time-fast ease-out !important;
   }
 }
 

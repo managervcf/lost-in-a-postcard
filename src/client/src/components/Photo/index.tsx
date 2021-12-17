@@ -34,7 +34,7 @@ export const Photo: React.FC<PhotoProps> = props => {
 
   // Returns a boolean indicating if ref is visible on screen.
   const ref = useRef<HTMLElement>(null);
-  const onScreen = useOnScreen(ref, '-15%');
+  const onScreen = useOnScreen(ref, '-20%');
   const [visible, setVisible] = useState(false);
 
   /**

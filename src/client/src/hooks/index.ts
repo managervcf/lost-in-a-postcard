@@ -6,5 +6,6 @@ export * from './useOnClickOutside';
 export * from './useOnScreen';
 export * from './useOnScroll';
 export * from './usePageBottom';
+export * from './useParallax';
 export * from './useScrollProgress';
 export * from './useUpload';
