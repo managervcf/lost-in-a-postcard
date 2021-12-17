@@ -5,14 +5,14 @@
 // Colors.
 $color-white: #fff;
 $color-very-light-grey: #f0f0f0;
-$color-light-grey: #efefef;
+$color-light-grey: #eeeeee;
 $color-black: #000;
 
 $color-main-primary: #f8a488;
 $color-main-primary-opposite: #075b77;
 $color-main-primary-light: #fff8f2;
 $color-main-primary-dark: #cf8c75;
-$color-main-background: $color-white;
+$color-main-background: $color-light-grey;
 $color-heart: #c85c5c;
 $color-main-text: rgba($color-black, 0.9);
 $color-main-text-dim: rgba($color-main-text, 0.5);
@@ -62,5 +62,5 @@ $transition-time-slow: 1s;
 $transition-time-very-slow: 1.5s;
 
 // Others.
-$border-radius-standard: 0.3rem;
+$border-radius-standard: 0.5rem;
 $border-radius-large: 1rem;

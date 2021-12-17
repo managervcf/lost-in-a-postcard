@@ -15,6 +15,7 @@ export function useOnScreen(ref: RefObject<any>, rootMargin = '0px') {
       },
       {
         rootMargin,
+        threshold: 0.7,
       }
     );
     if (element) {

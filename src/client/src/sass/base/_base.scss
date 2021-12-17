@@ -32,7 +32,9 @@ body {
   text-align: center;
 
   // Prevents user from selecting text.
-  user-select: none;
+  user-select: contain;
+
+  transition: background-color $transition-time-very-slow;
 }
 
 // Scrollbar

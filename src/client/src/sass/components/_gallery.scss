@@ -18,7 +18,8 @@
     background-color: $color-main-background;
     border-radius: $border-radius-standard;
     transition: opacity $transition-time-slow;
-    box-shadow: $shadow-standard;
+    // border: $color-light-grey 1rem solid;
+    // box-shadow: $shadow-neomorphic;
   }
 
   &-image {

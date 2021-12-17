@@ -5,12 +5,14 @@ import { Photo } from '../Photo';
 import { GalleryDescription } from './GalleryDescription';
 import { Error, Loader } from '../common';
 import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
-import { usePageBottom } from '../../hooks';
+import { usePageBottom, useBackgroundDimOnScroll } from '../../hooks';
 import { buildQueryVars } from '../../utils';
 
 export const Gallery: React.FC = () => {
-  const { bottom } = usePageBottom(200);
+  const { bottom } = usePageBottom(50);
   const match = useMatch({ path: '/photos/:country/*' });
+
+  useBackgroundDimOnScroll();
 
   // Build a query depending on url.
   const variables = buildQueryVars(match);
