@@ -33,19 +33,6 @@ body {
 
   // Prevents user from selecting text.
   user-select: none;
-
-  // Background image.
-  background-image: url('../background-images/wall-2.jpg');
-  // background-image: linear-gradient(
-  //     to bottom,
-  //     rgba($color-white, 0.2) 0%,
-  //     rgba($color-white, 0.2) 100%
-  //   ),
-  //   url('../background-images/wall-3.jpg');
-  background-size: cover;
-  background-repeat: repeat;
-  background-attachment: fixed;
-  // opacity: 0.95;
 }
 
 // Scrollbar

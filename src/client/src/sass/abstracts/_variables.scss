@@ -12,13 +12,13 @@ $color-main-primary: #f8a488;
 $color-main-primary-opposite: #075b77;
 $color-main-primary-light: #fff8f2;
 $color-main-primary-dark: #cf8c75;
-$color-main-background: $color-very-light-grey;
+$color-main-background: $color-white;
 $color-heart: #c85c5c;
 $color-main-text: rgba($color-black, 0.9);
 $color-main-text-dim: rgba($color-main-text, 0.5);
 $color-icon: rgba($color-main-primary, 0.6);
-$shadow-color-light: rgba($color-white, 0.5);
-$shadow-color-dark: rgba($color-white, 0.4);
+$shadow-color-light: rgba($color-white, 0.8);
+$shadow-color-dark: rgba($color-white, 0.7);
 $shadow-text: 0.3rem 0.3rem 1rem rgba($color-main-primary-opposite, 0.2),
   -0.3rem -0.3rem 1rem rgba($color-white, 0.3),
   -0.1rem -0.1rem 0.6rem rgba($color-main-primary-opposite, 0.2),
@@ -36,7 +36,7 @@ $font-size-h2: 2.8rem;
 $font-size-h3: 2.2rem;
 
 // Shadows.
-$shadow: 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
+$shadow-standard: 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
   -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;
 $inset-shadow: inset 0.4rem 0.4rem 0.7rem -0.3rem $shadow-color-dark,
   inset -0.4rem -0.4rem 0.7rem -0.3rem $shadow-color-light;

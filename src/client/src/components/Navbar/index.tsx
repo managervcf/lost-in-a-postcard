@@ -1,13 +1,9 @@
 import { useQuery } from 'react-apollo';
 import { NavbarItem } from './NavbarItem';
 import { COUNTRIES, CountriesData } from '../../graphql';
-import { useParallax } from '../../hooks';
 
 export const Navbar: React.FC = () => {
   const { data, loading, error } = useQuery<CountriesData>(COUNTRIES);
-
-  // Create a background parallax effect.
-  useParallax();
 
   // Handle error, loading and no data states.
   if (loading || error || !data) {

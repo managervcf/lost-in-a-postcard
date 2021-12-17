@@ -17,8 +17,8 @@
     padding: 3rem 2rem;
     border-radius: $border-radius-large;
     background-color: $color-main-background;
-    box-shadow: $shadow;
     transition: $transition-time-medium;
+    box-shadow: $shadow-standard;
 
     &-close-button {
       position: absolute;
