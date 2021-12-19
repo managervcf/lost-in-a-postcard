@@ -21,7 +21,7 @@ export function useOnScreen(ref: RefObject<any>, rootMargin = '0px', threshold =
     return () => {
       observer.unobserve(element);
     };
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty array ensures that effect is only run on mount and unmount
 
   return isIntersecting;
