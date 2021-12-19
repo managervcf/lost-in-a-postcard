@@ -1,7 +1,7 @@
 import { useState, useEffect, RefObject } from 'react';
 
 // Hook
-export function useOnScreen(ref: RefObject<any>, rootMargin = '0px') {
+export function useOnScreen(ref: RefObject<any>, rootMargin = '0px', threshold = 0) {
   // State and setter for storing whether element is visible
   const [isIntersecting, setIntersecting] = useState(false);
 
@@ -13,10 +13,7 @@ export function useOnScreen(ref: RefObject<any>, rootMargin = '0px') {
         // Update our state when observer callback fires
         setIntersecting(entry.isIntersecting);
       },
-      {
-        rootMargin,
-        threshold: 0.7,
-      }
+      { rootMargin, threshold }
     );
     if (element) {
       observer.observe(element);

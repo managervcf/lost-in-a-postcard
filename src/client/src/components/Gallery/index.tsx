@@ -12,6 +12,7 @@ export const Gallery: React.FC = () => {
   const { bottom } = usePageBottom(50);
   const match = useMatch({ path: '/photos/:country/*' });
 
+  // Dims background on scroll.
   useBackgroundDimOnScroll();
 
   // Build a query depending on url.

@@ -8,7 +8,7 @@ export function usePageTop(offset = 0) {
 
   useEffect(() => {
     function handleScroll() {
-      if (offset >= Math.round(window.scrollY)) {
+      if (offset >= Math.round(window.scrollY ?? 0)) {
         setTop(true);
       } else {
         setTop(false);
@@ -16,6 +16,7 @@ export function usePageTop(offset = 0) {
     }
 
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, [top, offset]);
 
