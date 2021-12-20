@@ -26,8 +26,8 @@ export const AWS_URL = 'https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.c
 /**
  * Background color.
  */
-export const BACKGROUND_COLOR = 'rgba(0, 0, 0, 0.02)';
+export const BACKGROUND_COLOR = 'rgba(0, 0, 0, 0.03)';
 /**
  * Background color dimmed.
  */
-export const BACKGROUND_COLOR_DIM = 'rgba(0, 0, 0, 0.10)';
+export const BACKGROUND_COLOR_DIM = 'rgba(0, 0, 0, 0.1)';

@@ -13,7 +13,7 @@
   &-primary,
   &[type='submit'] {
     color: $color-main-primary;
-    background-color: rgba($color-main-primary, 0.01);
+    background-color: $color-main-background;
   }
 
   &:focus {
@@ -40,6 +40,6 @@
   right: 1.2rem;
   padding: 0.2rem 1.2rem 0.5rem 1.2rem;
   font-size: $font-size-h3;
-  background-color: rgba($color-white, 0.9);
+  background-color: $color-main-background;
   border-radius: $border-radius-round;
 }

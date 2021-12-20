@@ -4,10 +4,10 @@ input {
   font-family: inherit;
   font-size: $font-size-main;
   text-align: center;
-  background-color: inherit;
   border: none;
   border-radius: 0.5rem;
   box-shadow: $shadow-neomorphic;
+  background-color: $color-main-background;
   transition: all $transition-time-medium;
 
   &:focus {
@@ -60,7 +60,7 @@ input {
   width: 100%;
   min-height: 4rem;
   max-height: 25rem;
-  min-width: 15rem;
+  min-width: 25rem;
   max-width: 30rem;
   text-align: center;
   border: 1px solid $color-light-grey;
@@ -120,6 +120,7 @@ input {
     margin: 0.5rem 0.2rem;
     padding: 0.5rem 1rem;
     color: $color-main-text;
+    background-color: $color-main-background;
     box-shadow: none;
     border-radius: $border-radius-large;
     transition: all $transition-time-fast;

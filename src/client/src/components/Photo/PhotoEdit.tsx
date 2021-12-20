@@ -72,11 +72,11 @@ export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <div className="u-mb-medium frame">
-        <p className="u-mb-small">
+      <div>
+        <p>
           <span className="u-text-dim">Country: </span> {country?.name}
         </p>
-        <p className="u-mb-small">
+        <p>
           <span className="u-text-dim">Caption: </span> {caption}
         </p>
         <p>

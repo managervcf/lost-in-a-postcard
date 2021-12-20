@@ -5,14 +5,18 @@
   align-items: center;
 
   &-description {
-    max-width: 50rem;
+    max-width: 80rem;
+    margin: 1rem;
+    text-align: justify;
+    text-justify: inter-word;
+    text-align-last: center;
   }
 
   &-item {
     margin: 2.5rem 0;
     position: relative;
     display: flex;
-    overflow: hidden;
+    overflow: scroll;
     align-items: center;
     justify-content: center;
     background-color: $color-main-background;
@@ -23,7 +27,7 @@
   }
 
   &-image {
-    max-height: 87vh;
+    max-height: 89vh;
     max-width: 97vw;
     transition: inherit;
   }

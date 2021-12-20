@@ -5,7 +5,7 @@ import { Photo } from '../Photo';
 import { GalleryDescription } from './GalleryDescription';
 import { Button, Error, Loader } from '../common';
 import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
-import { usePageBottom, useBackgroundDimOnScroll, usePageTop } from '../../hooks';
+import { usePageBottom, usePageTop } from '../../hooks';
 import { buildQueryVars } from '../../utils';
 
 export const Gallery: React.FC = () => {
@@ -13,12 +13,8 @@ export const Gallery: React.FC = () => {
   const { top } = usePageTop(500);
   const match = useMatch({ path: '/photos/:country/*' });
 
-  // Dims background on scroll.
-  useBackgroundDimOnScroll();
-
   // Build a query depending on url.
   const variables = buildQueryVars(match);
-
   const { data, loading, error, fetchMore } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
     variables,
   });
