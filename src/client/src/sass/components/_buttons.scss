@@ -33,3 +33,12 @@
 #logout-button {
   display: inline-block;
 }
+
+#scroll-up-button {
+  position: fixed;
+  padding: 0.6rem 1.2rem;
+  background-color: rgba($color-white, 0.9);
+  border-radius: $border-radius-round;
+  bottom: 0.5rem;
+  left: 1rem;
+}

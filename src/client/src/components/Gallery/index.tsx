@@ -3,13 +3,14 @@ import { useQuery } from 'react-apollo';
 import { useMatch } from 'react-router-dom';
 import { Photo } from '../Photo';
 import { GalleryDescription } from './GalleryDescription';
-import { Error, Loader } from '../common';
+import { Button, Error, Loader } from '../common';
 import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
-import { usePageBottom, useBackgroundDimOnScroll } from '../../hooks';
+import { usePageBottom, useBackgroundDimOnScroll, usePageTop } from '../../hooks';
 import { buildQueryVars } from '../../utils';
 
 export const Gallery: React.FC = () => {
-  const { bottom } = usePageBottom(50);
+  const { bottom } = usePageBottom(100);
+  const { top } = usePageTop(500);
   const match = useMatch({ path: '/photos/:country/*' });
 
   // Dims background on scroll.
@@ -71,6 +72,17 @@ export const Gallery: React.FC = () => {
       {data?.photos.docs.map(photo => (
         <Photo key={photo.id} {...photo} />
       ))}
+
+      {!top && (
+        <Button
+          id="scroll-up-button"
+          className=""
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          primary
+        >
+          &uarr;
+        </Button>
+      )}
     </article>
   );
 };
