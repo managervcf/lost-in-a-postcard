@@ -36,9 +36,10 @@
 
 #scroll-up-button {
   position: fixed;
-  padding: 0.6rem 1.2rem;
-  background-color: rgba($color-white, 0.9);
-  border-radius: $border-radius-round;
   bottom: 0.5rem;
   right: 1rem;
+  padding: 0.2rem 1.5rem 0.5rem 1.5rem;
+  font-size: $font-size-h2;
+  background-color: rgba($color-white, 0.9);
+  border-radius: $border-radius-round;
 }
