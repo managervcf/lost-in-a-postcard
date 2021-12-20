@@ -16,14 +16,15 @@
     margin: 2.5rem 0;
     position: relative;
     display: flex;
-    overflow: scroll;
+    overflow: hidden;
     align-items: center;
     justify-content: center;
     background-color: $color-main-background;
     border-radius: $border-radius-standard;
     transition: opacity $transition-time-slow;
-    // border: $color-light-grey 1rem solid;
-    // box-shadow: $shadow-neomorphic;
+    box-shadow: $shadow-strong;
+    // border: $color-main-background 2rem solid;
+    // box-shadow: $shadow-standard;
   }
 
   &-image {
