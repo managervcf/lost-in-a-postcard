@@ -25,6 +25,9 @@ export const App: React.FC = () => (
       </Routes>
     </main>
     <hr />
-    <Footer />
+    <footer>
+      <Navbar />
+      <Footer />
+    </footer>
   </>
 );
