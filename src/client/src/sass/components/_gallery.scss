@@ -20,10 +20,10 @@
     align-items: center;
     justify-content: center;
     background-color: $color-main-background;
-    border-radius: $border-radius-standard;
     transition: opacity $transition-time-slow;
-    box-shadow: $shadow-strong;
+    // border-radius: $border-radius-standard;
     // border: $color-main-background 2rem solid;
+    // box-shadow: $shadow-strong;
     // box-shadow: $shadow-standard;
   }
 
