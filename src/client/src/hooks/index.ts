@@ -1,5 +1,6 @@
 // Export all custom hooks from a single file.
 export * from './useBackgroundDimOnScroll';
+export * from './useDelayUnmount';
 export * from './useKeyPress';
 export * from './useLocalStorage';
 export * from './useOnClickInside';

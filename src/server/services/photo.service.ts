@@ -92,9 +92,9 @@ class PhotoService {
     console.log(
       `(GraphQL) ${
         country && featured
-          ? `Visited /photos/featured/${country}. `
+          ? `Visited /photos/featured/${country.replace(/ /g, '-')}. `
           : country
-          ? `Visited /photos/${country}. `
+          ? `Visited /photos/${country.replace(/ /g, '-')}. `
           : featured
           ? `Visited /photos/featured. `
           : 'Visited /photos. '
