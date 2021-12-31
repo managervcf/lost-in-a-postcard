@@ -2,13 +2,13 @@
   &-in {
     visibility: visible !important;
     opacity: 1 !important;
-    transition: all $transition-time-fast ease-out !important;
+    transition: all $transition-time-medium-slow ease-out !important;
   }
 
   &-out {
     visibility: hidden !important;
     opacity: 0 !important;
-    transition: all $transition-time-fast ease-out !important;
+    transition: all $transition-time-medium-slow ease-out !important;
   }
 }
 
