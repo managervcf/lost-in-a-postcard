@@ -21,16 +21,13 @@
     justify-content: center;
     background-color: $color-main-background;
     transition: opacity $transition-time-slow;
-    // border-radius: $border-radius-standard;
-    // border: $color-main-background 2rem solid;
-    // box-shadow: $shadow-strong;
-    // box-shadow: $shadow-standard;
   }
 
   &-image {
     max-height: 89vh;
     max-width: 97vw;
     transition: inherit;
+    -webkit-user-drag: none;
   }
 
   &-caption {

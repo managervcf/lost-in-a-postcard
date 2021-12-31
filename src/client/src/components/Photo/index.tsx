@@ -5,12 +5,7 @@ import { PhotoImage } from './PhotoImage';
 import { PhotoDetails } from './PhotoDetails';
 import { Heart } from './Heart';
 import { ME, MeData } from '../../graphql';
-import {
-  useOnScreen,
-  useOnScroll,
-  useOnClickOutside,
-  useOnClickInside,
-} from '../../hooks';
+import { useOnScreen, useOnClickOutside, useOnClickInside } from '../../hooks';
 import { Camera } from './Camera';
 
 interface PhotoProps {
@@ -46,7 +41,6 @@ export const Photo: React.FC<PhotoProps> = props => {
   const hideCaption = () => setVisible(false);
   const showCaption = () => setVisible(true);
 
-  // useOnScroll(() => setTimeout(hideCaption, 500));
   useOnClickOutside(ref, hideCaption);
   useOnClickInside(ref, showCaption);
 
