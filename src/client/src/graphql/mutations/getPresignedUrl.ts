@@ -9,13 +9,19 @@ export interface GetPresignedUrlData {
 
 export interface GetPresignedUrlVars {
   country: string;
+  region: string;
   type: string;
   size: number;
 }
 
 export const GET_PRESIGNED_URL = gql`
-  mutation getPresignedUrl($country: String!, $type: String!, $size: Int!) {
-    getPresignedUrl(country: $country, type: $type, size: $size) {
+  mutation getPresignedUrl(
+    $country: String!
+    $region: String!
+    $type: String!
+    $size: Int!
+  ) {
+    getPresignedUrl(country: $country, region: $region, type: $type, size: $size) {
       key
       url
     }

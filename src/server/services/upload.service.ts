@@ -10,6 +10,7 @@ class UploadService {
    */
   async getPresignedUrl({
     country,
+    region,
     type,
     size,
   }: GetPresignedUrlArgs): Promise<GetUploadUrlResult> {
@@ -37,13 +38,13 @@ class UploadService {
     }
     if (size > config.maxImageSize) {
       throw new Error(
-        `File size cannot exceed ${
-          config.maxImageSize / 1e6
-        } MB. Provided file size ${size / 1e6} MB`
+        `File size cannot exceed ${config.maxImageSize / 1e6} MB. Provided file size ${
+          size / 1e6
+        } MB`
       );
     }
 
-    return await getUploadUrl();
+    return await getUploadUrl(country, region);
   }
 }
 

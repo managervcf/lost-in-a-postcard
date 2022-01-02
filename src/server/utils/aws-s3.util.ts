@@ -18,8 +18,10 @@ const Bucket = config.s3.bucketName;
 /**
  * Generates a random AWS Key.
  */
-function generateAWSKey(folderName?: string) {
-  return `${folderName ?? 'temp'}/${uuid()}.jpeg`;
+function generateAWSKey(directory: string, country: string, region: string) {
+  return `${directory}/${country.toLowerCase().replaceAll(' ', '-')}-${region
+    .toLowerCase()
+    .replaceAll(' ', '-')}-${uuid()}.jpeg`;
 }
 
 /**
@@ -32,9 +34,12 @@ function generateAWSKey(folderName?: string) {
  * 5. Print out a log to the console.
  * 6. Returns the url along with the key (upload filename).
  */
-export async function getUploadUrl(): Promise<GetUploadUrlResult> {
+export async function getUploadUrl(
+  country: string,
+  region: string
+): Promise<GetUploadUrlResult> {
   const operationName = 'putObject';
-  const key = generateAWSKey(config.s3.folderName);
+  const key = generateAWSKey(config.s3.folderName, country, region);
   const params = {
     Bucket,
     ContentType: 'image/jpeg',

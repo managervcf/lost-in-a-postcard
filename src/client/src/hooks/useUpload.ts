@@ -72,6 +72,7 @@ export const useUpload = () => {
       const { data } = await getSignedUrl({
         variables: {
           country,
+          region,
           type: file?.type ?? '',
           size: file?.size ?? 0,
         },
