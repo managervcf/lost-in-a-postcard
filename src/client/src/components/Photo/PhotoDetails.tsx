@@ -7,6 +7,7 @@ import { PhotoInfo } from './PhotoInfo';
 interface PhotoDetailsProps {
   visible: boolean;
   id: string;
+  region: string;
   caption: string;
   featured: boolean;
   clicks: number;

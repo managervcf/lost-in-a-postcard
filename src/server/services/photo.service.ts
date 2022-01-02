@@ -112,7 +112,7 @@ class PhotoService {
    */
   async addPhoto(args: AddPhotoArgs, me: Context['me']): Promise<PhotoDoc> {
     // Pull off args.
-    const { country, caption, featured, key, size } = args;
+    const { country, region, caption, featured, key, size } = args;
 
     // Input validation check.
     if (!key) {
@@ -156,6 +156,7 @@ class PhotoService {
         key,
         size,
       },
+      region,
       caption,
       featured,
       author: me.id,

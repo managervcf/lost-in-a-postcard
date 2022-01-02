@@ -11,6 +11,7 @@ import { Camera } from './Camera';
 interface PhotoProps {
   id: string;
   clicks: number;
+  region: string;
   caption: string;
   featured: boolean;
   country: {
@@ -61,7 +62,11 @@ export const Photo: React.FC<PhotoProps> = props => {
         <PhotoDetails {...props} visible={visible} />
       ) : (
         <>
-          <Camera country={props.country.name} caption={props.caption} />
+          <Camera
+            country={props.country.name}
+            region={props.region}
+            caption={props.caption}
+          />
           <Heart id={props.id} clicks={props.clicks} />
         </>
       )}

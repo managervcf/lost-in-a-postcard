@@ -6,6 +6,7 @@ interface Photo {
     name: string;
     description?: string;
   };
+  region: string;
   caption: string;
   featured: boolean;
   clicks: number;
@@ -49,6 +50,7 @@ export const PHOTOS = gql`
           name
           description
         }
+        region
         caption
         featured
         clicks

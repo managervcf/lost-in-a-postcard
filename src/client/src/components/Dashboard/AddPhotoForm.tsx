@@ -8,6 +8,7 @@ import { Errors } from '../../constants';
 
 interface NewPhotoState {
   country: string;
+  region: string;
   caption: string;
   featured: boolean;
   files: any[];
@@ -24,6 +25,7 @@ export const AddPhotoForm: React.FC = () => {
     'new_photo',
     {
       country: '',
+      region: '',
       caption: '',
       featured: false,
       files: [],
@@ -62,6 +64,7 @@ export const AddPhotoForm: React.FC = () => {
 
       setNewPhoto({
         country: '',
+        region: '',
         caption: '',
         featured: false,
         files: [],
@@ -144,13 +147,22 @@ export const AddPhotoForm: React.FC = () => {
         disabled={loading}
       />
       <input
+        id="add-photo-region-input"
+        name="region"
+        type="text"
+        placeholder="Region"
+        value={newPhoto.region}
+        onChange={handleInputChange}
+        disabled={loading}
+      />
+      <input
         id="add-photo-caption-input"
         name="caption"
         type="text"
-        placeholder={multipleSelected ? 'Caption (disabled)' : 'Caption'}
+        placeholder="Caption"
         value={newPhoto.caption}
         onChange={handleInputChange}
-        disabled={multipleSelected || loading}
+        disabled={loading}
       />
       <div className="selectable">
         <span className="selectable-label">Featured:</span>
