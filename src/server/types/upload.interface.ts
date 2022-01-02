@@ -7,6 +7,7 @@ export interface getPresignedUrlResult extends GetUploadUrlResult {}
 
 export interface GetPresignedUrlArgs {
   country: string;
+  region: string;
   type: string;
   size: number;
 }
