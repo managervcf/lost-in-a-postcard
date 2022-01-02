@@ -19,9 +19,9 @@ const Bucket = config.s3.bucketName;
  * Generates a random AWS Key.
  */
 function generateAWSKey(directory: string, country: string, region: string) {
-  return `${directory}/${country.toLowerCase().replaceAll(' ', '-')}-${region
+  return `${directory}/${country.toLowerCase().replace(/ /g, '-')}-${region
     .toLowerCase()
-    .replaceAll(' ', '-')}-${uuid()}.jpeg`;
+    .replace(/ /g, '-')}-${uuid()}.jpeg`;
 }
 
 /**
