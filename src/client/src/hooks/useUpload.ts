@@ -18,6 +18,7 @@ interface FileUploadArgs {
     type: string;
     size: number;
   };
+  region: string;
   country: string;
   caption: string;
   featured: boolean;
@@ -35,12 +36,12 @@ export const useUpload = () => {
     GetPresignedUrlData,
     GetPresignedUrlVars
   >(GET_PRESIGNED_URL);
-  const [addPhoto, { error: uploadError }] = useMutation<
-    AddPhotoData,
-    AddPhotoVars
-  >(ADD_PHOTO, {
-    onCompleted: () => client.resetStore(),
-  });
+  const [addPhoto, { error: uploadError }] = useMutation<AddPhotoData, AddPhotoVars>(
+    ADD_PHOTO,
+    {
+      onCompleted: () => client.resetStore(),
+    }
+  );
 
   const [loading, setLoading] = useState(false);
 
@@ -61,6 +62,7 @@ export const useUpload = () => {
   const uploadToS3 = async ({
     file,
     country,
+    region,
     caption,
     featured,
   }: FileUploadArgs) => {
@@ -86,7 +88,7 @@ export const useUpload = () => {
       });
 
       const newPhoto = await addPhoto({
-        variables: { country, caption, featured, key, size: file.size },
+        variables: { country, region, caption, featured, key, size: file.size },
       });
 
       console.log('(Upload) Added a new photo:', newPhoto);

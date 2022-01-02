@@ -6,6 +6,7 @@ export interface PhotoAttributes {
     size: number;
     key: string;
   };
+  region?: string;
   caption?: string;
   featured?: boolean;
   author?: Types.ObjectId;
@@ -18,6 +19,7 @@ export interface PhotoDoc extends Document {
     size: number;
     key: string;
   };
+  region: string;
   caption: string;
   featured: boolean;
   clicks: number;
@@ -45,12 +47,14 @@ export interface AddPhotoArgs {
   size: number;
   key: string;
   country: string;
+  region?: string;
   caption?: string;
   featured?: boolean;
 }
 
 export interface UpdatePhotoArgs {
   id: Types.ObjectId;
+  region?: string;
   caption?: string;
   featured?: boolean;
 }

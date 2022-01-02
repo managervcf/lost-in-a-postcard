@@ -11,12 +11,19 @@ export const photoSchema = gql`
   extend type Mutation {
     addPhoto(
       country: String!
+      region: String
       caption: String
       featured: Boolean
       key: String!
       size: Int!
     ): Photo!
-    updatePhoto(id: ID!, country: String, caption: String, featured: Boolean): Photo!
+    updatePhoto(
+      id: ID!
+      region: String
+      country: String
+      caption: String
+      featured: Boolean
+    ): Photo!
     deletePhoto(id: ID!): Photo!
     clickPhoto(id: ID!): Photo!
   }
@@ -37,6 +44,7 @@ export const photoSchema = gql`
     id: ID!
     upload: UploadedFile!
     country: Country!
+    region: String!
     caption: String!
     featured: Boolean!
     clicks: Int!

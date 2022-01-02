@@ -15,6 +15,11 @@ const photoSchema = new Schema<PhotoDoc, PhotoModel>(
         required: true,
       },
     },
+    region: {
+      type: String,
+      default: '',
+      trim: true,
+    },
     caption: {
       type: String,
       default: '',

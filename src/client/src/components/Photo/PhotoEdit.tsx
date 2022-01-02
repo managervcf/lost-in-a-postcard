@@ -9,12 +9,14 @@ interface PhotoFormEditProps {
   country: {
     name: string;
   };
+  region: string;
   caption: string;
   featured: boolean;
 }
 
 interface EditedPhotoState {
   id: string;
+  region: string;
   caption: string;
   featured: boolean;
 }
@@ -22,11 +24,13 @@ interface EditedPhotoState {
 export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
   id,
   country,
+  region,
   caption,
   featured,
 }) => {
   const [editedPhoto, setEditedPhoto] = useState<EditedPhotoState>({
     id,
+    region,
     caption,
     featured,
   });
@@ -84,6 +88,14 @@ export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
         </p>
       </div>
       <hr />
+      <input
+        id="edit-photo-region-input"
+        name="region"
+        type="text"
+        placeholder={region}
+        value={editedPhoto.region}
+        onChange={handleInputChange}
+      />
       <input
         id="edit-photo-caption-input"
         name="caption"
