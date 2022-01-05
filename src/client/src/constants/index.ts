@@ -18,7 +18,11 @@ export enum Errors {
 /**
  * Photo fetch limit.
  */
-export const FETCH_LIMIT = 10;
+export const FETCH_LIMIT = 1000;
+/**
+ * Set the standard display limit.
+ */
+export const DISPLAY_LIMIT = 2;
 /**
  * AWs resource base url.
  */

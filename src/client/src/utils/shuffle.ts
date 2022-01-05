@@ -1,12 +1,12 @@
 // Shuffles an array in random order.
-export function shuffle<T = any[]>(providedArray: T[]): T[] {
-  let array = providedArray.slice();
+export function shuffle<T = any[]>(providedArray: T[] = []): T[] {
+  let array = [...providedArray];
   let currentIndex = array.length;
   let temporaryValue;
   let randomIndex;
 
   // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+  while (currentIndex !== 0) {
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;

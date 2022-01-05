@@ -21,9 +21,7 @@ export function buildQueryVars(match: PathMatch | null = null): Partial<PhotosVa
     return queryVariables;
   }
 
-  const {
-    params: { country, '*': featured },
-  } = match;
+  const { country, '*': featured } = match.params;
 
   if (featured === 'featured') {
     queryVariables.featured = true;
