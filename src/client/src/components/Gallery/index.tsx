@@ -9,6 +9,7 @@ import { usePageBottom, usePageTop } from '../../hooks';
 import { buildQueryVars, groupByRegion, shuffle } from '../../utils';
 import { Photo as IPhoto } from '../../graphql';
 import { DISPLAY_LIMIT } from '../../constants';
+import { ScrollUp } from './ScrollUp';
 
 export const Gallery: React.FC = () => {
   // Contains all photos.
@@ -85,15 +86,7 @@ export const Gallery: React.FC = () => {
       {photos.map(photo => (
         <Photo key={photo.id} {...photo} />
       ))}
-      {!top && (
-        <Button
-          id="scroll-up-button"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          primary
-        >
-          &uarr;
-        </Button>
-      )}
+      {!top && <ScrollUp />}
     </article>
   );
 };
