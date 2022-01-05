@@ -6,12 +6,14 @@ import { GalleryDescription } from './GalleryDescription';
 import { Button, Error, Loader } from '../common';
 import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
 import { usePageBottom, usePageTop } from '../../hooks';
-import { buildQueryVars, groupPhotos, shuffle } from '../../utils';
+import { buildQueryVars, groupByRegion, shuffle } from '../../utils';
 import { Photo as IPhoto } from '../../graphql';
 import { DISPLAY_LIMIT } from '../../constants';
 
 export const Gallery: React.FC = () => {
+  // Contains all photos.
   const [allPhotos, setAllPhotos] = useState<IPhoto[]>([]);
+  // Contains photos currently displayed.
   const [photos, setPhotos] = useState<IPhoto[]>([]);
 
   const { bottom } = usePageBottom(100);
@@ -40,13 +42,13 @@ export const Gallery: React.FC = () => {
   }, [allPhotos]);
 
   /**
-   * Group all photos based on `match`.
+   * Group all photos based on current url.
    */
   useEffect(() => {
     if (match?.params.country === 'all') {
       setAllPhotos(photos => shuffle(photos));
     } else {
-      setAllPhotos(photos => groupPhotos(photos));
+      setAllPhotos(photos => groupByRegion(photos));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
