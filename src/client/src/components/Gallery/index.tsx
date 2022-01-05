@@ -3,7 +3,7 @@ import { useQuery } from 'react-apollo';
 import { useMatch } from 'react-router-dom';
 import { Photo } from '../Photo';
 import { GalleryDescription } from './GalleryDescription';
-import { Button, Error, Loader } from '../common';
+import { Error, Loader } from '../common';
 import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
 import { usePageBottom, usePageTop } from '../../hooks';
 import { buildQueryVars, groupByRegion, shuffle } from '../../utils';
