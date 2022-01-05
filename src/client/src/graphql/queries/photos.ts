@@ -1,10 +1,9 @@
 import { gql } from 'apollo-boost';
 
-interface Photo {
+export interface Photo {
   id: string;
   country: {
     name: string;
-    description?: string;
   };
   region: string;
   caption: string;
@@ -48,7 +47,6 @@ export const PHOTOS = gql`
         id
         country {
           name
-          description
         }
         region
         caption
