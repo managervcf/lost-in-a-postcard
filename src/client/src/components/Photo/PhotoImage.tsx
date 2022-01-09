@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { AWS_URL } from '../../constants';
+import e from 'cors';
 
 export interface PhotoImageProps {
   dim: boolean;
@@ -18,5 +19,13 @@ export const PhotoImage: React.FC<PhotoImageProps> = ({ upload, country, dim }) 
   // Build the image url.
   const url = `${AWS_URL}${upload.key}`;
 
-  return <img className={imageClasses} src={url} alt={country.name ?? ''} />;
+  return (
+    <img
+      // Prevent downloading images.
+      onContextMenu={e => e.preventDefault()}
+      className={imageClasses}
+      src={url}
+      alt={country.name ?? ''}
+    />
+  );
 };
