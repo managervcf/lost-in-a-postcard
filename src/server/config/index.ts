@@ -71,7 +71,7 @@ export const config = {
    * JWT config variables.
    */
   jwt: {
-    expiryTime: '3h' as SignOptions['expiresIn'],
+    expiryTime: '24h' as SignOptions['expiresIn'],
     secret: process.env.JWT_SECRET! as Secret,
   },
 
