@@ -1,5 +1,6 @@
 import { shuffle } from '.';
 import { Photo } from '../graphql';
+import { v1 as uuid } from 'uuid';
 
 interface GroupedPhotos {
   [key: string]: Photo[];
@@ -14,14 +15,17 @@ export const groupPhotos = (photos: Photo[] = []): Photo[] =>
     Object.values(
       photos.reduce<GroupedPhotos>((result, photo) => {
         // Group photos by region and shuffle captions within region.
-        result[photo.region] =
+        result[photo.region || uuid()] =
           // Shuffle images within a region.
           shuffle(
             Object.values(
               [...(result[photo.region] ?? []), photo].reduce<GroupedPhotos>(
                 (_result, _photo) => {
                   // Group photos by caption inside every region.
-                  _result[_photo.caption] = [...(_result[_photo.caption] ?? []), _photo];
+                  _result[_photo.caption || uuid()] = [
+                    ...(_result[_photo.caption] ?? []),
+                    _photo,
+                  ];
 
                   return _result;
                 },
