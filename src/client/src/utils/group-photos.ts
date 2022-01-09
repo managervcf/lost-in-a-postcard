@@ -1,3 +1,4 @@
+import { shuffle } from '.';
 import { Photo } from '../graphql';
 
 interface GroupedPhotos {
@@ -5,13 +6,21 @@ interface GroupedPhotos {
 }
 
 export const groupByRegion = (photos: Photo[] = []) =>
-  Object.values(
-    photos.reduce<GroupedPhotos>((result, photo) => {
-      // Group photos by region.
-      result[photo.region] = [...(result[photo.region] ?? []), photo];
-      return result;
-    }, {})
-  ).flat();
+  // Group by region and return an array of regions.
+  // Shuffle regions.
+  shuffle(
+    Object.values(
+      photos.reduce<GroupedPhotos>((result, photo) => {
+        // Group photos by region.
+        result[photo.region] = [...(result[photo.region] ?? []), photo];
+        return result;
+      }, {})
+    )
+  )
+    // Shuffle images within a region.
+    .map(region => shuffle(region))
+    // Flatten to one large array of photos.
+    .flat();
 
 // export const groupPhotos = (photos: Photo[] = []) =>
 //   Object.values(
