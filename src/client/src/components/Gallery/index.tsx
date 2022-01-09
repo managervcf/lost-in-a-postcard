@@ -17,7 +17,7 @@ export const Gallery: React.FC = () => {
   // Contains photos currently displayed.
   const [photos, setPhotos] = useState<IPhoto[]>([]);
 
-  console.log({ photos });
+  console.log('(Info) Grouped photos:', allPhotos);
 
   const { bottom } = usePageBottom(100);
   const { top } = usePageTop(500);
