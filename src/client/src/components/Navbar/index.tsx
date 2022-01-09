@@ -4,7 +4,6 @@ import { COUNTRIES, CountriesData, ME, MeData } from '../../graphql';
 
 export const Navbar: React.FC = () => {
   const { data: countriesData, loading, error } = useQuery<CountriesData>(COUNTRIES);
-  console.log({ countriesData });
 
   const { data } = useQuery<MeData>(ME, { fetchPolicy: 'network-only' });
 
