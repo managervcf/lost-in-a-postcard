@@ -6,7 +6,7 @@ interface Country {
   description?: string;
   photos: {
     id: string;
-  };
+  }[];
 }
 
 export interface CountriesData {
