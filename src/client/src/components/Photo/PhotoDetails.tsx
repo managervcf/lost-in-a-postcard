@@ -11,6 +11,9 @@ interface PhotoDetailsProps {
   caption: string;
   featured: boolean;
   clicks: number;
+  upload: {
+    key: string;
+  };
   country: {
     name: string;
   };
@@ -30,6 +33,7 @@ export const PhotoDetails: React.FC<PhotoDetailsProps> = props => {
   return (
     <figcaption className={captionClasses}>
       {editMode ? <PhotoEdit {...props} /> : <PhotoInfo {...props} />}
+      <hr />
       <EditButton editMode={editMode} setEditMode={setEditMode} />
     </figcaption>
   );
