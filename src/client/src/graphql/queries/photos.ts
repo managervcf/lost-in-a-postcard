@@ -56,9 +56,6 @@ export const PHOTOS = gql`
           key
           size
         }
-        author {
-          username
-        }
       }
       totalDocs
       limit
