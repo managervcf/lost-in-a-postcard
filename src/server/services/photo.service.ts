@@ -16,12 +16,14 @@ import {
   UserDoc,
   UserModel,
 } from '../types';
+import { dataloaders } from '../dataloaders';
 
 class PhotoService {
   constructor(
     private photoModel: PhotoModel,
     private countryModel: CountryModel,
-    private userModel: UserModel
+    private userModel: UserModel,
+    private dataloaders: Context['dataloaders']
   ) {}
   /**
    * Finds a photo based on the id.
@@ -326,19 +328,19 @@ class PhotoService {
     }
   }
 
-  async getCountry(country: PhotoDoc['country']): Promise<CountryDoc> {
-    if (country instanceof this.countryModel) {
-      throw new Error(`Cannot find a country, ${country} is not a valid id.`);
-    } else {
-      const foundCountry = await this.countryModel.findById(country);
-
-      if (!foundCountry) {
-        throw new Error(`Cannot find a country with an id ${country}`);
-      }
-
-      return foundCountry;
+  async getCountry(country: PhotoDoc['country']): Promise<CountryDoc | null> {
+    if (!(country instanceof Types.ObjectId)) {
+      return null;
     }
+
+    const foundCountry = await this.dataloaders.country.load(country);
+
+    if (!foundCountry) {
+      throw new Error(`Cannot find a country with an id ${country}`);
+    }
+
+    return foundCountry;
   }
 }
 
-export const photoService = new PhotoService(Photo, Country, User);
+export const photoService = new PhotoService(Photo, Country, User, dataloaders);

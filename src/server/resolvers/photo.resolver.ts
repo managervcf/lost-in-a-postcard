@@ -31,7 +31,7 @@ export const photoResolvers: Resolvers<PhotoDoc> = {
   },
 
   Photo: {
-    country: ({ country }, args, context) => photoService.getCountry(country),
+    country: ({ country }, args, { dataloaders }) => photoService.getCountry(country),
     author: ({ author }, args, context) => photoService.getAuthor(author),
     createdAt: ({ createdAt }, args, context) => createdAt.toString(),
     updatedAt: ({ updatedAt }, args, context) => updatedAt.toString(),

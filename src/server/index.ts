@@ -9,6 +9,7 @@ import {
 } from 'apollo-server-core';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
+import { dataloaders } from './dataloaders';
 import { connectDb } from './models';
 import { getCurrentUser } from './utils';
 import { config } from './config';
@@ -44,7 +45,16 @@ async function main() {
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
-    context: ({ req }) => ({ me: getCurrentUser(req) }),
+    context: ({ req }) => ({
+      /**
+       * Currently logged in user.
+       */
+      me: getCurrentUser(req),
+      /**
+       * Dataloaders handling GraphQL n+1 problem.
+       */
+      dataloaders,
+    }),
   });
 
   // Start server. Without this, apollo will throw an error.

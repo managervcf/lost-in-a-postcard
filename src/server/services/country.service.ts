@@ -9,10 +9,7 @@ import {
 } from '../types';
 
 class CountryService {
-  constructor(
-    private countryModel: CountryModel,
-    private photoModel: PhotoModel
-  ) {}
+  constructor(private countryModel: CountryModel, private photoModel: PhotoModel) {}
   /**
    * Finds all countries.
    */
@@ -39,11 +36,7 @@ class CountryService {
    * 2. Update the record in the database.
    * 3. Return the updated record.
    */
-  async updateCountry({
-    id,
-    name,
-    description,
-  }: UpdateCountryArgs): Promise<CountryDoc> {
+  async updateCountry({ id, name, description }: UpdateCountryArgs): Promise<CountryDoc> {
     if (!id) {
       throw new Error('Must provide a country id');
     }
