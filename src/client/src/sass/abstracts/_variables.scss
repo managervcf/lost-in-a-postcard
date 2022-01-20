@@ -40,10 +40,8 @@ $shadow-neomorphic: 0.4rem 0.4rem 0.7rem -0.3rem rgba($color-black, 0.3),
   -0.4rem -0.4rem 0.7rem -0.3rem rgba($color-white, 1);
 $shadow-neomorphic-focus: 0.5rem 0.5rem 0.8rem -0.2rem rgba($color-main-primary-dark, 0.3),
   -0.5rem -0.5rem 0.8rem -0.1rem rgba($color-main-primary-light, 1);
-$shadow-text: 0.3rem 0.3rem 1rem rgba($color-main-primary-opposite, 0.2),
-  -0.3rem -0.3rem 1rem rgba($color-white, 0.3),
-  -0.1rem -0.1rem 0.6rem rgba($color-main-primary-opposite, 0.2),
-  0.1rem 0.1rem 0.6rem rgba($color-white, 0.3);
+$shadow-text: 0.1rem 0.1rem 0.3rem rgba($color-black, 0.3),
+  -0.1rem -0.1rem 1rem rgba($color-white, 0.5);
 $shadow-strong: 0 0 8rem -5rem $color-black;
 
 // Gradients.
