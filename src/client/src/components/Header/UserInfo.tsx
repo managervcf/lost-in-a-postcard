@@ -1,5 +1,4 @@
 import { useApolloClient } from 'react-apollo';
-import React from 'react';
 import { MeData } from '../../graphql';
 import { Button } from '../common';
 

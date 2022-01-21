@@ -4,14 +4,16 @@ import classnames from 'classnames';
 
 interface ProgressBarProps {
   fixed?: boolean;
-  value?: number;
+  value: number;
   max?: number;
+  showProgress?: boolean;
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
   fixed = false,
-  value,
+  value = 0,
   max = 100,
+  showProgress = false,
 }) => {
   const { progress } = useScrollProgress();
 
@@ -21,10 +23,13 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   });
 
   return (
-    <progress
-      className={progressBarClasses}
-      max={max}
-      value={value ?? progress}
-    ></progress>
+    <>
+      <progress className={progressBarClasses} max={max} value={value ?? progress} />
+      {showProgress && !!value && (
+        <label className="progress-bar-text">
+          {!!max ? Math.floor((value / max) * 100) : 100}%
+        </label>
+      )}
+    </>
   );
 };

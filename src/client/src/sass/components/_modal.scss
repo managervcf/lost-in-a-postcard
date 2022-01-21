@@ -16,10 +16,10 @@
     max-width: 90vw;
     max-height: 90vh;
     padding: 3rem 2rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     border-radius: $border-radius-large;
     background-color: $color-main-background;
-    transition: $transition-time-medium;
+    transition: $transition-time-fast;
     box-shadow: $shadow-standard;
 
     &-close-button {

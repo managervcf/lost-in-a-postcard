@@ -14,13 +14,13 @@
 
     &:hover::-webkit-scrollbar-thumb {
       background-image: $linear-gradient-scrollbar;
-      transition: all $transition-time-slow;
+      transition: all $transition-time-fast;
     }
 
     // Scrollbar
     &::-webkit-scrollbar {
       display: block;
-      height: 0.8rem;
+      height: 1rem;
 
       // Track and thumb
       &-track,

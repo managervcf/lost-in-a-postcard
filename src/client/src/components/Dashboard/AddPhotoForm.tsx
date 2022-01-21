@@ -136,7 +136,7 @@ export const AddPhotoForm: React.FC = () => {
         {countryOptions}
       </div>
       <hr />
-      <ProgressBar max={newPhoto.files.length} value={progress} />
+      <ProgressBar showProgress max={newPhoto.files.length} value={progress} />
       <input
         id="add-photo-country-input"
         name="country"

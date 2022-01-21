@@ -1,33 +1,33 @@
 .fade {
   &-in {
-    visibility: visible !important;
-    opacity: 1 !important;
-    transition: all $transition-time-medium-slow ease-out !important;
+    visibility: visible;
+    opacity: 1;
+    transition: all $transition-time-fast;
   }
 
   &-out {
-    visibility: hidden !important;
-    opacity: 0 !important;
-    transition: all $transition-time-medium-slow ease-out !important;
+    visibility: hidden;
+    opacity: 0;
+    transition: all $transition-time-fast;
   }
 }
 
 .dim {
-  opacity: 0.08 !important;
-  transition: opacity $transition-time-fast ease !important;
+  opacity: 0.08;
+  transition: opacity $transition-time-fast;
 }
 
 .slide {
   &-in {
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    transition: all $transition-time-fast ease-out !important;
+    visibility: visible;
+    transform: translateY(0);
+    transition: all $transition-time-fast;
   }
 
   &-out {
-    visibility: hidden !important;
-    transform: translateY(-3rem) !important;
-    transition: all $transition-time-fast ease-out !important;
+    visibility: hidden;
+    transform: translateY(-3rem);
+    transition: all $transition-time-fast;
   }
 }
 

@@ -47,7 +47,7 @@ body::-webkit-scrollbar {
   }
 
   &-thumb {
-    transition: all $transition-time-slow;
+    transition: all $transition-time-fast;
     background-color: $color-main-primary;
     outline: none;
   }

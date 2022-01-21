@@ -8,7 +8,7 @@ input {
   border-radius: 0.5rem;
   box-shadow: $shadow-neomorphic;
   background-color: $color-main-background;
-  transition: all $transition-time-medium;
+  transition: all $transition-time-fast;
 
   &:focus {
     color: $color-main-primary;

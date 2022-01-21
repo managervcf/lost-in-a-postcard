@@ -47,9 +47,9 @@ $shadow-strong: 0 0 8rem -5rem $color-black;
 // Gradients.
 $linear-gradient-scrollbar: linear-gradient(
   90deg,
-  transparent 10%,
-  rgba($color-main-primary, 0.5) 50%,
-  transparent 90%
+  rgba($color-main-primary, 0.1) 0%,
+  rgba($color-main-primary, 0.7) 50%,
+  rgba($color-main-primary, 0.1) 100%
 );
 
 // Transitions.

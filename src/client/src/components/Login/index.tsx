@@ -74,7 +74,7 @@ export const Login = () => {
         <button
           id="login-back-button"
           className="button"
-          onClick={() => navigate('/photos')}
+          onClick={() => navigate('/photos/all/featured')}
         >
           Back
         </button>
