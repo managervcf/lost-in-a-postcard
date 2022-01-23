@@ -30,8 +30,8 @@ class UploadService {
     if (!type) {
       throw new Error('Must upload a file');
     }
-    if (!type.match(/image\/jpeg/gi)) {
-      throw new Error('File type must be of image/jpeg');
+    if (!type.match(/image\/(jpe?g|gif|)/gi)) {
+      throw new Error('File type must be of image/*');
     }
     if (!size || size === 0) {
       throw new Error('Must upload a file');
@@ -44,7 +44,7 @@ class UploadService {
       );
     }
 
-    return await getUploadUrl(country, region);
+    return await getUploadUrl(country, region, type);
   }
 }
 

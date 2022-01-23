@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { useMutation } from 'react-apollo';
-import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO, PHOTOS } from '../../../graphql';
+import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO } from '../../../graphql';
 
 interface HeartProps {
   id: string;
@@ -18,9 +18,7 @@ export const Heart: React.FC<HeartProps> = ({ id, clicks }) => {
   // );
   const [clicked, setClicked] = useState(false);
 
-  const [clickPhoto] = useMutation<ClickPhotoData, ClickPhotoVars>(CLICK_PHOTO, {
-    refetchQueries: [{ query: PHOTOS }],
-  });
+  const [clickPhoto] = useMutation<ClickPhotoData, ClickPhotoVars>(CLICK_PHOTO);
 
   const heartClasses = classnames({
     heart: true,
@@ -48,7 +46,7 @@ export const Heart: React.FC<HeartProps> = ({ id, clicks }) => {
 
   return (
     <div className={heartClasses}>
-      <div className={heartCounterClasses}>{clicks}</div>
+      <div className={heartCounterClasses}>{clicked ? clicks + 1 : clicks}</div>
       <svg className="icon heart-icon" onPointerUp={handleHeartClick}>
         <use
           xlinkHref={`./assets/icons/icons.svg#icon-heart${clicked ? '' : '-outlined'}`}

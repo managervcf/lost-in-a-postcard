@@ -19,9 +19,9 @@ const Bucket = config.s3.bucketName;
  * Generates a random AWS Key.
  */
 function generateAWSKey(directory: string, country: string, region: string) {
-  return `${directory}/${country.toLowerCase().replace(/ /g, '-')}-${region
-    .toLowerCase()
-    .replace(/ /g, '-')}-${uuid()}.jpeg`;
+  return `${directory}/${country.toLowerCase().replace(/ /g, '-')}-${
+    region ? region.toLowerCase().replace(/ /g, '-') : ''
+  }-${uuid()}`;
 }
 
 /**
@@ -36,13 +36,14 @@ function generateAWSKey(directory: string, country: string, region: string) {
  */
 export async function getUploadUrl(
   country: string,
-  region: string
+  region: string,
+  type: string
 ): Promise<GetUploadUrlResult> {
   const operationName = 'putObject';
   const key = generateAWSKey(config.s3.folderName, country, region);
   const params = {
     Bucket,
-    ContentType: 'image/jpeg',
+    ContentType: type,
     Key: key,
   };
 

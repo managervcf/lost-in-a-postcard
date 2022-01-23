@@ -188,7 +188,7 @@ export const AddPhotoForm: React.FC = () => {
             id="add-photo-file-input"
             name="files"
             type="file"
-            accept="image/jpeg"
+            accept="image/*"
             multiple
             disabled={loading}
             onChange={handleInputChange}
