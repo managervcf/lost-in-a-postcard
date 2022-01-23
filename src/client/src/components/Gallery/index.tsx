@@ -4,7 +4,7 @@ import { useMatch } from 'react-router-dom';
 import { Photo } from '../Photo';
 import { GalleryDescription } from './GalleryDescription';
 import { Error, Loader } from '../common';
-import { PHOTOS, PhotosData, PhotosVars } from '../../graphql';
+import { ME, MeData, PHOTOS, PhotosData, PhotosVars } from '../../graphql';
 import { usePageBottom, usePageTop } from '../../hooks';
 import { buildQueryVars, groupPhotos, shuffle } from '../../utils';
 import { Photo as IPhoto } from '../../graphql';
@@ -17,8 +17,6 @@ export const Gallery: React.FC = () => {
   // Contains photos currently displayed.
   const [photos, setPhotos] = useState<IPhoto[]>([]);
 
-  console.log('(Info) Grouped photos:', allPhotos);
-
   const { bottom } = usePageBottom(100);
   const { top } = usePageTop(500);
 
@@ -29,6 +27,8 @@ export const Gallery: React.FC = () => {
   const { data, loading, error } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
     variables,
   });
+
+  const { data: userData } = useQuery<MeData>(ME);
 
   /**
    * Set all photos.
@@ -41,6 +41,7 @@ export const Gallery: React.FC = () => {
    * Set photos to display.
    */
   useEffect(() => {
+    console.log('(Info) Grouped photos:', allPhotos);
     setPhotos(allPhotos.slice(0, DISPLAY_LIMIT));
   }, [allPhotos]);
 
@@ -48,6 +49,11 @@ export const Gallery: React.FC = () => {
    * Group all photos based on current url.
    */
   useEffect(() => {
+    // Don't shuffle or group when logged in.
+    if (userData?.me) {
+      return;
+    }
+
     if (match?.params.country === 'all') {
       setAllPhotos(photos => shuffle(photos));
     } else {

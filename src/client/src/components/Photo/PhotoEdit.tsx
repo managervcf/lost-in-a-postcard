@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useMutation } from 'react-apollo';
+import { useMutation, useApolloClient } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
 import { Button, Error } from '../common';
 import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
@@ -35,13 +35,13 @@ export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
     featured,
   });
 
+  const client = useApolloClient();
+
   // Use mutation hook.
-  const [updateMutation, { error, loading, client }] = useMutation<
+  const [updateMutation, { error, loading }] = useMutation<
     UpdatePhotoData,
     UpdatePhotoVars
-  >(UPDATE_PHOTO, {
-    onCompleted: () => client?.resetStore(),
-  });
+  >(UPDATE_PHOTO, { onCompleted: client.resetStore });
 
   /**
    * Handles the form submit event.
@@ -72,13 +72,18 @@ export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
           : null,
     });
 
-  if (error) return <Error error={error} />;
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
       <div>
         <p>
           <span className="u-text-dim">Country: </span> {country?.name}
+        </p>
+        <p>
+          <span className="u-text-dim">Region: </span> {region}
         </p>
         <p>
           <span className="u-text-dim">Caption: </span> {caption}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation } from 'react-apollo';
+import { useApolloClient, useMutation } from 'react-apollo';
 import { DeletePhotoData, DeletePhotoVars, DELETE_PHOTO } from '../../graphql';
 import { Button, Error } from '../common';
 

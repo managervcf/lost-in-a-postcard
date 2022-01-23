@@ -32,20 +32,18 @@ interface FileUploadArgs {
  * 4. Define the uploadToS3 function.
  */
 export const useUpload = () => {
+  const client = useApolloClient();
+
   const [getSignedUrl, { error: getUrlError }] = useMutation<
     GetPresignedUrlData,
     GetPresignedUrlVars
   >(GET_PRESIGNED_URL);
   const [addPhoto, { error: uploadError }] = useMutation<AddPhotoData, AddPhotoVars>(
     ADD_PHOTO,
-    {
-      onCompleted: () => client.resetStore(),
-    }
+    { onCompleted: client.resetStore }
   );
 
   const [loading, setLoading] = useState(false);
-
-  const client = useApolloClient();
 
   /**
    * Uploads the photo to the AWS S3 and adds it to the database.
