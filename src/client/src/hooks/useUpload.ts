@@ -78,7 +78,9 @@ export const useUpload = () => {
         },
       });
 
-      if (!data) throw new Error('Cannot get the signed url');
+      if (!data) {
+        throw new Error('Cannot get the signed url');
+      }
 
       const { key, url } = data?.getPresignedUrl;
 
@@ -92,7 +94,7 @@ export const useUpload = () => {
         variables: { country, region, caption, featured, key, size: file.size },
       });
 
-      console.log('(Upload) Added a new photo:', newPhoto);
+      console.log('(Info) Added a new photo:', newPhoto);
       return newPhoto;
     } catch (err) {
       throw err;
