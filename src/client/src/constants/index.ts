@@ -18,7 +18,7 @@ export enum Errors {
 /**
  * Photo fetch limit.
  */
-export const FETCH_LIMIT = 1000;
+export const FETCH_LIMIT = 10000;
 /**
  * Set the standard display limit.
  */
