@@ -18,7 +18,9 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
     }
   );
 
-  if (error) return <Error error={error} />;
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
     <Button

@@ -53,6 +53,7 @@ $linear-gradient-scrollbar: linear-gradient(
 );
 
 // Transitions.
+$transition-time-very-fast: 0.1s;
 $transition-time-fast: 0.2s;
 $transition-time-medium-fast: 0.35s;
 $transition-time-medium: 0.5s;
@@ -64,3 +65,4 @@ $transition-time-very-slow: 1.5s;
 $border-radius-standard: 0.5rem;
 $border-radius-large: 1rem;
 $border-radius-round: 50%;
+$border-table: 1px solid rgba($color-black, 0.05);

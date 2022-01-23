@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Authenticated, Button, Modal } from '../common';
 import { AddPhotoForm } from './AddPhotoForm';
 import { EditCountriesForm } from './EditCountriesForm';
+import { PhotoList } from './PhotoList';
 
 export function Dashboard() {
   const [showAddPhotoForm, setShowAddPhotoForm] = useState(false);
@@ -45,6 +46,7 @@ export function Dashboard() {
           <EditCountriesForm />
         </Modal>
       </div>
+      <PhotoList />
     </Authenticated>
   );
 }
