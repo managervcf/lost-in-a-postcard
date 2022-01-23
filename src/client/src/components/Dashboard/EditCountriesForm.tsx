@@ -17,15 +17,17 @@ interface EditedCountryState {
   description?: string;
 }
 
+const emptyEditedCountry: EditedCountryState = {
+  id: '',
+  name: '',
+  description: '',
+};
+
 export const EditCountriesForm: React.FC = () => {
   const [err, setErr] = useState<Errors | null>(null);
 
   const { value: editedCountry, setter: setEditedCountry } =
-    useLocalStorage<EditedCountryState>('edited_country', {
-      id: '',
-      name: '',
-      description: '',
-    });
+    useLocalStorage<EditedCountryState>('edited_country', emptyEditedCountry);
 
   // Use apollo-client query and mutation hooks.
   const {
@@ -66,7 +68,7 @@ export const EditCountriesForm: React.FC = () => {
       variables: editedCountry,
     });
 
-    setEditedCountry({ id: '', name: '', description: '' });
+    setEditedCountry(emptyEditedCountry);
   };
 
   /**
