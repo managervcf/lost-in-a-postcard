@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
-import { Error } from '../common';
+import { Button, Error } from '../common';
 import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
 
 interface PhotoFormEditProps {
@@ -118,14 +118,9 @@ export const PhotoEdit: React.FC<PhotoFormEditProps> = ({
           {editedPhoto.featured ? 'Yes' : 'No'}
         </label>
       </div>
-      <button
-        id="edit-photo-submit-button"
-        className="button"
-        type="submit"
-        disabled={loading}
-      >
-        {loading ? 'Updating...' : 'Update'}
-      </button>
+      <Button id="edit-photo-submit-button" primary submit loading={loading}>
+        Update
+      </Button>
       <DeleteButton id={id} />
     </form>
   );

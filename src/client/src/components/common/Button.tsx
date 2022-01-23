@@ -1,4 +1,6 @@
 import React from 'react';
+import { ScaleLoader } from 'react-spinners';
+import { PRIMARY_COLOR } from '../../constants';
 
 interface ButtonProps {
   id?: string;
@@ -31,7 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       type={submit ? 'submit' : 'button'}
     >
-      {children}
+      {!loading ? children : <ScaleLoader height={10} color={PRIMARY_COLOR} />}
     </button>
   );
 };

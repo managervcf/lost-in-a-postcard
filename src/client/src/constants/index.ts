@@ -27,3 +27,7 @@ export const DISPLAY_LIMIT = 10;
  * AWs resource base url.
  */
 export const AWS_URL = 'https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.com/';
+/**
+ * Primary app color.
+ */
+export const PRIMARY_COLOR = '#f8a488';

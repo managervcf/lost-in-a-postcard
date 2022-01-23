@@ -199,11 +199,11 @@ export const AddPhotoForm: React.FC = () => {
       <Button
         id="add-photo-submit-button"
         className="button"
-        disabled={loading}
+        loading={loading}
         primary
         submit
       >
-        {loading ? 'Uploading...' : 'Upload'}
+        Upload
       </Button>
     </form>
   );

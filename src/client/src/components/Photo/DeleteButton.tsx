@@ -8,23 +8,25 @@ interface DeleteButtonProps {
 }
 
 export const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
-  const [deletePhoto, { loading, error, client }] = useMutation<
-    DeletePhotoData,
-    DeletePhotoVars
-  >(DELETE_PHOTO, {
-    variables: { id },
-    onCompleted: () => client?.reFetchObservableQueries(),
-  });
+  const client = useApolloClient();
+
+  const [deletePhoto, { loading, error }] = useMutation<DeletePhotoData, DeletePhotoVars>(
+    DELETE_PHOTO,
+    {
+      variables: { id },
+      onCompleted: client.resetStore,
+    }
+  );
 
   if (error) return <Error error={error} />;
 
   return (
     <Button
       className="edit-photo-delete-button u-danger"
-      disabled={loading}
-      onClick={async () => await deletePhoto()}
+      onClick={deletePhoto}
+      loading={loading}
     >
-      {loading ? 'Deleting...' : 'Delete'}
+      Delete
     </Button>
   );
 };
