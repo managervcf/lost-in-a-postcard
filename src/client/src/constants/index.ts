@@ -20,6 +20,10 @@ export enum Errors {
  */
 export const FETCH_LIMIT = 10000;
 /**
+ * Photo items table limit.
+ */
+export const PHOTO_ITEM_LIMIT = 50;
+/**
  * Set the standard display limit.
  */
 export const DISPLAY_LIMIT = 10;
