@@ -5,11 +5,15 @@ import { client } from './apollo';
 import { App } from './components/App';
 import * as serviceWorker from './serviceWorker';
 import './sass/index.scss';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './constants';
 
 render(
   <ApolloProvider client={client}>
     <BrowserRouter>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </ApolloProvider>,
   document.querySelector('#root')

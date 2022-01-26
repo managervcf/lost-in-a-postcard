@@ -1,12 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useQuery } from 'react-apollo';
-import classnames from 'classnames';
 import { PhotoImage } from './PhotoImage';
-import { PhotoDetails } from './PhotoDetails';
+import { PhotoEdit } from './PhotoEdit';
 import { Heart } from './Heart';
 import { ME, MeData } from '../../graphql';
-import { useOnScreen, useOnClickOutside, useOnClickInside } from '../../hooks';
+import { useOnScreen } from '../../hooks';
 import { Camera } from './Camera';
+import { Fade, Grid } from '@mui/material';
+import { Box } from '@mui/system';
 
 interface PhotoProps {
   id: string;
@@ -31,45 +32,27 @@ export const Photo: React.FC<PhotoProps> = props => {
   // Returns a boolean indicating if ref is visible on screen.
   const ref = useRef<HTMLElement>(null);
   const onScreen = useOnScreen(ref, '-40%');
-  const [visible, setVisible] = useState(false);
-
-  /**
-   * Hooks executing a handler function on certain events.
-   * Show or hide caption.
-   * Show - on element click
-   * Hide - on scroll or on click outside element
-   */
-  const hideCaption = () => setVisible(false);
-  const showCaption = () => setVisible(true);
-
-  useOnClickOutside(ref, hideCaption);
-  useOnClickInside(ref, showCaption);
-
-  const photoClasses = classnames({
-    'gallery-item': true,
-    'fade-out': !onScreen,
-    'fade-in': onScreen,
-  });
 
   return (
-    <figure ref={ref} className={photoClasses}>
-      <PhotoImage
-        upload={props.upload}
-        country={props.country}
-        dim={!!data?.me && visible}
-      />
-      {data?.me ? (
-        <PhotoDetails {...props} visible={visible} />
-      ) : (
-        <>
+    <Fade in={onScreen} timeout={500}>
+      <Grid item>
+        <Box position="relative" ref={ref}>
+          <Box>
+            <PhotoImage upload={props.upload} country={props.country} />
+          </Box>
+          {data?.me && (
+            <Box position="absolute" bottom="1.5rem" left="2rem">
+              <PhotoEdit {...props} />
+            </Box>
+          )}
           <Camera
             country={props.country.name}
             region={props.region}
             caption={props.caption}
           />
           <Heart id={props.id} clicks={props.clicks} />
-        </>
-      )}
-    </figure>
+        </Box>
+      </Grid>
+    </Fade>
   );
 };

@@ -10,6 +10,7 @@ import { buildQueryVars, groupPhotos, shuffle } from '../../utils';
 import { Photo as IPhoto } from '../../graphql';
 import { DISPLAY_LIMIT } from '../../constants';
 import { ScrollUp } from './ScrollUp';
+import { Grid } from '@mui/material';
 
 export const Gallery: React.FC = () => {
   // Contains all photos.
@@ -89,12 +90,18 @@ export const Gallery: React.FC = () => {
   }
 
   return (
-    <article className="gallery">
+    <Grid
+      container
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap={3}
+    >
       <GalleryDescription {...variables} />
       {photos.map(photo => (
         <Photo key={photo.id} {...photo} />
       ))}
-      {!top && <ScrollUp />}
-    </article>
+      <ScrollUp hidden={top} />
+    </Grid>
   );
 };

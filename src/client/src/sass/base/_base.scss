@@ -62,7 +62,3 @@ a {
   text-decoration: none;
   color: $color-main-text;
 }
-
-main {
-  @include centerFlexColumn;
-}

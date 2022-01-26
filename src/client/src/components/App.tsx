@@ -12,10 +12,8 @@ export const App: React.FC = () => (
   <>
     <header>
       <Header />
-      <Navbar />
       <Dashboard />
     </header>
-    <hr />
     <main>
       <Routes>
         <Route path="/" element={<Navigate to="/photos/all/featured" />} />

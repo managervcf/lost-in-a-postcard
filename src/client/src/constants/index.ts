@@ -1,3 +1,5 @@
+import { createTheme } from '@mui/material';
+
 /**
  * Default animation classes used for animating
  * React components on mount.
@@ -35,3 +37,17 @@ export const AWS_URL = 'https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.c
  * Primary app color.
  */
 export const PRIMARY_COLOR = '#f8a488';
+/**
+ * MUI theme.
+ */
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#f8a488',
+    },
+  },
+  typography: {
+    fontSize: 24,
+    fontFamily: 'Quicksand',
+  },
+});

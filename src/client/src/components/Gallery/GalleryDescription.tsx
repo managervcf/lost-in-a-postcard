@@ -1,3 +1,4 @@
+import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { COUNTRIES, CountriesData } from '../../graphql';
@@ -23,21 +24,21 @@ export const GalleryDescription: React.FC<GalleryDescriptionProps> = ({
     ({ name }) => name.toLowerCase() === country?.toLowerCase()
   );
   return (
-    <section className="gallery-description">
+    <Grid item m={1}>
       {!currentCountry ? (
         featured ? (
-          <p>Best photographs by Domi & Mateusz</p>
+          <Typography>Best photographs by Domi & Mateusz</Typography>
         ) : (
-          <p>Photographs by Domi & Mateusz</p>
+          <Typography>Photographs by Domi & Mateusz</Typography>
         )
       ) : (
         <>
-          <p>Photographs from {currentCountry.name}</p>
+          <Typography>Photographs from {currentCountry.name}</Typography>
           {currentCountry.description && (
-            <p className="u-mt-small">{currentCountry.description}</p>
+            <Typography>{currentCountry.description}</Typography>
           )}
         </>
       )}
-    </section>
+    </Grid>
   );
 };

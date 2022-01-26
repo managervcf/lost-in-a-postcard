@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import { Grid } from '@mui/material';
+import { useState } from 'react';
 import { Authenticated, Button, Modal } from '../common';
+import { UserInfo } from '../Header/UserInfo';
 import { AddPhotoForm } from './AddPhotoForm';
 import { EditCountriesForm } from './EditCountriesForm';
 import { PhotoList } from './PhotoList';
@@ -9,44 +11,43 @@ export function Dashboard() {
   const [showEditCountriesForm, setShowEditCountriesForm] = useState(false);
 
   return (
-    <Authenticated>
-      <Button
-        id="add-photo-button"
-        primary={showAddPhotoForm}
-        onClick={() => {
-          setShowAddPhotoForm(prev => !prev);
-          setShowEditCountriesForm(false);
-        }}
-      >
-        Add new photo
-      </Button>
-      <Button
-        id="edit-countries-button"
-        primary={showEditCountriesForm}
-        onClick={() => {
-          setShowEditCountriesForm(prev => !prev);
-          setShowAddPhotoForm(false);
-        }}
-      >
-        Edit countries
-      </Button>
-      <div className="dashboard">
-        <Modal
-          title="Add a new photograph"
-          isOpen={showAddPhotoForm}
-          toggle={setShowAddPhotoForm}
+    <Grid container justifyContent="center">
+      <Authenticated>
+        <Button
+          id="add-photo-button"
+          onClick={() => {
+            setShowAddPhotoForm(prev => !prev);
+            setShowEditCountriesForm(false);
+          }}
         >
-          <AddPhotoForm />
-        </Modal>
-        <Modal
-          title="Edit existing countries"
-          isOpen={showEditCountriesForm}
-          toggle={setShowEditCountriesForm}
+          Add new photo
+        </Button>
+        <Button
+          id="edit-countries-button"
+          onClick={() => {
+            setShowEditCountriesForm(prev => !prev);
+            setShowAddPhotoForm(false);
+          }}
         >
-          <EditCountriesForm />
-        </Modal>
-      </div>
-      <PhotoList />
-    </Authenticated>
+          Edit countries
+        </Button>
+        <UserInfo />
+        <PhotoList />
+      </Authenticated>
+      <Modal
+        title="Add a new photograph"
+        isOpen={showAddPhotoForm}
+        toggle={setShowAddPhotoForm}
+      >
+        <AddPhotoForm />
+      </Modal>
+      <Modal
+        title="Edit existing countries"
+        isOpen={showEditCountriesForm}
+        toggle={setShowEditCountriesForm}
+      >
+        <EditCountriesForm />
+      </Modal>
+    </Grid>
   );
 }

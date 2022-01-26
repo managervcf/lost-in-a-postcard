@@ -1,9 +1,7 @@
-import React from 'react';
-import classnames from 'classnames';
+import React, { MouseEvent } from 'react';
 import { AWS_URL } from '../../constants';
 
 export interface PhotoImageProps {
-  dim: boolean;
   country: {
     name: string;
   };
@@ -12,17 +10,15 @@ export interface PhotoImageProps {
   };
 }
 
-export const PhotoImage: React.FC<PhotoImageProps> = ({ upload, country, dim }) => {
-  const imageClasses = classnames({ dim, 'gallery-image': true });
-
+export const PhotoImage: React.FC<PhotoImageProps> = ({ upload, country }) => {
   // Build the image url.
   const url = `${AWS_URL}${upload.key}`;
 
   return (
     <img
       // Prevent downloading images through context menu.
-      onContextMenu={e => e.preventDefault()}
-      className={imageClasses}
+      onContextMenu={(e: MouseEvent<HTMLImageElement>) => e.preventDefault()}
+      style={{ height: '85vh', width: 'auto' }}
       src={url}
       alt={country.name ?? ''}
     />

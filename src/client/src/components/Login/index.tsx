@@ -1,8 +1,9 @@
 import { useMutation } from 'react-apollo';
-import React, { FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Error } from '../common';
+import { Button, Error } from '../common';
 import { LOGIN, LoginData, LoginVars } from '../../graphql';
+import { Grid, TextField } from '@mui/material';
 
 interface CredentialsState {
   login: string;
@@ -45,40 +46,48 @@ export const Login = () => {
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <Error error={error} />
-      <input
-        id="login-username-input"
-        type="text"
-        placeholder="Login"
-        value={credentials.login}
-        onChange={e => setCredentials({ ...credentials, login: e.target.value })}
-        autoFocus
-      />
-      <input
-        id="login-password-input"
-        placeholder="Password"
-        type="password"
-        value={credentials.password}
-        onChange={e => setCredentials({ ...credentials, password: e.target.value })}
-      />
-      <div className="login-buttons">
-        <button
-          id="login-submit-button"
-          className="button"
-          type="submit"
-          disabled={loading}
-        >
-          {!loading ? 'Login' : 'Logging in...'}
-        </button>
-        <button
-          id="login-back-button"
-          className="button"
-          onClick={() => navigate('/photos/all/featured')}
-        >
+    <Grid
+      container
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit}
+      justifyContent="center"
+      flexDirection="column"
+    >
+      <Grid item>
+        <Error error={error} />
+      </Grid>
+      <Grid item>
+        <TextField
+          id="login-username-input"
+          value={credentials.login}
+          type="text"
+          required
+          label="Username"
+          variant="standard"
+          onChange={e => setCredentials({ ...credentials, login: e.target.value })}
+          autoFocus
+        />
+      </Grid>
+      <Grid item>
+        <TextField
+          id="login-password-input"
+          value={credentials.password}
+          type="password"
+          required
+          label="Password"
+          variant="standard"
+          onChange={e => setCredentials({ ...credentials, password: e.target.value })}
+        />
+      </Grid>
+      <Grid item>
+        <Button id="login-submit-button" submit variant="contained" loading={loading}>
+          Login
+        </Button>
+        <Button id="login-back-button" onClick={() => navigate('/photos/all/featured')}>
           Back
-        </button>
-      </div>
-    </form>
+        </Button>
+      </Grid>
+    </Grid>
   );
 };

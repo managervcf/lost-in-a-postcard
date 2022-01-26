@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import classnames from 'classnames';
 import { useMutation } from 'react-apollo';
 import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO } from '../../../graphql';
+import { Box } from '@mui/system';
+import { Badge, IconButton } from '@mui/material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
 interface HeartProps {
   id: string;
@@ -20,17 +22,6 @@ export const Heart: React.FC<HeartProps> = ({ id, clicks }) => {
 
   const [clickPhoto] = useMutation<ClickPhotoData, ClickPhotoVars>(CLICK_PHOTO);
 
-  const heartClasses = classnames({
-    heart: true,
-    'heart-clicked': clicked,
-  });
-
-  const heartCounterClasses = classnames({
-    'heart-counter': true,
-    'heart-counter-hidden': !clicked,
-    'heart-counter-visible': clicked,
-  });
-
   /**
    * Handles the click event on the heart icon.
    * 1. Set the clicked state variable to true.
@@ -45,13 +36,18 @@ export const Heart: React.FC<HeartProps> = ({ id, clicks }) => {
   };
 
   return (
-    <div className={heartClasses}>
-      <div className={heartCounterClasses}>{clicked ? clicks + 1 : clicks}</div>
-      <svg className="icon heart-icon" onPointerUp={handleHeartClick}>
-        <use
-          xlinkHref={`./assets/icons/icons.svg#icon-heart${clicked ? '' : '-outlined'}`}
-        />
-      </svg>
-    </div>
+    <Box
+      position="absolute"
+      bottom="1.5rem"
+      right="1rem"
+      display="flex"
+      flexDirection="column"
+    >
+      <IconButton color="primary" onClick={handleHeartClick}>
+        <Badge color="primary" badgeContent={clicked ? clicks + 1 : null}>
+          {clicked ? <Favorite /> : <FavoriteBorder />}
+        </Badge>
+      </IconButton>
+    </Box>
   );
 };

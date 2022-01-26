@@ -150,10 +150,8 @@ export const EditCountriesForm: React.FC = () => {
       />
       <Button
         id="edit-country-submit-button"
-        className="button"
         disabled={updateCountryLoading || !editedCountry.id}
         loading={updateCountryLoading}
-        primary
         submit
       >
         {!updateCountryLoading ? 'Update' : 'Updating...'}

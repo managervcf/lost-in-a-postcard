@@ -1,4 +1,6 @@
-import classNames from 'classnames';
+import { CameraAlt, CameraAltOutlined } from '@mui/icons-material';
+import { Chip, Fade, IconButton } from '@mui/material';
+import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 
 interface CameraProps {
@@ -25,28 +27,33 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
    */
   useEffect(() => {
     if (show) {
-      setTimeout(hideDetails, 2000);
+      setTimeout(hideDetails, 3000);
     }
   }, [show]);
 
-  const cameraDetailsClasses = classNames({
-    'camera-details': true,
-    'camera-details-hidden': !show,
-    'camera-details-visible': show,
-  });
-
   return (
-    <div className="camera">
-      <div className={cameraDetailsClasses}>
-        {caption ? `${caption}, ` : ''}
-        {region ? `${region}, ` : ''}
-        {country}
-      </div>
-      <svg className="icon camera-icon" onPointerUp={showDetails}>
-        <use
-          xlinkHref={`./assets/icons/icons.svg#icon-camera${show ? '' : '-outlined'}`}
-        />
-      </svg>
-    </div>
+    <Box
+      position="absolute"
+      bottom="1.5rem"
+      right="4.5rem"
+      justifyContent="center"
+      alignItems="center"
+      display="flex"
+      flexDirection="row"
+    >
+      <Box>
+        <Fade in={show} timeout={1000}>
+          <Chip
+            color="primary"
+            label={`${caption ? `${caption}, ` : ''}
+            ${region ? `${region}, ` : ''}
+            ${country}`}
+          />
+        </Fade>
+      </Box>
+      <IconButton color="primary" onClick={showDetails}>
+        <CameraAltOutlined />
+      </IconButton>
+    </Box>
   );
 };

@@ -23,11 +23,7 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
   }
 
   return (
-    <Button
-      className="edit-photo-delete-button u-danger"
-      onClick={deletePhoto}
-      loading={loading}
-    >
+    <Button color="error" onClick={deletePhoto} loading={loading}>
       Delete
     </Button>
   );

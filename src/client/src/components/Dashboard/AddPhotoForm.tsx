@@ -196,13 +196,7 @@ export const AddPhotoForm: React.FC = () => {
         </label>
         {photosChosen}
       </div>
-      <Button
-        id="add-photo-submit-button"
-        className="button"
-        loading={loading}
-        primary
-        submit
-      >
+      <Button id="add-photo-submit-button" loading={loading} submit variant="contained">
         Upload
       </Button>
     </form>

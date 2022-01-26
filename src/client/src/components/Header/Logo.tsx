@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 export const Logo = () => (
-  <h1 className="heading-primary u-mtb-small">
+  <Typography variant="h3" m={2}>
     <Link to="/">Lost in a Postcard</Link>
-  </h1>
+  </Typography>
 );

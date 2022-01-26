@@ -1,39 +1,46 @@
-import React from 'react';
-import { ScaleLoader } from 'react-spinners';
-import { PRIMARY_COLOR } from '../../constants';
+import React, { KeyboardEvent } from 'react';
+import { Button as MuiButton } from '@mui/material';
 
 interface ButtonProps {
   id?: string;
-  className?: string;
-  primary?: boolean;
   loading?: boolean;
+  variant?: 'contained' | 'outlined' | 'text';
   disabled?: boolean;
   onClick?: () => void;
   submit?: boolean;
+  color?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
 }
 
 export const Button: React.FC<ButtonProps> = ({
   id,
-  className,
-  primary,
   loading,
   disabled,
   onClick,
   children,
   submit,
+  color,
+  variant,
 }) => {
-  const customButtonClasses = className ? ` ${className}` : '';
-  const primaryButtonClass = primary ? ' button-primary' : '';
-
   return (
-    <button
+    <MuiButton
+      style={{ margin: 10, borderRadius: 15, textTransform: 'none' }}
       id={id}
-      className={'button' + primaryButtonClass + customButtonClasses}
+      variant={variant ?? 'outlined'}
+      color={color ?? 'primary'}
       disabled={loading || disabled}
       onClick={onClick}
       type={submit ? 'submit' : 'button'}
+      onKeyPress={
+        submit && onClick
+          ? ({ key }: KeyboardEvent<HTMLButtonElement>) => {
+              if (key === 'Enter') {
+                onClick();
+              }
+            }
+          : undefined
+      }
     >
-      {!loading ? children : <ScaleLoader height={10} color={PRIMARY_COLOR} />}
-    </button>
+      {children}
+    </MuiButton>
   );
 };

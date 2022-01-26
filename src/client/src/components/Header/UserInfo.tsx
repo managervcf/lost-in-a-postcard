@@ -1,3 +1,5 @@
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { useApolloClient } from 'react-apollo';
 import { MeData } from '../../graphql';
 import { Button } from '../common';
@@ -19,13 +21,10 @@ export function UserInfo({ me }: UserInfoProps) {
   };
 
   return (
-    <div id="user-info">
-      <p>
-        Logged in as <strong>{me?.username}</strong>
-      </p>
-      <Button id="logout-button" onClick={logout}>
+    <Box display="flex" flexDirection="row" alignItems="center">
+      <Button id="logout-button" color="error" onClick={logout}>
         Logout
       </Button>
-    </div>
+    </Box>
   );
 }

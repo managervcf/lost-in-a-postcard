@@ -4,6 +4,8 @@ import { Logo } from './Logo';
 import { useKeyPress } from '../../hooks';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppBar, Grid, Toolbar } from '@mui/material';
+import { Navbar } from '../Navbar';
 
 export const Header = () => {
   const loginButtonPressed = useKeyPress('`');
@@ -16,11 +18,20 @@ export const Header = () => {
   }, [loginButtonPressed, navigate]);
 
   return (
-    <div className="header">
-      <Logo />
-      <Authenticated>
-        <UserInfo />
-      </Authenticated>
-    </div>
+    <>
+      {/* <AppBar position="sticky" color="transparent"> */}
+      <Toolbar>
+        <Grid
+          container
+          flexDirection="column"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Logo />
+          <Navbar />
+        </Grid>
+      </Toolbar>
+      {/* </AppBar> */}
+    </>
   );
 };

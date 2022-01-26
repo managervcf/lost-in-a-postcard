@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '../common';
 
 interface EditButtonProps {
   editMode: boolean;
@@ -6,7 +7,7 @@ interface EditButtonProps {
 }
 
 export const EditButton: React.FC<EditButtonProps> = ({ editMode, setEditMode }) => (
-  <button className="button edit-photo-button" onClick={() => setEditMode(!editMode)}>
+  <Button onClick={() => setEditMode(!editMode)}>
     {editMode ? 'Exit editing' : 'Edit'}
-  </button>
+  </Button>
 );

@@ -1,11 +1,19 @@
-import { Button } from '../../common';
+import { KeyboardArrowUpOutlined } from '@mui/icons-material';
+import { Button, Fade } from '@mui/material';
 
-export const ScrollUp = () => (
-  <Button
-    id="scroll-up-button"
-    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-    primary
-  >
-    &uarr;
-  </Button>
+interface ScrollUpProps {
+  hidden?: boolean;
+}
+
+export const ScrollUp: React.FC<ScrollUpProps> = ({ hidden = false }) => (
+  <Fade in={!hidden}>
+    <Button
+      id="scroll-up-button"
+      variant="outlined"
+      sx={{ borderRadius: 100 }}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+    >
+      <KeyboardArrowUpOutlined />
+    </Button>
+  </Fade>
 );

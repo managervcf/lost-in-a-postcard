@@ -32,6 +32,7 @@
     "test:ci": "jest --runInBand --ci"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.3.1",
     "apollo-server-core": "^3.5.0",
     "apollo-server-express": "^3.5.0",
     "aws-sdk": "^2.1046.0",

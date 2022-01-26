@@ -48,9 +48,7 @@ export const Modal: React.FC<ModalProps> = ({ title, isOpen, toggle, children })
   return (
     <div className={modalClasses}>
       <div ref={modalRef} className={modalDialogClasses}>
-        <Button className="modal-dialog-close-button" onClick={closeModal}>
-          X
-        </Button>
+        <Button onClick={closeModal}>X</Button>
         <h2 className="heading-secondary">{title}</h2>
         <hr />
         {children}

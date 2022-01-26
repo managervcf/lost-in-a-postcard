@@ -52,6 +52,9 @@ export const PHOTOS = gql`
         caption
         featured
         clicks
+        author {
+          username
+        }
         upload {
           key
           size
