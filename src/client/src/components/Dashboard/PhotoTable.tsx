@@ -189,6 +189,7 @@ export const PhotoTable = () => {
           disabled={loading}
         >
           <DataGrid
+            hideFooterSelectedRowCount={false}
             columns={columns}
             rows={allPhotos}
             initialState={{

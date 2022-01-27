@@ -15,6 +15,10 @@ export const NavbarItem: React.FC<NavbarItemProps> = ({ label, value, index }) =
     <Tab
       TouchRippleProps={{ style: { color: theme.palette.primary.main } }}
       style={{
+        textTransform: 'none',
+        fontSize: 17,
+        padding: '0 1.3rem',
+        minWidth: 'inherit',
         opacity: 'inherit',
         color: pathname === value ? theme.palette.primary.main : 'inherit',
         transition: 'all 0.3s',
