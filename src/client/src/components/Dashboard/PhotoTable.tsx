@@ -1,6 +1,6 @@
 import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
 import { useMemo, useState } from 'react';
-import { AWS_URL, FETCH_LIMIT } from '../../constants';
+import { AWS_URL, FETCH_LIMIT, ROW_OPTIONS } from '../../constants';
 import {
   DeletePhotoData,
   DeletePhotoVars,
@@ -10,11 +10,12 @@ import {
   PhotosData,
   PhotosVars,
 } from '../../graphql';
-import { Button, Collapse } from '../common';
+import { Collapse } from '../common';
 import {
   DataGrid,
   GridColumns,
   GridRenderCellParams,
+  GridToolbar,
   GridValueFormatterParams,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
@@ -24,7 +25,7 @@ import { formatBytes } from '../../utils';
 import { DeleteForever } from '@mui/icons-material';
 import { PhotoEdit } from '../Photo/PhotoEdit';
 
-export const PhotoList = () => {
+export const PhotoTable = () => {
   const [enlarged, setEnlarged] = useState<string | null>(null);
   const [deletedPhotoId, setDeletedPhotoId] = useState<string | null>(null);
   const { data, loading } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
@@ -83,6 +84,7 @@ export const PhotoList = () => {
           <Box
             onClick={() => setEnlarged(item.row.id)}
             component="img"
+            loading="lazy"
             sx={{ width: '100%' }}
             // Prevent downloading images through context menu.
             onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
@@ -99,6 +101,7 @@ export const PhotoList = () => {
                   maxHeight: '70vh',
                   maxWidth: '70vh',
                 }}
+                loading="lazy"
                 // Prevent downloading images through context menu.
                 onContextMenu={(e: React.MouseEvent<HTMLImageElement>) =>
                   e.preventDefault()
@@ -155,8 +158,8 @@ export const PhotoList = () => {
     },
     {
       field: 'actions',
-      headerName: 'Actions',
-      width: 100,
+      headerName: 'Edit/Delete',
+      width: 110,
       renderCell: (item: GridRenderCellParams<any, Photo>) => (
         <>
           <PhotoEdit {...item.row} />
@@ -179,12 +182,23 @@ export const PhotoList = () => {
   return (
     <Grid container justifyContent="center">
       <Grid item xs={10}>
-        <Collapse title={`List of ${allPhotos.length} photos `}>
+        <Collapse
+          title={loading ? 'Loading photos...' : `List of ${allPhotos.length} photos `}
+        >
           <DataGrid
             columns={columns}
             rows={allPhotos}
+            initialState={{
+              pagination: {
+                pageSize: ROW_OPTIONS[1],
+              },
+            }}
+            pagination
+            autoPageSize={false}
+            rowsPerPageOptions={ROW_OPTIONS}
             loading={loading || deleteLoading}
             autoHeight
+            components={{ Toolbar: GridToolbar }}
           />
         </Collapse>
       </Grid>

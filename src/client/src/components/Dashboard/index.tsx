@@ -4,7 +4,7 @@ import { Authenticated, Button, Modal } from '../common';
 import { UserInfo } from '../Header/UserInfo';
 import { AddPhotoForm } from './AddPhotoForm';
 import { EditCountriesForm } from './EditCountriesForm';
-import { PhotoList } from './PhotoList';
+import { PhotoTable } from './PhotoTable';
 
 export function Dashboard() {
   const [showAddPhotoForm, setShowAddPhotoForm] = useState(false);
@@ -32,7 +32,7 @@ export function Dashboard() {
           Edit countries
         </Button>
         <UserInfo />
-        <PhotoList />
+        <PhotoTable />
       </Authenticated>
       <Modal
         title="Add a new photograph"

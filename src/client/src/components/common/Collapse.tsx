@@ -1,17 +1,22 @@
 import { ExpandLessRounded, ExpandMoreRounded } from '@mui/icons-material';
-import { Collapse as MuiCollapse, Grid } from '@mui/material';
+import {
+  Collapse as MuiCollapse,
+  CollapseProps as MuiCollapseProps,
+  Grid,
+} from '@mui/material';
 import { Button } from '../common';
 import { useState } from 'react';
 
-interface CollapseProps {
+type CollapseProps = MuiCollapseProps & {
   title: string;
   defaultOpen?: boolean;
-}
+};
 
 export const Collapse: React.FC<CollapseProps> = ({
   children,
   title,
   defaultOpen = false,
+  ...props
 }) => {
   const [checked, setChecked] = useState(defaultOpen);
 
@@ -29,7 +34,9 @@ export const Collapse: React.FC<CollapseProps> = ({
           {Icon}
         </Button>
       </Grid>
-      <MuiCollapse in={checked}>{children}</MuiCollapse>
+      <MuiCollapse {...props} in={checked}>
+        {children}
+      </MuiCollapse>
     </>
   );
 };
