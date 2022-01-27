@@ -10,12 +10,14 @@ import { useState } from 'react';
 type CollapseProps = MuiCollapseProps & {
   title: string;
   defaultOpen?: boolean;
+  disabled?: boolean;
 };
 
 export const Collapse: React.FC<CollapseProps> = ({
   children,
   title,
   defaultOpen = false,
+  disabled = false,
   ...props
 }) => {
   const [checked, setChecked] = useState(defaultOpen);
@@ -29,7 +31,7 @@ export const Collapse: React.FC<CollapseProps> = ({
   return (
     <>
       <Grid container item justifyContent="center" alignItems="center">
-        <Button onClick={toggle}>
+        <Button disabled={disabled} onClick={toggle}>
           {title}
           {Icon}
         </Button>

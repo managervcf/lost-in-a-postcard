@@ -46,7 +46,6 @@ export const useUpload = () => {
     {
       onCompleted: client.resetStore,
       refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
-      awaitRefetchQueries: true,
     }
   );
 

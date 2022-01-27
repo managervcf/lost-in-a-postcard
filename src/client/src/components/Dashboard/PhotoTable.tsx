@@ -30,6 +30,7 @@ export const PhotoTable = () => {
   const [deletedPhotoId, setDeletedPhotoId] = useState<string | null>(null);
   const { data, loading } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
     variables: { limit: FETCH_LIMIT },
+    fetchPolicy: 'cache-first',
   });
   // Apollo client used to reset the store.
   const client = useApolloClient();
@@ -38,9 +39,9 @@ export const PhotoTable = () => {
     DeletePhotoData,
     DeletePhotoVars
   >(DELETE_PHOTO, {
-    onCompleted: async () => {
+    onCompleted: () => {
       setDeletedPhotoId(null);
-      await client.resetStore();
+      client.resetStore();
     },
   });
 
@@ -119,7 +120,8 @@ export const PhotoTable = () => {
       headerName: 'Size',
       width: 100,
       type: 'number',
-      valueGetter: (item: GridValueGetterParams<any, Photo>) => item.row.upload.size,
+      valueGetter: (item: GridValueGetterParams<undefined, Photo>) =>
+        item.row.upload.size,
       valueFormatter: (item: GridValueFormatterParams) =>
         formatBytes(item.value as number),
     },
@@ -184,6 +186,7 @@ export const PhotoTable = () => {
       <Grid item xs={10}>
         <Collapse
           title={loading ? 'Loading photos...' : `List of ${allPhotos.length} photos `}
+          disabled={loading}
         >
           <DataGrid
             columns={columns}
