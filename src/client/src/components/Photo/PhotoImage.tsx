@@ -18,7 +18,7 @@ export const PhotoImage: React.FC<PhotoImageProps> = ({ upload, country }) => {
     <img
       // Prevent downloading images through context menu.
       onContextMenu={(e: MouseEvent<HTMLImageElement>) => e.preventDefault()}
-      style={{ height: '85vh', width: 'auto' }}
+      style={{ maxHeight: '85vh', width: 'auto', maxWidth: '95vw' }}
       src={url}
       alt={country.name ?? ''}
     />

@@ -140,7 +140,12 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
       </Grid>
 
       <Grid item>
-        <Button id="edit-photo-submit-button" submit loading={loading}>
+        <Button
+          id="edit-photo-submit-button"
+          submit
+          variant="contained"
+          loading={loading}
+        >
           Update
         </Button>
         <DeleteButton id={id} />

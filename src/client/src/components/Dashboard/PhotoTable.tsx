@@ -193,7 +193,7 @@ export const PhotoTable = () => {
             rows={allPhotos}
             initialState={{
               pagination: {
-                pageSize: ROW_OPTIONS[1],
+                pageSize: ROW_OPTIONS[0],
               },
             }}
             pagination

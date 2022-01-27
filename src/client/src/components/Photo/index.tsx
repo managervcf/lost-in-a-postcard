@@ -41,7 +41,7 @@ export const Photo: React.FC<PhotoProps> = props => {
             <PhotoImage upload={props.upload} country={props.country} />
           </Box>
           {data?.me && (
-            <Box position="absolute" bottom="1.5rem" left="2rem">
+            <Box position="absolute" bottom="1rem" left="1.5rem">
               <PhotoEdit {...props} />
             </Box>
           )}

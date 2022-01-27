@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
-import { FETCH_LIMIT, PHOTO_ITEM_LIMIT } from '../constants';
+import { FETCH_LIMIT } from '../constants';
 import {
   AddPhotoData,
   AddPhotoVars,

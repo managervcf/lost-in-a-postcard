@@ -46,6 +46,9 @@ export const ROW_OPTIONS = [10, 25, 50, 100];
  */
 export const theme = createTheme({
   palette: {
+    secondary: {
+      main: '#C0D8C0',
+    },
     primary: {
       main: '#f8a488',
     },

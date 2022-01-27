@@ -34,7 +34,7 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
   return (
     <Box
       position="absolute"
-      bottom="1.5rem"
+      bottom="1rem"
       right="4.5rem"
       justifyContent="center"
       alignItems="center"
