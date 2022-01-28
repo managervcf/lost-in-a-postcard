@@ -73,7 +73,6 @@ export const AddPhotoForm: React.FC = () => {
    */
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('HERE', { files_0: newPhoto.files });
 
     if (!newPhoto.country) {
       setErr(Errors.NoCountryNameProvided);

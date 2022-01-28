@@ -33,8 +33,6 @@ export const Error: React.FC<ErrorProps> = ({ error, text, setError = undefined 
     .replace('GraphQL error: ', '')
     .replace('Network error: ', '');
 
-  console.log({ text, error });
-
   useEffect(() => {
     const isError = !!(error || text);
 
