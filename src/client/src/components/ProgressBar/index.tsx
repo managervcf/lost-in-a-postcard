@@ -26,12 +26,7 @@ function CircularProgressWithLabel({
   return (
     <Fade in={loading}>
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress
-          variant="indeterminate"
-          size={55}
-          value={value}
-          // color="success"
-        />
+        <CircularProgress variant="determinate" size={55} value={value} />
         <Box
           sx={{
             top: 0,

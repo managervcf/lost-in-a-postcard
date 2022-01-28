@@ -19,7 +19,7 @@ import {
   GridValueFormatterParams,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
-import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
+import { Alert, Dialog, DialogContent, Grid, IconButton, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
 import { formatBytes } from '../../utils';
 import { DeleteForever } from '@mui/icons-material';
@@ -28,6 +28,18 @@ import { PhotoEdit } from '../Photo/PhotoEdit';
 export const PhotoTable = () => {
   const [enlarged, setEnlarged] = useState<string | null>(null);
   const [deletedPhotoId, setDeletedPhotoId] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => setOpen(true);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const { data, loading } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
     variables: { limit: FETCH_LIMIT },
     fetchPolicy: 'cache-first',
@@ -171,6 +183,7 @@ export const PhotoTable = () => {
             onClick={() => {
               setDeletedPhotoId(row.id);
               deletePhoto({ variables: { id: row.id } });
+              handleClick();
             }}
             disabled={deleteLoading && deletedPhotoId === row.id}
           >
@@ -183,6 +196,11 @@ export const PhotoTable = () => {
 
   return (
     <Grid container justifyContent="center">
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert variant="filled" onClose={handleClose} severity="success">
+          Photo deleted
+        </Alert>
+      </Snackbar>
       <Grid item xs={10}>
         <Collapse
           title={loading ? 'Loading photos...' : `List of ${allPhotos.length} photos `}

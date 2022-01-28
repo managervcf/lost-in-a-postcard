@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Button, Error, Form } from '../common';
 import { ProgressBar } from '../ProgressBar';
@@ -26,7 +26,7 @@ interface NewPhotoState {
   region: string;
   caption: string;
   featured: boolean;
-  files: any[];
+  files: File[];
 }
 
 export const AddPhotoForm: React.FC = () => {
@@ -73,10 +73,11 @@ export const AddPhotoForm: React.FC = () => {
    */
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    console.log('HERE', { files_0: newPhoto.files });
 
     if (!newPhoto.country) {
       setErr(Errors.NoCountryNameProvided);
-    } else if (newPhoto.files.length === 0) {
+    } else if (!newPhoto.files?.['0']?.name) {
       setErr(Errors.NoFileProvided);
     } else {
       setErr(null);
@@ -169,7 +170,7 @@ export const AddPhotoForm: React.FC = () => {
       <Grid item>
         <Typography variant="h6">Add photo</Typography>
       </Grid>
-      <Error text={err} error={getUrlError ?? uploadError} />
+      <Error setError={setErr} text={err} error={getUrlError ?? uploadError} />
       <Grid item>
         <FormControl disabled={loading}>
           <RadioGroup

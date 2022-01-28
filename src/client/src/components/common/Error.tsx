@@ -1,25 +1,53 @@
-import { Chip, Grid } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 import { ApolloError } from 'apollo-boost';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Errors } from '../../constants';
 
 interface ErrorProps {
   error?: ApolloError | null;
   text?: string | null;
+  setError?: Dispatch<SetStateAction<Errors | null>>;
 }
 
 /**
  * A component responsible for displaying errors
  * received from the graphQL API.
  */
-export const Error: React.FC<ErrorProps> = ({ error, text }) => {
+export const Error: React.FC<ErrorProps> = ({ error, text, setError = undefined }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => setOpen(true);
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+
+    if (setError) {
+      setTimeout(() => setError(null), 1000);
+    }
+  };
+
   const parsedError = error?.message
     .replace('GraphQL error: ', '')
     .replace('Network error: ', '');
 
-  const isError = error || text;
+  console.log({ text, error });
 
-  return isError ? (
-    <Grid container justifyContent="center" alignItems="center">
-      <Chip variant="outlined" color="error" label={text ?? parsedError} />
-    </Grid>
-  ) : null;
+  useEffect(() => {
+    const isError = !!(error || text);
+
+    if (isError) {
+      handleClick();
+    }
+  }, [error, text]);
+
+  return (
+    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+      <Alert variant="filled" onClose={handleClose} severity="error">
+        {text ?? parsedError}
+      </Alert>
+    </Snackbar>
+  );
 };

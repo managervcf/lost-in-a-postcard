@@ -137,7 +137,7 @@ export const EditCountriesForm: React.FC = () => {
   }
 
   if (countriesError) {
-    return <Error error={countriesError} />;
+    return <Error setError={setErr} error={countriesError} />;
   }
 
   return (
@@ -150,7 +150,7 @@ export const EditCountriesForm: React.FC = () => {
       <Grid item>
         <Typography variant="h6">Edit country</Typography>
       </Grid>
-      <Error text={err} error={updateCountryError} />
+      <Error setError={setErr} text={err} error={updateCountryError} />
       <Grid item>
         <FormControl sx={{ m: 1, minWidth: 230 }}>
           <InputLabel id="country-select">Country</InputLabel>
