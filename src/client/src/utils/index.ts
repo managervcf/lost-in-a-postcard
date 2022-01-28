@@ -3,4 +3,5 @@ export * from './build-query-variables';
 export * from './format-bytes';
 export * from './get-routes';
 export * from './group-photos';
+export * from './scroll-to-top';
 export * from './shuffle';

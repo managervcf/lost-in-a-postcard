@@ -21,7 +21,7 @@ import {
 } from '@mui/x-data-grid';
 import { Alert, Dialog, DialogContent, Grid, IconButton, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
-import { formatBytes } from '../../utils';
+import { formatBytes, scrollToTop } from '../../utils';
 import { DeleteForever } from '@mui/icons-material';
 import { PhotoEdit } from '../Photo/PhotoEdit';
 
@@ -206,6 +206,7 @@ export const PhotoTable = () => {
                 pageSize: ROW_OPTIONS[0],
               },
             }}
+            onPageChange={() => scrollToTop(270)}
             pagination
             autoPageSize={false}
             rowsPerPageOptions={ROW_OPTIONS}
