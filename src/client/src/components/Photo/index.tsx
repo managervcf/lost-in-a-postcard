@@ -21,9 +21,6 @@ interface PhotoProps {
   upload: {
     key: string;
   };
-  author: {
-    username: string;
-  };
 }
 
 export const Photo: React.FC<PhotoProps> = props => {

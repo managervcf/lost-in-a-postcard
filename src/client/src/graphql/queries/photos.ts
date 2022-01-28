@@ -13,9 +13,6 @@ export interface Photo {
     key: string;
     size: number;
   };
-  author: {
-    username: string;
-  };
 }
 
 export interface PhotosData {
@@ -52,9 +49,6 @@ export const PHOTOS = gql`
         caption
         featured
         clicks
-        author {
-          username
-        }
         upload {
           key
           size

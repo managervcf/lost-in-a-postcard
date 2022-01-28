@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useMutation, useApolloClient } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
 import { Button, Error, Form } from '../common';
 import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';

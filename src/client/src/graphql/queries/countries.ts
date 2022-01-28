@@ -4,9 +4,6 @@ interface Country {
   id: string;
   name: string;
   description?: string;
-  photos: {
-    id: string;
-  }[];
 }
 
 export interface CountriesData {

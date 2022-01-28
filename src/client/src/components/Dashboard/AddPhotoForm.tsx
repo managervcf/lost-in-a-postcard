@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Button, Error, Form } from '../common';
 import { ProgressBar } from '../ProgressBar';

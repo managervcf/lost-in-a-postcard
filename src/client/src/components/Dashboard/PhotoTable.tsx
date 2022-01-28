@@ -79,15 +79,6 @@ export const PhotoTable = () => {
       hide: true,
     },
     {
-      field: 'author',
-      headerName: 'Author',
-      flex: 1,
-      minWidth: 100,
-      hide: true,
-      valueGetter: ({ value }: GridValueGetterParams<Photo['author'], Photo>) =>
-        value.username,
-    },
-    {
       field: 'upload',
       headerName: 'Preview',
       flex: 1,
