@@ -6,6 +6,7 @@ import { useLocalStorage, useUpload } from '../../hooks';
 import { COUNTRIES, CountriesData } from '../../graphql';
 import { Errors } from '../../constants';
 import {
+  Alert,
   Badge,
   FormControl,
   FormControlLabel,
@@ -13,11 +14,12 @@ import {
   IconButton,
   Radio,
   RadioGroup,
+  Snackbar,
   Switch,
   TextField,
   Typography,
 } from '@mui/material';
-import { UploadFileRounded, UploadFileTwoTone } from '@mui/icons-material';
+import { UploadFileRounded } from '@mui/icons-material';
 import { theme } from '../../constants';
 interface NewPhotoState {
   country: string;
@@ -30,6 +32,17 @@ interface NewPhotoState {
 export const AddPhotoForm: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [err, setErr] = useState<Errors | null>(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => setOpen(true);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const uploadRef = useRef<HTMLInputElement | null>(null);
 
@@ -85,6 +98,7 @@ export const AddPhotoForm: React.FC = () => {
         files: [],
       });
 
+      handleClick();
       setTimeout(() => setProgress(0), 1000);
     }
   };
@@ -143,12 +157,19 @@ export const AddPhotoForm: React.FC = () => {
   const n = newPhoto.files.length;
 
   return (
-    <Form id="add-photo-form" onSubmit={handleSubmit}>
+    <Form id="add-photo" onSubmit={handleSubmit}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert variant="filled" onClose={handleClose} severity="success">
+          Photos added!
+        </Alert>
+      </Snackbar>
+      <Grid item position="absolute" bottom={30} left={20}>
+        <ProgressBar loading={loading} value={progress} max={newPhoto.files.length} />
+      </Grid>
       <Grid item>
         <Typography variant="h6">Add photo</Typography>
       </Grid>
       <Error text={err} error={getUrlError ?? uploadError} />
-      <ProgressBar showProgress max={newPhoto.files.length} value={progress} />
       <Grid item>
         <FormControl disabled={loading}>
           <RadioGroup
@@ -243,7 +264,7 @@ export const AddPhotoForm: React.FC = () => {
           />
         </Grid>
       </Grid>
-      <Grid item justifyContent="center" alignItems="center">
+      <Grid item justifyContent="center" alignItems="center" flexDirection="row">
         <Button id="add-photo-submit-button" loading={loading} submit variant="contained">
           Upload
         </Button>

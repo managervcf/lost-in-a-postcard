@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
-import { Button, Collapse, Error, Form } from '../common';
+import { Button, Error, Form } from '../common';
 import {
   COUNTRIES,
   CountriesData,
@@ -11,7 +11,6 @@ import {
 import { Errors } from '../../constants';
 import { useLocalStorage } from '../../hooks';
 import {
-  Fade,
   FormControl,
   Grid,
   InputLabel,
@@ -126,7 +125,7 @@ export const EditCountriesForm: React.FC = () => {
   }
 
   return (
-    <Form id="edit-countries-form" onSubmit={handleSubmit}>
+    <Form id="edit-country" onSubmit={handleSubmit}>
       <Grid item>
         <Typography variant="h6">Edit country</Typography>
       </Grid>

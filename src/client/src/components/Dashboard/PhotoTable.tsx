@@ -164,7 +164,7 @@ export const PhotoTable = () => {
       width: 110,
       renderCell: ({ row }: GridRenderCellParams<any, Photo>) => (
         <>
-          <PhotoEdit {...row} />
+          <PhotoEdit {...row} disabled={deleteLoading && deletedPhotoId === row.id} />
           <IconButton
             id="delete-photo-list-item"
             color="error"

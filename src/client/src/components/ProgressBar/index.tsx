@@ -1,35 +1,52 @@
 import React from 'react';
-import { useScrollProgress } from '../../hooks';
-import classnames from 'classnames';
+import { CircularProgress, CircularProgressProps, Fade, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 interface ProgressBarProps {
-  fixed?: boolean;
   value: number;
   max?: number;
-  showProgress?: boolean;
+  loading: boolean;
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
-  fixed = false,
   value = 0,
   max = 100,
-  showProgress = false,
-}) => {
-  const { progress } = useScrollProgress();
+  loading = false,
+}) => (
+  <CircularProgressWithLabel
+    loading={loading}
+    value={!!max ? (value / max) * 100 || 0 : !!value ? 100 : 100}
+  />
+);
 
-  const progressBarClasses = classnames({
-    'progress-bar': true,
-    fixed,
-  });
-
+function CircularProgressWithLabel({
+  value,
+  loading,
+}: CircularProgressProps & { value: number; loading: boolean }) {
   return (
-    <>
-      <progress className={progressBarClasses} max={max} value={value ?? progress} />
-      {showProgress && !!value && (
-        <label className="progress-bar-text">
-          {!!max ? Math.floor((value / max) * 100) : 100}%
-        </label>
-      )}
-    </>
+    <Fade in={loading}>
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress
+          variant="indeterminate"
+          size={55}
+          value={value}
+          // color="success"
+        />
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="button">{`${Math.round(value)}%`}</Typography>
+        </Box>
+      </Box>
+    </Fade>
   );
-};
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useMutation, useApolloClient } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 import { FETCH_LIMIT } from '../constants';
 import {
   AddPhotoData,
@@ -34,17 +34,13 @@ interface FileUploadArgs {
  * 4. Define the uploadToS3 function.
  */
 export const useUpload = () => {
-  // const client = useApolloClient();
-
   const [getSignedUrl, { error: getUrlError }] = useMutation<
     GetPresignedUrlData,
     GetPresignedUrlVars
   >(GET_PRESIGNED_URL);
   const [addPhoto, { error: uploadError }] = useMutation<AddPhotoData, AddPhotoVars>(
     ADD_PHOTO,
-
     {
-      // onCompleted: client.resetStore,
       refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
     }
   );

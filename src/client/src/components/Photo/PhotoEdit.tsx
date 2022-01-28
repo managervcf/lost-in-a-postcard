@@ -4,6 +4,7 @@ import { Dialog, DialogContent, IconButton } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 
 interface PhotoEditProps {
+  disabled?: boolean;
   id: string;
   region: string;
   caption: string;
@@ -23,7 +24,11 @@ export const PhotoEdit: React.FC<PhotoEditProps> = props => {
 
   return (
     <>
-      <IconButton color="primary" onClick={() => setEditMode(editMode => !editMode)}>
+      <IconButton
+        color="primary"
+        disabled={props.disabled}
+        onClick={() => setEditMode(editMode => !editMode)}
+      >
         <Edit />
       </IconButton>
       <Dialog open={editMode} onClose={() => setEditMode(false)}>

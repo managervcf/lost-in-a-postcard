@@ -17,6 +17,7 @@ export const App: React.FC = () => (
     <main>
       <Routes>
         <Route path="/" element={<Navigate to="/photos/all/featured" />} />
+        <Route path="/photos" element={<Navigate to="/photos/all/featured" />} />
         <Route path="/photos/*" element={<Gallery />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
