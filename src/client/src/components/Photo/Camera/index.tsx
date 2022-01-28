@@ -44,6 +44,7 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
       <Box>
         <Fade in={show} timeout={800}>
           <Chip
+            size="small"
             color="primary"
             label={`${caption ? `${caption}, ` : ''}
             ${region ? `${region}, ` : ''}
