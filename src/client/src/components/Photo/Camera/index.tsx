@@ -1,4 +1,4 @@
-import { CameraAlt, CameraAltOutlined } from '@mui/icons-material';
+import { CameraAltOutlined } from '@mui/icons-material';
 import { Chip, Fade, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
@@ -35,7 +35,7 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
     <Box
       position="absolute"
       bottom="1rem"
-      right="4.5rem"
+      right="4.2rem"
       justifyContent="center"
       alignItems="center"
       display="flex"
