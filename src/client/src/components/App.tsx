@@ -22,7 +22,6 @@ export const App: React.FC = () => (
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
-    <hr />
     <footer>
       <Navbar />
       <Footer />

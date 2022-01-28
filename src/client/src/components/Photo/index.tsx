@@ -1,13 +1,13 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useQuery } from 'react-apollo';
+import { Fade, Grid, Box } from '@mui/material';
+import { FeaturedStar } from './FeaturedStar';
 import { PhotoImage } from './PhotoImage';
 import { PhotoEdit } from './PhotoEdit';
+import { Camera } from './Camera';
 import { Heart } from './Heart';
 import { ME, MeData } from '../../graphql';
 import { useOnScreen } from '../../hooks';
-import { Camera } from './Camera';
-import { Fade, Grid } from '@mui/material';
-import { Box } from '@mui/system';
 
 interface PhotoProps {
   id: string;
@@ -29,7 +29,7 @@ interface PhotoProps {
 export const Photo: React.FC<PhotoProps> = props => {
   const { data } = useQuery<MeData>(ME);
 
-  // Returns a boolean indicating if ref is visible on screen.
+  // Returns a boolean indicating if `ref` is visible on screen.
   const ref = useRef<HTMLElement>(null);
   const onScreen = useOnScreen(ref, '-40%');
 
@@ -41,16 +41,19 @@ export const Photo: React.FC<PhotoProps> = props => {
             <PhotoImage upload={props.upload} country={props.country} />
           </Box>
           {data?.me && (
-            <Box position="absolute" bottom="1rem" left="1.5rem">
-              <PhotoEdit {...props} />
-            </Box>
+            <>
+              <Box position="absolute" bottom="1rem" left="1.5rem">
+                <PhotoEdit {...props} />
+              </Box>
+              <Fade in={props.featured}>
+                <Box position="absolute" bottom="1rem" left="5.5rem">
+                  <FeaturedStar />
+                </Box>
+              </Fade>
+            </>
           )}
-          <Camera
-            country={props.country.name}
-            region={props.region}
-            caption={props.caption}
-          />
-          <Heart id={props.id} clicks={props.clicks} />
+          <Camera {...props} country={props.country.name} />
+          <Heart {...props} />
         </Box>
       </Grid>
     </Fade>

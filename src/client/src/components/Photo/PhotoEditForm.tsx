@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation, useApolloClient } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
-import { Button, Error } from '../common';
+import { Button, Error, Form } from '../common';
 import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
 import { FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
 
@@ -81,14 +81,7 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
   }
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
-      onSubmit={handleSubmit}
-      justifyContent="center"
-      flexDirection="column"
-    >
+    <Form onSubmit={handleSubmit}>
       <Grid item>
         <Typography variant="h6">Edit photo</Typography>
       </Grid>
@@ -97,7 +90,7 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
           id="edit-photo-country-input"
           name="country"
           type="text"
-          label={'Country: ' + country.name}
+          label="Country:"
           value={country.name}
           disabled
         />
@@ -138,7 +131,6 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
           disabled={loading}
         />
       </Grid>
-
       <Grid item>
         <Button
           id="edit-photo-submit-button"
@@ -150,6 +142,6 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
         </Button>
         <DeleteButton id={id} />
       </Grid>
-    </Grid>
+    </Form>
   );
 };

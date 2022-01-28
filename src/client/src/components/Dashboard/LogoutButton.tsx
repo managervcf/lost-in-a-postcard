@@ -1,14 +1,8 @@
-import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useApolloClient } from 'react-apollo';
-import { MeData } from '../../graphql';
 import { Button } from '../common';
 
-interface UserInfoProps {
-  me?: MeData['me'];
-}
-
-export function UserInfo({ me }: UserInfoProps) {
+export const LogoutButton: React.FC = () => {
   const client = useApolloClient();
   /**
    * Handles the logout button click event.
@@ -27,4 +21,4 @@ export function UserInfo({ me }: UserInfoProps) {
       </Button>
     </Box>
   );
-}
+};

@@ -1,7 +1,7 @@
-import { Grid } from '@mui/material';
+import { Dialog, DialogContent, Grid } from '@mui/material';
 import { useState } from 'react';
-import { Authenticated, Button, Modal } from '../common';
-import { UserInfo } from '../Header/UserInfo';
+import { Authenticated, Button } from '../common';
+import { LogoutButton } from './LogoutButton';
 import { AddPhotoForm } from './AddPhotoForm';
 import { EditCountriesForm } from './EditCountriesForm';
 import { PhotoTable } from './PhotoTable';
@@ -31,23 +31,22 @@ export function Dashboard() {
         >
           Edit countries
         </Button>
-        <UserInfo />
+        <LogoutButton />
         <PhotoTable />
       </Authenticated>
-      <Modal
-        title="Add a new photograph"
-        isOpen={showAddPhotoForm}
-        toggle={setShowAddPhotoForm}
+      <Dialog open={showAddPhotoForm} onClose={() => setShowAddPhotoForm(false)}>
+        <DialogContent>
+          <AddPhotoForm />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={showEditCountriesForm}
+        onClose={() => setShowEditCountriesForm(false)}
       >
-        <AddPhotoForm />
-      </Modal>
-      <Modal
-        title="Edit existing countries"
-        isOpen={showEditCountriesForm}
-        toggle={setShowEditCountriesForm}
-      >
-        <EditCountriesForm />
-      </Modal>
+        <DialogContent>
+          <EditCountriesForm />
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 }

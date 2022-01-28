@@ -1,1 +1,3 @@
-export const Footer = () => <p className="footer">Domi & Mateusz</p>;
+import { Typography } from '@mui/material';
+
+export const Footer = () => <Typography mb={2}>Domi & Mateusz</Typography>;

@@ -1,150 +1,17 @@
-input {
-  margin: 1rem 0;
-  padding: 0.5rem 1rem;
-  font-family: inherit;
-  font-size: $font-size-main;
-  text-align: center;
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: $shadow-neomorphic;
-  background-color: $color-main-background;
-  transition: all $transition-time-fast;
-
-  &:focus {
-    color: $color-main-primary;
-    box-shadow: $shadow-neomorphic-focus;
-  }
-
-  &::selection {
-    color: $color-white;
-    background-color: rgba($color-main-primary, 0.7);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  // Edit file input.
-  &::-webkit-file-upload-button,
-  &::-webkit-file-selector-button {
-    // margin: inherit;
-    // padding: inherit;
-    // background-color: inherit;
-    // font-family: inherit;
-    // font-size: inherit;
-    // border: inherit;
-    // box-shadow: $shadow-neomorphic;
-    // border-radius: 0.5rem;
-    // transition: inherit;
-    // transition: all $transition-time-fast;
-    // cursor: pointer;
-
-    &:focus {
-      box-shadow: $shadow-neomorphic-focus;
-      outline: inherit;
-    }
-
-    &:active {
-      box-shadow: none;
-      transform: translateY(0.2rem);
-    }
-  }
-}
-
-.textarea {
-  margin: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  font-family: inherit;
-  font-size: inherit;
-  width: 100%;
-  min-height: 4rem;
-  max-height: 25rem;
-  min-width: 25rem;
-  max-width: 30rem;
-  text-align: center;
-  border: 1px solid $color-light-grey;
-  border-radius: $border-radius-standard;
-  background-image: linear-gradient(
-    to right bottom,
-    $color-main-background,
-    $color-light-grey
-  );
-  box-shadow: $shadow-neomorphic;
-
-  &:focus {
-    color: $color-main-primary;
-    box-shadow: $shadow-neomorphic-focus;
-  }
-}
-
 .file-upload {
   overflow: hidden;
   position: relative;
 
   & [type='file'] {
+    z-index: -1;
     display: block;
     position: absolute;
     top: 0;
     right: 0;
-    min-height: 100%;
-    min-width: 100%;
-    font-size: 900rem;
+    height: 100%;
+    width: 100%;
     opacity: 0;
-    text-align: right;
     filter: alpha(opacity=0);
     cursor: pointer;
-  }
-
-  &-container {
-    display: flex;
-    align-items: center;
-  }
-}
-
-.selectable {
-  position: relative;
-  display: flex;
-  align-items: center;
-  max-width: 90%;
-  justify-content: center;
-  font-size: $font-size-main;
-  flex-wrap: wrap;
-
-  &:hover &-label {
-    // color: $color-main-primary;
-  }
-
-  &-item {
-    display: block;
-    margin: 0.5rem 0.2rem;
-    padding: 0.5rem 1rem;
-    color: $color-main-text;
-    background-color: $color-main-background;
-    box-shadow: none;
-    border-radius: $border-radius-large;
-    transition: all $transition-time-fast;
-    cursor: pointer;
-  }
-
-  &-label {
-    display: block;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    color: $color-main-text-dim;
-  }
-
-  &-input {
-    visibility: hidden;
-    position: absolute;
-
-    &:checked + .selectable-item {
-      color: $color-main-primary;
-      box-shadow: $shadow-neomorphic;
-    }
-
-    &:hover + .selectable-item {
-      box-shadow: $shadow-neomorphic;
-    }
   }
 }

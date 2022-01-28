@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo';
-import { Button, Error } from '../common';
+import { Button, Collapse, Error, Form } from '../common';
 import {
   COUNTRIES,
   CountriesData,
@@ -10,6 +10,17 @@ import {
 } from '../../graphql';
 import { Errors } from '../../constants';
 import { useLocalStorage } from '../../hooks';
+import {
+  Fade,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 interface EditedCountryState {
   id: string;
@@ -34,7 +45,7 @@ export const EditCountriesForm: React.FC = () => {
     loading: countriesLoading,
     error: countriesError,
     data,
-  } = useQuery<CountriesData>(COUNTRIES);
+  } = useQuery<CountriesData>(COUNTRIES, { fetchPolicy: 'network-only' });
 
   const [updateCountry, { loading: updateCountryLoading, error: updateCountryError }] =
     useMutation<UpdateCountryData, UpdateCountryVars>(UPDATE_COUNTRY, {
@@ -68,7 +79,7 @@ export const EditCountriesForm: React.FC = () => {
       variables: editedCountry,
     });
 
-    setEditedCountry(emptyEditedCountry);
+    setTimeout(() => setEditedCountry(emptyEditedCountry), 1500);
   };
 
   /**
@@ -76,8 +87,8 @@ export const EditCountriesForm: React.FC = () => {
    * 1. Find the country with the name equal to the input value.
    * 2. Set the editedCountry state variable.
    */
-  const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    const foundCountry = data?.countries.find(({ name }) => name === e.target.value);
+  const handleSelect = (e: SelectChangeEvent<string>) => {
+    const foundCountry = data?.countries.find(({ id }) => id === e.target.value);
 
     if (foundCountry) {
       const { id, name, description } = foundCountry;
@@ -96,6 +107,15 @@ export const EditCountriesForm: React.FC = () => {
       [e.target.name]: e.target.value,
     });
 
+  // Build the country options.
+  const countryOptions = useMemo(
+    () =>
+      [...(data?.countries?.sort() ?? [])].map(({ name, id }) => (
+        <MenuItem value={id}>{name}</MenuItem>
+      )),
+    [data]
+  );
+
   // Handles the query error and loading state.
   if (countriesLoading || !data?.countries) {
     return null;
@@ -105,57 +125,72 @@ export const EditCountriesForm: React.FC = () => {
     return <Error error={countriesError} />;
   }
 
-  // Build the country options.
-  const countryOptions = [...data?.countries?.sort()].map(({ name, id }) => (
-    <div key={id} className="selectable-group">
-      <input
-        id={name}
-        className="selectable-input"
-        type="radio"
-        checked={id === editedCountry.id}
-        onChange={handleSelect}
-        value={name}
-      />
-      <label className="selectable-item" htmlFor={name}>
-        {name}
-      </label>
-    </div>
-  ));
-
   return (
-    <form id="edit-countries-form" className="form" onSubmit={handleSubmit}>
+    <Form id="edit-countries-form" onSubmit={handleSubmit}>
+      <Grid item>
+        <Typography variant="h6">Edit country</Typography>
+      </Grid>
       <Error text={err} error={updateCountryError} />
-      <div className="selectable">
-        <span className="selectable-label">Pick a country:</span>
-        {countryOptions}
-      </div>
-      <hr />
-      <input
-        id="edit-country-name-input"
-        type="text"
-        value={editedCountry.name}
-        name="name"
-        onChange={handleInputChange}
-        placeholder="Name"
-        disabled={updateCountryLoading}
-      />
-      <textarea
-        id="edit-country-description-input"
-        className="textarea"
-        value={editedCountry.description}
-        name="description"
-        onChange={handleInputChange}
-        placeholder="Description"
-        disabled={updateCountryLoading}
-      />
+      <Grid item>
+        <FormControl sx={{ m: 1, minWidth: 230 }}>
+          <InputLabel id="country-select">Country</InputLabel>
+          <Select
+            label="Country"
+            labelId="country-select"
+            value={data.countries.find(({ name }) => name === editedCountry.name)?.id}
+            onChange={handleSelect}
+            disabled={updateCountryLoading}
+            autoWidth
+          >
+            {countryOptions}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item>
+        <TextField
+          id="edit-country-name-input"
+          name="name"
+          type="text"
+          value={editedCountry.name}
+          onChange={handleInputChange}
+          label={
+            'Name: ' +
+            (!!editedCountry.id
+              ? data?.countries.find(({ id }) => id === editedCountry.id)?.name
+              : '')
+          }
+          disabled={!editedCountry.id}
+        />
+      </Grid>
+      <Grid item>
+        <TextField
+          id="edit-country-description-input"
+          name="description"
+          type="text"
+          multiline
+          rows={4}
+          label={
+            'Description: ' +
+            (!!editedCountry.id
+              ? data?.countries
+                  ?.find(({ id }) => id === editedCountry.id)
+                  ?.description?.slice(5)
+              : '')
+          }
+          value={editedCountry.description}
+          onChange={handleInputChange}
+          disabled={updateCountryLoading || !editedCountry.id}
+        />
+      </Grid>
       <Button
         id="edit-country-submit-button"
+        submit
+        variant="contained"
         disabled={updateCountryLoading || !editedCountry.id}
         loading={updateCountryLoading}
-        submit
       >
-        {!updateCountryLoading ? 'Update' : 'Updating...'}
+        Update
       </Button>
-    </form>
+    </Form>
   );
 };

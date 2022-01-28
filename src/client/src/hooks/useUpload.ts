@@ -34,7 +34,7 @@ interface FileUploadArgs {
  * 4. Define the uploadToS3 function.
  */
 export const useUpload = () => {
-  const client = useApolloClient();
+  // const client = useApolloClient();
 
   const [getSignedUrl, { error: getUrlError }] = useMutation<
     GetPresignedUrlData,
@@ -44,7 +44,7 @@ export const useUpload = () => {
     ADD_PHOTO,
 
     {
-      onCompleted: client.resetStore,
+      // onCompleted: client.resetStore,
       refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
     }
   );

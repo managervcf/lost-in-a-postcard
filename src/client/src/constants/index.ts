@@ -45,9 +45,12 @@ export const ROW_OPTIONS = [10, 25, 50, 100];
  * MUI theme.
  */
 export const theme = createTheme({
+  components: {
+    MuiFormControlLabel: {},
+  },
   palette: {
     secondary: {
-      main: '#C0D8C0',
+      main: '#88DCF8',
     },
     primary: {
       main: '#f8a488',

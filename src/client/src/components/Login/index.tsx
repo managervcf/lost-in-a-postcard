@@ -1,7 +1,7 @@
 import { useMutation } from 'react-apollo';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Error } from '../common';
+import { Button, Error, Form } from '../common';
 import { LOGIN, LoginData, LoginVars } from '../../graphql';
 import { Grid, TextField } from '@mui/material';
 
@@ -39,21 +39,14 @@ export const Login = () => {
    * 2. Issue the logIn mutation.
    * 3. Reset the login and password state variables.
    */
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     logIn({ variables: credentials });
     setCredentials({ login: '', password: '' });
   };
 
   return (
-    <Grid
-      container
-      spacing={2}
-      component="form"
-      onSubmit={handleSubmit}
-      justifyContent="center"
-      flexDirection="column"
-    >
+    <Form id="login-form" onSubmit={handleSubmit}>
       <Grid item>
         <Error error={error} />
       </Grid>
@@ -64,7 +57,6 @@ export const Login = () => {
           type="text"
           required
           label="Username"
-          variant="standard"
           onChange={e => setCredentials({ ...credentials, login: e.target.value })}
           autoFocus
         />
@@ -76,7 +68,6 @@ export const Login = () => {
           type="password"
           required
           label="Password"
-          variant="standard"
           onChange={e => setCredentials({ ...credentials, password: e.target.value })}
         />
       </Grid>
@@ -88,6 +79,6 @@ export const Login = () => {
           Back
         </Button>
       </Grid>
-    </Grid>
+    </Form>
   );
 };

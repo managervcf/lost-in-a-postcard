@@ -39,9 +39,9 @@ export const PhotoTable = () => {
     DeletePhotoData,
     DeletePhotoVars
   >(DELETE_PHOTO, {
-    onCompleted: () => {
+    onCompleted: async () => {
+      await client.resetStore();
       setDeletedPhotoId(null);
-      client.resetStore();
     },
   });
 
@@ -56,8 +56,8 @@ export const PhotoTable = () => {
       headerName: 'No.',
       width: 50,
       hide: true,
-      valueGetter: (item: GridValueGetterParams<any, Photo>) =>
-        allPhotos.findIndex(({ id }) => id === item.row.id) + 1,
+      valueGetter: ({ row }: GridValueGetterParams<any, Photo>) =>
+        allPhotos.findIndex(({ id }) => id === row.id) + 1,
     },
     {
       field: 'id',
@@ -72,27 +72,27 @@ export const PhotoTable = () => {
       flex: 1,
       minWidth: 100,
       hide: true,
-      valueGetter: (item: GridValueGetterParams<Photo['author'], Photo>) =>
-        item.value.username,
+      valueGetter: ({ value }: GridValueGetterParams<Photo['author'], Photo>) =>
+        value.username,
     },
     {
       field: 'upload',
       headerName: 'Preview',
       flex: 1,
       minWidth: 80,
-      renderCell: (item: GridRenderCellParams<Photo['upload'], Photo>) => (
+      renderCell: ({ value, row }: GridRenderCellParams<Photo['upload'], Photo>) => (
         <>
           <Box
-            onClick={() => setEnlarged(item.row.id)}
+            onClick={() => setEnlarged(row.id)}
             component="img"
             loading="lazy"
             sx={{ width: '100%' }}
             // Prevent downloading images through context menu.
             onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
-            src={`${AWS_URL}${item.value.key}`}
-            alt={item.row.country.name}
+            src={`${AWS_URL}${value.key}`}
+            alt={row.country.name}
           />
-          <Dialog open={enlarged === item.row.id} onClose={() => setEnlarged(null)}>
+          <Dialog open={enlarged === row.id} onClose={() => setEnlarged(null)}>
             <DialogContent>
               <Box
                 component="img"
@@ -107,8 +107,8 @@ export const PhotoTable = () => {
                 onContextMenu={(e: React.MouseEvent<HTMLImageElement>) =>
                   e.preventDefault()
                 }
-                src={`${AWS_URL}${item.value.key}`}
-                alt={item.row.country.name}
+                src={`${AWS_URL}${value.key}`}
+                alt={row.country.name}
               />
             </DialogContent>
           </Dialog>
@@ -120,18 +120,17 @@ export const PhotoTable = () => {
       headerName: 'Size',
       width: 100,
       type: 'number',
-      valueGetter: (item: GridValueGetterParams<undefined, Photo>) =>
-        item.row.upload.size,
-      valueFormatter: (item: GridValueFormatterParams) =>
-        formatBytes(item.value as number),
+      valueGetter: ({ row }: GridValueGetterParams<undefined, Photo>) => row.upload.size,
+      valueFormatter: ({ value }: GridValueFormatterParams) =>
+        formatBytes(value as number),
     },
     {
       field: 'country',
       headerName: 'Country',
       flex: 1,
       minWidth: 100,
-      valueGetter: (item: GridValueGetterParams<Photo['country'], Photo>) =>
-        item.value.name,
+      valueGetter: ({ value }: GridValueGetterParams<Photo['country'], Photo>) =>
+        value.name,
     },
     {
       field: 'region',
@@ -150,29 +149,30 @@ export const PhotoTable = () => {
       headerName: 'Featured',
       flex: 1,
       minWidth: 60,
-      valueFormatter: (item: GridValueFormatterParams) => (item.value ? 'Yes' : 'No'),
+      valueFormatter: ({ value }: GridValueFormatterParams) => (value ? 'Yes' : 'No'),
     },
     {
       field: 'clicks',
       headerName: 'Clicks',
       flex: 1,
       minWidth: 60,
+      valueFormatter: ({ value }: GridValueFormatterParams) => `- ${value} +`,
     },
     {
       field: 'actions',
       headerName: 'Edit/Delete',
       width: 110,
-      renderCell: (item: GridRenderCellParams<any, Photo>) => (
+      renderCell: ({ row }: GridRenderCellParams<any, Photo>) => (
         <>
-          <PhotoEdit {...item.row} />
+          <PhotoEdit {...row} />
           <IconButton
             id="delete-photo-list-item"
             color="error"
             onClick={() => {
-              setDeletedPhotoId(item.row.id);
-              deletePhoto({ variables: { id: item.row.id } });
+              setDeletedPhotoId(row.id);
+              deletePhoto({ variables: { id: row.id } });
             }}
-            disabled={deleteLoading && deletedPhotoId === item.row.id}
+            disabled={deleteLoading && deletedPhotoId === row.id}
           >
             <DeleteForever />
           </IconButton>

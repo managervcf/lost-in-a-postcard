@@ -27,7 +27,7 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
    */
   useEffect(() => {
     if (show) {
-      setTimeout(hideDetails, 3000);
+      setTimeout(hideDetails, 2500);
     }
   }, [show]);
 
@@ -42,7 +42,7 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
       flexDirection="row"
     >
       <Box>
-        <Fade in={show} timeout={1000}>
+        <Fade in={show} timeout={800}>
           <Chip
             color="primary"
             label={`${caption ? `${caption}, ` : ''}
