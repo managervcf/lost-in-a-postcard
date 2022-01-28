@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useMutation } from 'react-apollo';
-import { FETCH_LIMIT } from '../constants';
 import {
   AddPhotoData,
   AddPhotoVars,
@@ -9,7 +8,6 @@ import {
   GetPresignedUrlData,
   GetPresignedUrlVars,
   GET_PRESIGNED_URL,
-  PHOTOS,
 } from '../graphql';
 
 /**
@@ -39,10 +37,7 @@ export const useUpload = () => {
     GetPresignedUrlVars
   >(GET_PRESIGNED_URL);
   const [addPhoto, { error: uploadError }] = useMutation<AddPhotoData, AddPhotoVars>(
-    ADD_PHOTO,
-    {
-      refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
-    }
+    ADD_PHOTO
   );
 
   const [loading, setLoading] = useState(false);

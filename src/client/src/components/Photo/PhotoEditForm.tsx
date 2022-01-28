@@ -57,13 +57,11 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
     setOpen(false);
   };
 
-  const client = useApolloClient();
-
   // Use mutation hook.
   const [updateMutation, { error, loading }] = useMutation<
     UpdatePhotoData,
     UpdatePhotoVars
-  >(UPDATE_PHOTO, { onCompleted: client.resetStore });
+  >(UPDATE_PHOTO);
 
   /**
    * Handles the form submit event.

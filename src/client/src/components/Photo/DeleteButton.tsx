@@ -1,5 +1,5 @@
 import React from 'react';
-import { useApolloClient, useMutation } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 import { DeletePhotoData, DeletePhotoVars, DELETE_PHOTO } from '../../graphql';
 import { Button, Error } from '../common';
 
@@ -8,14 +8,9 @@ interface DeleteButtonProps {
 }
 
 export const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
-  const client = useApolloClient();
-
   const [deletePhoto, { loading, error }] = useMutation<DeletePhotoData, DeletePhotoVars>(
     DELETE_PHOTO,
-    {
-      variables: { id },
-      onCompleted: client.resetStore,
-    }
+    { variables: { id } }
   );
 
   if (error) {
