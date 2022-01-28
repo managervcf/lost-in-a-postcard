@@ -3,7 +3,15 @@ import { useMutation, useApolloClient } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
 import { Button, Error, Form } from '../common';
 import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
-import { FormControlLabel, Grid, Switch, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  FormControlLabel,
+  Grid,
+  Snackbar,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 interface PhotoEditFormProps {
   id: string;
@@ -37,6 +45,17 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
     caption,
     featured,
   });
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => setOpen(true);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const client = useApolloClient();
 
@@ -56,7 +75,8 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
     await updateMutation({
       variables: editedPhoto,
     });
-    closeEditMode();
+    // closeEditMode();
+    handleClick();
   };
 
   /**
@@ -82,6 +102,11 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert variant="filled" onClose={handleClose} severity="success">
+          Photo edited
+        </Alert>
+      </Snackbar>
       <Grid item>
         <Typography variant="h6">Edit photo</Typography>
       </Grid>

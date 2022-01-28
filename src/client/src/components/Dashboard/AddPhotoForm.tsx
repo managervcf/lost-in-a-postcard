@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Button, Error, Form } from '../common';
 import { ProgressBar } from '../ProgressBar';
@@ -32,7 +32,7 @@ interface NewPhotoState {
 export const AddPhotoForm: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [err, setErr] = useState<Errors | null>(null);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => setOpen(true);
 
@@ -160,7 +160,7 @@ export const AddPhotoForm: React.FC = () => {
     <Form id="add-photo" onSubmit={handleSubmit}>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert variant="filled" onClose={handleClose} severity="success">
-          Photos added!
+          Photos added
         </Alert>
       </Snackbar>
       <Grid item position="absolute" bottom={30} left={20}>

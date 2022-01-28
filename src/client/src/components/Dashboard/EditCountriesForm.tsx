@@ -11,12 +11,14 @@ import {
 import { Errors } from '../../constants';
 import { useLocalStorage } from '../../hooks';
 import {
+  Alert,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
@@ -35,6 +37,17 @@ const emptyEditedCountry: EditedCountryState = {
 
 export const EditCountriesForm: React.FC = () => {
   const [err, setErr] = useState<Errors | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => setOpen(true);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const { value: editedCountry, setter: setEditedCountry } =
     useLocalStorage<EditedCountryState>('edited_country', emptyEditedCountry);
@@ -79,6 +92,7 @@ export const EditCountriesForm: React.FC = () => {
     });
 
     setTimeout(() => setEditedCountry(emptyEditedCountry), 1500);
+    handleClick();
   };
 
   /**
@@ -110,7 +124,9 @@ export const EditCountriesForm: React.FC = () => {
   const countryOptions = useMemo(
     () =>
       [...(data?.countries?.sort() ?? [])].map(({ name, id }) => (
-        <MenuItem value={id}>{name}</MenuItem>
+        <MenuItem key={id} value={id}>
+          {name}
+        </MenuItem>
       )),
     [data]
   );
@@ -126,6 +142,11 @@ export const EditCountriesForm: React.FC = () => {
 
   return (
     <Form id="edit-country" onSubmit={handleSubmit}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert variant="filled" onClose={handleClose} severity="success">
+          Country edited
+        </Alert>
+      </Snackbar>
       <Grid item>
         <Typography variant="h6">Edit country</Typography>
       </Grid>
@@ -135,8 +156,9 @@ export const EditCountriesForm: React.FC = () => {
           <InputLabel id="country-select">Country</InputLabel>
           <Select
             label="Country"
+            name="country-select"
             labelId="country-select"
-            value={data.countries.find(({ name }) => name === editedCountry.name)?.id}
+            value={data.countries.find(({ id }) => id === editedCountry.id)?.id ?? ''}
             onChange={handleSelect}
             disabled={updateCountryLoading}
             autoWidth
