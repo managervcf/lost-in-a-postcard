@@ -25,7 +25,7 @@ export const photoSchema = gql`
       featured: Boolean
     ): Photo!
     deletePhoto(id: ID!): Photo!
-    clickPhoto(id: ID!): Photo!
+    clickPhoto(id: ID!, incrementBy: Int): Photo!
   }
 
   type PhotoConnection {

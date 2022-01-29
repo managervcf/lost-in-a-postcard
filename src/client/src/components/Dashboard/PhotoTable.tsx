@@ -10,7 +10,7 @@ import {
   PhotosData,
   PhotosVars,
 } from '../../graphql';
-import { Collapse } from '../common';
+import { Collapse, IncrementClicksButton } from '../common';
 import {
   DataGrid,
   GridColumns,
@@ -156,8 +156,14 @@ export const PhotoTable = () => {
       field: 'clicks',
       headerName: 'Clicks',
       flex: 1,
-      minWidth: 60,
-      valueFormatter: ({ value }: GridValueFormatterParams) => `- ${value} +`,
+      minWidth: 110,
+      renderCell: ({ value, row }: GridRenderCellParams<Photo['clicks'], Photo>) => (
+        <Grid container flexDirection="row" alignItems="center">
+          <IncrementClicksButton id={row.id} incrementBy={-1} size="small" />
+          {value}
+          <IncrementClicksButton id={row.id} incrementBy={1} size="small" />
+        </Grid>
+      ),
     },
     {
       field: 'actions',

@@ -50,7 +50,7 @@ export const Photo: React.FC<PhotoProps> = props => {
             </>
           )}
           <Camera {...props} country={props.country.name} />
-          <Heart {...props} />
+          <Heart id={props.id} />
         </Box>
       </Grid>
     </Fade>

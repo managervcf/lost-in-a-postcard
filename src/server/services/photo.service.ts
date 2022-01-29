@@ -301,16 +301,18 @@ class PhotoService {
   /**
    * Increments the clicks proptery on the photo.
    */
-  async clickPhoto(id: Types.ObjectId): Promise<PhotoDoc> {
+  async clickPhoto(id: Types.ObjectId, incrementBy?: number): Promise<PhotoDoc> {
     const clickedPhoto = await this.photoModel.findByIdAndUpdate(id, {
-      $inc: { clicks: 1 },
+      $inc: { clicks: incrementBy ?? 1 },
     });
 
     if (!clickedPhoto) {
       throw new Error(`Photo with an id ${id} does not exist`);
     }
 
-    console.log(`(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}).`);
+    console.log(
+      `(GraphQL) Clicked photo ${clickedPhoto.caption} (${clickedPhoto.id}) and incremented by ${incrementBy}.`
+    );
     return clickedPhoto;
   }
 

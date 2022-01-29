@@ -20,8 +20,11 @@ export const photoResolvers: Resolvers<PhotoDoc> = {
     addPhoto: isAuthenticated((parent, args: AddPhotoArgs, { me }) =>
       photoService.addPhoto(args, me)
     ),
-    clickPhoto: (parent, { id }: { id: Types.ObjectId }, context) =>
-      photoService.clickPhoto(id),
+    clickPhoto: (
+      parent,
+      { id, incrementBy }: { id: Types.ObjectId; incrementBy: number },
+      context
+    ) => photoService.clickPhoto(id, incrementBy),
     updatePhoto: isAuthorized((parent, args: UpdatePhotoArgs, context) =>
       photoService.updatePhoto(args)
     ),
