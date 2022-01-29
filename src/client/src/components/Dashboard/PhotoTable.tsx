@@ -1,4 +1,4 @@
-import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useMemo, useState } from 'react';
 import { AWS_URL, FETCH_LIMIT, ROW_OPTIONS } from '../../constants';
 import {
@@ -44,15 +44,13 @@ export const PhotoTable = () => {
     variables: { limit: FETCH_LIMIT },
     fetchPolicy: 'cache-first',
   });
-  // Apollo client used to reset the store.
-  const client = useApolloClient();
 
   const [deletePhoto, { loading: deleteLoading }] = useMutation<
     DeletePhotoData,
     DeletePhotoVars
   >(DELETE_PHOTO, {
-    onCompleted: async () => {
-      await client.resetStore();
+    refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
+    onCompleted: () => {
       setDeletedPhotoId(null);
     },
   });

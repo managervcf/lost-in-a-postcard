@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
+  LinearProgress,
   Radio,
   RadioGroup,
   Snackbar,
@@ -158,6 +159,23 @@ export const AddPhotoForm: React.FC = () => {
 
   return (
     <Form id="add-photo" onSubmit={handleSubmit}>
+      <Snackbar open={loading} onClose={handleClose}>
+        <Grid
+          container
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Alert variant="filled" onClose={handleClose} severity="info">
+            Uploading {n} photo(s) from {newPhoto.country}...
+            <LinearProgress
+              color="inherit"
+              variant="indeterminate"
+              sx={{ marginTop: 0.5 }}
+            />
+          </Alert>
+        </Grid>
+      </Snackbar>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert variant="filled" onClose={handleClose} severity="success">
           Photos added

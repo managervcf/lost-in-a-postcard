@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
 import { Button, Error, Form } from '../common';
-import { UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
+import { PHOTOS, UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
 import {
   Alert,
   FormControlLabel,
@@ -12,6 +12,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { FETCH_LIMIT } from '../../constants';
 
 interface PhotoEditFormProps {
   id: string;
@@ -61,7 +62,9 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
   const [updateMutation, { error, loading }] = useMutation<
     UpdatePhotoData,
     UpdatePhotoVars
-  >(UPDATE_PHOTO);
+  >(UPDATE_PHOTO, {
+    refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
+  });
 
   /**
    * Handles the form submit event.

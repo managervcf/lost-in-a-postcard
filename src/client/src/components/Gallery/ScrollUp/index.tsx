@@ -1,5 +1,5 @@
 import { ArrowUpward } from '@mui/icons-material';
-import { Button, Fade, IconButton } from '@mui/material';
+import { Button, Fade } from '@mui/material';
 import { scrollToTop } from '../../../utils';
 
 interface ScrollUpProps {
