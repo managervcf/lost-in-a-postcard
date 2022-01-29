@@ -1,5 +1,5 @@
-import { KeyboardArrowUpOutlined } from '@mui/icons-material';
-import { Button, Fade } from '@mui/material';
+import { ArrowUpward } from '@mui/icons-material';
+import { Button, Fade, IconButton } from '@mui/material';
 import { scrollToTop } from '../../../utils';
 
 interface ScrollUpProps {
@@ -14,7 +14,7 @@ export const ScrollUp: React.FC<ScrollUpProps> = ({ hidden = false }) => (
       sx={{ borderRadius: 100 }}
       onClick={() => scrollToTop()}
     >
-      <KeyboardArrowUpOutlined />
+      <ArrowUpward />
     </Button>
   </Fade>
 );
