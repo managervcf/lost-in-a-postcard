@@ -157,7 +157,7 @@ export const PhotoTable = () => {
     {
       field: 'clicks',
       headerName: 'Clicks',
-      width: 105,
+      width: 110,
       renderCell: ({ value, row }: GridRenderCellParams<Photo['clicks'], Photo>) => (
         <Grid container flexDirection="row" alignItems="center">
           <IncrementClicksButton id={row.id} incrementBy={-1} size="small" />
@@ -193,7 +193,12 @@ export const PhotoTable = () => {
   return (
     <Grid container justifyContent="center">
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert variant="filled" onClose={handleClose} severity="success">
+        <Alert
+          icon={<DeleteForever />}
+          variant="filled"
+          onClose={handleClose}
+          severity="success"
+        >
           Photo deleted
         </Alert>
       </Snackbar>

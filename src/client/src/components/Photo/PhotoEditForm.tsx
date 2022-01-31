@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
-import { Button, Collapse, Error, Form } from '../common';
+import { Button, Error, Form } from '../common';
 import { PHOTOS, UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
 import { FETCH_LIMIT, AWS_URL } from '../../constants';
 import {
@@ -15,7 +15,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { HorizontalRule } from '@mui/icons-material';
 
 interface PhotoEditFormProps {
   id: string;

@@ -7,12 +7,12 @@ import { COUNTRIES, CountriesData } from '../../graphql';
 import { Errors } from '../../constants';
 import {
   Alert,
+  Backdrop,
   Badge,
   FormControl,
   FormControlLabel,
   Grid,
   IconButton,
-  LinearProgress,
   Radio,
   RadioGroup,
   Snackbar,
@@ -159,31 +159,21 @@ export const AddPhotoForm: React.FC = () => {
 
   return (
     <Form id="add-photo" onSubmit={handleSubmit}>
-      <Snackbar open={loading} onClose={handleClose}>
-        <Grid
-          container
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Alert variant="filled" onClose={handleClose} severity="info">
-            Uploading {n} photo(s) from {newPhoto.country}...
-            <LinearProgress
-              color="inherit"
-              variant="indeterminate"
-              sx={{ marginTop: 0.5 }}
-            />
-          </Alert>
-        </Grid>
-      </Snackbar>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert variant="filled" onClose={handleClose} severity="success">
           Photos added
         </Alert>
       </Snackbar>
-      <Grid item position="absolute" bottom={30} left={20}>
-        <ProgressBar loading={loading} value={progress} max={newPhoto.files.length} />
-      </Grid>
+      <Backdrop sx={{ zIndex: 10 }} open={loading}>
+        <Grid container flexDirection="column">
+          <Typography fontWeight="bold" color="primary" m={2}>
+            Uploading {n} photo(s) from {newPhoto.country}...
+          </Typography>
+          <Grid item>
+            <ProgressBar loading={loading} value={progress} max={newPhoto.files.length} />
+          </Grid>
+        </Grid>
+      </Backdrop>
       <Grid item>
         <Typography variant="h6">Add photo</Typography>
       </Grid>

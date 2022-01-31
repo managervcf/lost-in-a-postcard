@@ -26,7 +26,12 @@ function CircularProgressWithLabel({
   return (
     <Fade in={loading}>
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" size={55} value={value} />
+        <CircularProgress
+          color="secondary"
+          variant="determinate"
+          size={55}
+          value={value}
+        />
         <Box
           sx={{
             top: 0,
@@ -39,7 +44,10 @@ function CircularProgressWithLabel({
             justifyContent: 'center',
           }}
         >
-          <Typography variant="button">{`${Math.round(value)}%`}</Typography>
+          <CircularProgress color="primary" size={65} sx={{ position: 'absolute' }} />
+          <Typography fontWeight="bold" color="primary" variant="button">{`${Math.round(
+            value
+          )}%`}</Typography>
         </Box>
       </Box>
     </Fade>
