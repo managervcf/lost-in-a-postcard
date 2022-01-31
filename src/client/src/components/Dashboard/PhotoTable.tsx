@@ -208,7 +208,6 @@ export const PhotoTable = () => {
       <Backdrop sx={{ zIndex: 10 }} open={deleteLoading}>
         <CircularProgress color="primary" size={65} />
       </Backdrop>
-
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert
           icon={<DeleteForever />}

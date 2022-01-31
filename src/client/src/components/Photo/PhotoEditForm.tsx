@@ -7,6 +7,8 @@ import { FETCH_LIMIT, AWS_URL } from '../../constants';
 import {
   Alert,
   Avatar,
+  Backdrop,
+  CircularProgress,
   FormControlLabel,
   Grid,
   Snackbar,
@@ -68,6 +70,7 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
     UpdatePhotoVars
   >(UPDATE_PHOTO, {
     refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
+    onCompleted: () => handleClick(),
   });
 
   /**
@@ -80,8 +83,6 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
     await updateMutation({
       variables: editedPhoto,
     });
-    // closeEditMode();
-    handleClick();
   };
 
   /**
@@ -107,6 +108,9 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Backdrop sx={{ zIndex: 10 }} open={loading}>
+        <CircularProgress color="primary" size={65} />
+      </Backdrop>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert variant="filled" onClose={handleClose} severity="success">
           Photo edited
