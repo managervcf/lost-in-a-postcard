@@ -80,7 +80,8 @@ export const PhotoTable = () => {
       field: 'upload',
       headerName: 'Preview',
       flex: 1,
-      minWidth: 80,
+      minWidth: 100,
+      maxWidth: 150,
       renderCell: ({ value, row }: GridRenderCellParams<Photo['upload'], Photo>) => (
         <>
           <Box
@@ -119,7 +120,7 @@ export const PhotoTable = () => {
     {
       field: 'size',
       headerName: 'Size',
-      width: 100,
+      width: 85,
       type: 'number',
       valueGetter: ({ row }: GridValueGetterParams<undefined, Photo>) => row.upload.size,
       valueFormatter: ({ value }: GridValueFormatterParams) =>
@@ -136,27 +137,27 @@ export const PhotoTable = () => {
     {
       field: 'region',
       headerName: 'Region',
-      flex: 1,
+      flex: 2,
       minWidth: 100,
     },
     {
       field: 'caption',
       headerName: 'Caption',
-      flex: 1,
+      flex: 2,
       minWidth: 100,
     },
     {
       field: 'featured',
       headerName: 'Featured',
-      flex: 1,
-      minWidth: 60,
+      flex: 0.5,
+      minWidth: 90,
+      maxWidth: 110,
       valueFormatter: ({ value }: GridValueFormatterParams) => (value ? 'Yes' : 'No'),
     },
     {
       field: 'clicks',
       headerName: 'Clicks',
-      flex: 1,
-      minWidth: 110,
+      width: 105,
       renderCell: ({ value, row }: GridRenderCellParams<Photo['clicks'], Photo>) => (
         <Grid container flexDirection="row" alignItems="center">
           <IncrementClicksButton id={row.id} incrementBy={-1} size="small" />
@@ -167,8 +168,8 @@ export const PhotoTable = () => {
     },
     {
       field: 'actions',
-      headerName: 'Edit/Delete',
-      width: 110,
+      headerName: 'Actions',
+      width: 100,
       renderCell: ({ row }: GridRenderCellParams<any, Photo>) => (
         <>
           <PhotoEdit {...row} disabled={deleteLoading && deletedPhotoId === row.id} />
@@ -196,7 +197,7 @@ export const PhotoTable = () => {
           Photo deleted
         </Alert>
       </Snackbar>
-      <Grid item xs={10}>
+      <Grid item xl={9} md={11} xs={12} m={1}>
         <Collapse
           title={loading ? 'Loading photos...' : `List of ${allPhotos.length} photos `}
           disabled={loading}
