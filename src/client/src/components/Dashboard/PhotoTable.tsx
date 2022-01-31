@@ -91,7 +91,7 @@ export const PhotoTable = () => {
             sx={{ width: '100%' }}
             // Prevent downloading images through context menu.
             onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
-            src={`${AWS_URL}${value.key}`}
+            srcSet={`${AWS_URL}${value.key}`}
             alt={row.country.name}
           />
           <Dialog open={enlarged === row.id} onClose={() => setEnlarged(null)}>
@@ -109,7 +109,7 @@ export const PhotoTable = () => {
                 onContextMenu={(e: React.MouseEvent<HTMLImageElement>) =>
                   e.preventDefault()
                 }
-                src={`${AWS_URL}${value.key}`}
+                srcSet={`${AWS_URL}${value.key}`}
                 alt={row.country.name}
               />
             </DialogContent>

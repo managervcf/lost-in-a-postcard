@@ -1,14 +1,14 @@
+import { useState } from 'react';
+import { Button } from '../common';
 import { ExpandLessRounded, ExpandMoreRounded } from '@mui/icons-material';
 import {
   Collapse as MuiCollapse,
   CollapseProps as MuiCollapseProps,
   Grid,
 } from '@mui/material';
-import { Button } from '../common';
-import { useState } from 'react';
 
 type CollapseProps = MuiCollapseProps & {
-  title: string;
+  title?: string;
   defaultOpen?: boolean;
   disabled?: boolean;
 };

@@ -1,18 +1,21 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { DeleteButton } from './DeleteButton';
-import { Button, Error, Form } from '../common';
+import { Button, Collapse, Error, Form } from '../common';
 import { PHOTOS, UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
+import { FETCH_LIMIT, AWS_URL } from '../../constants';
 import {
   Alert,
+  Avatar,
   FormControlLabel,
   Grid,
   Snackbar,
+  Stack,
   Switch,
   TextField,
   Typography,
 } from '@mui/material';
-import { FETCH_LIMIT } from '../../constants';
+import { HorizontalRule } from '@mui/icons-material';
 
 interface PhotoEditFormProps {
   id: string;
@@ -22,7 +25,9 @@ interface PhotoEditFormProps {
   region: string;
   caption: string;
   featured: boolean;
-  closeEditMode: () => void;
+  upload: {
+    key: string;
+  };
 }
 
 interface EditedPhotoState {
@@ -38,15 +43,15 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
   region,
   caption,
   featured,
-  closeEditMode,
+  upload,
 }) => {
+  const [open, setOpen] = useState(false);
   const [editedPhoto, setEditedPhoto] = useState<EditedPhotoState>({
     id,
     region,
     caption,
     featured,
   });
-  const [open, setOpen] = useState(false);
 
   const handleClick = () => setOpen(true);
 
@@ -109,7 +114,10 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
         </Alert>
       </Snackbar>
       <Grid item>
-        <Typography variant="h6">Edit photo</Typography>
+        <Stack direction="row" spacing={2}>
+          <Typography variant="h6">Edit photo</Typography>
+          <Avatar alt={country.name} srcSet={`${AWS_URL}${upload.key}`} />
+        </Stack>
       </Grid>
       <Grid item>
         <TextField
