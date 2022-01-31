@@ -6,6 +6,7 @@ import {
   AddPhotoData,
   AddPhotoVars,
   ADD_PHOTO,
+  COUNTRIES,
   GetPresignedUrlData,
   GetPresignedUrlVars,
   GET_PRESIGNED_URL,
@@ -41,7 +42,10 @@ export const useUpload = () => {
   const [addPhoto, { error: uploadError }] = useMutation<AddPhotoData, AddPhotoVars>(
     ADD_PHOTO,
     {
-      refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
+      refetchQueries: [
+        { query: PHOTOS, variables: { limit: FETCH_LIMIT } },
+        { query: COUNTRIES },
+      ],
     }
   );
 

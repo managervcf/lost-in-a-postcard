@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useMemo, useState } from 'react';
 import { AWS_URL, FETCH_LIMIT, ROW_OPTIONS } from '../../constants';
 import {
+  COUNTRIES,
   DeletePhotoData,
   DeletePhotoVars,
   DELETE_PHOTO,
@@ -58,7 +59,10 @@ export const PhotoTable = () => {
     DeletePhotoData,
     DeletePhotoVars
   >(DELETE_PHOTO, {
-    refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
+    refetchQueries: [
+      { query: PHOTOS, variables: { limit: FETCH_LIMIT } },
+      { query: COUNTRIES },
+    ],
     onCompleted: () => {
       setDeletedPhotoId(null);
       handleClick();
