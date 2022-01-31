@@ -19,7 +19,16 @@ import {
   GridValueFormatterParams,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
-import { Alert, Dialog, DialogContent, Grid, IconButton, Snackbar } from '@mui/material';
+import {
+  Alert,
+  Backdrop,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  Grid,
+  IconButton,
+  Snackbar,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import { formatBytes, scrollToTop } from '../../utils';
 import { DeleteForever } from '@mui/icons-material';
@@ -52,6 +61,7 @@ export const PhotoTable = () => {
     refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
     onCompleted: () => {
       setDeletedPhotoId(null);
+      handleClick();
     },
   });
 
@@ -179,7 +189,6 @@ export const PhotoTable = () => {
             onClick={() => {
               setDeletedPhotoId(row.id);
               deletePhoto({ variables: { id: row.id } });
-              handleClick();
             }}
             disabled={deleteLoading && deletedPhotoId === row.id}
           >
@@ -192,6 +201,10 @@ export const PhotoTable = () => {
 
   return (
     <Grid container justifyContent="center">
+      <Backdrop sx={{ zIndex: 10 }} open={deleteLoading}>
+        <CircularProgress color="primary" size={65} />
+      </Backdrop>
+
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert
           icon={<DeleteForever />}
@@ -220,7 +233,7 @@ export const PhotoTable = () => {
             pagination
             autoPageSize={false}
             rowsPerPageOptions={ROW_OPTIONS}
-            loading={loading || deleteLoading}
+            loading={loading}
             autoHeight
             components={{ Toolbar: GridToolbar }}
           />
