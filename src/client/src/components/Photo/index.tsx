@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import { useQuery } from 'react-apollo';
 import { Fade, Grid, Box } from '@mui/material';
-import { FeaturedStar } from './FeaturedStar';
 import { PhotoImage } from './PhotoImage';
 import { PhotoEdit } from './PhotoEdit';
-import { Camera } from './Camera';
+import { Location } from './Location';
 import { Heart } from './Heart';
 import { ME, MeData } from '../../graphql';
 import { useOnScreen } from '../../hooks';
+import { Featured } from '../common';
 
 interface PhotoProps {
   id: string;
@@ -44,13 +44,13 @@ export const Photo: React.FC<PhotoProps> = props => {
               </Box>
               <Fade in={props.featured}>
                 <Box position="absolute" bottom="1rem" left="5.5rem">
-                  <FeaturedStar />
+                  <Featured id={props.id} featured={props.featured} star />
                 </Box>
               </Fade>
             </>
           )}
-          <Camera {...props} country={props.country.name} />
-          <Heart id={props.id} />
+          <Location {...props} country={props.country.name} />
+          <Heart id={props.id} clicks={props.clicks} />
         </Box>
       </Grid>
     </Fade>

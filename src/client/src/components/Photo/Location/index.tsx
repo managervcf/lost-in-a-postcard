@@ -1,15 +1,15 @@
-import { CameraAltOutlined } from '@mui/icons-material';
+import { LocationOn, LocationOnOutlined } from '@mui/icons-material';
 import { Chip, Fade, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 
-interface CameraProps {
+interface LocationProps {
   country: string;
   region: string;
   caption: string;
 }
 
-export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
+export const Location: React.FC<LocationProps> = ({ country, region, caption }) => {
   const [show, setShow] = useState(false);
 
   /**
@@ -26,9 +26,13 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
    * After some time, hide photo details.
    */
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
     if (show) {
-      setTimeout(hideDetails, 2500);
+      timeout = setTimeout(hideDetails, 2500);
     }
+
+    return () => clearTimeout(timeout);
   }, [show]);
 
   return (
@@ -52,8 +56,12 @@ export const Camera: React.FC<CameraProps> = ({ country, region, caption }) => {
           />
         </Fade>
       </Box>
-      <IconButton color="primary" onClick={showDetails}>
-        <CameraAltOutlined />
+      <IconButton
+        color="primary"
+        onClick={showDetails}
+        // sx={{ transform: show ? 'rotateZ(90deg)' : null, transition: 'all 0.5s' }}
+      >
+        {show ? <LocationOn /> : <LocationOnOutlined />}
       </IconButton>
     </Box>
   );

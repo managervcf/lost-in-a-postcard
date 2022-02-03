@@ -11,7 +11,7 @@ import {
   PhotosData,
   PhotosVars,
 } from '../../graphql';
-import { Collapse, IncrementClicks } from '../common';
+import { Collapse, Featured, IncrementClicks } from '../common';
 import {
   DataGrid,
   GridColumns,
@@ -94,8 +94,8 @@ export const PhotoTable = () => {
       field: 'upload',
       headerName: 'Preview',
       flex: 1,
-      minWidth: 100,
-      maxWidth: 150,
+      minWidth: 120,
+      maxWidth: 160,
       renderCell: ({ value, row }: GridRenderCellParams<Photo['upload'], Photo>) => (
         <>
           <Box
@@ -166,7 +166,9 @@ export const PhotoTable = () => {
       flex: 0.5,
       minWidth: 90,
       maxWidth: 110,
-      valueFormatter: ({ value }: GridValueFormatterParams) => (value ? 'Yes' : 'No'),
+      renderCell: ({ row }: GridRenderCellParams<Photo['featured'], Photo>) => (
+        <Featured id={row.id} featured={row.featured} />
+      ),
     },
     {
       field: 'clicks',

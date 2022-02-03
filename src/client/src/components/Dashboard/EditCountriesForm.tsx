@@ -195,7 +195,7 @@ export const EditCountriesForm: React.FC = () => {
             (!!editedCountry.id
               ? data?.countries
                   ?.find(({ id }) => id === editedCountry.id)
-                  ?.description?.slice(5)
+                  ?.description?.slice(0, 15)
               : '')
           }
           value={editedCountry.description}

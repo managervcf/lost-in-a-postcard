@@ -3,9 +3,10 @@ import { IncrementClicks } from '../../common';
 
 interface HeartProps {
   id: string;
+  clicks: number;
 }
 
-export const Heart: React.FC<HeartProps> = ({ id }) => (
+export const Heart: React.FC<HeartProps> = ({ id, clicks }) => (
   <Box
     position="absolute"
     bottom="1rem"
@@ -13,6 +14,6 @@ export const Heart: React.FC<HeartProps> = ({ id }) => (
     display="flex"
     flexDirection="column"
   >
-    <IncrementClicks id={id} heart disableMultiple disableSnackbar />
+    <IncrementClicks id={id} clicks={clicks} heart disableMultiple disableSnackbar />
   </Box>
 );

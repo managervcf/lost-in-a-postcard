@@ -41,11 +41,11 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
   const [clicked, setClicked] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const [clickPhoto, { data }] = useMutation<ClickPhotoData, ClickPhotoVars>(
+  const [clickPhoto, { loading }] = useMutation<ClickPhotoData, ClickPhotoVars>(
     CLICK_PHOTO,
     {
       refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
-      // awaitRefetchQueries: true,
+      awaitRefetchQueries: true,
     }
   );
 
@@ -94,18 +94,13 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
         </Snackbar>
       )}
       <IconButton
-        disabled={disableDecrementing}
+        disabled={disableDecrementing || (loading && !heart)}
         size={size}
         color="primary"
         onClick={handleHeartClick}
       >
         {heart ? (
-          <Badge
-            color="primary"
-            badgeContent={
-              clicked ? data?.clickPhoto?.clicks ?? clicks + incrementBy : null
-            }
-          >
+          <Badge color="primary" badgeContent={clicked ? clicks : null}>
             {clicked ? <Favorite /> : <FavoriteBorder />}
           </Badge>
         ) : incrementBy > 0 ? (
