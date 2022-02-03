@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { IncrementClicksButton } from '../../common';
+import { IncrementClicks } from '../../common';
 
 interface HeartProps {
   id: string;
@@ -13,6 +13,6 @@ export const Heart: React.FC<HeartProps> = ({ id }) => (
     display="flex"
     flexDirection="column"
   >
-    <IncrementClicksButton id={id} heart disableMultipleClicks disableSnackbar />
+    <IncrementClicks id={id} heart disableMultiple disableSnackbar />
   </Box>
 );

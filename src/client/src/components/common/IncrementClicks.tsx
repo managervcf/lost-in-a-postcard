@@ -12,20 +12,22 @@ import { useState } from 'react';
 import { FETCH_LIMIT } from '../../constants';
 import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO, PHOTOS } from '../../graphql';
 
-interface IncrementClicksButtonProps {
+interface IncrementClicksProps {
   id: string;
+  clicks?: number;
   incrementBy?: number;
   size?: 'small' | 'medium' | 'large';
-  disableMultipleClicks?: boolean;
+  disableMultiple?: boolean;
   heart?: boolean;
   disableSnackbar?: boolean;
 }
 
-export const IncrementClicksButton: React.FC<IncrementClicksButtonProps> = ({
+export const IncrementClicks: React.FC<IncrementClicksProps> = ({
   id,
+  clicks = 0,
   incrementBy = 1,
   size,
-  disableMultipleClicks = false,
+  disableMultiple = false,
   heart = false,
   disableSnackbar = false,
 }) => {
@@ -39,11 +41,11 @@ export const IncrementClicksButton: React.FC<IncrementClicksButtonProps> = ({
   const [clicked, setClicked] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const [clickPhoto, { loading, data }] = useMutation<ClickPhotoData, ClickPhotoVars>(
+  const [clickPhoto, { data }] = useMutation<ClickPhotoData, ClickPhotoVars>(
     CLICK_PHOTO,
     {
       refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
-      awaitRefetchQueries: true,
+      // awaitRefetchQueries: true,
     }
   );
 
@@ -63,13 +65,18 @@ export const IncrementClicksButton: React.FC<IncrementClicksButtonProps> = ({
   const handleHeartClick = () => {
     setClicked(true);
 
-    if (clicked && disableMultipleClicks) {
+    if (clicked && disableMultiple) {
       return;
     }
 
     clickPhoto({ variables: { id, incrementBy } });
     handleClick();
   };
+
+  /**
+   * Disable decrementing when clicks are 0 or less, and increment by is negative.
+   */
+  const disableDecrementing = clicks <= 0 && incrementBy < 1 && !heart;
 
   return (
     <>
@@ -87,7 +94,7 @@ export const IncrementClicksButton: React.FC<IncrementClicksButtonProps> = ({
         </Snackbar>
       )}
       <IconButton
-        disabled={!heart && loading}
+        disabled={disableDecrementing}
         size={size}
         color="primary"
         onClick={handleHeartClick}
@@ -95,7 +102,9 @@ export const IncrementClicksButton: React.FC<IncrementClicksButtonProps> = ({
         {heart ? (
           <Badge
             color="primary"
-            badgeContent={clicked ? data?.clickPhoto?.clicks ?? null : null}
+            badgeContent={
+              clicked ? data?.clickPhoto?.clicks ?? clicks + incrementBy : null
+            }
           >
             {clicked ? <Favorite /> : <FavoriteBorder />}
           </Badge>
