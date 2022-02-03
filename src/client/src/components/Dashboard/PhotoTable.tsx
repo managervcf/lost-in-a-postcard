@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useMemo, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Box } from '@mui/system';
+import { DeleteForever } from '@mui/icons-material';
 import { AWS_URL, FETCH_LIMIT, ROW_OPTIONS } from '../../constants';
+import { formatBytes, scrollToTop } from '../../utils';
+import { PhotoEdit } from '../Photo/PhotoEdit';
+import { Collapse, Featured, IncrementClicks } from '../common';
 import {
   COUNTRIES,
   DeletePhotoData,
@@ -11,7 +16,6 @@ import {
   PhotosData,
   PhotosVars,
 } from '../../graphql';
-import { Collapse, Featured, IncrementClicks } from '../common';
 import {
   DataGrid,
   GridColumns,
@@ -30,10 +34,6 @@ import {
   IconButton,
   Snackbar,
 } from '@mui/material';
-import { Box } from '@mui/system';
-import { formatBytes, scrollToTop } from '../../utils';
-import { DeleteForever } from '@mui/icons-material';
-import { PhotoEdit } from '../Photo/PhotoEdit';
 
 export const PhotoTable = () => {
   const [enlarged, setEnlarged] = useState<string | null>(null);
