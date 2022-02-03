@@ -59,7 +59,7 @@ export const Location: React.FC<LocationProps> = ({ country, region, caption }) 
       <IconButton
         color="primary"
         onClick={showDetails}
-        // sx={{ transform: show ? 'rotateZ(90deg)' : null, transition: 'all 0.5s' }}
+        sx={{ transform: show ? 'rotateZ(90deg)' : null, transition: 'all 0.6s' }}
       >
         {show ? <LocationOn /> : <LocationOnOutlined />}
       </IconButton>
