@@ -121,7 +121,7 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
         </Snackbar>
       )}
       <IconButton
-        disabled={disableDecrementing || (loading && !heart)}
+        disabled={disableDecrementing}
         size={size}
         color="primary"
         onClick={handleHeartClick}
