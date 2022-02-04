@@ -2,8 +2,14 @@ import { useMutation } from '@apollo/react-hooks';
 import { Star, StarBorder } from '@mui/icons-material';
 import { Alert, IconButton, Snackbar, Switch } from '@mui/material';
 import { useState } from 'react';
-import { FETCH_LIMIT } from '../../constants';
-import { PHOTOS, UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
+import {
+  allPhotosQuery,
+  PhotosData,
+  PhotosVars,
+  UpdatePhotoData,
+  UpdatePhotoVars,
+  UPDATE_PHOTO,
+} from '../../graphql';
 
 interface FeaturedProps {
   id: string;
@@ -34,9 +40,30 @@ export const Featured: React.FC<FeaturedProps> = ({
   const [updateMutation, { loading }] = useMutation<UpdatePhotoData, UpdatePhotoVars>(
     UPDATE_PHOTO,
     {
-      refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
-      awaitRefetchQueries: true,
       onCompleted: () => handleClick(),
+      update: (cache, { data }) => {
+        const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
+
+        if (!cachedData || !data) {
+          return;
+        }
+
+        const updatedDocs = cachedData.photos.docs.map(photo =>
+          photo.id === data.updatePhoto.id
+            ? { ...photo, featured: data.updatePhoto.featured ?? photo.featured }
+            : photo
+        );
+
+        cache.writeQuery<PhotosData, PhotosVars>({
+          ...allPhotosQuery,
+          data: {
+            photos: {
+              ...cachedData.photos,
+              docs: updatedDocs ?? cachedData.photos.docs ?? [],
+            },
+          },
+        });
+      },
     }
   );
 

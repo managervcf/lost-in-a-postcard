@@ -2,6 +2,7 @@ import { gql } from 'apollo-boost';
 
 export interface ClickPhotoData {
   clickPhoto: {
+    __typename?: 'Photo';
     id: string;
     clicks: number;
   };

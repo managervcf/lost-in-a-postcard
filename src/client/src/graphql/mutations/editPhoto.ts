@@ -3,6 +3,10 @@ import { gql } from 'apollo-boost';
 export interface UpdatePhotoData {
   updatePhoto: {
     id: string;
+    region: string;
+    caption: string;
+    featured: boolean;
+    clicks: number;
     country: {
       name: string;
     };
@@ -33,6 +37,10 @@ export const UPDATE_PHOTO = gql`
       featured: $featured
     ) {
       id
+      region
+      caption
+      featured
+      clicks
       country {
         name
       }

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Alert, Badge, IconButton, Snackbar } from '@mui/material';
 import { useMutation } from '@apollo/react-hooks';
 import {
   Add,
@@ -7,10 +9,14 @@ import {
   ThumbDown,
   ThumbUp,
 } from '@mui/icons-material';
-import { Alert, Badge, IconButton, Snackbar } from '@mui/material';
-import { useState } from 'react';
-import { FETCH_LIMIT } from '../../constants';
-import { ClickPhotoData, ClickPhotoVars, CLICK_PHOTO, PHOTOS } from '../../graphql';
+import {
+  allPhotosQuery,
+  ClickPhotoData,
+  ClickPhotoVars,
+  CLICK_PHOTO,
+  PhotosData,
+  PhotosVars,
+} from '../../graphql';
 
 interface IncrementClicksProps {
   id: string;
@@ -44,8 +50,29 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
   const [clickPhoto, { loading }] = useMutation<ClickPhotoData, ClickPhotoVars>(
     CLICK_PHOTO,
     {
-      // refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
-      // awaitRefetchQueries: true,
+      update: (cache, { data }) => {
+        const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
+
+        if (!cachedData || !data) {
+          return;
+        }
+
+        const updatedDocs = cachedData.photos.docs.map(photo =>
+          photo.id === data.clickPhoto.id
+            ? { ...photo, clicks: data.clickPhoto.clicks ?? photo.clicks }
+            : photo
+        );
+
+        cache.writeQuery<PhotosData, PhotosVars>({
+          ...allPhotosQuery,
+          data: {
+            photos: {
+              ...cachedData.photos,
+              docs: updatedDocs ?? cachedData.photos.docs ?? [],
+            },
+          },
+        });
+      },
     }
   );
 
@@ -100,7 +127,7 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
         onClick={handleHeartClick}
       >
         {heart ? (
-          <Badge color="primary" badgeContent={clicked ? clicks + 1 : null}>
+          <Badge color="primary" badgeContent={clicked ? clicks : null}>
             {clicked ? <Favorite /> : <FavoriteBorder />}
           </Badge>
         ) : incrementBy > 0 ? (

@@ -1,4 +1,6 @@
 import { gql } from 'apollo-boost';
+import { QueryOptions } from 'apollo-client';
+import { FETCH_LIMIT } from '../../constants';
 
 export interface Photo {
   id: string;
@@ -65,3 +67,8 @@ export const PHOTOS = gql`
     }
   }
 `;
+
+export const allPhotosQuery: QueryOptions<PhotosVars> = {
+  query: PHOTOS,
+  variables: { limit: FETCH_LIMIT },
+};
