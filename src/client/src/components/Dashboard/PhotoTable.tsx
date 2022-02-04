@@ -1,21 +1,12 @@
 import { useMemo, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { Box } from '@mui/system';
-import { DeleteForever } from '@mui/icons-material';
+import { Dialog, DialogContent, Grid } from '@mui/material';
 import { AWS_URL, FETCH_LIMIT, ROW_OPTIONS } from '../../constants';
 import { formatBytes, scrollToTop } from '../../utils';
 import { PhotoEdit } from '../Photo/PhotoEdit';
-import { Collapse, Featured, IncrementClicks } from '../common';
-import {
-  COUNTRIES,
-  DeletePhotoData,
-  DeletePhotoVars,
-  DELETE_PHOTO,
-  Photo,
-  PHOTOS,
-  PhotosData,
-  PhotosVars,
-} from '../../graphql';
+import { Collapse, Delete, Featured, IncrementClicks } from '../common';
+import { Photo, PHOTOS, PhotosData, PhotosVars } from '../../graphql';
 import {
   DataGrid,
   GridColumns,
@@ -24,49 +15,13 @@ import {
   GridValueFormatterParams,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
-import {
-  Alert,
-  Backdrop,
-  CircularProgress,
-  Dialog,
-  DialogContent,
-  Grid,
-  IconButton,
-  Snackbar,
-} from '@mui/material';
 
 export const PhotoTable = () => {
   const [enlarged, setEnlarged] = useState<string | null>(null);
-  const [deletedPhotoId, setDeletedPhotoId] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => setOpen(true);
-
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   const { data, loading } = useQuery<PhotosData, PhotosVars>(PHOTOS, {
     variables: { limit: FETCH_LIMIT },
     fetchPolicy: 'cache-first',
-  });
-
-  const [deletePhoto, { loading: deleteLoading }] = useMutation<
-    DeletePhotoData,
-    DeletePhotoVars
-  >(DELETE_PHOTO, {
-    refetchQueries: [
-      { query: PHOTOS, variables: { limit: FETCH_LIMIT } },
-      { query: COUNTRIES },
-    ],
-    onCompleted: () => {
-      setDeletedPhotoId(null);
-      handleClick();
-    },
   });
 
   const allPhotos = useMemo(() => data?.photos.docs ?? [], [data?.photos.docs]);
@@ -193,18 +148,8 @@ export const PhotoTable = () => {
       width: 100,
       renderCell: ({ row }: GridRenderCellParams<any, Photo>) => (
         <>
-          <PhotoEdit {...row} disabled={deleteLoading && deletedPhotoId === row.id} />
-          <IconButton
-            id="delete-photo-list-item"
-            color="error"
-            onClick={() => {
-              setDeletedPhotoId(row.id);
-              deletePhoto({ variables: { id: row.id } });
-            }}
-            disabled={deleteLoading && deletedPhotoId === row.id}
-          >
-            <DeleteForever />
-          </IconButton>
+          <PhotoEdit {...row} />
+          <Delete id={row.id} trashIcon />
         </>
       ),
     },
@@ -212,19 +157,6 @@ export const PhotoTable = () => {
 
   return (
     <Grid container justifyContent="center">
-      <Backdrop sx={{ zIndex: 10 }} open={deleteLoading}>
-        <CircularProgress color="primary" size={65} />
-      </Backdrop>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert
-          icon={<DeleteForever />}
-          variant="filled"
-          onClose={handleClose}
-          severity="success"
-        >
-          Photo deleted
-        </Alert>
-      </Snackbar>
       <Grid item xl={9} md={11} xs={12} m={1}>
         <Collapse
           title={loading ? 'Loading photos...' : `List of ${allPhotos.length} photos `}

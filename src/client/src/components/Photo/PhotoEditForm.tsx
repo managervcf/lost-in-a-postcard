@@ -1,9 +1,16 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation } from 'react-apollo';
-import { DeleteButton } from './DeleteButton';
+import { Delete } from '../common';
 import { Button, Error, Form } from '../common';
-import { PHOTOS, UpdatePhotoData, UpdatePhotoVars, UPDATE_PHOTO } from '../../graphql';
-import { FETCH_LIMIT, AWS_URL } from '../../constants';
+import {
+  allPhotosQuery,
+  PhotosData,
+  PhotosVars,
+  UpdatePhotoData,
+  UpdatePhotoVars,
+  UPDATE_PHOTO,
+} from '../../graphql';
+import { AWS_URL } from '../../constants';
 import {
   Alert,
   Avatar,
@@ -29,6 +36,7 @@ interface PhotoEditFormProps {
   upload: {
     key: string;
   };
+  closeEditMode?: () => void;
 }
 
 interface EditedPhotoState {
@@ -45,6 +53,7 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
   caption,
   featured,
   upload,
+  closeEditMode,
 }) => {
   const [open, setOpen] = useState(false);
   const [editedPhoto, setEditedPhoto] = useState<EditedPhotoState>({
@@ -69,8 +78,28 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
     UpdatePhotoData,
     UpdatePhotoVars
   >(UPDATE_PHOTO, {
-    refetchQueries: [{ query: PHOTOS, variables: { limit: FETCH_LIMIT } }],
     onCompleted: () => handleClick(),
+    update: (cache, { data }) => {
+      const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
+
+      if (!cachedData || !data) {
+        return;
+      }
+
+      const updatedDocs = cachedData.photos.docs.map(photo =>
+        photo.id === data.updatePhoto.id ? { ...photo, ...data.updatePhoto } : photo
+      );
+
+      cache.writeQuery<PhotosData, PhotosVars>({
+        ...allPhotosQuery,
+        data: {
+          photos: {
+            ...cachedData.photos,
+            docs: updatedDocs,
+          },
+        },
+      });
+    },
   });
 
   /**
@@ -177,7 +206,7 @@ export const PhotoEditForm: React.FC<PhotoEditFormProps> = ({
         >
           Update
         </Button>
-        <DeleteButton id={id} />
+        <Delete id={id} afterDelete={closeEditMode} />
       </Grid>
     </Form>
   );

@@ -33,7 +33,7 @@ export const PhotoEdit: React.FC<PhotoEditProps> = props => {
       </IconButton>
       <Dialog open={editMode} onClose={() => setEditMode(false)}>
         <DialogContent>
-          <PhotoEditForm {...props} />
+          <PhotoEditForm {...props} closeEditMode={() => setEditMode(false)} />
         </DialogContent>
       </Dialog>
     </>

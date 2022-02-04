@@ -48,7 +48,7 @@ export const Featured: React.FC<FeaturedProps> = ({
 
       const updatedDocs = cachedData.photos.docs.map(photo =>
         photo.id === data.updatePhoto.id
-          ? { ...photo, featured: data.updatePhoto.featured ?? photo.featured }
+          ? { ...photo, featured: data.updatePhoto.featured }
           : photo
       );
 
@@ -57,7 +57,7 @@ export const Featured: React.FC<FeaturedProps> = ({
         data: {
           photos: {
             ...cachedData.photos,
-            docs: updatedDocs ?? cachedData.photos.docs ?? [],
+            docs: updatedDocs,
           },
         },
       });

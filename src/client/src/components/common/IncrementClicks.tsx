@@ -57,7 +57,7 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
 
       const updatedDocs = cachedData.photos.docs.map(photo =>
         photo.id === data.clickPhoto.id
-          ? { ...photo, clicks: data.clickPhoto.clicks ?? photo.clicks }
+          ? { ...photo, clicks: data.clickPhoto.clicks }
           : photo
       );
 
@@ -66,7 +66,7 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
         data: {
           photos: {
             ...cachedData.photos,
-            docs: updatedDocs ?? cachedData.photos.docs ?? [],
+            docs: updatedDocs,
           },
         },
       });

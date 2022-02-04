@@ -1,6 +1,7 @@
 export * from './Authenticated';
 export * from './Button';
 export * from './Collapse';
+export * from './Delete';
 export * from './Error';
 export * from './Featured';
 export * from './Form';
