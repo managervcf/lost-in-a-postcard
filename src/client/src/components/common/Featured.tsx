@@ -37,35 +37,32 @@ export const Featured: React.FC<FeaturedProps> = ({
   };
 
   // Use mutation hook.
-  const [updateMutation, { loading }] = useMutation<UpdatePhotoData, UpdatePhotoVars>(
-    UPDATE_PHOTO,
-    {
-      onCompleted: () => handleClick(),
-      update: (cache, { data }) => {
-        const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
+  const [updateMutation] = useMutation<UpdatePhotoData, UpdatePhotoVars>(UPDATE_PHOTO, {
+    onCompleted: () => handleClick(),
+    update: (cache, { data }) => {
+      const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
 
-        if (!cachedData || !data) {
-          return;
-        }
+      if (!cachedData || !data) {
+        return;
+      }
 
-        const updatedDocs = cachedData.photos.docs.map(photo =>
-          photo.id === data.updatePhoto.id
-            ? { ...photo, featured: data.updatePhoto.featured ?? photo.featured }
-            : photo
-        );
+      const updatedDocs = cachedData.photos.docs.map(photo =>
+        photo.id === data.updatePhoto.id
+          ? { ...photo, featured: data.updatePhoto.featured ?? photo.featured }
+          : photo
+      );
 
-        cache.writeQuery<PhotosData, PhotosVars>({
-          ...allPhotosQuery,
-          data: {
-            photos: {
-              ...cachedData.photos,
-              docs: updatedDocs ?? cachedData.photos.docs ?? [],
-            },
+      cache.writeQuery<PhotosData, PhotosVars>({
+        ...allPhotosQuery,
+        data: {
+          photos: {
+            ...cachedData.photos,
+            docs: updatedDocs ?? cachedData.photos.docs ?? [],
           },
-        });
-      },
-    }
-  );
+        },
+      });
+    },
+  });
 
   return (
     <>
@@ -86,7 +83,6 @@ export const Featured: React.FC<FeaturedProps> = ({
           color="primary"
           name="featured"
           checked={featured}
-          disabled={loading}
           onChange={e => {
             setChecked(e.target.checked);
             updateMutation({ variables: { id, featured: e.target.checked } });

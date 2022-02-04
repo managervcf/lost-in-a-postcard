@@ -47,34 +47,31 @@ export const IncrementClicks: React.FC<IncrementClicksProps> = ({
   const [clicked, setClicked] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const [clickPhoto, { loading }] = useMutation<ClickPhotoData, ClickPhotoVars>(
-    CLICK_PHOTO,
-    {
-      update: (cache, { data }) => {
-        const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
+  const [clickPhoto] = useMutation<ClickPhotoData, ClickPhotoVars>(CLICK_PHOTO, {
+    update: (cache, { data }) => {
+      const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
 
-        if (!cachedData || !data) {
-          return;
-        }
+      if (!cachedData || !data) {
+        return;
+      }
 
-        const updatedDocs = cachedData.photos.docs.map(photo =>
-          photo.id === data.clickPhoto.id
-            ? { ...photo, clicks: data.clickPhoto.clicks ?? photo.clicks }
-            : photo
-        );
+      const updatedDocs = cachedData.photos.docs.map(photo =>
+        photo.id === data.clickPhoto.id
+          ? { ...photo, clicks: data.clickPhoto.clicks ?? photo.clicks }
+          : photo
+      );
 
-        cache.writeQuery<PhotosData, PhotosVars>({
-          ...allPhotosQuery,
-          data: {
-            photos: {
-              ...cachedData.photos,
-              docs: updatedDocs ?? cachedData.photos.docs ?? [],
-            },
+      cache.writeQuery<PhotosData, PhotosVars>({
+        ...allPhotosQuery,
+        data: {
+          photos: {
+            ...cachedData.photos,
+            docs: updatedDocs ?? cachedData.photos.docs ?? [],
           },
-        });
-      },
-    }
-  );
+        },
+      });
+    },
+  });
 
   const handleClick = () => setOpen(true);
 
