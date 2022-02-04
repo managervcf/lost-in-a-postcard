@@ -302,9 +302,11 @@ class PhotoService {
    * Increments the clicks proptery on the photo.
    */
   async clickPhoto(id: Types.ObjectId, incrementBy?: number): Promise<PhotoDoc> {
-    const clickedPhoto = await this.photoModel.findByIdAndUpdate(id, {
-      $inc: { clicks: incrementBy ?? 1 },
-    });
+    const clickedPhoto = await this.photoModel.findByIdAndUpdate(
+      id,
+      { $inc: { clicks: incrementBy ?? 1 } },
+      { new: true }
+    );
 
     if (!clickedPhoto) {
       throw new Error(`Photo with an id ${id} does not exist`);
