@@ -61,7 +61,7 @@ export const Gallery: React.FC = () => {
       setAllPhotos(photos => groupPhotos(photos));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [userData]);
 
   /**
    * Load more photos when bottom of the page is reached.

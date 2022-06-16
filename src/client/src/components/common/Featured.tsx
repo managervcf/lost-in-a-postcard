@@ -14,14 +14,12 @@ import {
 interface FeaturedProps {
   id: string;
   featured: boolean;
-  label?: string;
   star?: boolean;
 }
 
 export const Featured: React.FC<FeaturedProps> = ({
   id,
   featured,
-  label = '',
   star = false,
 }) => {
   const [checked, setChecked] = useState(featured);
@@ -37,7 +35,7 @@ export const Featured: React.FC<FeaturedProps> = ({
   };
 
   // Use mutation hook.
-  const [updateMutation] = useMutation<UpdatePhotoData, UpdatePhotoVars>(UPDATE_PHOTO, {
+  const [updatePhoto] = useMutation<UpdatePhotoData, UpdatePhotoVars>(UPDATE_PHOTO, {
     onCompleted: () => handleClick(),
     update: (cache, { data }) => {
       const cachedData = cache.readQuery<PhotosData, PhotosVars>(allPhotosQuery);
@@ -85,7 +83,7 @@ export const Featured: React.FC<FeaturedProps> = ({
           checked={featured}
           onChange={e => {
             setChecked(e.target.checked);
-            updateMutation({ variables: { id, featured: e.target.checked } });
+            updatePhoto({ variables: { id, featured: e.target.checked } });
           }}
         />
       )}
