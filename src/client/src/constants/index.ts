@@ -32,7 +32,7 @@ export const DISPLAY_LIMIT = 10;
 /**
  * AWs resource base url.
  */
-export const AWS_URL = 'https://lost-in-a-postcard.s3-ap-southeast-2.amazonaws.com/';
+export const AWS_URL = 'https://lost-in-a-postcard-europe.s3.eu-central-1.amazonaws.com/';
 /**
  * Primary app color.
  */
